@@ -131,13 +131,13 @@
 
 (defn last-run-checks [runs]
   (if (seq runs)
-    (for [{:keys [command finished results]} runs
+    (for [{:keys [command results] :as run} runs
           :let [failed (filter #(= :failed (:status %)) results)]]
       (if (seq failed)
         (check :warn (str "The last breto " command " had failures")
-               (str finished ": " (str/join ", " (map :package failed)))
+               (str (report/heading run) "; failed: " (str/join ", " (map :package failed)))
                "breto report shows the diagnosis for each.")
-        (check :ok (str "The last breto " command " succeeded") (str finished))))
+        (check :ok (str "The last breto " command " succeeded") (report/heading run))))
     [(check :ok "No previous run recorded" (report/state-path))]))
 
 (defn unconfigured-check [{:keys [packages prune] :as config}]

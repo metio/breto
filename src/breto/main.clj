@@ -75,7 +75,7 @@ Every failure is explained with what to do; --debug adds each request and stack 
                          (let [result (try (f name)
                                            (catch Exception e
                                              (failure (first (split-spec name)) (second (split-spec name)) e)))]
-                           (progress {:type :finish :status (:status result) :package (:package result)
+                           (progress {:type :finish :result result :status (:status result) :package (:package result)
                                       :stage (get-in result [:diagnosis :stage])
                                       :summary (get-in result [:diagnosis :summary])})
                            result))
@@ -134,6 +134,27 @@ Every failure is explained with what to do; --debug adds each request and stack 
                (Thread/sleep 1000)))
            f)))
 
+(defn- broadcast
+  "One progress callback that passes each event to all of `callbacks`."
+  [& callbacks]
+  (fn [event] (doseq [f callbacks] (f event))))
+
+(defn- recorder
+  "A progress callback that saves the results of `command` so far after every
+  package, so breto report shows a run that is still going."
+  [command]
+  (let [results (atom [])]
+    (fn [{:keys [type total result]}]
+      (when (= :finish type)
+        (let [done (swap! results conj result)]
+          (try (report/save! {:command command :results done :running true :total total})
+               (catch Exception _ nil)))))))
+
+(defn- tracker
+  "The progress callback for `command`: the live display and the recorder."
+  [command]
+  (broadcast (progress/reporter) (recorder command)))
+
 (defn- finish!
   "Prints and saves the report for `command`, returning the exit code."
   [command results]
@@ -158,7 +179,7 @@ Every failure is explained with what to do; --debug adds each request and stack 
   0)
 
 (defn- cmd-install [cfg reg args opts]
-  (let [progress (progress/reporter)
+  (let [progress (tracker "install")
         transferred (atom 0)
         io (tracked-io progress transferred)]
     (finish! "install"
@@ -171,7 +192,7 @@ Every failure is explained with what to do; --debug adds each request and stack 
                     progress))))
 
 (defn- cmd-update [cfg reg args opts]
-  (let [progress (progress/reporter)
+  (let [progress (tracker "update")
         transferred (atom 0)
         io (tracked-io progress transferred)]
     (finish! "update"
@@ -184,7 +205,7 @@ Every failure is explained with what to do; --debug adds each request and stack 
                     progress))))
 
 (defn- cmd-outdated [cfg reg args opts]
-  (let [progress (progress/reporter)]
+  (let [progress (tracker "outdated")]
     (finish! "outdated"
              (batch (targets cfg args)
                     ((pause cfg opts progress (atom 0))
@@ -272,7 +293,7 @@ Every failure is explained with what to do; --debug adds each request and stack 
 (defn- cmd-report [_ _ _]
   (if-let [runs (seq (report/load-runs))]
     (do (doseq [run runs]
-          (println (str "Finished " (:finished run)))
+          (println (report/heading run))
           (println (report/render run))
           (println))
         0)

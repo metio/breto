@@ -169,3 +169,12 @@
   (is (= 0 (:code (breto! {:packages ["tool"]} "gc"))))
   (is (not (fs/exists? (path "store" "tool" ".work-killed"))))
   (is (fs/exists? (path "store" "tool" "1.0.0" "tool"))))
+
+(deftest running-reports-show-progress-and-finish-replaces-them
+  (report/save! {:command "update" :results [{:package "a" :status :current}] :running true :total 3})
+  (let [[run] (report/load-runs)]
+    (is (str/starts-with? (report/heading run) "breto update is running: 1 of 3 done, last at ")))
+  (report/save! {:command "update" :results [{:package "a" :status :current}]})
+  (let [[run] (report/load-runs)]
+    (is (str/starts-with? (report/heading run) "breto update finished "))
+    (is (nil? (:running run)))))

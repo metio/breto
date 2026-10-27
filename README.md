@@ -87,7 +87,7 @@ With a configuration that is managed declaratively, for example from dotfiles, `
 
 `install`, `update`, `outdated`, `gc` and `uninstall` keep going past a failing package. Each failure is reported with the stage it happened in (resolve, download, verify, unpack, place or activate), the facts breto could establish, and what to do about it. For a download that returns 404, for example, breto lists the release's assets closest to the expected name and suggests an `:asset` template, or a `:history` entry when only newer releases changed their naming. Rate limits, moved repositories, tag prefixes, archive layouts and missing checksums get the same treatment. The exit code is 1 when any package failed.
 
-The last run of each command is saved to `$XDG_STATE_HOME/breto/last-run.edn`, so `breto report` shows what a scheduled run did after the fact. `breto doctor` checks the environment breto depends on. `--debug` adds every HTTP request and the stack trace of each failure.
+The last run of each command is saved to `$XDG_STATE_HOME/breto/last-run.edn`, and updated after every package while a run is still going, so `breto report` shows what a scheduled run did after the fact and how far a running one got. `breto doctor` checks the environment breto depends on. `--debug` adds every HTTP request and the stack trace of each failure.
 
 ## Package definitions
 

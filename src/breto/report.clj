@@ -5,7 +5,8 @@
   (:require [babashka.fs :as fs]
             [clojure.edn :as edn]
             [clojure.string :as str])
-  (:import (java.time Instant)))
+  (:import (java.time Instant ZoneId)
+           (java.time.format DateTimeFormatter)))
 
 (def ^:dynamic *state-home*
   "The XDG state directory; nil reads XDG_STATE_HOME."
@@ -72,9 +73,27 @@
     (sort-by :finished (if (:command runs) [runs] (vals runs)))))
 
 (defn save!
-  "Records `report` as the last run of its command, keeping the other commands'."
+  "Records `report` as the last run of its command, keeping the other commands'.
+  A report marked `:running` records when it was last updated instead of when
+  it finished."
   [report]
   (let [path (state-path)
-        runs (into {} (map (juxt :command identity)) (load-runs))]
+        runs (into {} (map (juxt :command identity)) (load-runs))
+        stamped (if (:running report)
+                  (assoc report :updated (str (Instant/now)))
+                  (assoc (dissoc report :running :total :updated) :finished (str (Instant/now))))
+        staged (str path ".tmp")]
     (fs/create-dirs (fs/parent path))
-    (spit path (pr-str (assoc runs (:command report) (assoc report :finished (str (Instant/now))))))))
+    (spit staged (pr-str (assoc runs (:command report) stamped)))
+    (fs/move staged path {:replace-existing true :atomic-move true})))
+
+(defn- local-time [instant]
+  (.format (.atZone (Instant/parse instant) (ZoneId/systemDefault))
+           (DateTimeFormatter/ofPattern "yyyy-MM-dd HH:mm:ss z")))
+
+(defn heading
+  "The line above a saved run: when it finished, or how far a running one got."
+  [{:keys [command running total results updated finished]}]
+  (if running
+    (str "breto " command " is running: " (count results) " of " total " done, last at " (local-time updated))
+    (str "breto " command " finished " (local-time finished))))
