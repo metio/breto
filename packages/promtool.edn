@@ -1,0 +1,7 @@
+;; SPDX-FileCopyrightText: The breto Authors
+;; SPDX-License-Identifier: 0BSD
+
+{:source {:github "prometheus/prometheus"},
+ :asset "prometheus-{version}.linux-amd64.tar.gz",
+ :checksum "sha256sums.txt",
+ :strip 1}

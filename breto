@@ -1,0 +1,5 @@
+#!/usr/bin/env sh
+# SPDX-FileCopyrightText: The breto Authors
+# SPDX-License-Identifier: 0BSD
+
+exec bb --config "$(dirname "$(readlink -f "$0")")/bb.edn" -m breto.main "$@"

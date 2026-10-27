@@ -1,0 +1,6 @@
+;; SPDX-FileCopyrightText: The breto Authors
+;; SPDX-License-Identifier: 0BSD
+
+{:source {:github "controlplaneio-fluxcd/flux-operator"},
+ :asset "flux-operator_{version}_linux_amd64.tar.gz",
+ :checksum "flux-operator_{version}_checksums.txt"}

@@ -1,0 +1,13 @@
+;; SPDX-FileCopyrightText: The breto Authors
+;; SPDX-License-Identifier: 0BSD
+
+{:source {:github "metio/ansible-wrapper"}
+ :asset "ansible-wrapper-x86_64-unknown-linux-gnu.tar.gz"
+ :tag-prefix ""
+ :checksum "SHA256SUMS"
+ :bins {"ansible-wrapper" "ansible-wrapper"
+        "ansible" "ansible-wrapper"
+        "ansible-doc" "ansible-wrapper"
+        "ansible-galaxy" "ansible-wrapper"
+        "ansible-playbook" "ansible-wrapper"
+        "ansible-vault" "ansible-wrapper"}}

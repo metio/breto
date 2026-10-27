@@ -1,0 +1,8 @@
+;; SPDX-FileCopyrightText: The breto Authors
+;; SPDX-License-Identifier: 0BSD
+
+{:source {:github "helm/helm"}
+ :asset "helm-{tag}-linux-amd64.tar.gz"
+ :url "https://get.helm.sh/{asset}"
+ :checksum "{asset}.sha256sum"
+ :strip 1}

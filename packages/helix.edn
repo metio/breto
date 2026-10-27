@@ -1,0 +1,10 @@
+;; SPDX-FileCopyrightText: The breto Authors
+;; SPDX-License-Identifier: 0BSD
+
+{:source {:github "helix-editor/helix"}
+ :tag-prefix ""
+ :asset "helix-{version}-x86_64-linux.tar.xz"
+ :strip 1
+ :layout :tree
+ :bins {"hx" "hx"}
+ :links {"~/.config/helix/runtime" "runtime"}}

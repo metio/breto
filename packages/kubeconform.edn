@@ -1,0 +1,6 @@
+;; SPDX-FileCopyrightText: The breto Authors
+;; SPDX-License-Identifier: 0BSD
+
+{:source {:github "yannh/kubeconform"},
+ :asset "kubeconform-linux-amd64.tar.gz",
+ :checksum "CHECKSUMS"}

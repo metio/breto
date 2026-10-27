@@ -1,0 +1,9 @@
+;; SPDX-FileCopyrightText: The breto Authors
+;; SPDX-License-Identifier: 0BSD
+
+{:source {:github "VSCodium/vscodium"}
+ :tag-prefix ""
+ :asset "VSCodium-linux-x64-{version}.tar.gz"
+ :checksum "{asset}.sha256"
+ :layout :tree
+ :bins {"codium" "codium"}}

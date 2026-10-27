@@ -1,0 +1,7 @@
+;; SPDX-FileCopyrightText: The breto Authors
+;; SPDX-License-Identifier: 0BSD
+
+{:source {:github "grafana/mimir"},
+ :asset "mimirtool-linux-amd64",
+ :tag-prefix "mimir-",
+ :checksum "mimirtool-linux-amd64-sha-256"}

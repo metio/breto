@@ -1,0 +1,6 @@
+;; SPDX-FileCopyrightText: The breto Authors
+;; SPDX-License-Identifier: 0BSD
+
+{:source {:github "rikatz/kubepug"},
+ :asset "kubepug_linux_amd64.tar.gz",
+ :checksum "kubepug_{version}_checksums.txt"}

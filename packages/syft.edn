@@ -1,0 +1,6 @@
+;; SPDX-FileCopyrightText: The breto Authors
+;; SPDX-License-Identifier: 0BSD
+
+{:source {:github "anchore/syft"},
+ :asset "syft_{version}_linux_amd64.tar.gz",
+ :checksum "syft_{version}_checksums.txt"}

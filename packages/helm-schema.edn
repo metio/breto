@@ -1,0 +1,7 @@
+;; SPDX-FileCopyrightText: The breto Authors
+;; SPDX-License-Identifier: 0BSD
+
+{:source {:github "dadav/helm-schema"},
+ :asset "helm-schema_{version}_Linux_x86_64.tar.gz",
+ :tag-prefix "",
+ :checksum "checksums.txt"}

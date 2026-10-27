@@ -1,0 +1,8 @@
+;; SPDX-FileCopyrightText: The breto Authors
+;; SPDX-License-Identifier: 0BSD
+
+{:source {:github "squidowl/halloy"},
+ :asset "halloy-{version}-x86_64-linux.tar.gz",
+ :tag-prefix "",
+ :strip 1,
+ :bins {"halloy" "bin/halloy"}}

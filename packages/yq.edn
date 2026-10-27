@@ -1,0 +1,6 @@
+;; SPDX-FileCopyrightText: The breto Authors
+;; SPDX-License-Identifier: 0BSD
+
+{:source {:github "mikefarah/yq"},
+ :asset "yq_linux_amd64.tar.gz",
+ :bins {"yq" "yq_linux_amd64"}}

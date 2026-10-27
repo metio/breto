@@ -1,0 +1,8 @@
+;; SPDX-FileCopyrightText: The breto Authors
+;; SPDX-License-Identifier: 0BSD
+
+{:source {:github "metio/ilo"},
+ :asset "ilo-{version}-linux.tar.gz",
+ :tag-prefix "",
+ :checksum "ilo-{version}-linux.tar.gz.sha512",
+ :strip 1}

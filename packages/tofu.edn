@@ -1,0 +1,6 @@
+;; SPDX-FileCopyrightText: The breto Authors
+;; SPDX-License-Identifier: 0BSD
+
+{:source {:github "opentofu/opentofu"},
+ :asset "tofu_{version}_linux_amd64.zip",
+ :checksum "tofu_{version}_SHA256SUMS"}

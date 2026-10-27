@@ -1,0 +1,6 @@
+;; SPDX-FileCopyrightText: The breto Authors
+;; SPDX-License-Identifier: 0BSD
+
+{:source {:github "gitleaks/gitleaks"},
+ :asset "gitleaks_{version}_linux_x64.tar.gz",
+ :checksum "gitleaks_{version}_checksums.txt"}

@@ -1,0 +1,9 @@
+# SPDX-FileCopyrightText: The breto Authors
+# SPDX-License-Identifier: 0BSD
+
+[default.extend-words]
+edn = "edn"
+juxt = "juxt"
+
+[files]
+extend-exclude = ["flake.lock"]

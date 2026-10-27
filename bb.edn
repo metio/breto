@@ -1,0 +1,16 @@
+;; SPDX-FileCopyrightText: The breto Authors
+;; SPDX-License-Identifier: 0BSD
+
+{:paths ["src"]
+ :tasks
+ {breto {:doc "Runs the breto command line"
+         :requires ([breto.main :as main])
+         :task (apply main/-main *command-line-args*)}
+  test {:doc "Runs all unit tests"
+        :extra-paths ["test"]
+        :requires ([breto.test-runner :as runner])
+        :task (runner/run "test")}
+  convert {:doc "Converts install-latest-* shell wrappers into package definitions: bb convert SCRIPT-DIR OUT-DIR"
+           :extra-paths ["dev"]
+           :requires ([breto.convert :as convert])
+           :task (apply convert/-main *command-line-args*)}}}

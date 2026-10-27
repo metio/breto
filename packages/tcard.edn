@@ -1,0 +1,4 @@
+;; SPDX-FileCopyrightText: The breto Authors
+;; SPDX-License-Identifier: 0BSD
+
+{:source {:github "pimalaya/tcard"}, :asset "tcard.x86_64-linux.tgz"}

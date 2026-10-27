@@ -1,0 +1,9 @@
+;; SPDX-FileCopyrightText: The breto Authors
+;; SPDX-License-Identifier: 0BSD
+
+{:source {:github "astral-sh/uv"},
+ :asset "uv-x86_64-unknown-linux-gnu.tar.gz",
+ :tag-prefix "",
+ :checksum "uv-x86_64-unknown-linux-gnu.tar.gz.sha256",
+ :strip 1,
+ :bins {"uv" "uv", "uvx" "uvx"}}

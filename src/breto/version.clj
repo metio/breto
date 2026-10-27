@@ -1,0 +1,32 @@
+;; SPDX-FileCopyrightText: The breto Authors
+;; SPDX-License-Identifier: 0BSD
+
+(ns breto.version)
+
+(defn- tokens [v]
+  (map #(if (re-matches #"\d+" %) (bigint %) %)
+       (re-seq #"\d+|[^\d\W_]+" v)))
+
+(defn- compare-token [a b]
+  (cond
+    (and (number? a) (number? b)) (compare a b)
+    (number? a) 1
+    (number? b) -1
+    :else (compare a b)))
+
+(defn compare-versions
+  "Orders version strings by their runs of digits and letters, with numbers
+  compared numerically and ranked above words, so `1.10` follows `1.9` and
+  `2026.9` follows `2025.12`. A version that is a prefix of another sorts first."
+  [a b]
+  (loop [[x & xs :as as] (tokens a)
+         [y & ys :as bs] (tokens b)]
+    (cond
+      (and (empty? as) (empty? bs)) 0
+      (empty? as) -1
+      (empty? bs) 1
+      :else (let [c (compare-token x y)]
+              (if (zero? c) (recur xs ys) c)))))
+
+(defn older? [a b]
+  (neg? (compare-versions a b)))

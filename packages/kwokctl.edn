@@ -1,0 +1,4 @@
+;; SPDX-FileCopyrightText: The breto Authors
+;; SPDX-License-Identifier: 0BSD
+
+{:source {:github "kubernetes-sigs/kwok"}, :asset "kwokctl-linux-amd64"}

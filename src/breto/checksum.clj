@@ -1,0 +1,61 @@
+;; SPDX-FileCopyrightText: The breto Authors
+;; SPDX-License-Identifier: 0BSD
+
+(ns breto.checksum
+  (:require [babashka.fs :as fs]
+            [clojure.java.io :as io]
+            [clojure.string :as str])
+  (:import (java.security MessageDigest)))
+
+(def ^:private algorithm-by-hex-length
+  {32 "MD5" 40 "SHA-1" 64 "SHA-256" 128 "SHA-512"})
+
+(defn digest
+  "Hex digest of `file` using a java.security algorithm name such as \"SHA-256\"."
+  [algorithm file]
+  (let [md (MessageDigest/getInstance algorithm)
+        buffer (byte-array 65536)]
+    (with-open [in (io/input-stream (fs/file file))]
+      (loop []
+        (let [n (.read in buffer)]
+          (when (pos? n)
+            (.update md buffer 0 n)
+            (recur)))))
+    (apply str (map #(format "%02x" (bit-and % 0xff)) (.digest md)))))
+
+(defn- hex? [s]
+  (and (contains? algorithm-by-hex-length (count s))
+       (boolean (re-matches #"[0-9a-fA-F]+" s))))
+
+(defn- listed-name [s]
+  (-> s (str/replace #"^\*" "") fs/file-name str))
+
+(defn expected
+  "The hash for `asset` in a checksum file. Accepts `sha256sum`-style listings
+  and single-entry files, whose one hash is taken whatever name it lists or
+  whether it lists one at all."
+  [text asset]
+  (let [lines (->> (str/split-lines text)
+                   (map str/trim)
+                   (remove str/blank?)
+                   (map #(str/split % #"\s+")))]
+    (or (some (fn [[h & more]]
+                (when (and (hex? h) (seq more) (= asset (listed-name (last more))))
+                  (str/lower-case h)))
+              lines)
+        (when-let [[[h]] (seq lines)]
+          (when (and (= 1 (count lines)) (hex? h))
+            (str/lower-case h))))))
+
+(defn verify!
+  "Throws unless `file` hashes to the hex string `want`. The algorithm follows
+  from the length of `want`."
+  [file asset want]
+  (let [want (str/lower-case want)
+        algorithm (algorithm-by-hex-length (count want))]
+    (when-not algorithm
+      (throw (ex-info (str "unrecognised checksum for " asset ": " want) {:asset asset})))
+    (let [have (digest algorithm file)]
+      (when-not (= want have)
+        (throw (ex-info (str "checksum mismatch for " asset ": expected " want ", got " have)
+                        {:asset asset :expected want :actual have}))))))

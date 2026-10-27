@@ -1,0 +1,7 @@
+;; SPDX-FileCopyrightText: The breto Authors
+;; SPDX-License-Identifier: 0BSD
+
+{:source {:github "grafana/loki"},
+ :asset "logcli-linux-amd64.zip",
+ :checksum "SHA256SUMS",
+ :bins {"logcli" "logcli-linux-amd64"}}

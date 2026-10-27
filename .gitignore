@@ -1,0 +1,8 @@
+# SPDX-FileCopyrightText: The breto Authors
+# SPDX-License-Identifier: 0BSD
+
+.idea/
+.clj-kondo/
+.lsp/
+.cpcache/
+.claude/

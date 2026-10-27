@@ -1,0 +1,6 @@
+;; SPDX-FileCopyrightText: The breto Authors
+;; SPDX-License-Identifier: 0BSD
+
+{:source {:github "open-policy-agent/opa"},
+ :asset "opa_linux_amd64_static",
+ :checksum "opa_linux_amd64_static.sha256"}

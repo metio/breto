@@ -1,0 +1,7 @@
+;; SPDX-FileCopyrightText: The breto Authors
+;; SPDX-License-Identifier: 0BSD
+
+{:source {:github "metio/redclock"},
+ :asset "redclock-x86_64-unknown-linux-gnu.tar.gz",
+ :tag-prefix "",
+ :checksum "SHA256SUMS"}

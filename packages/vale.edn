@@ -1,0 +1,6 @@
+;; SPDX-FileCopyrightText: The breto Authors
+;; SPDX-License-Identifier: 0BSD
+
+{:source {:github "errata-ai/vale"},
+ :asset "vale_{version}_Linux_64-bit.tar.gz",
+ :checksum "vale_{version}_checksums.txt"}

@@ -1,0 +1,7 @@
+;; SPDX-FileCopyrightText: The breto Authors
+;; SPDX-License-Identifier: 0BSD
+
+{:source {:github "owenthereal/upterm"},
+ :asset "upterm_linux_amd64.tar.gz",
+ :tag-prefix "",
+ :checksum "checksums.txt"}

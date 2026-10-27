@@ -1,0 +1,7 @@
+;; SPDX-FileCopyrightText: The breto Authors
+;; SPDX-License-Identifier: 0BSD
+
+{:source {:github "charmbracelet/gum"},
+ :asset "gum_{version}_Linux_x86_64.tar.gz",
+ :checksum "checksums.txt",
+ :strip 1}
