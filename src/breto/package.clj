@@ -61,7 +61,10 @@
     (conj ":bins must map link names to paths")
 
     (and (= :binary layout) (empty? bins))
-    (conj ":bins must name at least one binary for the :binary layout")))
+    (conj ":bins must name at least one binary for the :binary layout")
+
+    (not (and (sequential? (:skip pkg [])) (every? string? (:skip pkg []))))
+    (conj ":skip must be a vector of version strings")))
 
 (defn- complete
   "Fills in defaults and validates one flat definition."

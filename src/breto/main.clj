@@ -191,7 +191,7 @@ Every failure is explained with what to do; --debug adds each request and stack 
                        (progress {:type :stage :stage :resolve})
                        (let [active (current cfg name)
                              latest (:version (install/with-stage :resolve {:package name}
-                                                #(source/latest (registry/lookup reg name) http/io)))]
+                                                #(source/newest (registry/lookup reg name) http/io)))]
                          {:package name :version latest :from active
                           :status (if (= latest active) :current :outdated)})))
                     progress))))

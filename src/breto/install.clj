@@ -12,11 +12,12 @@
             [clojure.string :as str]))
 
 (defn resolve-release
-  "The tag and version to install: the requested `version`, or the latest one."
+  "The tag and version to install: the requested `version`, or the newest one
+  `:skip` does not name."
   [pkg io version]
   (if version
     {:tag (package/tag-of-version (package/at pkg version) version) :version version}
-    (source/latest pkg io)))
+    (source/newest pkg io)))
 
 (defn- github-asset? [pkg artifact]
   (when-let [repo (get-in pkg [:source :github])]

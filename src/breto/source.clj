@@ -5,6 +5,7 @@
   (:require [breto.github :as github]
             [breto.package :as package]
             [breto.template :as template]
+            [breto.version :as version]
             [cheshire.core :as json]
             [clojure.string :as str])
   (:import (java.net URLEncoder)))
@@ -27,10 +28,12 @@
                       {:breto/problem :rolling-no-match :package name :repo (:github source) :tag tag :asset asset})))
     {:tag tag :version (:version (last (sort-by :created builds)))}))
 
-(defn- gitlab-latest-url [project]
+(defn- gitlab-api [project suffix]
   (let [[host path] (str/split project #"/" 2)]
-    (str "https://" host "/api/v4/projects/" (URLEncoder/encode path "UTF-8")
-         "/releases/permalink/latest")))
+    (str "https://" host "/api/v4/projects/" (URLEncoder/encode path "UTF-8") suffix)))
+
+(defn- gitlab-latest-url [project]
+  (gitlab-api project "/releases/permalink/latest"))
 
 (defn latest
   "The tag and version of the newest release of `pkg`."
@@ -45,3 +48,37 @@
               (tagged pkg (or (get (json/parse-string (get-text url {})) "tag_name")
                               (throw (ex-info (str "no tag_name in " url) {:breto/problem :no-release :url url})))))
     :text (tagged pkg (str/trim (get-text (:text source) {})))))
+
+(defn- release-tags
+  "Tags of the published, non-prerelease releases of `pkg`, or nil for a
+  source without a release listing."
+  [{:keys [source] :as pkg} {:keys [get-text]}]
+  (case (package/source-kind pkg)
+    :github (->> (json/parse-string (get-text (str "https://api.github.com/repos/" (:github source)
+                                                    "/releases?per_page=100")
+                                               (github/api-headers))
+                                    true)
+                 (remove #(or (:draft %) (:prerelease %)))
+                 (map :tag_name))
+    :gitlab (->> (json/parse-string (get-text (gitlab-api (:gitlab source) "/releases?per_page=100") {}) true)
+                 (remove :upcoming_release)
+                 (map :tag_name))
+    nil))
+
+(defn newest
+  "The tag and version of the newest release of `pkg` that its `:skip` list
+  does not name. The releases are only listed when the latest one is skipped."
+  [pkg io]
+  (let [found (latest pkg io)
+        skip (set (:skip pkg))]
+    (if-not (skip (:version found))
+      found
+      (or (->> (release-tags pkg io)
+               (filter #(str/starts-with? % (:tag-prefix pkg)))
+               (map #(tagged pkg %))
+               (remove (comp skip :version))
+               (sort #(version/compare-versions (:version %2) (:version %1)))
+               first)
+          (throw (ex-info (str (:name pkg) ": every release found is listed in :skip")
+                          {:breto/problem :all-skipped :package (:name pkg) :latest (:version found)
+                           :skip (vec (:skip pkg)) :source (:source pkg)}))))))

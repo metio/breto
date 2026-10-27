@@ -156,3 +156,7 @@
   (is (= {"bin/tool-linux" "a-tool" "bin/helper" "helper"}
          (package/stored-files {:name "tool"} {:bins {"z-tool" "bin/tool-linux" "a-tool" "bin/tool-linux"
                                                       "helper" "bin/helper"}}))))
+
+(deftest skip-lists-must-hold-version-strings
+  (is (thrown? clojure.lang.ExceptionInfo
+               (package/normalize {:name "x" :source {:github "a/x"} :asset "x" :skip "0.5.1"}))))

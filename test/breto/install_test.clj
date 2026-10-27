@@ -9,6 +9,7 @@
             [breto.package :as package]
             [breto.store :as store]
             [cheshire.core :as json]
+            [clojure.string :as str]
             [clojure.test :refer [deftest is testing use-fixtures]]))
 
 (def ^:dynamic *root* nil)
@@ -279,3 +280,26 @@
                                       ((:download! served) url dest)))]
     (install/install! cfg io tool {})
     (is (= ["1.0.0" "current"] (sort (map (comp str fs/file-name) (fs/list-dir (fs/path (:store cfg) "tool"))))))))
+
+(deftest skipped-latest-releases-fall-back-to-the-newest-other-one
+  (let [pkg (assoc raw-tool :skip ["0.33.0"])
+        io {:get-text (fn [url _]
+                        (case url
+                          "https://github.com/kubernetes-sigs/kind/releases/latest" "{\"tag_name\":\"v0.33.0\"}"
+                          "https://api.github.com/repos/kubernetes-sigs/kind/releases?per_page=100"
+                          (str "[{\"tag_name\":\"v0.33.0\"},{\"tag_name\":\"v0.34.0-rc.1\",\"prerelease\":true},"
+                               "{\"tag_name\":\"v0.31.0\"},{\"tag_name\":\"v0.32.1\"},{\"tag_name\":\"docs-2026\"}]")))}]
+    (is (= {:tag "v0.32.1" :version "0.32.1"} (install/resolve-release pkg io nil)))
+    (is (= {:tag "v0.33.0" :version "0.33.0"} (install/resolve-release pkg io "0.33.0")))))
+
+(deftest unskipped-latest-releases-need-no-listing
+  (let [io {:get-text (fn [url _]
+                        (is (= "https://github.com/kubernetes-sigs/kind/releases/latest" url))
+                        "{\"tag_name\":\"v0.33.0\"}")}]
+    (is (= "0.33.0" (:version (install/resolve-release (assoc raw-tool :skip ["0.32.0"]) io nil))))))
+
+(deftest skipping-every-release-is-explained
+  (let [io {:get-text (fn [url _]
+                        (if (str/includes? url "api.github.com") "[{\"tag_name\":\"v0.33.0\"}]" "{\"tag_name\":\"v0.33.0\"}"))}]
+    (is (= :all-skipped (try (install/resolve-release (assoc raw-tool :skip ["0.33.0"]) io nil)
+                             (catch clojure.lang.ExceptionInfo e (:breto/problem (ex-data e))))))))
