@@ -178,3 +178,11 @@
   (let [[run] (report/load-runs)]
     (is (str/starts-with? (report/heading run) "breto update finished "))
     (is (nil? (:running run)))))
+
+(deftest running-updates-record-their-total
+  (define! "kind" {:source {:github "kubernetes-sigs/kind"} :asset "kind"})
+  (let [recorder (var-get #'main/recorder)
+        record (recorder "update")]
+    (record {:type :start :index 1 :total 2 :package "kind"})
+    (record {:type :finish :result {:package "kind" :status :current}})
+    (is (str/includes? (report/heading (first (report/load-runs))) "1 of 2 done"))))

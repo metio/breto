@@ -143,12 +143,15 @@ Every failure is explained with what to do; --debug adds each request and stack 
   "A progress callback that saves the results of `command` so far after every
   package, so breto report shows a run that is still going."
   [command]
-  (let [results (atom [])]
-    (fn [{:keys [type total result]}]
-      (when (= :finish type)
-        (let [done (swap! results conj result)]
-          (try (report/save! {:command command :results done :running true :total total})
-               (catch Exception _ nil)))))))
+  (let [results (atom [])
+        total (atom nil)]
+    (fn [{:keys [type result] :as event}]
+      (case type
+        :start (reset! total (:total event))
+        :finish (let [done (swap! results conj result)]
+                  (try (report/save! {:command command :results done :running true :total @total})
+                       (catch Exception _ nil)))
+        nil))))
 
 (defn- tracker
   "The progress callback for `command`: the live display and the recorder."
