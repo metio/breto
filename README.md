@@ -32,6 +32,7 @@ breto reads `$XDG_CONFIG_HOME/breto/config.edn` (`~/.config/breto/config.edn` by
  :pins {"helm" "3.19.0"}
  :keep 3
  :prune true
+ :delay 300
  :store "~/.local/share/breto/installations"
  :bin-dir "~/.local/bin"}
 ```
@@ -42,6 +43,7 @@ breto reads `$XDG_CONFIG_HOME/breto/config.edn` (`~/.config/breto/config.edn` by
 | `:packages` | What `update` and `outdated` act on when no package is named. | none |
 | `:pins` | Versions `update` installs instead of the latest. | none |
 | `:keep` | Versions per package that `gc` keeps. | `3` |
+| `:delay` | Seconds `install`, `update` and `outdated` wait between packages, to stay under GitHub's rate limits; `--delay N` overrides it. | `0` |
 | `:prune` | Whether `gc` without arguments also uninstalls every package `:packages` does not list. | `false` |
 | `:store` | Where versions are unpacked, as `<store>/<package>/<version>`. | `$XDG_DATA_HOME/breto/installations` |
 | `:bin-dir` | Where binaries are linked. | `~/.local/bin` |

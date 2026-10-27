@@ -34,7 +34,7 @@
     (fs/create-sym-link (path "bin" bin) (path "store" name "current" bin)))
   (fs/create-sym-link (path "store" name "current") version))
 
-(defn- run! [config & args]
+(defn- breto! [config & args]
   (spit (path "config.edn") (pr-str (merge {:store (path "store") :bin-dir (path "bin")
                                             :registries [(path "packages")]}
                                            config)))
@@ -46,7 +46,7 @@
   (define! "tool" {:source {:github "acme/tool"} :asset "tool"})
   (install! "tool" "1.0.0" ["tool"])
   (spit (path "bin" "unrelated") "keep")
-  (let [{:keys [code out]} (run! {:packages []} "uninstall" "tool")]
+  (let [{:keys [code out]} (breto! {:packages []} "uninstall" "tool")]
     (is (= 0 code))
     (is (str/includes? out "[OK] tool removed with 1 links"))
     (is (not (fs/exists? (path "store" "tool"))))
@@ -59,22 +59,22 @@
   (install! "ed" "1.0.0" ["ed"])
   (fs/create-dirs (path "store" "ed" "1.0.0" "runtime"))
   (fs/create-sym-link (path "runtime") (path "store" "ed" "current" "runtime"))
-  (is (= 0 (:code (run! {:packages []} "uninstall" "ed"))))
+  (is (= 0 (:code (breto! {:packages []} "uninstall" "ed"))))
   (is (not (fs/exists? (path "runtime") {:nofollow-links true}))))
 
 (deftest uninstall-refuses-configured-packages-without-force
   (define! "tool" {:source {:github "acme/tool"} :asset "tool"})
   (install! "tool" "1.0.0" ["tool"])
-  (let [{:keys [code out]} (run! {:packages ["tool"]} "uninstall" "tool")]
+  (let [{:keys [code out]} (breto! {:packages ["tool"]} "uninstall" "tool")]
     (is (= 1 code))
     (is (str/includes? out "next breto update installs it again"))
     (is (fs/exists? (path "store" "tool"))))
-  (is (= 0 (:code (run! {:packages ["tool"]} "uninstall" "tool" "--force"))))
+  (is (= 0 (:code (breto! {:packages ["tool"]} "uninstall" "tool" "--force"))))
   (is (not (fs/exists? (path "store" "tool")))))
 
 (deftest uninstall-works-without-a-definition
   (install! "gone" "2.0" ["gone"])
-  (is (= 0 (:code (run! {:packages []} "uninstall" "gone"))))
+  (is (= 0 (:code (breto! {:packages []} "uninstall" "gone"))))
   (is (not (fs/exists? (path "store" "gone")))))
 
 (deftest gc-prunes-unconfigured-packages-only-when-enabled
@@ -82,12 +82,12 @@
   (define! "dropped" {:source {:github "acme/dropped"} :asset "dropped"})
   (install! "kept" "1.0" ["kept"])
   (install! "dropped" "1.0" ["dropped"])
-  (run! {:packages ["kept"]} "gc")
+  (breto! {:packages ["kept"]} "gc")
   (is (fs/exists? (path "store" "dropped")))
-  (let [{:keys [out]} (run! {:packages ["kept"] :prune true} "gc" "--dry-run")]
+  (let [{:keys [out]} (breto! {:packages ["kept"] :prune true} "gc" "--dry-run")]
     (is (str/includes? out "dropped would be removed"))
     (is (fs/exists? (path "store" "dropped"))))
-  (let [{:keys [code out]} (run! {:packages ["kept"] :prune true} "gc")]
+  (let [{:keys [code out]} (breto! {:packages ["kept"] :prune true} "gc")]
     (is (= 0 code))
     (is (str/includes? out "breto gc: 1 removed"))
     (is (= ["kept"] (store/installed-packages {:store (path "store")})))
@@ -97,7 +97,7 @@
 (deftest prune-keeps-a-package-whose-links-a-configured-package-owns
   (define! "babashka" {:source {:github "babashka/babashka"} :asset "bb" :bins {"bb" "bb"}})
   (install! "old-bb" "1.0" ["bb"])
-  (let [{:keys [code out]} (run! {:packages ["babashka"] :prune true} "gc")]
+  (let [{:keys [code out]} (breto! {:packages ["babashka"] :prune true} "gc")]
     (is (= 1 code))
     (is (str/includes? out "belongs to babashka"))
     (is (fs/exists? (path "store" "old-bb")))
@@ -109,3 +109,13 @@
   (report/save! {:command "update" :results [{:package "a" :status :current}]})
   (is (= ["gc" "update"] (map :command (report/load-runs))))
   (is (= [{:package "a" :status :current}] (:results (last (report/load-runs))))))
+
+(deftest paced-calls-wait-between-packages-but-not-before-the-first
+  (let [slept (atom [])
+        f (main/paced 300 #(swap! slept conj %) identity)]
+    (is (= ["a" "b" "c"] (mapv f ["a" "b" "c"])))
+    (is (= [300 300] @slept)))
+  (let [slept (atom [])
+        f (main/paced 0 #(swap! slept conj %) identity)]
+    (run! f ["a" "b"])
+    (is (empty? @slept))))

@@ -34,6 +34,7 @@ Commands:
   report                    the reports of the last run of each command
   doctor                    check the environment, configuration and store
 
+install, update and outdated wait :delay seconds between packages; --delay N overrides it.
 gc and uninstall accept --dry-run. uninstall refuses configured packages unless --force,
 since the next update would install them again.
 install and update refuse downloads they cannot verify unless --no-verify is given.
@@ -67,6 +68,25 @@ Every failure is explained with what to do; --debug adds each request and stack 
               (catch Exception e
                 (failure (first (split-spec name)) (second (split-spec name)) e))))))
 
+(defn paced
+  "Wraps `f` so that every call but the first waits `seconds` through
+  `sleep!` first, spacing out the requests of consecutive packages."
+  [seconds sleep! f]
+  (let [first? (atom true)]
+    (fn [x]
+      (when (and (not (compare-and-set! first? true false)) (pos? seconds))
+        (sleep! seconds))
+      (f x))))
+
+(defn- pause [cfg opts]
+  (let [seconds (or (:delay opts) (:delay cfg) 0)]
+    (fn [f]
+      (paced seconds
+             (fn [s]
+               (binding [*out* *err*] (println (str "waiting " s "s before the next package")))
+               (Thread/sleep (* 1000 (long s))))
+             f))))
+
 (defn- finish!
   "Prints and saves the report for `command`, returning the exit code."
   [command results]
@@ -92,28 +112,31 @@ Every failure is explained with what to do; --debug adds each request and stack 
 (defn- cmd-install [cfg reg args opts]
   (finish! "install"
            (batch args
-                  (fn [spec]
+                  ((pause cfg opts)
+                   (fn [spec]
                     (let [[name version] (split-spec spec)]
                       (installed-result name (install/install! cfg http/io (registry/lookup reg name)
-                                                               {:version version :verify? (:verify opts true)})))))))
+                                                               {:version version :verify? (:verify opts true)}))))))))
 
 (defn- cmd-update [cfg reg args opts]
   (finish! "update"
            (batch (targets cfg args)
-                  (fn [name]
+                  ((pause cfg opts)
+                   (fn [name]
                     (installed-result name (install/install! cfg http/io (registry/lookup reg name)
                                                              {:version (get-in cfg [:pins name])
-                                                              :verify? (:verify opts true)}))))))
+                                                              :verify? (:verify opts true)})))))))
 
-(defn- cmd-outdated [cfg reg args]
+(defn- cmd-outdated [cfg reg args opts]
   (finish! "outdated"
            (batch (targets cfg args)
-                  (fn [name]
+                  ((pause cfg opts)
+                   (fn [name]
                     (let [active (current cfg name)
                           latest (:version (install/with-stage :resolve {:package name}
                                              #(source/latest (registry/lookup reg name) http/io)))]
                       {:package name :version latest :from active
-                       :status (if (= latest active) :current :outdated)})))))
+                       :status (if (= latest active) :current :outdated)}))))))
 
 (defn- cmd-use [cfg reg [name version]]
   (when-not (and name version)
@@ -201,7 +224,7 @@ Every failure is explained with what to do; --debug adds each request and stack 
 (defn run
   "Runs the command line and returns the process exit code."
   [args]
-  (let [{:keys [args opts]} (cli/parse-args args {:coerce {:keep :long :debug :boolean :verify :boolean :force :boolean :dry-run :boolean}
+  (let [{:keys [args opts]} (cli/parse-args args {:coerce {:keep :long :delay :long :debug :boolean :verify :boolean :force :boolean :dry-run :boolean}
                                                     :alias {:d :debug}})
         [command & more] args
         config-path (or (:config opts) (config/default-path))]
@@ -215,7 +238,7 @@ Every failure is explained with what to do; --debug adds each request and stack 
               "install" (cmd-install cfg reg more opts)
               "use" (cmd-use cfg reg more)
               "update" (cmd-update cfg reg more opts)
-              "outdated" (cmd-outdated cfg reg more)
+              "outdated" (cmd-outdated cfg reg more opts)
               "gc" (cmd-gc cfg reg more opts)
               "uninstall" (cmd-uninstall cfg reg more opts)
               "info" (cmd-info cfg reg more)
