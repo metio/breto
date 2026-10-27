@@ -19,7 +19,10 @@
     {:tag (package/tag-of-version (package/at pkg version) version) :version version}
     (source/newest pkg io)))
 
-(defn- github-asset? [pkg artifact]
+(defn github-asset?
+  "Whether `artifact` is an asset of a GitHub release of `pkg`, so the
+  GitHub API knows its digest."
+  [pkg artifact]
   (when-let [repo (get-in pkg [:source :github])]
     (str/starts-with? (:url artifact) (str "https://github.com/" repo "/releases/download/"))))
 

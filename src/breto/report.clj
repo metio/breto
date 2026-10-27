@@ -22,14 +22,14 @@
 
 (def ^:private status-label
   {:installed "installed" :current "up to date" :outdated "outdated"
-   :removed "removed" :would-remove "to remove" :failed "failed"})
+   :removed "removed" :would-remove "to remove" :checked "checked" :failed "failed"})
 
 (defn summary-line [command results]
   (let [counts (frequencies (map :status results))]
     (str "breto " command ": "
          (if (empty? results)
            "nothing to do"
-           (str/join ", " (for [status [:current :installed :outdated :removed :would-remove :failed]
+           (str/join ", " (for [status [:current :installed :checked :outdated :removed :would-remove :failed]
                                 :let [n (get counts status 0)]
                                 :when (pos? n)]
                             (str n " " (status-label status))))))))
@@ -45,8 +45,13 @@
                       (when (seq advice) ["  What to do:"])
                       (map #(str "  - " %) advice)))))
 
-(defn- line [{:keys [package status version from links unverified]}]
+(def ^:private verification
+  {:digest "verifiable by its GitHub digest" :checksum "verifiable by its checksum file"
+   :none "installs unverified, as its definition says"})
+
+(defn- line [{:keys [package status version from links unverified verified-by]}]
   (case status
+    :checked (str "[OK] " package " " version " " (verification verified-by))
     :installed (str "[OK] " package " " version " installed" (when unverified " without verification"))
     :removed (str "[OK] " package " removed" (when (seq links) (str " with " (count links) " links")))
     :would-remove (str package " would be removed" (when (seq links) (str " with links " (str/join ", " links))))

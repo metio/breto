@@ -56,6 +56,20 @@
                       {:breto/problem :network :url url :exception (.getName (class e))}
                       e)))))
 
+(defn exists?
+  "Whether `url` answers a HEAD request with success, after redirects."
+  [url]
+  (let [{:keys [status headers]} (try
+                                   (http/head url {:throw false})
+                                   (catch java.io.IOException e
+                                     (throw (ex-info (str "HEAD " url " failed: " (or (ex-message e) (.getName (class e))))
+                                                     {:breto/problem :network :url url :exception (.getName (class e))}
+                                                     e))))]
+    (log/debug "HEAD" url "->" status)
+    (let [t (now)]
+      (swap! not-before assoc (.getHost (java.net.URI. url)) (+ t (rate-wait headers t))))
+    (<= 200 status 299)))
+
 (defn get-text [url headers]
   (:body (ok! url (request url {:headers headers}))))
 
@@ -80,4 +94,5 @@
   "The network operations the installer needs, as a map so tests can swap them."
   {:get-text get-text
    :download! download!
+   :exists? exists?
    :upstream-wait upstream-wait})

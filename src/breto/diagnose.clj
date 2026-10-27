@@ -84,6 +84,25 @@
   "A map of :summary, :facts and :advice for one failure."
   (fn [data _] (:breto/problem data)))
 
+(defn- missing-asset
+  "The explanation for a release without the expected asset, given the names
+  of the assets it has."
+  [{:keys [asset tag version repo names fact]}]
+  (let [near (closest asset names 3)]
+    {:summary (str "The release " tag " has no asset named " asset ".")
+     :facts (cond-> [fact]
+              (seq near) (conj (str "Closest assets in " tag ": " (str/join ", " near))))
+     :advice (cond-> []
+               (seq near)
+               (conj (str "If upstream renamed the asset, set :asset to "
+                          (pr-str (as-template (first near) {:tag tag :version version})) "."))
+               (and (seq names) (empty? near))
+               (conj (str "None of its " (count names) " assets looks similar; upstream may have stopped building for this platform."
+                          " :skip [" (pr-str version) "] installs the newest release before it instead."))
+               true
+               (conj "If the new name only applies from this version on, keep the old :asset for older versions in a :history entry."
+                     (str "Compare against the release page: https://github.com/" (or repo "OWNER/REPO") "/releases/tag/" tag)))}))
+
 (defn- http-explanation [{:keys [status url stage asset tag version] :as data} probes]
   (let [repo (github-repo data)]
     (cond
@@ -124,18 +143,9 @@
                     "Install a specific version with breto install PKG@VERSION, or pin one under :pins."]}))
 
       (and (= :download stage) (= 404 status))
-      (let [names (when repo (map :name (probe probes :assets repo tag)))
-            near (closest asset names 3)]
-        {:summary (str "The release " tag " has no asset named " asset ".")
-         :facts (cond-> [(str "GET " url " returned 404")]
-                  (seq near) (conj (str "Closest assets in " tag ": " (str/join ", " near))))
-         :advice (cond-> []
-                   (seq near)
-                   (conj (str "If upstream renamed the asset, set :asset to "
-                              (pr-str (as-template (first near) {:tag tag :version version})) "."))
-                   true
-                   (conj "If the new name only applies from this version on, keep the old :asset for older versions in a :history entry."
-                         (str "Compare against the release page: https://github.com/" (or repo "OWNER/REPO") "/releases/tag/" tag)))})
+      (missing-asset {:asset asset :tag tag :version version :repo repo
+                      :names (when repo (map :name (probe probes :assets repo tag)))
+                      :fact (str "GET " url " returned 404")})
 
       (and (= :verify stage) (= 404 status))
       (let [assets (when repo (probe probes :assets repo tag))
@@ -296,6 +306,21 @@
    :advice [(str "Run " (str/join " " command) " yourself; it must print the token on its first line and exit with 0.")
             "Under systemd the command runs without your interactive session; a password manager may need its agent or an unlocked store."
             "Remove :token-command to fall back to 60 unauthenticated requests an hour."]})
+
+(defmethod explain :asset-missing [{:keys [asset tag version repo assets]} _]
+  (missing-asset {:asset asset :tag tag :version version :repo repo :names assets
+                  :fact (str "The release lists " (count assets) " assets, none named " asset)}))
+
+(defmethod explain :unverifiable [{:keys [package version asset tag assets suggested-before]} _]
+  (let [sums (filter #(re-find checksum-like %) assets)]
+    {:summary (str "Nothing can verify " asset " of " package " " version ", so breto update refuses to install it.")
+     :facts (cond-> ["GitHub records no digest for it, and the definition names no :checksum."]
+              (seq sums) (conj (str "Checksum-like assets in " tag ": " (str/join ", " sums))))
+     :advice (cond-> []
+               (seq sums) (conj (str "Set :checksum to " (pr-str (as-template (first sums) {:tag tag :version version})) "."))
+               true (conj (str "If upstream publishes nothing to verify against, add {:before " (pr-str suggested-before)
+                               " :verify false} to :history; newer releases stay verified.")
+                          "GitHub only records digests for assets uploaded since mid-2025, so a new release usually fixes this."))}))
 
 (defmethod explain :default [_ _]
   {:summary "breto failed in a way it has no explanation for."

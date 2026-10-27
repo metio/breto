@@ -57,6 +57,9 @@
                    body body
                    :else (throw (ex-info (str "GET " url " returned 404")
                                          {:breto/problem :http-status :url url :status 404 :headers {}})))))
+   :exists? (fn [url]
+              (swap! requests conj url)
+              (or (contains? files url) (contains? texts url)))
    :upstream-wait (constantly 0)
    :github-token (constantly nil)})
 

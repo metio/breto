@@ -22,6 +22,8 @@ Commands:
   use PKG VERSION           activate an installed version
   update [PKG...]           install the latest (or pinned) version of the configured packages
   outdated [PKG...]         configured packages with a newer release
+  check [PKG...] [--all]    whether the latest release of each configured package (or every
+                            package with --all) exists and can be verified, without downloading
   gc [PKG...] [--keep N]    delete all but the N most recent versions, never the active one,
                             and what killed installs left behind;
                             with :prune true and no PKG, also uninstall unconfigured packages
@@ -43,6 +45,7 @@ Every failure is explained with what to do; --debug adds each request and stack 
    "use" commands/use-version
    "update" commands/update
    "outdated" commands/outdated
+   "check" commands/check
    "gc" commands/gc
    "uninstall" commands/uninstall
    "info" commands/info
@@ -91,7 +94,7 @@ Every failure is explained with what to do; --debug adds each request and stack 
     (f)))
 
 (def parse-spec
-  {:coerce {:keep :long :delay :long :debug :boolean :verify :boolean :force :boolean :dry-run :boolean}
+  {:coerce {:keep :long :delay :long :debug :boolean :verify :boolean :force :boolean :dry-run :boolean :all :boolean}
    :alias {:d :debug}})
 
 (defn run

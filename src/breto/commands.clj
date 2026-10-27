@@ -9,6 +9,7 @@
   (:refer-clojure :exclude [update])
   (:require [babashka.fs :as fs]
             [breto.batch :as batch]
+            [breto.check :as check]
             [breto.doctor :as doctor]
             [breto.install :as install]
             [breto.registry :as registry]
@@ -78,6 +79,21 @@
                                                                 #(source/newest (registry/lookup registry name) io)))]
                                          {:package name :version latest :from active
                                           :status (if (= latest active) :current :outdated)})))
+                                    progress))))
+
+(defn check
+  "Checks the configured packages, those named, or with --all every package of
+  the registries, against their latest release without downloading it."
+  [{:keys [registry opts io] :as ctx} args]
+  (let [progress (tracker ctx "check")
+        names (cond (seq args) args
+                    (:all opts) (sort (keys registry))
+                    :else (targets ctx args))
+        io (assoc io :progress progress)]
+    (batch/finish! "check"
+                   (batch/run-batch io names
+                                    ((pacer ctx progress (atom 0))
+                                     #(check/check-package io (registry/lookup registry %)))
                                     progress))))
 
 (defn list-installed [{:keys [config]} _]
