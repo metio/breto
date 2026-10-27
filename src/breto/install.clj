@@ -113,20 +113,21 @@
         installed? (not (store/installed? config (:name pkg) version (vals bin-paths)))]
     (when installed?
       (with-stage :place context #(fs/create-dirs package-dir))
-      (let [work (fs/create-temp-dir {:dir package-dir :prefix ".work-"})]
+      (let [work (fs/create-temp-dir {:dir package-dir :prefix store/work-prefix})
+            lock (store/hold! work)]
         (try
           (let [file (fetch! pkg io release artifact work verify? context)
                 unpacked (fs/path work "unpacked")
-                staging (fs/path package-dir (str ".staging-" version))]
+                staging (fs/path work "staged")]
             (staged io :unpack context
               #(archive/unpack! file (:archive artifact) (:asset artifact) unpacked (:strip pkg)))
             (staged io :place context
-              #(do (fs/delete-tree staging)
-                   (place! pkg artifact unpacked staging)
+              #(do (place! pkg artifact unpacked staging)
                    (fs/delete-tree (store/version-dir config (:name pkg) version))
                    (fs/move staging (store/version-dir config (:name pkg) version) {:atomic-move true}))))
           (finally
             (fs/delete-tree work)
+            (.close lock)
             (when (empty? (fs/list-dir package-dir))
               (fs/delete package-dir))))))
     (when activate?

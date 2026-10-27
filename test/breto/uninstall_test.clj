@@ -158,3 +158,14 @@
     (is (= "a" (f "a")))
     (is (= [60] @slept))
     (is (= 2 @calls))))
+
+(deftest gc-removes-what-killed-installs-left-behind
+  (define! "tool" {:source {:github "acme/tool"} :asset "tool"})
+  (install! "tool" "1.0.0" ["tool"])
+  (fs/create-dirs (path "store" "tool" ".work-killed"))
+  (.close (store/hold! (path "store" "tool" ".work-killed")))
+  (is (str/includes? (:out (breto! {:packages ["tool"]} "gc" "--dry-run")) "would remove"))
+  (is (fs/exists? (path "store" "tool" ".work-killed")))
+  (is (= 0 (:code (breto! {:packages ["tool"]} "gc"))))
+  (is (not (fs/exists? (path "store" "tool" ".work-killed"))))
+  (is (fs/exists? (path "store" "tool" "1.0.0" "tool"))))

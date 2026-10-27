@@ -55,9 +55,14 @@
     (run! report [{:type :start :index 1 :total 2 :package "kind"}
                   {:type :stage :stage :download}
                   {:type :bytes :done 10 :size 20}
-                  {:type :finish :status :installed}
+                  {:type :finish :status :installed :package "kind"}
                   {:type :start :index 2 :total 2 :package "helm"}
+                  {:type :finish :status :failed :package "helm" :stage :download
+                   :summary "The release has no asset named helm.tgz."}
                   {:type :wait :seconds 300 :left 300 :why ":delay"}
                   {:type :wait :seconds 300 :left 299 :why ":delay"}
                   {:type :end}])
-    (is (= "[1/2] kind\n[2/2] helm\nwaiting 300s for :delay\n" (str out)))))
+    (is (= (str "[1/2] kind\n[2/2] helm\n"
+                "[FAIL] helm (download): The release has no asset named helm.tgz. The report at the end says what to do.\n"
+                "waiting 300s for :delay\n")
+           (str out)))))

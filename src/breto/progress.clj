@@ -78,6 +78,13 @@
     (str "▕" (paint "32" (bar (/ finished (max 1 total)) 24)) "▏ "
          index "/" total " " tally "  " (paint "1" package) "  " activity)))
 
+(defn failure-line
+  "The line a failed package leaves in the output, or nil for any other event."
+  [{:keys [type status package stage summary]}]
+  (when (and (= :finish type) (= :failed status))
+    (str "[FAIL] " package (when stage (str " (" (name stage) ")")) (when summary (str ": " summary))
+         " The report at the end says what to do.")))
+
 (defn- visible-length [s]
   (count (str/replace s #"\u001b\[[0-9;]*m" "")))
 
@@ -88,7 +95,8 @@
 
 (defn terminal-reporter
   "Redraws one status line on `w` for every event, at most ten times a second
-  for download progress, and clears it when the batch ends."
+  for download progress, and clears it when the batch ends. A failed package
+  leaves a line above it."
   [^java.io.Writer w]
   (let [state (atom {})
         drawn (atom 0)
@@ -97,6 +105,8 @@
     (fn [{:keys [type] :as event}]
       (let [s (swap! state step event)
             now (System/currentTimeMillis)]
+        (when-let [line (failure-line event)]
+          (.write w (str "\r\u001b[K" (if color? (str "\u001b[31m" line "\u001b[0m") line) "\n")))
         (cond
           (= :end type) (do (.write w "\r\u001b[K") (.flush w))
           (or (not= :bytes type) (> now (+ @drawn 100)))
@@ -105,8 +115,8 @@
               (.flush w)))))))
 
 (defn plain-reporter
-  "Writes a line to `w` when a package starts and when a wait begins, for logs
-  such as the systemd journal."
+  "Writes a line to `w` when a package starts or fails and when a wait begins,
+  for logs such as the systemd journal."
   [^java.io.Writer w]
   (let [state (atom {})]
     (fn [{:keys [type] :as event}]
@@ -115,6 +125,7 @@
                    :start (str "[" index "/" total "] " package)
                    :wait (when (= (:left event) (:seconds event))
                            (str "waiting " (:seconds event) "s for " (:why event)))
+                   :finish (failure-line event)
                    nil)]
         (when line
           (.write w (str line "\n"))

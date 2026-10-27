@@ -28,7 +28,8 @@ Commands:
   use PKG VERSION           activate an installed version
   update [PKG...]           install the latest (or pinned) version of the configured packages
   outdated [PKG...]         configured packages with a newer release
-  gc [PKG...] [--keep N]    delete all but the N most recent versions, never the active one;
+  gc [PKG...] [--keep N]    delete all but the N most recent versions, never the active one,
+                            and what killed installs left behind;
                             with :prune true and no PKG, also uninstall unconfigured packages
   uninstall PKG...          delete a package and every link into it
   info PKG                  the resolved package definition
@@ -74,7 +75,9 @@ Every failure is explained with what to do; --debug adds each request and stack 
                          (let [result (try (f name)
                                            (catch Exception e
                                              (failure (first (split-spec name)) (second (split-spec name)) e)))]
-                           (progress {:type :finish :status (:status result)})
+                           (progress {:type :finish :status (:status result) :package (:package result)
+                                      :stage (get-in result [:diagnosis :stage])
+                                      :summary (get-in result [:diagnosis :summary])})
                            result))
                        names))]
      (progress {:type :end})
@@ -82,13 +85,15 @@ Every failure is explained with what to do; --debug adds each request and stack 
 
 (defn- tracked-io
   "The network operations, reporting stages and download progress to
-  `progress` and counting downloads in `downloads`."
-  [progress downloads]
+  `progress` and the most bytes any download of the package received to
+  `transferred`."
+  [progress transferred]
   (assoc http/io
          :progress progress
          :download! (fn [url dest]
-                      (swap! downloads inc)
-                      (http/download! url dest #(progress {:type :bytes :done %1 :size %2})))))
+                      (http/download! url dest (fn [done size]
+                                                 (swap! transferred max done)
+                                                 (progress {:type :bytes :done done :size size}))))))
 
 (defn paced
   "Wraps `f` so that each call first waits for the longer of the wait upstream
@@ -115,12 +120,13 @@ Every failure is explained with what to do; --debug adds each request and stack 
           (reset! owed (owed?)))))))
 
 (defn- pause
-  "Paces a batch so that :delay follows only packages that downloaded
-  something; a package found up to date costs one small lookup."
-  [cfg opts progress downloads]
+  "Paces a batch so that :delay follows only packages that received download
+  bytes; a package found up to date, or a download refused outright, costs one
+  small request."
+  [cfg opts progress transferred]
   (fn [f]
     (paced (or (:delay opts) (:delay cfg) 0)
-           #(pos? (first (reset-vals! downloads 0)))
+           #(pos? (first (reset-vals! transferred 0)))
            (:upstream-wait http/io)
            (fn [seconds why]
              (doseq [left (range seconds 0 -1)]
@@ -152,11 +158,11 @@ Every failure is explained with what to do; --debug adds each request and stack 
 
 (defn- cmd-install [cfg reg args opts]
   (let [progress (progress/reporter)
-        downloads (atom 0)
-        io (tracked-io progress downloads)]
+        transferred (atom 0)
+        io (tracked-io progress transferred)]
     (finish! "install"
              (batch args
-                    ((pause cfg opts progress downloads)
+                    ((pause cfg opts progress transferred)
                      (fn [spec]
                        (let [[name version] (split-spec spec)]
                          (installed-result name (install/install! cfg io (registry/lookup reg name)
@@ -165,11 +171,11 @@ Every failure is explained with what to do; --debug adds each request and stack 
 
 (defn- cmd-update [cfg reg args opts]
   (let [progress (progress/reporter)
-        downloads (atom 0)
-        io (tracked-io progress downloads)]
+        transferred (atom 0)
+        io (tracked-io progress transferred)]
     (finish! "update"
              (batch (targets cfg args)
-                    ((pause cfg opts progress downloads)
+                    ((pause cfg opts progress transferred)
                      (fn [name]
                        (installed-result name (install/install! cfg io (registry/lookup reg name)
                                                                 {:version (get-in cfg [:pins name])
@@ -234,6 +240,9 @@ Every failure is explained with what to do; --debug adds each request and stack 
         pruned (batch prune #(uninstall-result cfg reg % dry-run?))
         failures (for [name (if (seq args) args (remove (set prune) (store/installed-packages cfg)))
                        :let [r (try
+                                 (doseq [leftover (store/leftovers cfg name)]
+                                   (when-not dry-run? (fs/delete-tree leftover))
+                                   (println (str (if dry-run? "would remove " "[OK] removed ") leftover)))
                                  (doseq [version (store/gc-candidates (store/versions cfg name) (current cfg name) keep)]
                                    (when-not dry-run? (store/remove-version! cfg name version))
                                    (println (str (if dry-run? "would remove " "[OK] removed ") name " " version)))

@@ -72,7 +72,7 @@
         orphans (remove registry installed)
         leftovers (for [name installed
                         entry (fs/list-dir (store/package-dir config name))
-                        :when (re-find #"^\.(work|staging|unpack)-" (str (fs/file-name entry)))]
+                        :when (re-find #"^\.(work|staging)-" (str (fs/file-name entry)))]
                     (str entry))
         dangling (filter #(str/starts-with? (str (fs/read-link %)) (str store))
                          (dangling-links bin-dir))]
@@ -82,7 +82,7 @@
        (check :ok "Every link into the store resolves" bin-dir))
      (if (seq leftovers)
        (check :warn "Interrupted installs left work directories behind" (str/join ", " leftovers)
-              "They are safe to delete once no breto command is running.")
+              "breto gc removes the ones no running install holds.")
        (check :ok "No interrupted installs" store))
      (if (seq orphans)
        (check :warn "The store holds packages no registry defines" (str/join ", " orphans)

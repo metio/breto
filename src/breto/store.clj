@@ -3,7 +3,9 @@
 
 (ns breto.store
   (:require [babashka.fs :as fs]
-            [clojure.string :as str]))
+            [clojure.string :as str])
+  (:import (java.nio.channels FileChannel)
+           (java.nio.file OpenOption StandardOpenOption)))
 
 (def ^:private current-link "current")
 
@@ -114,3 +116,46 @@
   "Installed packages the configuration does not list."
   [installed configured]
   (remove (set configured) installed))
+
+(def work-prefix ".work-")
+
+(def ^:private lock-file ".lock")
+
+(defn- channel [dir]
+  (FileChannel/open (fs/path dir lock-file)
+                    (into-array OpenOption [StandardOpenOption/CREATE StandardOpenOption/WRITE])))
+
+(defn hold!
+  "Locks the work directory `dir` until the returned channel is closed. The
+  operating system releases the lock when the process dies, however it dies."
+  [dir]
+  (let [ch (channel dir)]
+    (.lock ch)
+    ch))
+
+(defn abandoned?
+  "Whether no running process holds the work directory `dir`. One without a
+  lock file counts only once it is an hour old, since its install may be
+  about to take the lock."
+  [dir]
+  (if (fs/exists? (fs/path dir lock-file))
+    (with-open [ch (channel dir)]
+      (try
+        (some? (.tryLock ch))
+        (catch IllegalStateException _ false)))
+    (< (.toMillis (fs/last-modified-time dir))
+       (- (System/currentTimeMillis) (* 60 60 1000)))))
+
+(defn leftovers
+  "Work directories in the store directory of `name` that no running install
+  holds, left behind by an install that was killed. Staging directories of
+  older breto versions sit beside them and carry no lock."
+  [config name]
+  (let [dir (package-dir config name)]
+    (if (fs/directory? dir)
+      (->> (fs/list-dir dir)
+           (filter #(re-find #"^\.(work|staging)-" (str (fs/file-name %))))
+           (filter abandoned?)
+           (map str)
+           sort)
+      [])))

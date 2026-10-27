@@ -61,7 +61,7 @@ Set `GITHUB_TOKEN` or `GH_TOKEN` to raise GitHub's API limit from 60 requests an
 | `breto use PKG VERSION` | Activates a version that is already installed. |
 | `breto update [PKG...]` | Installs and activates the latest, or pinned, version. |
 | `breto outdated [PKG...]` | Packages whose latest release is not the active version. |
-| `breto gc [PKG...] [--keep N]` | Deletes all but the N most recently installed versions. The active version is always kept. With `:prune true` and no package named, also uninstalls unconfigured packages. |
+| `breto gc [PKG...] [--keep N]` | Deletes all but the N most recently installed versions. The active version is always kept. Also removes what killed installs left behind. With `:prune true` and no package named, also uninstalls unconfigured packages. |
 | `breto uninstall PKG...` | Deletes a package with every link into it. |
 | `breto info PKG` | The package definition after defaults are applied. |
 | `breto report` | The report of the last run of each command. |
@@ -73,7 +73,7 @@ On a terminal, `install`, `update` and `outdated` show a status line with the po
 
 `install` and `update` refuse a download they cannot verify. `--no-verify` skips verification entirely. `gc` and `uninstall` take `--dry-run` to list what they would delete.
 
-Each package directory has a `current` symlink pointing at the active version, and the links in the bin directory resolve through it. Switching versions replaces `current` with an atomic rename, so a command never sees a half-switched package. A version is unpacked into a hidden staging directory and renamed into place once complete, so an interrupted install never looks installed.
+Each package directory has a `current` symlink pointing at the active version, and the links in the bin directory resolve through it. Switching versions replaces `current` with an atomic rename, so a command never sees a half-switched package. A version is unpacked into a hidden `.work-*` directory inside the package directory and renamed into place once complete, so an interrupted install never looks installed. Each install holds a lock on its work directory, which the operating system releases when the process dies, however it dies; `gc` deletes the work directories nobody holds, so it can run while another install is in progress.
 
 A daily or weekly `breto update && breto gc` from a systemd timer or cron job keeps everything current.
 

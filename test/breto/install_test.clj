@@ -257,3 +257,25 @@
         io (fake-io {} {"https://github.com/kubernetes-sigs/kind/releases/latest" "{\"tag_name\":\"v0.33.0\"}"})]
     (is (thrown? Exception (install/install! cfg io raw-tool {})))
     (is (not (fs/exists? (fs/path (:store cfg) "kind"))))))
+
+(deftest leftovers-are-only-work-directories-nobody-holds
+  (let [cfg (config)
+        dir (store/package-dir cfg "tool")
+        held (fs/path dir ".work-held")
+        killed (fs/path dir ".work-killed")
+        fresh (fs/path dir ".work-fresh")
+        stale (fs/path dir ".staging-1.0.0")]
+    (run! fs/create-dirs [held killed fresh stale (fs/path dir "1.0.0")])
+    (.close (store/hold! killed))
+    (fs/set-last-modified-time stale (java.nio.file.attribute.FileTime/fromMillis 0))
+    (with-open [_ (store/hold! held)]
+      (is (= (map str [stale killed]) (store/leftovers cfg "tool"))))))
+
+(deftest installs-hold-their-work-directory-and-leave-nothing-behind
+  (let [cfg (config)
+        served (serve-tool "1.0.0")
+        io (assoc served :download! (fn [url dest]
+                                      (is (empty? (store/leftovers cfg "tool")))
+                                      ((:download! served) url dest)))]
+    (install/install! cfg io tool {})
+    (is (= ["1.0.0" "current"] (sort (map (comp str fs/file-name) (fs/list-dir (fs/path (:store cfg) "tool"))))))))
