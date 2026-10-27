@@ -44,13 +44,14 @@ breto reads `$XDG_CONFIG_HOME/breto/config.edn` (`~/.config/breto/config.edn` by
 | `:pins` | Versions `update` installs instead of the latest. | none |
 | `:keep` | Versions per package that `gc` keeps. | `3` |
 | `:delay` | Seconds `install` and `update` wait after a package that downloaded something, e.g. to spread traffic on a slow link. A package found up to date costs no wait. `--delay N` overrides it. | `0` |
+| `:token-command` | A command printing a GitHub token on its first line, e.g. `["gh" "auth" "token"]` or `["gopass" "show" "--password" "github/token"]`. It runs at most once per breto process, and only when a GitHub API request is made. `GITHUB_TOKEN` and `GH_TOKEN` take precedence. | none |
 | `:prune` | Whether `gc` without arguments also uninstalls every package `:packages` does not list. | `false` |
 | `:store` | Where versions are unpacked, as `<store>/<package>/<version>`. | `$XDG_DATA_HOME/breto/installations` |
 | `:bin-dir` | Where binaries are linked. | `~/.local/bin` |
 
 breto also reads the rate-limit headers of every response. When a host has no requests left (`x-ratelimit-remaining: 0`) or sends `retry-after`, the next package waits until that host accepts requests again, or for `:delay` if that applies and is longer. A package refused by a rate limit that names a wait is retried once after it.
 
-Set `GITHUB_TOKEN` or `GH_TOKEN` to raise GitHub's API limit from 60 requests an hour. breto calls the API once for each download it verifies and once for each lookup of a rolling release.
+Configure `:token-command`, or set `GITHUB_TOKEN` or `GH_TOKEN`, to raise GitHub's API limit from 60 requests an hour. breto calls the API once for each download it verifies and once for each lookup of a rolling release.
 
 ## Commands
 

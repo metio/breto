@@ -52,11 +52,11 @@
 (defn- release-tags
   "Tags of the published, non-prerelease releases of `pkg`, or nil for a
   source without a release listing."
-  [{:keys [source] :as pkg} {:keys [get-text]}]
+  [{:keys [source] :as pkg} {:keys [get-text] :as io}]
   (case (package/source-kind pkg)
     :github (->> (json/parse-string (get-text (str "https://api.github.com/repos/" (:github source)
                                                     "/releases?per_page=100")
-                                               (github/api-headers))
+                                               (github/api-headers io))
                                     true)
                  (remove #(or (:draft %) (:prerelease %)))
                  (map :tag_name))

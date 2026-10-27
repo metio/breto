@@ -92,8 +92,8 @@
        :facts (cond-> [(str "GET " url " returned " status)]
                 (get-in data [:headers "x-ratelimit-reset"])
                 (conj (str "The limit resets at " (epoch->instant (get-in data [:headers "x-ratelimit-reset"])))))
-       :advice ["Set GITHUB_TOKEN or GH_TOKEN; authenticated requests get 5000 an hour instead of 60."
-                "For the systemd service, add Environment=GITHUB_TOKEN=… or an EnvironmentFile= to update-installations.service."
+       :advice ["Set :token-command in the config, e.g. [\"gh\" \"auth\" \"token\"]; authenticated requests get 5000 an hour instead of 60."
+                "Or export GITHUB_TOKEN or GH_TOKEN, e.g. with an EnvironmentFile= for the systemd service."
                 "Otherwise the next run after the reset time succeeds without changes."]}
 
       (>= (or status 0) 500)
@@ -285,6 +285,17 @@
    :advice [(if (or (:github source) (:gitlab source))
               "Remove a version from :skip, or pin a version under :pins in the config."
               "This source lists no older releases; pin a version under :pins in the config.")]})
+
+(defmethod explain :token-command [{:keys [command exit stderr error empty]} _]
+  {:summary "The :token-command that provides the GitHub token failed, so no GitHub API request was made."
+   :facts (cond-> [(str "Command: " (str/join " " command))]
+            exit (conj (str "Exit code: " exit))
+            (not (str/blank? stderr)) (conj (str "It reported: " stderr))
+            error (conj (str "It could not start: " error))
+            empty (conj "It printed nothing."))
+   :advice [(str "Run " (str/join " " command) " yourself; it must print the token on its first line and exit with 0.")
+            "Under systemd the command runs without your interactive session; a password manager may need its agent or an unlocked store."
+            "Remove :token-command to fall back to 60 unauthenticated requests an hour."]})
 
 (defmethod explain :default [_ _]
   {:summary "breto failed in a way it has no explanation for."

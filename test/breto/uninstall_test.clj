@@ -3,6 +3,7 @@
 
 (ns breto.uninstall-test
   (:require [babashka.fs :as fs]
+            [breto.batch :as batch]
             [breto.main :as main]
             [breto.report :as report]
             [breto.store :as store]
@@ -113,7 +114,7 @@
 (deftest delay-follows-only-calls-that-downloaded
   (let [slept (atom [])
         downloaded (atom [true false true])
-        f (main/paced 300 #(let [d (first @downloaded)] (swap! downloaded rest) d)
+        f (batch/paced 300 #(let [d (first @downloaded)] (swap! downloaded rest) d)
                       (constantly 0) (fn [s _] (swap! slept conj s)) identity)]
     (is (= ["a" "b" "c" "d"] (mapv f ["a" "b" "c" "d"])))
     (is (= [300 300] @slept))))
@@ -121,7 +122,7 @@
 (deftest upstream-waits-win-over-a-shorter-delay
   (let [slept (atom [])
         upstream (atom 0)
-        f (main/paced 300 (constantly true) #(deref upstream) (fn [s _] (swap! slept conj s)) identity)]
+        f (batch/paced 300 (constantly true) #(deref upstream) (fn [s _] (swap! slept conj s)) identity)]
     (f "a")
     (reset! upstream 1200)
     (f "b")
@@ -131,13 +132,13 @@
 
 (deftest upstream-waits-apply-without-any-download
   (let [slept (atom [])
-        f (main/paced 300 (constantly false) (constantly 42) (fn [s _] (swap! slept conj s)) identity)]
+        f (batch/paced 300 (constantly false) (constantly 42) (fn [s _] (swap! slept conj s)) identity)]
     (f "a")
     (is (= [42] @slept))))
 
 (deftest failed-calls-that-downloaded-still-owe-the-delay
   (let [slept (atom [])
-        f (main/paced 300 (constantly true) (constantly 0) (fn [s _] (swap! slept conj s))
+        f (batch/paced 300 (constantly true) (constantly 0) (fn [s _] (swap! slept conj s))
                       (fn [x] (if (= "a" x) (throw (ex-info "bad checksum" {})) x)))]
     (is (thrown? Exception (f "a")))
     (f "b")
@@ -149,7 +150,7 @@
         upstream (atom 0)
         limited (ex-info "403" {:breto/problem :http-status :status 403
                                 :headers {"retry-after" "60"}})
-        f (main/paced 0 (constantly false) #(deref upstream) (fn [s _] (swap! slept conj s) (reset! upstream 0))
+        f (batch/paced 0 (constantly false) #(deref upstream) (fn [s _] (swap! slept conj s) (reset! upstream 0))
                       (fn [x]
                         (when (= 1 (swap! calls inc))
                           (reset! upstream 60)
@@ -181,7 +182,7 @@
 
 (deftest running-updates-record-their-total
   (define! "kind" {:source {:github "kubernetes-sigs/kind"} :asset "kind"})
-  (let [recorder (var-get #'main/recorder)
+  (let [recorder batch/recorder
         record (recorder "update")]
     (record {:type :start :index 1 :total 2 :package "kind"})
     (record {:type :finish :result {:package "kind" :status :current}})

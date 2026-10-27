@@ -22,7 +22,8 @@
    :packages []
    :pins {}
    :keep 3
-   :prune false})
+   :prune false
+   :token-command nil})
 
 (defn- expand-home [s]
   (str/replace-first s #"^~(?=/|$)" (System/getProperty "user.home")))

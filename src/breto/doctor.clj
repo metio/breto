@@ -109,22 +109,41 @@
              "Remove :verify false from a definition once upstream publishes either.")
       (check :ok "Every configured package is verified" ""))))
 
+(defn token-check
+  "Where the GitHub token comes from, never the token itself."
+  [{:keys [token-command]} io]
+  (try
+    (if-let [{:keys [source]} (some-> (:github-token io) (apply []))]
+      (check :ok "A GitHub token is available" (str "from " source))
+      (check :warn "No GitHub token is configured" "GitHub allows 60 unauthenticated API requests an hour."
+             "Set :token-command in the config, e.g. [\"gh\" \"auth\" \"token\"] or [\"gopass\" \"show\" \"--password\" \"github/token\"]."
+             "Or export GITHUB_TOKEN or GH_TOKEN."))
+    (catch clojure.lang.ExceptionInfo e
+      (check :fail "The :token-command fails" (str (ex-message e) (some->> (:stderr (ex-data e)) (str ": ")))
+             (str "Run " (str/join " " (or token-command [])) " yourself and fix what it reports.")
+             "It must print the token on its first line and exit with 0."))))
+
 (defn github-check [io]
   (try
     (let [{:keys [rate]} (json/parse-string ((:get-text io) "https://api.github.com/rate_limit"
-                                                            (github/api-headers))
+                                                            (github/api-headers io))
                                             true)
           {:keys [limit remaining]} rate]
       (cond
         (and (number? remaining) (zero? remaining))
         (check :fail "The GitHub API rate limit is used up" (str remaining " of " limit " left")
-               "Set GITHUB_TOKEN or GH_TOKEN, or wait for the limit to reset.")
+               "Set :token-command or GITHUB_TOKEN, or wait for the limit to reset.")
 
         (and (number? limit) (<= limit 60))
         (check :warn "GitHub API requests are unauthenticated" (str remaining " of " limit " left this hour")
-               "Set GITHUB_TOKEN or GH_TOKEN; every verified GitHub download costs one request.")
+               "Set :token-command or GITHUB_TOKEN; every verified GitHub download costs one request.")
 
         :else (check :ok "GitHub API requests are authenticated" (str remaining " of " limit " left"))))
+    (catch clojure.lang.ExceptionInfo e
+      (if (= :token-command (:breto/problem (ex-data e)))
+        (check :warn "The GitHub API was not checked" "The :token-command fails; see above.")
+        (check :fail "GitHub's API cannot be reached" (ex-message e)
+               "Check the network connection; installs from GitHub need api.github.com for verification.")))
     (catch Exception e
       (check :fail "GitHub's API cannot be reached" (ex-message e)
              "Check the network connection; installs from GitHub need api.github.com for verification."))))
@@ -155,6 +174,7 @@
           (store-check config registry)
           [(unconfigured-check config)
            (unverified-check config registry)
+           (token-check config io)
            (github-check io)]
           (last-run-checks (report/load-runs))))
 
