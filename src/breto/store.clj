@@ -3,9 +3,8 @@
 
 (ns breto.store
   (:require [babashka.fs :as fs]
-            [clojure.string :as str])
-  (:import (java.nio.channels FileChannel)
-           (java.nio.file OpenOption StandardOpenOption)))
+            [breto.filelock :as filelock]
+            [clojure.string :as str]))
 
 (def ^:private current-link "current")
 
@@ -119,30 +118,18 @@
 
 (def work-prefix ".work-")
 
-(def ^:private lock-file ".lock")
-
-(defn- channel [dir]
-  (FileChannel/open (fs/path dir lock-file)
-                    (into-array OpenOption [StandardOpenOption/CREATE StandardOpenOption/WRITE])))
-
 (defn hold!
-  "Locks the work directory `dir` until the returned channel is closed. The
-  operating system releases the lock when the process dies, however it dies."
+  "Locks the work directory `dir` until the returned channel is closed."
   [dir]
-  (let [ch (channel dir)]
-    (.lock ch)
-    ch))
+  (filelock/hold! dir))
 
 (defn abandoned?
   "Whether no running process holds the work directory `dir`. One without a
   lock file counts only once it is an hour old, since its install may be
   about to take the lock."
   [dir]
-  (if (fs/exists? (fs/path dir lock-file))
-    (with-open [ch (channel dir)]
-      (try
-        (some? (.tryLock ch))
-        (catch IllegalStateException _ false)))
+  (if (fs/exists? (fs/path dir filelock/lock-file))
+    (not (filelock/held? dir))
     (< (.toMillis (fs/last-modified-time dir))
        (- (System/currentTimeMillis) (* 60 60 1000)))))
 
@@ -159,3 +146,10 @@
            (map str)
            sort)
       [])))
+
+(defn with-store-lock
+  "Runs `f` holding the lock of the store, so two breto runs never change it at
+  once. When another run holds it, `on-wait` is called with that run's process
+  id and `f` runs once the lock is free."
+  [{:keys [store]} on-wait f]
+  (filelock/with-lock store on-wait f))

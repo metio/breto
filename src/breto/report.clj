@@ -3,6 +3,7 @@
 
 (ns breto.report
   (:require [babashka.fs :as fs]
+            [breto.filelock :as filelock]
             [clojure.edn :as edn]
             [clojure.string :as str])
   (:import (java.time Instant ZoneId)
@@ -72,11 +73,7 @@
         runs (when (fs/exists? path) (edn/read-string (slurp path)))]
     (sort-by :finished (if (:command runs) [runs] (vals runs)))))
 
-(defn save!
-  "Records `report` as the last run of its command, keeping the other commands'.
-  A report marked `:running` records when it was last updated instead of when
-  it finished."
-  [report]
+(defn- save-unlocked! [report]
   (let [path (state-path)
         runs (into {} (map (juxt :command identity)) (load-runs))
         stamped (if (:running report)
@@ -86,6 +83,14 @@
     (fs/create-dirs (fs/parent path))
     (spit staged (pr-str (assoc runs (:command report) stamped)))
     (fs/move staged path {:replace-existing true :atomic-move true})))
+
+(defn save!
+  "Records `report` as the last run of its command, keeping the other commands'.
+  A report marked `:running` records when it was last updated instead of when
+  it finished."
+  [report]
+  (filelock/with-lock (str (fs/parent (state-path))) (fn [_])
+    #(save-unlocked! report)))
 
 (defn- local-time [instant]
   (.format (.atZone (Instant/parse instant) (ZoneId/systemDefault))

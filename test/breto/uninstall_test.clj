@@ -4,6 +4,7 @@
 (ns breto.uninstall-test
   (:require [babashka.fs :as fs]
             [breto.batch :as batch]
+            [breto.filelock]
             [breto.main :as main]
             [breto.report :as report]
             [breto.store :as store]
@@ -187,3 +188,7 @@
     (record {:type :start :index 1 :total 2 :package "kind"})
     (record {:type :finish :result {:package "kind" :status :current}})
     (is (str/includes? (report/heading (first (report/load-runs))) "1 of 2 done"))))
+
+(deftest report-saves-leave-the-lock-free
+  (report/save! {:command "update" :results []})
+  (is (not (breto.filelock/held? (fs/parent (report/state-path))))))

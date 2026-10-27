@@ -10,6 +10,7 @@
             [breto.log :as log]
             [breto.progress :as progress]
             [breto.registry :as registry]
+            [breto.store :as store]
             [breto.token :as token]))
 
 (def ^:private usage
@@ -75,6 +76,20 @@ Every failure is explained with what to do; --debug adds each request and stack 
                            (try (load) (catch Exception _ nil))
                            (load)))))
 
+(def ^:private changes-store
+  #{"install" "use" "update" "gc" "uninstall"})
+
+(defn- locked
+  "Runs `f` under the store lock when `command` changes the store."
+  [ctx command f]
+  (if (changes-store command)
+    (store/with-store-lock (:config ctx)
+      (fn [pid]
+        (binding [*out* *err*]
+          (println (str "waiting for another breto run (process " pid ") to finish with the store"))))
+      f)
+    (f)))
+
 (def parse-spec
   {:coerce {:keep :long :delay :long :debug :boolean :verify :boolean :force :boolean :dry-run :boolean}
    :alias {:d :debug}})
@@ -88,7 +103,8 @@ Every failure is explained with what to do; --debug adds each request and stack 
          [command & more] args]
      (binding [log/*debug* (boolean (:debug opts))]
        (if-let [f (dispatch command)]
-         (f (with-registry (merge (context opts) overrides) command) more)
+         (let [ctx (with-registry (merge (context opts) overrides) command)]
+           (locked ctx command #(f ctx more)))
          (do (println usage) (if (#{nil "help"} command) 0 2)))))))
 
 (defn -main [& args]

@@ -314,3 +314,25 @@
     (is (= {:version "0.33.0" :installed? true :verified? false} (install/install! cfg io pkg {})))
     (is (thrown? clojure.lang.ExceptionInfo
                  (install/install! cfg io pkg {:version "0.34.0"})))))
+
+(deftest the-store-lock-makes-a-second-run-wait
+  (let [cfg (config)
+        ready (fs/path *root* "ready")
+        holder (process/process {:err :inherit}
+                                "bb" "-cp" (str (fs/absolutize "src")) "-e"
+                                (str "(require '[breto.store :as s] '[babashka.fs :as fs])"
+                                     "(s/with-store-lock " (pr-str cfg) " (fn [_]) "
+                                     "  #(do (spit " (pr-str (str ready)) " \"\") (Thread/sleep 1500)))"))
+        _ (loop [n 0] (when (and (< n 100) (not (fs/exists? ready))) (Thread/sleep 50) (recur (inc n))))
+        waited (atom nil)
+        started (System/currentTimeMillis)]
+    (store/with-store-lock cfg #(reset! waited %) (fn []))
+    (is (string? @waited) "the second run is told who holds the lock")
+    (is (not= "unknown" @waited))
+    (is (> (- (System/currentTimeMillis) started) 300) "it waited for the first run")
+    @holder))
+
+(deftest an-unheld-store-lock-runs-at-once
+  (let [waited (atom false)]
+    (is (= :done (store/with-store-lock (config) (fn [_] (reset! waited true)) (constantly :done))))
+    (is (false? @waited))))
