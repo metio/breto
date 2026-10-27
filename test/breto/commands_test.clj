@@ -3,6 +3,7 @@
 
 (ns breto.commands-test
   (:require [babashka.fs :as fs]
+            [breto.diagnose]
             [breto.report :as report]
             [breto.support :as s :refer [path]]
             [clojure.string :as str]
@@ -78,3 +79,39 @@
   (let [{:keys [code out]} (s/breto! {} ["frobnicate"])]
     (is (= 2 code))
     (is (str/includes? out "Usage: breto"))))
+
+(defn- installed! [name versions active]
+  (doseq [v versions]
+    (fs/create-dirs (path "store" name v))
+    (spit (path "store" name v name) v))
+  (fs/create-sym-link (path "store" name "current") active))
+
+(deftest use-previous-activates-the-next-older-version
+  (s/define! "tool" {:source {:github "acme/tool"} :asset "tool"})
+  (installed! "tool" ["1.9.0" "1.10.0" "2.0.0" "1.2.0"] "2.0.0")
+  (let [{:keys [code out]} (s/breto! {:packages ["tool"]} ["use" "tool" "--previous"])]
+    (is (= 0 code))
+    (is (str/includes? out "[OK] tool 1.10.0 active"))
+    (is (str/includes? out ":pins {\"tool\" \"1.10.0\"}"))
+    (is (= "1.10.0" (str (fs/read-link (path "store" "tool" "current"))))))
+  (s/breto! {:packages ["tool"]} ["use" "tool" "--previous"])
+  (is (= "1.9.0" (str (fs/read-link (path "store" "tool" "current"))))))
+
+(deftest use-previous-explains-when-nothing-is-older
+  (s/define! "tool" {:source {:github "acme/tool"} :asset "tool"})
+  (installed! "tool" ["2.0.0"] "2.0.0")
+  (let [e (try (s/breto! {:packages []} ["use" "tool" "--previous"]) nil
+               (catch clojure.lang.ExceptionInfo e e))]
+    (is (= :no-previous (:breto/problem (ex-data e))))
+    (is (= ["2.0.0"] (:installed (ex-data e))))))
+
+(deftest unconfigured-packages-get-no-pin-advice
+  (s/define! "tool" {:source {:github "acme/tool"} :asset "tool"})
+  (installed! "tool" ["1.0.0" "2.0.0"] "2.0.0")
+  (is (not (str/includes? (:out (s/breto! {:packages []} ["use" "tool" "--previous"])) ":pins"))))
+
+(deftest incomplete-use-commands-are-usage-errors
+  (let [e (try (s/breto! {} ["use" "tool"]) nil (catch clojure.lang.ExceptionInfo e e))]
+    (is (= :usage (:breto/problem (ex-data e))))
+    (is (= ["breto help lists every command with its arguments."]
+           (:advice (breto.diagnose/diagnose e {}))))))

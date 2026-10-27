@@ -322,6 +322,17 @@
                                " :verify false} to :history; newer releases stay verified.")
                           "GitHub only records digests for assets uploaded since mid-2025, so a new release usually fixes this."))}))
 
+(defmethod explain :usage [_ _]
+  {:summary "The command line is incomplete."
+   :facts []
+   :advice ["breto help lists every command with its arguments."]})
+
+(defmethod explain :no-previous [{:keys [package active installed]} _]
+  {:summary (str "No installed version of " package " is older than the active " (or active "one") ".")
+   :facts [(str "Installed versions: " (if (seq installed) (str/join ", " installed) "none"))]
+   :advice [(str "breto install " package "@VERSION installs an older release, which then becomes active.")
+            "breto gc keeps only :keep versions; raise :keep to keep more to roll back to."]})
+
 (defmethod explain :default [_ _]
   {:summary "breto failed in a way it has no explanation for."
    :facts []

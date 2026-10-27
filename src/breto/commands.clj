@@ -104,12 +104,27 @@
       (println (str name "\t" (str/join " " versions)))))
   0)
 
-(defn use-version [{:keys [config registry]} [name version]]
-  (when-not (and name version)
-    (throw (ex-info "use needs a package and a version" {:breto/problem :usage})))
-  (install/use! config (registry/lookup registry name) version)
-  (println (str "[OK] " name " " version " active"))
-  0)
+(defn- previous! [config name]
+  (let [active (store/current-version config name)
+        installed (map :version (store/versions config name))]
+    (or (when active (store/previous-version installed active))
+        (throw (ex-info (str name " has no installed version older than " (or active "the active one"))
+                        {:breto/problem :no-previous :package name :active active
+                         :installed (vec (sort-by identity installed))})))))
+
+(defn use-version
+  "Activates VERSION of PKG, or with --previous the newest installed version
+  older than the active one."
+  [{:keys [config registry opts]} [name version]]
+  (let [version (if (:previous opts) (when name (previous! config name)) version)]
+    (when-not (and name version)
+      (throw (ex-info "use needs a package and a version, or a package and --previous" {:breto/problem :usage})))
+    (install/use! config (registry/lookup registry name) version)
+    (println (str "[OK] " name " " version " active"))
+    (when (some #{name} (:packages config))
+      (println (str "breto update activates the latest release again unless the config pins it: :pins {"
+                    (pr-str name) " " (pr-str version) "}")))
+    0))
 
 (defn- claimed-links
   "Link name -> configured package, for the links configured packages own."

@@ -20,6 +20,7 @@ Commands:
   list                      installed packages and versions (* marks the active one)
   install PKG[@VERSION]...  install and activate, latest unless a version is given
   use PKG VERSION           activate an installed version
+  use PKG --previous        activate the newest installed version older than the active one
   update [PKG...]           install the latest (or pinned) version of the configured packages
   outdated [PKG...]         configured packages with a newer release
   check [PKG...] [--all]    whether the latest release of each configured package (or every
@@ -94,7 +95,7 @@ Every failure is explained with what to do; --debug adds each request and stack 
     (f)))
 
 (def parse-spec
-  {:coerce {:keep :long :delay :long :debug :boolean :verify :boolean :force :boolean :dry-run :boolean :all :boolean}
+  {:coerce {:keep :long :delay :long :debug :boolean :verify :boolean :force :boolean :dry-run :boolean :all :boolean :previous :boolean}
    :alias {:d :debug}})
 
 (defn run

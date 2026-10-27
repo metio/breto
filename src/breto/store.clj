@@ -4,6 +4,7 @@
 (ns breto.store
   (:require [babashka.fs :as fs]
             [breto.filelock :as filelock]
+            [breto.version :as version]
             [clojure.string :as str]))
 
 (def ^:private current-link "current")
@@ -74,6 +75,14 @@
       (link! (fs/path (:bin-dir config) link) (fs/path current path)))
     (doseq [[link path] links]
       (link! (expand-home link) (fs/path current path)))))
+
+(defn previous-version
+  "The newest of `versions` older than `active`, or nil."
+  [versions active]
+  (->> versions
+       (filter #(version/older? % active))
+       (sort version/compare-versions)
+       last))
 
 (defn gc-candidates
   "Versions to delete when keeping the `keep` most recent; the active version
