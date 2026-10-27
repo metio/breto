@@ -59,10 +59,22 @@
 (defn get-text [url headers]
   (:body (ok! url (request url {:headers headers}))))
 
-(defn download! [url dest]
-  (let [response (ok! url (request url {:as :stream}))]
-    (with-open [in (:body response)]
-      (io/copy in (io/file (str dest))))))
+(defn download!
+  "Saves `url` to `dest`, calling `on-bytes` with the bytes written so far and
+  the expected total, when the server states one."
+  ([url dest] (download! url dest nil))
+  ([url dest on-bytes]
+   (let [response (ok! url (request url {:as :stream}))
+         expected (some-> (get-in response [:headers "content-length"]) str parse-long)
+         buffer (byte-array 65536)]
+     (with-open [in ^java.io.InputStream (:body response)
+                 out (io/output-stream (io/file (str dest)))]
+       (loop [done 0]
+         (let [n (.read in buffer)]
+           (when (pos? n)
+             (.write out buffer 0 n)
+             (when on-bytes (on-bytes (+ done n) expected))
+             (recur (+ done n)))))))))
 
 (def io
   "The network operations the installer needs, as a map so tests can swap them."

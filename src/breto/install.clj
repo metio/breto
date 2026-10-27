@@ -55,13 +55,21 @@
                                       :exception (.getName (class e)) :path (ex-message e)})
                       e)))))
 
+(defn- staged
+  "Reports `stage` to the progress callback of `io`, if any, then runs `f`
+  within it."
+  [io stage context f]
+  (when-let [progress (:progress io)]
+    (progress {:type :stage :stage stage}))
+  (with-stage stage context f))
+
 (defn- fetch!
   "Downloads and verifies the artifact into `work`, returning the file."
   [pkg io release artifact work verify? context]
   (let [file (fs/path work (:asset artifact))]
-    (with-stage :download context #((:download! io) (:url artifact) file))
+    (staged io :download context #((:download! io) (:url artifact) file))
     (when verify?
-      (with-stage :verify context
+      (staged io :verify context
         #(if-let [want (expected-hash pkg io release artifact)]
            (checksum/verify! file (:asset artifact) want)
            (throw (ex-info (str (:name pkg) ": nothing to verify " (:asset artifact)
@@ -93,7 +101,7 @@
   the stage and release they happened in."
   [config io pkg {:keys [version activate? verify?] :or {activate? true verify? true}}]
   (let [context {:package (:name pkg) :repo (package/repo pkg) :source (:source pkg)}
-        release (with-stage :resolve context #(resolve-release pkg io version))
+        release (staged io :resolve context #(resolve-release pkg io version))
         version (:version release)
         pkg (package/at pkg version)
         artifact (package/artifact pkg release)
@@ -110,17 +118,19 @@
           (let [file (fetch! pkg io release artifact work verify? context)
                 unpacked (fs/path work "unpacked")
                 staging (fs/path package-dir (str ".staging-" version))]
-            (with-stage :unpack context
+            (staged io :unpack context
               #(archive/unpack! file (:archive artifact) (:asset artifact) unpacked (:strip pkg)))
-            (with-stage :place context
+            (staged io :place context
               #(do (fs/delete-tree staging)
                    (place! pkg artifact unpacked staging)
                    (fs/delete-tree (store/version-dir config (:name pkg) version))
                    (fs/move staging (store/version-dir config (:name pkg) version) {:atomic-move true}))))
           (finally
-            (fs/delete-tree work)))))
+            (fs/delete-tree work)
+            (when (empty? (fs/list-dir package-dir))
+              (fs/delete package-dir))))))
     (when activate?
-      (with-stage :activate context #(store/activate! config pkg bin-paths version)))
+      (staged io :activate context #(store/activate! config pkg bin-paths version)))
     {:version version :installed? installed?}))
 
 (defn use!

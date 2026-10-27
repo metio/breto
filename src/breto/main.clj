@@ -10,6 +10,7 @@
             [breto.http :as http]
             [breto.install :as install]
             [breto.log :as log]
+            [breto.progress :as progress]
             [breto.registry :as registry]
             [breto.report :as report]
             [breto.source :as source]
@@ -62,12 +63,30 @@ Every failure is explained with what to do; --debug adds each request and stack 
 
 (defn- batch
   "Runs `f` for every name, collecting a result per name; a failure becomes a
-  diagnosed result instead of stopping the others."
-  [names f]
-  (vec (for [name names]
-         (try (f name)
-              (catch Exception e
-                (failure (first (split-spec name)) (second (split-spec name)) e))))))
+  diagnosed result instead of stopping the others. `progress` receives a start
+  and a finish event per name and an end event."
+  ([names f] (batch names f (fn [_])))
+  ([names f progress]
+   (let [total (count names)
+         results (vec (map-indexed
+                       (fn [i name]
+                         (progress {:type :start :index (inc i) :total total :package name})
+                         (let [result (try (f name)
+                                           (catch Exception e
+                                             (failure (first (split-spec name)) (second (split-spec name)) e)))]
+                           (progress {:type :finish :status (:status result)})
+                           result))
+                       names))]
+     (progress {:type :end})
+     results)))
+
+(defn- tracked-io
+  "The network operations, reporting stages and download progress to `progress`."
+  [progress]
+  (assoc http/io
+         :progress progress
+         :download! (fn [url dest]
+                      (http/download! url dest #(progress {:type :bytes :done %1 :size %2})))))
 
 (defn paced
   "Wraps `f` so that each call first waits for the longer of `delay` seconds,
@@ -89,13 +108,14 @@ Every failure is explained with what to do; --debug adds each request and stack 
                   (f x))
               (throw e))))))))
 
-(defn- pause [cfg opts]
+(defn- pause [cfg opts progress]
   (fn [f]
     (paced (or (:delay opts) (:delay cfg) 0)
            (:upstream-wait http/io)
            (fn [seconds why]
-             (binding [*out* *err*] (println (str "waiting " seconds "s for " why)))
-             (Thread/sleep (* 1000 (long seconds))))
+             (doseq [left (range seconds 0 -1)]
+               (progress {:type :wait :seconds seconds :left left :why why})
+               (Thread/sleep 1000)))
            f)))
 
 (defn- finish!
@@ -121,33 +141,42 @@ Every failure is explained with what to do; --debug adds each request and stack 
   0)
 
 (defn- cmd-install [cfg reg args opts]
-  (finish! "install"
-           (batch args
-                  ((pause cfg opts)
-                   (fn [spec]
-                    (let [[name version] (split-spec spec)]
-                      (installed-result name (install/install! cfg http/io (registry/lookup reg name)
-                                                               {:version version :verify? (:verify opts true)}))))))))
+  (let [progress (progress/reporter)
+        io (tracked-io progress)]
+    (finish! "install"
+             (batch args
+                    ((pause cfg opts progress)
+                     (fn [spec]
+                       (let [[name version] (split-spec spec)]
+                         (installed-result name (install/install! cfg io (registry/lookup reg name)
+                                                                  {:version version :verify? (:verify opts true)})))))
+                    progress))))
 
 (defn- cmd-update [cfg reg args opts]
-  (finish! "update"
-           (batch (targets cfg args)
-                  ((pause cfg opts)
-                   (fn [name]
-                    (installed-result name (install/install! cfg http/io (registry/lookup reg name)
-                                                             {:version (get-in cfg [:pins name])
-                                                              :verify? (:verify opts true)})))))))
+  (let [progress (progress/reporter)
+        io (tracked-io progress)]
+    (finish! "update"
+             (batch (targets cfg args)
+                    ((pause cfg opts progress)
+                     (fn [name]
+                       (installed-result name (install/install! cfg io (registry/lookup reg name)
+                                                                {:version (get-in cfg [:pins name])
+                                                                 :verify? (:verify opts true)}))))
+                    progress))))
 
 (defn- cmd-outdated [cfg reg args opts]
-  (finish! "outdated"
-           (batch (targets cfg args)
-                  ((pause cfg opts)
-                   (fn [name]
-                    (let [active (current cfg name)
-                          latest (:version (install/with-stage :resolve {:package name}
-                                             #(source/latest (registry/lookup reg name) http/io)))]
-                      {:package name :version latest :from active
-                       :status (if (= latest active) :current :outdated)}))))))
+  (let [progress (progress/reporter)]
+    (finish! "outdated"
+             (batch (targets cfg args)
+                    ((pause cfg opts progress)
+                     (fn [name]
+                       (progress {:type :stage :stage :resolve})
+                       (let [active (current cfg name)
+                             latest (:version (install/with-stage :resolve {:package name}
+                                                #(source/latest (registry/lookup reg name) http/io)))]
+                         {:package name :version latest :from active
+                          :status (if (= latest active) :current :outdated)})))
+                    progress))))
 
 (defn- cmd-use [cfg reg [name version]]
   (when-not (and name version)

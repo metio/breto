@@ -69,6 +69,8 @@ Set `GITHUB_TOKEN` or `GH_TOKEN` to raise GitHub's API limit from 60 requests an
 
 Options follow the arguments, as in `breto uninstall helm --force`.
 
+On a terminal, `install`, `update` and `outdated` show a status line with the position in the batch, a tally of the results so far, and the current stage, download progress or remaining wait. Elsewhere, for example under systemd, they log one line per package and per wait instead. `NO_COLOR` turns colors off.
+
 `install` and `update` refuse a download they cannot verify. `--no-verify` skips verification entirely. `gc` and `uninstall` take `--dry-run` to list what they would delete.
 
 Each package directory has a `current` symlink pointing at the active version, and the links in the bin directory resolve through it. Switching versions replaces `current` with an atomic rename, so a command never sees a half-switched package. A version is unpacked into a hidden staging directory and renamed into place once complete, so an interrupted install never looks installed.

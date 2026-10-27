@@ -251,3 +251,9 @@
     (is (= {:version "0.33.0" :installed? true} (install/install! cfg io raw-tool {})))
     (is (= ["kind"] (map (comp str fs/file-name) (fs/list-dir (fs/path (:store cfg) "kind" "0.33.0")))))
     (is (= "fresh" (slurp (str (fs/path (:bin-dir cfg) "kind")))))))
+
+(deftest failed-first-installs-leave-no-package-directory
+  (let [cfg (config)
+        io (fake-io {} {"https://github.com/kubernetes-sigs/kind/releases/latest" "{\"tag_name\":\"v0.33.0\"}"})]
+    (is (thrown? Exception (install/install! cfg io raw-tool {})))
+    (is (not (fs/exists? (fs/path (:store cfg) "kind"))))))
