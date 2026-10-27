@@ -110,22 +110,38 @@
   (is (= ["gc" "update"] (map :command (report/load-runs))))
   (is (= [{:package "a" :status :current}] (:results (last (report/load-runs))))))
 
-(deftest paced-calls-wait-for-the-longer-of-delay-and-upstream
+(deftest delay-follows-only-calls-that-downloaded
+  (let [slept (atom [])
+        downloaded (atom [true false true])
+        f (main/paced 300 #(let [d (first @downloaded)] (swap! downloaded rest) d)
+                      (constantly 0) (fn [s _] (swap! slept conj s)) identity)]
+    (is (= ["a" "b" "c" "d"] (mapv f ["a" "b" "c" "d"])))
+    (is (= [300 300] @slept))))
+
+(deftest upstream-waits-win-over-a-shorter-delay
   (let [slept (atom [])
         upstream (atom 0)
-        f (main/paced 300 #(deref upstream) (fn [s _] (swap! slept conj s)) identity)]
-    (is (= "a" (f "a")))
+        f (main/paced 300 (constantly true) #(deref upstream) (fn [s _] (swap! slept conj s)) identity)]
+    (f "a")
     (reset! upstream 1200)
-    (is (= "b" (f "b")))
+    (f "b")
     (reset! upstream 10)
     (f "c")
     (is (= [1200 300] @slept))))
 
-(deftest paced-calls-honour-upstream-before-the-first-package
+(deftest upstream-waits-apply-without-any-download
   (let [slept (atom [])
-        f (main/paced 0 (constantly 42) (fn [s _] (swap! slept conj s)) identity)]
+        f (main/paced 300 (constantly false) (constantly 42) (fn [s _] (swap! slept conj s)) identity)]
     (f "a")
     (is (= [42] @slept))))
+
+(deftest failed-calls-that-downloaded-still-owe-the-delay
+  (let [slept (atom [])
+        f (main/paced 300 (constantly true) (constantly 0) (fn [s _] (swap! slept conj s))
+                      (fn [x] (if (= "a" x) (throw (ex-info "bad checksum" {})) x)))]
+    (is (thrown? Exception (f "a")))
+    (f "b")
+    (is (= [300] @slept))))
 
 (deftest rate-limited-calls-are-retried-once-after-the-named-wait
   (let [slept (atom [])
@@ -133,7 +149,7 @@
         upstream (atom 0)
         limited (ex-info "403" {:breto/problem :http-status :status 403
                                 :headers {"retry-after" "60"}})
-        f (main/paced 0 #(deref upstream) (fn [s _] (swap! slept conj s) (reset! upstream 0))
+        f (main/paced 0 (constantly false) #(deref upstream) (fn [s _] (swap! slept conj s) (reset! upstream 0))
                       (fn [x]
                         (when (= 1 (swap! calls inc))
                           (reset! upstream 60)

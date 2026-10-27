@@ -35,8 +35,8 @@ Commands:
   report                    the reports of the last run of each command
   doctor                    check the environment, configuration and store
 
-install, update and outdated wait between packages for :delay seconds or the rate limit
-upstream hosts announce, whichever is longer; --delay N overrides :delay.
+After a package that downloaded something, install and update wait :delay seconds, or as long
+as an upstream host's rate limit asks if that is longer; --delay N overrides :delay.
 gc and uninstall accept --dry-run. uninstall refuses configured packages unless --force,
 since the next update would install them again.
 install and update refuse downloads they cannot verify unless --no-verify is given.
@@ -81,36 +81,46 @@ Every failure is explained with what to do; --debug adds each request and stack 
      results)))
 
 (defn- tracked-io
-  "The network operations, reporting stages and download progress to `progress`."
-  [progress]
+  "The network operations, reporting stages and download progress to
+  `progress` and counting downloads in `downloads`."
+  [progress downloads]
   (assoc http/io
          :progress progress
          :download! (fn [url dest]
+                      (swap! downloads inc)
                       (http/download! url dest #(progress {:type :bytes :done %1 :size %2})))))
 
 (defn paced
-  "Wraps `f` so that each call first waits for the longer of `delay` seconds,
-  skipped before the first call, and the wait upstream hosts ask for. A call
-  refused by a rate limit is retried once after the wait the host names."
-  [delay upstream-wait sleep! f]
-  (let [first? (atom true)]
+  "Wraps `f` so that each call first waits for the longer of the wait upstream
+  hosts ask for and, when `owed?` said so after the previous call, `delay`
+  seconds. A call refused by a rate limit is retried once after the wait the
+  host names."
+  [delay owed? upstream-wait sleep! f]
+  (let [owed (atom false)]
     (fn [x]
-      (let [own (if (compare-and-set! first? true false) 0 delay)
+      (let [own (if @owed delay 0)
             upstream (upstream-wait)]
         (when (pos? (max own upstream))
           (sleep! (max own upstream) (if (> upstream own) "the rate limit of an upstream host" ":delay"))))
       (try
-        (f x)
-        (catch clojure.lang.ExceptionInfo e
-          (let [upstream (upstream-wait)]
-            (if (and (http/rate-limited? (ex-data e)) (pos? upstream))
-              (do (sleep! upstream "the rate limit of an upstream host")
-                  (f x))
-              (throw e))))))))
+        (try
+          (f x)
+          (catch clojure.lang.ExceptionInfo e
+            (let [upstream (upstream-wait)]
+              (if (and (http/rate-limited? (ex-data e)) (pos? upstream))
+                (do (sleep! upstream "the rate limit of an upstream host")
+                    (f x))
+                (throw e)))))
+        (finally
+          (reset! owed (owed?)))))))
 
-(defn- pause [cfg opts progress]
+(defn- pause
+  "Paces a batch so that :delay follows only packages that downloaded
+  something; a package found up to date costs one small lookup."
+  [cfg opts progress downloads]
   (fn [f]
     (paced (or (:delay opts) (:delay cfg) 0)
+           #(pos? (first (reset-vals! downloads 0)))
            (:upstream-wait http/io)
            (fn [seconds why]
              (doseq [left (range seconds 0 -1)]
@@ -142,10 +152,11 @@ Every failure is explained with what to do; --debug adds each request and stack 
 
 (defn- cmd-install [cfg reg args opts]
   (let [progress (progress/reporter)
-        io (tracked-io progress)]
+        downloads (atom 0)
+        io (tracked-io progress downloads)]
     (finish! "install"
              (batch args
-                    ((pause cfg opts progress)
+                    ((pause cfg opts progress downloads)
                      (fn [spec]
                        (let [[name version] (split-spec spec)]
                          (installed-result name (install/install! cfg io (registry/lookup reg name)
@@ -154,10 +165,11 @@ Every failure is explained with what to do; --debug adds each request and stack 
 
 (defn- cmd-update [cfg reg args opts]
   (let [progress (progress/reporter)
-        io (tracked-io progress)]
+        downloads (atom 0)
+        io (tracked-io progress downloads)]
     (finish! "update"
              (batch (targets cfg args)
-                    ((pause cfg opts progress)
+                    ((pause cfg opts progress downloads)
                      (fn [name]
                        (installed-result name (install/install! cfg io (registry/lookup reg name)
                                                                 {:version (get-in cfg [:pins name])
@@ -168,7 +180,7 @@ Every failure is explained with what to do; --debug adds each request and stack 
   (let [progress (progress/reporter)]
     (finish! "outdated"
              (batch (targets cfg args)
-                    ((pause cfg opts progress)
+                    ((pause cfg opts progress (atom 0))
                      (fn [name]
                        (progress {:type :stage :stage :resolve})
                        (let [active (current cfg name)
