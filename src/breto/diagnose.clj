@@ -322,6 +322,13 @@
                                " :verify false} to :history; newer releases stay verified.")
                           "GitHub only records digests for assets uploaded since mid-2025, so a new release usually fixes this."))}))
 
+(defmethod explain :json-path [{:keys [url path found keys]} _]
+  {:summary (str "The JSON document at " url " has no version at " (pr-str path) ".")
+   :facts [(str "The path exists as far as " (pr-str found))
+           (str "Keys there: " (if (seq keys) (str/join ", " keys) "none"))]
+   :advice ["Fix :version under :source to the path of the version in the document."
+            (str "Inspect the document with: curl --silent '" url "' | jq .")]})
+
 (defmethod explain :usage [_ _]
   {:summary "The command line is incomplete."
    :facts []

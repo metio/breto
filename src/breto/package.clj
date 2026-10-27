@@ -18,7 +18,7 @@
             archive-suffixes)
       :raw))
 
-(def ^:private source-kinds #{:github :gitlab :text})
+(def ^:private source-kinds #{:github :gitlab :text :json})
 
 (defn source-kind [{:keys [source]}]
   (let [kinds (filter source-kinds (keys source))]
@@ -41,6 +41,11 @@
 
     (nil? (source-kind pkg))
     (conj (str ":source must have exactly one of " (str/join ", " (sort source-kinds))))
+
+    (and (= :json (source-kind pkg))
+         (not (and (vector? (:version source)) (seq (:version source))
+                   (every? #(or (keyword? %) (string? %) (nat-int? %)) (:version source)))))
+    (conj ":source {:json URL} needs :version, a path of keys and indices to the version, e.g. [:releases 0 :version]")
 
     (and (:tag source) (not= :github (source-kind pkg)))
     (conj ":source :tag is only supported for :github")

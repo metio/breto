@@ -35,6 +35,27 @@
 (defn- gitlab-latest-url [project]
   (gitlab-api project "/releases/permalink/latest"))
 
+(defn json-version
+  "The value at the :version path of a :json source in the parsed document
+  `doc`. A missing value names the deepest part of the path that exists."
+  [{:keys [source name]} doc]
+  (let [path (:version source)
+        step (fn [node k] (if (nat-int? k)
+                            (when (sequential? node) (get (vec node) k))
+                            (when (map? node) (get node (if (keyword? k) (clojure.core/name k) k)))))
+        found (reductions step doc path)
+        value (last found)]
+    (if (or (string? value) (number? value))
+      (str value)
+      (let [depth (count (take-while some? (rest found)))
+            node (nth found depth)]
+        (throw (ex-info (str name ": no version at " (pr-str path) " in " (:json source))
+                        {:breto/problem :json-path :package name :url (:json source) :path path
+                         :found (vec (take depth path))
+                         :keys (cond (map? node) (vec (sort (keys node)))
+                                     (sequential? node) [(str (count node) " entries")]
+                                     :else [])}))))))
+
 (defn latest
   "The tag and version of the newest release of `pkg`."
   [{:keys [source] :as pkg} {:keys [get-text] :as io}]
@@ -47,7 +68,8 @@
     :gitlab (let [url (gitlab-latest-url (:gitlab source))]
               (tagged pkg (or (get (json/parse-string (get-text url {})) "tag_name")
                               (throw (ex-info (str "no tag_name in " url) {:breto/problem :no-release :url url})))))
-    :text (tagged pkg (str/trim (get-text (:text source) {})))))
+    :text (tagged pkg (str/trim (get-text (:text source) {})))
+    :json (tagged pkg (json-version pkg (json/parse-string (get-text (:json source) {"Accept" "application/json"}))))))
 
 (defn- release-tags
   "Tags of the published, non-prerelease releases of `pkg`, or nil for a

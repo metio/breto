@@ -3,6 +3,7 @@
 
 (ns breto.registry-test
   (:require [babashka.fs :as fs]
+            [breto.package :as package]
             [breto.registry :as registry]
             [clojure.test :refer [deftest is]]))
 
@@ -23,3 +24,11 @@
 (deftest unknown-packages-are-reported
   (is (thrown-with-msg? clojure.lang.ExceptionInfo #"unknown package nope"
                         (registry/lookup {} "nope"))))
+
+(deftest jetbrains-idea-links-its-command-and-icon
+  (let [pkg (get (registry/load-registry ["packages"]) "jetbrains-idea")
+        artifact (package/artifact pkg {:tag "2026.2.3" :version "2026.2.3"})]
+    (is (= "https://download.jetbrains.com/idea/idea-2026.2.3.tar.gz" (:url artifact)))
+    (is (= "https://download.jetbrains.com/idea/idea-2026.2.3.tar.gz.sha256" (:checksum-url artifact)))
+    (is (= {"jetbrains-idea" "bin/idea"} (:bins pkg)))
+    (is (= {"~/.local/bin/jetbrains-idea.svg" "bin/idea.svg"} (:links pkg)))))
