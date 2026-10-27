@@ -89,6 +89,26 @@
               "These are usually renamed or dropped packages. Delete their directories once nothing links into them.")
        (check :ok "Every package in the store has a definition" store))]))
 
+(defn unverified-check
+  "Configured packages whose definition installs some versions without
+  verification, with the boundary below which it does."
+  [{:keys [packages]} registry]
+  (let [exempt (for [name packages
+                     :let [pkg (get registry name)]
+                     :when pkg
+                     :let [scope (if (false? (:verify pkg))
+                                   "every version"
+                                   (some #(when (false? (get-in % [:package :verify]))
+                                            (str "versions before " (:before %)))
+                                         (:history pkg)))]
+                     :when scope]
+                 (str name " (" scope ")"))]
+    (if (seq exempt)
+      (check :warn "Some packages install without verification" (str/join ", " exempt)
+             "Their upstreams publish neither GitHub digests nor checksums for these versions."
+             "Remove :verify false from a definition once upstream publishes either.")
+      (check :ok "Every configured package is verified" ""))))
+
 (defn github-check [io]
   (try
     (let [{:keys [rate]} (json/parse-string ((:get-text io) "https://api.github.com/rate_limit"
@@ -134,6 +154,7 @@
           (config-check config-path config registry)
           (store-check config registry)
           [(unconfigured-check config)
+           (unverified-check config registry)
            (github-check io)]
           (last-run-checks (report/load-runs))))
 

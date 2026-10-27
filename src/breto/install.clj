@@ -98,13 +98,16 @@
 
 (defn install!
   "Installs `pkg` at `version` (latest when nil) and activates it unless
-  `:activate?` is false. Returns {:version v :installed? bool}. Failures carry
+  `:activate?` is false. The download is verified unless `verify?` is false
+  or the definition for that version says `:verify false`. Returns
+  {:version v :installed? bool :verified? bool}. Failures carry
   the stage and release they happened in."
   [config io pkg {:keys [version activate? verify?] :or {activate? true verify? true}}]
   (let [context {:package (:name pkg) :repo (package/repo pkg) :source (:source pkg)}
         release (staged io :resolve context #(resolve-release pkg io version))
         version (:version release)
         pkg (package/at pkg version)
+        verify? (and verify? (:verify pkg true))
         artifact (package/artifact pkg release)
         context (assoc context :version version :tag (:tag release) :asset (:asset artifact)
                        :url (:url artifact) :checksum-url (:checksum-url artifact)
@@ -133,7 +136,7 @@
               (fs/delete package-dir))))))
     (when activate?
       (staged io :activate context #(store/activate! config pkg bin-paths version)))
-    {:version version :installed? installed?}))
+    {:version version :installed? installed? :verified? (and installed? verify?)}))
 
 (defn use!
   "Activates an already installed version."

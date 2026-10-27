@@ -47,3 +47,12 @@
     (is (str/includes? text "[OK]   fine"))
     (is (not (str/includes? text "no\n")))
     (is (str/includes? text "[FAIL] broken\n       why\n       - fix it"))))
+
+(deftest unverified-packages-are-listed-with-their-scope
+  (let [registry {"airmux" {:history [{:before "0.2.4" :package {:verify false}}]}
+                  "raw" {:verify false}
+                  "kind" {}}
+        check (doctor/unverified-check {:packages ["airmux" "raw" "kind"]} registry)]
+    (is (= :warn (:level check)))
+    (is (= "airmux (versions before 0.2.4), raw (every version)" (:detail check))))
+  (is (= :ok (:level (doctor/unverified-check {:packages ["kind"]} {"kind" {}})))))

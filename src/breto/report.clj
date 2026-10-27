@@ -43,9 +43,9 @@
                       (when (seq advice) ["  What to do:"])
                       (map #(str "  - " %) advice)))))
 
-(defn- line [{:keys [package status version from links]}]
+(defn- line [{:keys [package status version from links unverified]}]
   (case status
-    :installed (str "[OK] " package " " version " installed")
+    :installed (str "[OK] " package " " version " installed" (when unverified " without verification"))
     :removed (str "[OK] " package " removed" (when (seq links) (str " with " (count links) " links")))
     :would-remove (str package " would be removed" (when (seq links) (str " with links " (str/join ", " links))))
     :outdated (str package "\t" (or from "-") " -> " version)

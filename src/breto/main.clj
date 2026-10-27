@@ -145,8 +145,9 @@ Every failure is explained with what to do; --debug adds each request and stack 
              (println (str "[WARN] could not save the report to " (report/state-path) ": " (ex-message e))))))
     (if (some #(= :failed (:status %)) results) 1 0)))
 
-(defn- installed-result [name {:keys [version installed?]}]
-  {:package name :version version :status (if installed? :installed :current)})
+(defn- installed-result [name {:keys [version installed? verified?]}]
+  (cond-> {:package name :version version :status (if installed? :installed :current)}
+    (and installed? (not verified?)) (assoc :unverified true)))
 
 (defn- cmd-list [cfg reg _]
   (doseq [name (store/installed-packages cfg)]

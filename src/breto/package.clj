@@ -64,7 +64,10 @@
     (conj ":bins must name at least one binary for the :binary layout")
 
     (not (and (sequential? (:skip pkg [])) (every? string? (:skip pkg []))))
-    (conj ":skip must be a vector of version strings")))
+    (conj ":skip must be a vector of version strings")
+
+    (not (boolean? (:verify pkg true)))
+    (conj ":verify must be true or false")))
 
 (defn- complete
   "Fills in defaults and validates one flat definition."

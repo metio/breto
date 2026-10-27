@@ -110,6 +110,7 @@ A package is a file `<name>.edn` in a registry directory, and its file name is t
 | `:bins` | Command name to path inside the unpacked archive. | the package name, or the asset itself when it is not an archive |
 | `:links` | Further symlinks: target path to path inside the installed version. | none |
 | `:history` | Definitions for older versions; see below. | none |
+| `:verify` | `false` installs without verification, for releases whose upstream publishes neither GitHub digests nor checksums. Usually set in a `:history` entry, so newer releases are still verified. | `true` |
 | `:skip` | Versions never installed as the latest, e.g. a release without a build for this platform. When the latest release is listed, the newest unlisted one is installed instead, which costs one request listing the releases. An explicitly requested or pinned version is installed regardless. | none |
 
 Templates can use `{name}`, `{tag}`, `{version}`, `{repo}` and, except in `:asset` itself, `{asset}`. Files ending in `.tar.gz`, `.tgz`, `.tar.xz`, `.txz`, `.tar.bz2`, `.tbz2`, `.tar` or `.zip` are unpacked; anything else is the binary itself.
@@ -175,6 +176,8 @@ Projects rename assets, change archive formats and move between hosts. The top l
  :history [{:before "0.0.13" :asset "iamb-x86_64-unknown-linux-musl-binary.zip" :strip 0}
            {:before "0.0.12" :asset "iamb-x86_64-unknown-linux-musl.tgz" :strip 1}]}
 ```
+
+`{:before "0.5.1" :verify false}` installs releases older than 0.5.1 without verification, because GitHub only records asset digests since mid-2025, while 0.5.1 and newer stay verified. The report marks every install made this way.
 
 Version 0.0.11 installs `iamb-x86_64-unknown-linux-musl.tgz` with one leading component stripped, and 0.13.1 uses the top level. A project that moved from GitLab to GitHub keeps one package name with an entry such as `{:before "2.0.0" :source {:gitlab "gitlab.com/group/project"} :url "…"}`, and both old and new versions stay installable. Defaults such as the GitHub download URL are worked out separately for each entry.
 

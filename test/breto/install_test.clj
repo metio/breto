@@ -69,7 +69,7 @@
   (let [cfg (config)
         io (serve-tool "1.0.0" "1.1.0")
         result (install/install! cfg io tool {})]
-    (is (= {:version "1.1.0" :installed? true} result))
+    (is (= {:version "1.1.0" :installed? true :verified? true} result))
     (is (= "1.1.0" (store/current-version cfg "tool")))
     (is (fs/executable? (fs/path (:bin-dir cfg) "tool")))
     (is (= "#!/bin/sh\necho 1.1.0\n" (slurp (str (fs/path (:bin-dir cfg) "tool")))))))
@@ -78,7 +78,7 @@
   (let [cfg (config)
         io (serve-tool "1.0.0")]
     (install/install! cfg io tool {})
-    (is (= {:version "1.0.0" :installed? false}
+    (is (= {:version "1.0.0" :installed? false :verified? false}
            (install/install! cfg (assoc io :download! (fn [& _] (throw (ex-info "downloaded again" {}))))
                              tool {})))))
 
@@ -202,7 +202,7 @@
         io (fake-io {"https://github.com/old/moved/releases/download/1.5/moved.tgz" file}
                     {"https://github.com/old/moved/releases/download/1.5/SUMS"
                      (str (checksum/digest "SHA-256" file) "  moved.tgz")})]
-    (is (= {:version "1.5" :installed? true} (install/install! cfg io moved {:version "1.5"})))
+    (is (= {:version "1.5" :installed? true :verified? true} (install/install! cfg io moved {:version "1.5"})))
     (is (= "m" (slurp (str (fs/path (:bin-dir cfg) "moved")))))))
 
 (deftest rolling-releases-install-the-newest-build
@@ -217,7 +217,7 @@
                                              :digest (str "sha256:" (checksum/digest "SHA-256" file))}
                                             {:name "nightly-20261027+aaa.tar.gz" :created_at "2026-10-27T08:00:00Z"}
                                             {:name "nightly.tar.gz" :created_at "2026-10-27T12:00:01Z"}])]))]
-    (is (= {:version "20261027+bbb" :installed? true} (install/install! cfg io nightly {})))
+    (is (= {:version "20261027+bbb" :installed? true :verified? true} (install/install! cfg io nightly {})))
     (is (= "n" (slurp (str (fs/path (:store cfg) "nightly" "current" "nightly.sh")))))))
 
 (def ^:private raw-tool
@@ -237,7 +237,7 @@
                         "{\"tag_name\":\"v0.33.0\"}")
             :download! (fn [& _] (throw (ex-info "downloaded" {})))}]
     (stored-version! cfg "kind" "0.33.0" {"kind" "stored"})
-    (is (= {:version "0.33.0" :installed? false} (install/install! cfg io raw-tool {})))
+    (is (= {:version "0.33.0" :installed? false :verified? false} (install/install! cfg io raw-tool {})))
     (is (= "stored" (slurp (str (fs/path (:bin-dir cfg) "kind")))))))
 
 (deftest incomplete-versions-are-reinstalled
@@ -249,7 +249,7 @@
                     {"https://github.com/kubernetes-sigs/kind/releases/latest" "{\"tag_name\":\"v0.33.0\"}"
                      (str url ".sha256sum") (str (checksum/digest "SHA-256" file) "  kind-linux-amd64")})]
     (stored-version! cfg "kind" "0.33.0" {"README" "no binary"})
-    (is (= {:version "0.33.0" :installed? true} (install/install! cfg io raw-tool {})))
+    (is (= {:version "0.33.0" :installed? true :verified? true} (install/install! cfg io raw-tool {})))
     (is (= ["kind"] (map (comp str fs/file-name) (fs/list-dir (fs/path (:store cfg) "kind" "0.33.0")))))
     (is (= "fresh" (slurp (str (fs/path (:bin-dir cfg) "kind")))))))
 
@@ -303,3 +303,14 @@
                         (if (str/includes? url "api.github.com") "[{\"tag_name\":\"v0.33.0\"}]" "{\"tag_name\":\"v0.33.0\"}"))}]
     (is (= :all-skipped (try (install/resolve-release (assoc raw-tool :skip ["0.33.0"]) io nil)
                              (catch clojure.lang.ExceptionInfo e (:breto/problem (ex-data e))))))))
+
+(deftest history-can-exempt-old-releases-from-verification
+  (let [cfg (config)
+        pkg (package/normalize (assoc raw-tool :history [{:before "0.34.0" :verify false}]))
+        file (fs/path *root* "kind-linux-amd64")
+        _ (spit (str file) "old")
+        url "https://github.com/kubernetes-sigs/kind/releases/download/v0.33.0/kind-linux-amd64"
+        io (fake-io {url file} {"https://github.com/kubernetes-sigs/kind/releases/latest" "{\"tag_name\":\"v0.33.0\"}"})]
+    (is (= {:version "0.33.0" :installed? true :verified? false} (install/install! cfg io pkg {})))
+    (is (thrown? clojure.lang.ExceptionInfo
+                 (install/install! cfg io pkg {:version "0.34.0"})))))
