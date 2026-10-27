@@ -16,12 +16,13 @@
   (str (fs/path (env-dir "XDG_CONFIG_HOME" ".config") "breto" "config.edn")))
 
 (defn defaults []
-  {:store (str (fs/path (env-dir "XDG_DATA_HOME" ".local/share") "installations" "software"))
+  {:store (str (fs/path (env-dir "XDG_DATA_HOME" ".local/share") "breto" "installations"))
    :bin-dir (str (fs/path (System/getProperty "user.home") ".local" "bin"))
    :registries []
    :packages []
    :pins {}
-   :keep 3})
+   :keep 3
+   :prune false})
 
 (defn- expand-home [s]
   (str/replace-first s #"^~(?=/|$)" (System/getProperty "user.home")))

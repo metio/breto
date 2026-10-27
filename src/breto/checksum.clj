@@ -54,8 +54,17 @@
   (let [want (str/lower-case want)
         algorithm (algorithm-by-hex-length (count want))]
     (when-not algorithm
-      (throw (ex-info (str "unrecognised checksum for " asset ": " want) {:asset asset})))
+      (throw (ex-info (str "unrecognised checksum for " asset ": " want)
+                      {:breto/problem :checksum-format :asset asset :checksum want})))
     (let [have (digest algorithm file)]
       (when-not (= want have)
         (throw (ex-info (str "checksum mismatch for " asset ": expected " want ", got " have)
-                        {:asset asset :expected want :actual have}))))))
+                        {:breto/problem :checksum-mismatch :asset asset :expected want :actual have}))))))
+
+(defn listed-names
+  "The file names a checksum listing mentions."
+  [text]
+  (->> (str/split-lines text)
+       (map #(str/split (str/trim %) #"\s+"))
+       (keep (fn [[h & more]] (when (and (hex? h) (seq more)) (listed-name (last more)))))
+       vec))

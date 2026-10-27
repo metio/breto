@@ -23,7 +23,8 @@
                            {:version (.group m "version") :created created})))
                      (:assets (github/release io (:github source) tag)))]
     (when (empty? builds)
-      (throw (ex-info (str name ": no asset in release " tag " matches " asset) {:package name})))
+      (throw (ex-info (str name ": no asset in release " tag " matches " asset)
+                      {:breto/problem :rolling-no-match :package name :repo (:github source) :tag tag :asset asset})))
     {:tag tag :version (:version (last (sort-by :created builds)))}))
 
 (defn- gitlab-latest-url [project]
@@ -39,8 +40,8 @@
               (latest-rolling pkg io)
               (let [url (str "https://github.com/" (:github source) "/releases/latest")]
                 (tagged pkg (or (get (json/parse-string (get-text url {"Accept" "application/json"})) "tag_name")
-                                (throw (ex-info (str "no tag_name in " url) {:url url}))))))
+                                (throw (ex-info (str "no tag_name in " url) {:breto/problem :no-release :url url}))))))
     :gitlab (let [url (gitlab-latest-url (:gitlab source))]
               (tagged pkg (or (get (json/parse-string (get-text url {})) "tag_name")
-                              (throw (ex-info (str "no tag_name in " url) {:url url})))))
+                              (throw (ex-info (str "no tag_name in " url) {:breto/problem :no-release :url url})))))
     :text (tagged pkg (str/trim (get-text (:text source) {})))))

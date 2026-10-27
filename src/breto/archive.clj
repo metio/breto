@@ -3,7 +3,18 @@
 
 (ns breto.archive
   (:require [babashka.fs :as fs]
-            [babashka.process :as process]))
+            [babashka.process :as process]
+            [clojure.string :as str]))
+
+(defn listing
+  "Relative paths of the regular files under `dir`, at most `limit` of them."
+  [dir limit]
+  (->> (fs/glob dir "**" {:hidden true})
+       (filter fs/regular-file?)
+       (map #(str (fs/relativize dir %)))
+       sort
+       (take limit)
+       vec))
 
 (defn- subdirectories [dir]
   (filter #(fs/directory? % {:nofollow-links true}) (fs/list-dir dir)))
@@ -29,10 +40,14 @@
     (let [scratch (fs/create-temp-dir {:dir (fs/parent dest) :prefix ".unpack-"})]
       (try
         (case archive-type
-          :tar (do (process/shell {:out :string :err :string}
-                                  "tar" "--extract" "--file" (str file) "--directory" (str scratch)
-                                  (str "--strip-components=" strip))
-                   (strip! scratch dest 0))
+          :tar (let [{:keys [exit err]} (process/shell {:out :string :err :string :continue true}
+                                                       "tar" "--extract" "--file" (str file)
+                                                       "--directory" (str scratch)
+                                                       (str "--strip-components=" strip))]
+                 (when-not (zero? exit)
+                   (throw (ex-info (str "tar could not unpack " (fs/file-name file) ": " (str/trim err))
+                                   {:breto/problem :unpack-failed :file (str (fs/file-name file)) :stderr err})))
+                 (strip! scratch dest 0))
           :zip (do (fs/unzip file scratch)
                    (strip! scratch dest strip)))
         (finally

@@ -16,8 +16,8 @@ breto runs on [babashka](https://babashka.org/). Unpacking uses GNU `tar` togeth
 Clone the repository and link the launcher onto your `PATH`:
 
 ```shell
-git clone https://github.com/metio/breto.git ~/.local/share/breto
-ln -s ~/.local/share/breto/breto ~/.local/bin/breto
+git clone https://github.com/metio/breto.git ~/src/breto
+ln -s ~/src/breto/breto ~/.local/bin/breto
 ```
 
 The launcher runs `bb` against the `bb.edn` next to it, so the clone can live anywhere.
@@ -27,11 +27,12 @@ The launcher runs `bb` against the `bb.edn` next to it, so the clone can live an
 breto reads `$XDG_CONFIG_HOME/breto/config.edn` (`~/.config/breto/config.edn` by default), or the file given with `--config`. Every key is optional:
 
 ```clojure
-{:registries ["~/.local/share/breto/packages" "~/.config/breto/packages"]
+{:registries ["~/src/breto/packages" "~/.config/breto/packages"]
  :packages ["helm" "kind" "kubectl"]
  :pins {"helm" "3.19.0"}
  :keep 3
- :store "~/.local/share/installations/software"
+ :prune true
+ :store "~/.local/share/breto/installations"
  :bin-dir "~/.local/bin"}
 ```
 
@@ -41,7 +42,8 @@ breto reads `$XDG_CONFIG_HOME/breto/config.edn` (`~/.config/breto/config.edn` by
 | `:packages` | What `update` and `outdated` act on when no package is named. | none |
 | `:pins` | Versions `update` installs instead of the latest. | none |
 | `:keep` | Versions per package that `gc` keeps. | `3` |
-| `:store` | Where versions are unpacked, as `<store>/<package>/<version>`. | `$XDG_DATA_HOME/installations/software` |
+| `:prune` | Whether `gc` without arguments also uninstalls every package `:packages` does not list. | `false` |
+| `:store` | Where versions are unpacked, as `<store>/<package>/<version>`. | `$XDG_DATA_HOME/breto/installations` |
 | `:bin-dir` | Where binaries are linked. | `~/.local/bin` |
 
 Set `GITHUB_TOKEN` or `GH_TOKEN` to raise GitHub's API limit from 60 requests an hour. breto calls the API once for each download it verifies and once for each lookup of a rolling release.
@@ -55,14 +57,31 @@ Set `GITHUB_TOKEN` or `GH_TOKEN` to raise GitHub's API limit from 60 requests an
 | `breto use PKG VERSION` | Activates a version that is already installed. |
 | `breto update [PKG...]` | Installs and activates the latest, or pinned, version. |
 | `breto outdated [PKG...]` | Packages whose latest release is not the active version. |
-| `breto gc [PKG...] [--keep N]` | Deletes all but the N most recently installed versions. The active version is always kept. |
+| `breto gc [PKG...] [--keep N]` | Deletes all but the N most recently installed versions. The active version is always kept. With `:prune true` and no package named, also uninstalls unconfigured packages. |
+| `breto uninstall PKG...` | Deletes a package with every link into it. |
 | `breto info PKG` | The package definition after defaults are applied. |
+| `breto report` | The report of the last run of each command. |
+| `breto doctor` | Checks tools, directories, configuration, store, GitHub API quota and the last runs. |
 
-`install` and `update` refuse a download they cannot verify. `--no-verify` skips verification entirely.
+Options follow the arguments, as in `breto uninstall helm --force`.
+
+`install` and `update` refuse a download they cannot verify. `--no-verify` skips verification entirely. `gc` and `uninstall` take `--dry-run` to list what they would delete.
 
 Each package directory has a `current` symlink pointing at the active version, and the links in the bin directory resolve through it. Switching versions replaces `current` with an atomic rename, so a command never sees a half-switched package. A version is unpacked into a hidden staging directory and renamed into place once complete, so an interrupted install never looks installed.
 
 A daily or weekly `breto update && breto gc` from a systemd timer or cron job keeps everything current.
+
+## Uninstalling
+
+`breto uninstall PKG` removes the links in the bin directory and the package's extra `:links` that resolve into the package, then the package directory. Links are found by where they point, so a package whose definition was renamed or deleted can still be removed. A package still listed in `:packages` is refused unless `--force` is given, because the next `update` installs it again.
+
+With a configuration that is managed declaratively, for example from dotfiles, `:prune true` turns removing a name from `:packages` into an uninstall: the next `breto gc` deletes it. A package is kept, and the run fails with an explanation, while one of its links carries a command that a configured package provides. That happens when a command moves to a package of another name: `gc` waits until `update` has installed the new package and taken the link over. Run `update` before `gc` so this resolves in one run.
+
+## Diagnosing failures
+
+`install`, `update`, `outdated`, `gc` and `uninstall` keep going past a failing package. Each failure is reported with the stage it happened in (resolve, download, verify, unpack, place or activate), the facts breto could establish, and what to do about it. For a download that returns 404, for example, breto lists the release's assets closest to the expected name and suggests an `:asset` template, or a `:history` entry when only newer releases changed their naming. Rate limits, moved repositories, tag prefixes, archive layouts and missing checksums get the same treatment. The exit code is 1 when any package failed.
+
+The last run of each command is saved to `$XDG_STATE_HOME/breto/last-run.edn`, so `breto report` shows what a scheduled run did after the fact. `breto doctor` checks the environment breto depends on. `--debug` adds every HTTP request and the stack trace of each failure.
 
 ## Package definitions
 

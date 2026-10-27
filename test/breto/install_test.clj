@@ -69,7 +69,7 @@
         io (serve-tool "1.0.0" "1.1.0")
         result (install/install! cfg io tool {})]
     (is (= {:version "1.1.0" :installed? true} result))
-    (is (= "1.1.0" (store/current-version cfg "tool" ["tool"])))
+    (is (= "1.1.0" (store/current-version cfg "tool")))
     (is (fs/executable? (fs/path (:bin-dir cfg) "tool")))
     (is (= "#!/bin/sh\necho 1.1.0\n" (slurp (str (fs/path (:bin-dir cfg) "tool")))))))
 
@@ -98,7 +98,7 @@
     (install/install! cfg io tool {:version "1.0.0"})
     (install/install! cfg io tool {})
     (install/use! cfg tool "1.0.0")
-    (is (= "1.0.0" (store/current-version cfg "tool" ["tool"])))
+    (is (= "1.0.0" (store/current-version cfg "tool")))
     (is (= "#!/bin/sh\necho 1.0.0\n" (slurp (str (fs/path (:bin-dir cfg) "tool")))))
     (testing "an unknown version is refused"
       (is (thrown-with-msg? clojure.lang.ExceptionInfo #"not installed"
@@ -129,15 +129,6 @@
     (install/install! cfg io editor {:verify? false})
     (is (fs/executable? (fs/path (:bin-dir cfg) "ed")))
     (is (= "dark" (slurp (str (fs/path *root* "runtime" "themes" "dark.toml")))))))
-
-(deftest current-version-adopts-legacy-bin-links
-  (let [cfg (config)
-        legacy (fs/path (:store cfg) "tool" "0.9.0" "tool")]
-    (fs/create-dirs (fs/parent legacy))
-    (spit (str legacy) "old")
-    (fs/create-dirs (:bin-dir cfg))
-    (fs/create-sym-link (fs/path (:bin-dir cfg) "tool") legacy)
-    (is (= "0.9.0" (store/current-version cfg "tool" ["tool"])))))
 
 (deftest gc-keeps-the-newest-and-the-active-version
   (let [versions [{:version "4"} {:version "3"} {:version "2"} {:version "1"}]]
@@ -227,3 +218,36 @@
                                             {:name "nightly.tar.gz" :created_at "2026-10-27T12:00:01Z"}])]))]
     (is (= {:version "20261027+bbb" :installed? true} (install/install! cfg io nightly {})))
     (is (= "n" (slurp (str (fs/path (:store cfg) "nightly" "current" "nightly.sh")))))))
+
+(def ^:private raw-tool
+  (package/normalize {:name "kind" :source {:github "kubernetes-sigs/kind"}
+                      :asset "kind-linux-amd64" :checksum "{asset}.sha256sum"}))
+
+(defn- stored-version! [cfg name version files]
+  (doseq [[file content] files]
+    (let [path (fs/path (:store cfg) name version file)]
+      (fs/create-dirs (fs/parent path))
+      (spit (str path) content))))
+
+(deftest present-versions-are-activated-without-a-download
+  (let [cfg (config)
+        io {:get-text (fn [url _]
+                        (is (= "https://github.com/kubernetes-sigs/kind/releases/latest" url))
+                        "{\"tag_name\":\"v0.33.0\"}")
+            :download! (fn [& _] (throw (ex-info "downloaded" {})))}]
+    (stored-version! cfg "kind" "0.33.0" {"kind" "stored"})
+    (is (= {:version "0.33.0" :installed? false} (install/install! cfg io raw-tool {})))
+    (is (= "stored" (slurp (str (fs/path (:bin-dir cfg) "kind")))))))
+
+(deftest incomplete-versions-are-reinstalled
+  (let [cfg (config)
+        file (fs/path *root* "kind-linux-amd64")
+        _ (spit (str file) "fresh")
+        url "https://github.com/kubernetes-sigs/kind/releases/download/v0.33.0/kind-linux-amd64"
+        io (fake-io {url file}
+                    {"https://github.com/kubernetes-sigs/kind/releases/latest" "{\"tag_name\":\"v0.33.0\"}"
+                     (str url ".sha256sum") (str (checksum/digest "SHA-256" file) "  kind-linux-amd64")})]
+    (stored-version! cfg "kind" "0.33.0" {"README" "no binary"})
+    (is (= {:version "0.33.0" :installed? true} (install/install! cfg io raw-tool {})))
+    (is (= ["kind"] (map (comp str fs/file-name) (fs/list-dir (fs/path (:store cfg) "kind" "0.33.0")))))
+    (is (= "fresh" (slurp (str (fs/path (:bin-dir cfg) "kind")))))))

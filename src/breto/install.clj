@@ -35,21 +35,39 @@
             (when-not (:checksum-url artifact)
               (throw e)))))
       (when-let [url (:checksum-url artifact)]
-        (or (checksum/expected ((:get-text io) url {}) (:asset artifact))
-            (throw (ex-info (str "no entry for " (:asset artifact) " in " url) {:url url}))))))
+        (let [text ((:get-text io) url {})]
+          (or (checksum/expected text (:asset artifact))
+              (throw (ex-info (str "no entry for " (:asset artifact) " in " url)
+                              {:breto/problem :checksum-entry-missing :url url :asset (:asset artifact)
+                               :entries (checksum/listed-names text)})))))))
+
+(defn with-stage
+  "Runs `f`, adding `stage` and `context` to anything it throws. Data from the
+  failure itself wins, so the innermost stage is the one reported."
+  [stage context f]
+  (try
+    (f)
+    (catch clojure.lang.ExceptionInfo e
+      (throw (ex-info (ex-message e) (merge context {:stage stage} (ex-data e)) e)))
+    (catch java.io.IOException e
+      (throw (ex-info (str (or (ex-message e) (.getName (class e))))
+                      (merge context {:stage stage :breto/problem :filesystem
+                                      :exception (.getName (class e)) :path (ex-message e)})
+                      e)))))
 
 (defn- fetch!
   "Downloads and verifies the artifact into `work`, returning the file."
-  [pkg io release artifact work verify?]
+  [pkg io release artifact work verify? context]
   (let [file (fs/path work (:asset artifact))]
-    ((:download! io) (:url artifact) file)
+    (with-stage :download context #((:download! io) (:url artifact) file))
     (when verify?
-      (if-let [want (expected-hash pkg io release artifact)]
-        (checksum/verify! file (:asset artifact) want)
-        (throw (ex-info (str (:name pkg) ": nothing to verify " (:asset artifact)
-                             " against; GitHub has no digest for it and the package names no :checksum."
-                             " Use --no-verify to install it anyway.")
-                        {:package (:name pkg) :asset (:asset artifact)}))))
+      (with-stage :verify context
+        #(if-let [want (expected-hash pkg io release artifact)]
+           (checksum/verify! file (:asset artifact) want)
+           (throw (ex-info (str (:name pkg) ": nothing to verify " (:asset artifact)
+                                " against; GitHub has no digest for it and the package names no :checksum."
+                                " Use --no-verify to install it anyway.")
+                           {:breto/problem :no-checksum :package (:name pkg) :asset (:asset artifact)})))))
     file))
 
 (defn- place!
@@ -58,48 +76,61 @@
   (if (= :tree layout)
     (fs/move unpacked dest)
     (do (fs/create-dirs dest)
-        (doseq [path (distinct (vals (:bins artifact)))]
+        (doseq [[path stored] (package/stored-files pkg artifact)]
           (let [src (fs/path unpacked path)]
             (when-not (fs/regular-file? src)
               (throw (ex-info (str (:name pkg) ": " path " is not in " (:asset artifact))
-                              {:package (:name pkg) :path path})))
-            (fs/copy src (fs/path dest (package/file-name path)) {:replace-existing true})))))
+                              {:breto/problem :path-missing :package (:name pkg) :path path
+                               :asset (:asset artifact) :strip (:strip pkg)
+                               :listing (archive/listing unpacked 200)})))
+            (fs/copy src (fs/path dest stored))))))
   (doseq [path (distinct (vals (package/bin-paths pkg artifact)))]
     (fs/set-posix-file-permissions (fs/path dest path) "rwxr-xr-x")))
 
 (defn install!
   "Installs `pkg` at `version` (latest when nil) and activates it unless
-  `:activate?` is false. Returns {:version v :installed? bool}."
+  `:activate?` is false. Returns {:version v :installed? bool}. Failures carry
+  the stage and release they happened in."
   [config io pkg {:keys [version activate? verify?] :or {activate? true verify? true}}]
-  (let [release (resolve-release pkg io version)
+  (let [context {:package (:name pkg) :repo (package/repo pkg) :source (:source pkg)}
+        release (with-stage :resolve context #(resolve-release pkg io version))
         version (:version release)
         pkg (package/at pkg version)
         artifact (package/artifact pkg release)
+        context (assoc context :version version :tag (:tag release) :asset (:asset artifact)
+                       :url (:url artifact) :checksum-url (:checksum-url artifact)
+                       :repo (package/repo pkg) :source (:source pkg))
         package-dir (store/package-dir config (:name pkg))
-        installed? (not (store/installed? config (:name pkg) version))]
+        bin-paths (package/bin-paths pkg artifact)
+        installed? (not (store/installed? config (:name pkg) version (vals bin-paths)))]
     (when installed?
-      (fs/create-dirs package-dir)
+      (with-stage :place context #(fs/create-dirs package-dir))
       (let [work (fs/create-temp-dir {:dir package-dir :prefix ".work-"})]
         (try
-          (let [file (fetch! pkg io release artifact work verify?)
+          (let [file (fetch! pkg io release artifact work verify? context)
                 unpacked (fs/path work "unpacked")
                 staging (fs/path package-dir (str ".staging-" version))]
-            (archive/unpack! file (:archive artifact) (:asset artifact) unpacked (:strip pkg))
-            (fs/delete-tree staging)
-            (place! pkg artifact unpacked staging)
-            (fs/move staging (store/version-dir config (:name pkg) version) {:atomic-move true}))
+            (with-stage :unpack context
+              #(archive/unpack! file (:archive artifact) (:asset artifact) unpacked (:strip pkg)))
+            (with-stage :place context
+              #(do (fs/delete-tree staging)
+                   (place! pkg artifact unpacked staging)
+                   (fs/delete-tree (store/version-dir config (:name pkg) version))
+                   (fs/move staging (store/version-dir config (:name pkg) version) {:atomic-move true}))))
           (finally
             (fs/delete-tree work)))))
     (when activate?
-      (store/activate! config pkg (package/bin-paths pkg artifact) version))
+      (with-stage :activate context #(store/activate! config pkg bin-paths version)))
     {:version version :installed? installed?}))
 
 (defn use!
   "Activates an already installed version."
   [config pkg version]
-  (when-not (store/installed? config (:name pkg) version)
-    (throw (ex-info (str (:name pkg) " " version " is not installed")
-                    {:package (:name pkg) :version version})))
   (let [pkg (package/at pkg version)
-        artifact (package/artifact pkg {:tag (package/tag-of-version pkg version) :version version})]
-    (store/activate! config pkg (package/bin-paths pkg artifact) version)))
+        artifact (package/artifact pkg {:tag (package/tag-of-version pkg version) :version version})
+        bin-paths (package/bin-paths pkg artifact)]
+    (when-not (store/installed? config (:name pkg) version (vals bin-paths))
+      (throw (ex-info (str (:name pkg) " " version " is not installed")
+                      {:breto/problem :not-installed :package (:name pkg) :version version
+                       :installed (mapv :version (store/versions config (:name pkg)))})))
+    (store/activate! config pkg bin-paths version)))

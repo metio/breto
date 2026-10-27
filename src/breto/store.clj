@@ -35,32 +35,25 @@
            (sort-by :modified >))
       [])))
 
-(defn installed? [config name version]
-  (fs/directory? (version-dir config name version)))
-
-(defn- version-in [config name target]
-  (let [dir (fs/normalize (fs/absolutize (package-dir config name)))
-        target (fs/normalize (fs/absolutize target))]
-    (when (and (fs/starts-with? target dir) (not= dir target))
-      (str (fs/file-name (fs/path dir (first (fs/relativize dir target))))))))
+(defn installed?
+  "Whether `version` is installed with every one of `paths` present. A
+  directory missing one of them is treated as not installed."
+  [config name version paths]
+  (let [dir (version-dir config name version)]
+    (and (fs/directory? dir)
+         (every? #(fs/exists? (fs/path dir %)) paths))))
 
 (defn current-version
-  "The active version of `name`: the target of its `current` link, or for an
-  install that predates that link, the version its first binary link points into."
-  [config name bin-links]
+  "The active version of `name`: the target of its `current` link."
+  [config name]
   (let [current (fs/path (package-dir config name) current-link)]
-    (if (fs/sym-link? current)
-      (str (fs/file-name (fs/read-link current)))
-      (some (fn [link]
-              (let [bin (fs/path (:bin-dir config) link)]
-                (when (fs/sym-link? bin)
-                  (version-in config name (fs/read-link bin)))))
-            bin-links))))
+    (when (fs/sym-link? current)
+      (str (fs/file-name (fs/read-link current))))))
 
-(defn- expand-home [s]
+(defn expand-home [s]
   (str/replace-first (str s) #"^~(?=/|$)" (System/getProperty "user.home")))
 
-(defn- link!
+(defn link!
   "Points `link` at `target`, swapping the old link out in one rename."
   [link target]
   (let [link (fs/path link)
@@ -92,3 +85,32 @@
 
 (defn remove-version! [config name version]
   (fs/delete-tree (version-dir config name version)))
+
+(defn- resolves-into? [dir link]
+  (and (fs/sym-link? link)
+       (fs/starts-with? (fs/canonicalize (fs/path (fs/parent link) (fs/read-link link))) dir)))
+
+(defn links-into
+  "The links in the bin directory, or among `extra-links`, that resolve into
+  the store directory of `name`, whatever definition created them."
+  [config name extra-links]
+  (let [dir (fs/canonicalize (package-dir config name))
+        bin-dir (:bin-dir config)]
+    (->> (concat (when (fs/directory? bin-dir) (fs/list-dir bin-dir))
+                 (map (comp fs/path expand-home) extra-links))
+         (filter #(resolves-into? dir %))
+         (map str)
+         distinct
+         sort)))
+
+(defn uninstall!
+  "Deletes `links`, then the store directory of `name`. Links go first so none
+  is left pointing at a deleted file."
+  [config name links]
+  (run! fs/delete links)
+  (fs/delete-tree (package-dir config name)))
+
+(defn prune-candidates
+  "Installed packages the configuration does not list."
+  [installed configured]
+  (remove (set configured) installed))

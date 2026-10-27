@@ -78,7 +78,7 @@
                                           (:name pkg))}))]
     (when-let [ps (seq (problems pkg))]
       (throw (ex-info (str "invalid package " (pr-str (:name pkg)) ": " (str/join "; " ps))
-                      {:package pkg :problems (vec ps)})))
+                      {:breto/problem :invalid-package :package (:name pkg) :problems (vec ps)})))
     pkg))
 
 (defn normalize
@@ -90,7 +90,8 @@
   (when-let [bad (seq (remove #(string? (:before %)) history))]
     (throw (ex-info (str "invalid package " (pr-str (:name definition))
                          ": every :history entry needs a :before version")
-                    {:entries (vec bad)})))
+                    {:breto/problem :invalid-package :package (:name definition)
+                     :problems ["every :history entry needs a :before version"]})))
   (let [base (dissoc definition :history)
         entries (sort #(version/compare-versions (:before %2) (:before %1)) history)
         variants (rest (reductions (fn [acc entry] (merge acc (dissoc entry :before))) base entries))]
@@ -112,7 +113,7 @@
   (if (str/starts-with? tag tag-prefix)
     (subs tag (count tag-prefix))
     (throw (ex-info (str name ": tag " tag " does not start with " (pr-str tag-prefix))
-                    {:tag tag :tag-prefix tag-prefix}))))
+                    {:breto/problem :tag-prefix :package name :tag tag :tag-prefix tag-prefix}))))
 
 (defn tag-of-version [{:keys [tag-prefix source] :as pkg} version]
   (if (rolling? pkg)
@@ -147,11 +148,29 @@
 (defn file-name [path]
   (subs path (inc (or (str/last-index-of path "/") -1))))
 
+(defn- stored-name
+  "The command name a binary is kept under: the command named like the file
+  itself when there is one, else the first of its commands by name."
+  [bins path]
+  (let [links (sort (keep (fn [[link p]] (when (= p path) link)) bins))
+        own (file-name path)]
+    (if (some #{own} links) own (first links))))
+
+(defn stored-files
+  "Path inside the unpacked archive to the name the binary layout keeps it
+  under. A package with a single binary keeps it under the package name;
+  several binaries are each kept once under one of their command names."
+  [{:keys [name]} {:keys [bins]}]
+  (let [paths (distinct (vals bins))]
+    (if (= 1 (count paths))
+      {(first paths) name}
+      (into {} (map (fn [path] [path (stored-name bins path)])) paths))))
+
 (defn bin-paths
-  "Link name to path inside an installed version directory. The binary layout
-  keeps each binary once, under its own file name; the tree layout keeps the
+  "Command name to path inside an installed version directory. The binary
+  layout keeps each binary under a command name; the tree layout keeps the
   whole archive."
-  [{:keys [layout]} {:keys [bins]}]
+  [{:keys [layout] :as pkg} {:keys [bins] :as artifact}]
   (if (= :binary layout)
-    (update-vals bins file-name)
+    (update-vals bins (stored-files pkg artifact))
     bins))

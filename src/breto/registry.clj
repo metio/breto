@@ -23,4 +23,5 @@
 
 (defn lookup [registry name]
   (or (get registry name)
-      (throw (ex-info (str "unknown package " name) {:package name}))))
+      (throw (ex-info (str "unknown package " name)
+                      {:breto/problem :unknown-package :package name :known (sort (keys registry))}))))

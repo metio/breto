@@ -79,10 +79,19 @@
 
 (deftest bin-paths-follow-the-layout
   (let [artifact {:bins {"hx" "hx" "kind" "kind-linux-amd64" "ansible" "bin/ansible-wrapper"}}]
-    (is (= {"hx" "hx" "kind" "kind-linux-amd64" "ansible" "ansible-wrapper"}
-           (package/bin-paths {:layout :binary} artifact)))
+    (is (= {"hx" "hx" "kind" "kind" "ansible" "ansible"}
+           (package/bin-paths {:name "x" :layout :binary} artifact)))
     (is (= {"hx" "hx" "kind" "kind-linux-amd64" "ansible" "bin/ansible-wrapper"}
-           (package/bin-paths {:layout :tree} artifact)))))
+           (package/bin-paths {:name "x" :layout :tree} artifact)))))
+
+(deftest a-single-binary-is-kept-under-the-package-name
+  (is (= {"kubectl-oidc_login" "kubelogin"}
+         (package/bin-paths {:name "kubelogin" :layout :binary} {:bins {"kubectl-oidc_login" "kubelogin"}})))
+  (is (= {"kind" "kind"}
+         (package/bin-paths {:name "kind" :layout :binary} {:bins {"kind" "kind-linux-amd64"}})))
+  (is (= {"ansible" "ansible-wrapper" "ansible-wrapper" "ansible-wrapper"}
+         (package/bin-paths {:name "ansible-wrapper" :layout :binary}
+                            {:bins {"ansible" "ansible-wrapper" "ansible-wrapper" "ansible-wrapper"}}))))
 
 (deftest versions-compare-numerically
   (is (version/older? "1.9" "1.10"))
@@ -142,3 +151,8 @@
                         (is (= "https://gitlab.com/api/v4/projects/gitlab-org%2Fcli/releases/permalink/latest" url))
                         "{\"tag_name\":\"v1.125.0\"}")}]
     (is (= {:tag "v1.125.0" :version "1.125.0"} (source/latest pkg io)))))
+
+(deftest several-binaries-are-kept-under-command-names
+  (is (= {"bin/tool-linux" "a-tool" "bin/helper" "helper"}
+         (package/stored-files {:name "tool"} {:bins {"z-tool" "bin/tool-linux" "a-tool" "bin/tool-linux"
+                                                      "helper" "bin/helper"}}))))

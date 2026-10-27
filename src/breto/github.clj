@@ -32,3 +32,9 @@
           (when (and (= name asset-name) (string? digest) (str/starts-with? digest "sha256:"))
             (subs digest (count "sha256:"))))
         (:assets release)))
+
+(defn repo-info
+  "The API representation of `repo`. GitHub answers for a renamed repository
+  under its new name, so `:full_name` reveals a move."
+  [{:keys [get-text]} repo]
+  (json/parse-string (get-text (str "https://api.github.com/repos/" repo) (api-headers)) true))
