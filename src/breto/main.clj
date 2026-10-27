@@ -34,7 +34,8 @@ Commands:
   report                    the reports of the last run of each command
   doctor                    check the environment, configuration and store
 
-install, update and outdated wait :delay seconds between packages; --delay N overrides it.
+install, update and outdated wait between packages for :delay seconds or the rate limit
+upstream hosts announce, whichever is longer; --delay N overrides :delay.
 gc and uninstall accept --dry-run. uninstall refuses configured packages unless --force,
 since the next update would install them again.
 install and update refuse downloads they cannot verify unless --no-verify is given.
@@ -69,23 +70,33 @@ Every failure is explained with what to do; --debug adds each request and stack 
                 (failure (first (split-spec name)) (second (split-spec name)) e))))))
 
 (defn paced
-  "Wraps `f` so that every call but the first waits `seconds` through
-  `sleep!` first, spacing out the requests of consecutive packages."
-  [seconds sleep! f]
+  "Wraps `f` so that each call first waits for the longer of `delay` seconds,
+  skipped before the first call, and the wait upstream hosts ask for. A call
+  refused by a rate limit is retried once after the wait the host names."
+  [delay upstream-wait sleep! f]
   (let [first? (atom true)]
     (fn [x]
-      (when (and (not (compare-and-set! first? true false)) (pos? seconds))
-        (sleep! seconds))
-      (f x))))
+      (let [own (if (compare-and-set! first? true false) 0 delay)
+            upstream (upstream-wait)]
+        (when (pos? (max own upstream))
+          (sleep! (max own upstream) (if (> upstream own) "the rate limit of an upstream host" ":delay"))))
+      (try
+        (f x)
+        (catch clojure.lang.ExceptionInfo e
+          (let [upstream (upstream-wait)]
+            (if (and (http/rate-limited? (ex-data e)) (pos? upstream))
+              (do (sleep! upstream "the rate limit of an upstream host")
+                  (f x))
+              (throw e))))))))
 
 (defn- pause [cfg opts]
-  (let [seconds (or (:delay opts) (:delay cfg) 0)]
-    (fn [f]
-      (paced seconds
-             (fn [s]
-               (binding [*out* *err*] (println (str "waiting " s "s before the next package")))
-               (Thread/sleep (* 1000 (long s))))
-             f))))
+  (fn [f]
+    (paced (or (:delay opts) (:delay cfg) 0)
+           (:upstream-wait http/io)
+           (fn [seconds why]
+             (binding [*out* *err*] (println (str "waiting " seconds "s for " why)))
+             (Thread/sleep (* 1000 (long seconds))))
+           f)))
 
 (defn- finish!
   "Prints and saves the report for `command`, returning the exit code."

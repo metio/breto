@@ -110,12 +110,35 @@
   (is (= ["gc" "update"] (map :command (report/load-runs))))
   (is (= [{:package "a" :status :current}] (:results (last (report/load-runs))))))
 
-(deftest paced-calls-wait-between-packages-but-not-before-the-first
+(deftest paced-calls-wait-for-the-longer-of-delay-and-upstream
   (let [slept (atom [])
-        f (main/paced 300 #(swap! slept conj %) identity)]
-    (is (= ["a" "b" "c"] (mapv f ["a" "b" "c"])))
-    (is (= [300 300] @slept)))
+        upstream (atom 0)
+        f (main/paced 300 #(deref upstream) (fn [s _] (swap! slept conj s)) identity)]
+    (is (= "a" (f "a")))
+    (reset! upstream 1200)
+    (is (= "b" (f "b")))
+    (reset! upstream 10)
+    (f "c")
+    (is (= [1200 300] @slept))))
+
+(deftest paced-calls-honour-upstream-before-the-first-package
   (let [slept (atom [])
-        f (main/paced 0 #(swap! slept conj %) identity)]
-    (run! f ["a" "b"])
-    (is (empty? @slept))))
+        f (main/paced 0 (constantly 42) (fn [s _] (swap! slept conj s)) identity)]
+    (f "a")
+    (is (= [42] @slept))))
+
+(deftest rate-limited-calls-are-retried-once-after-the-named-wait
+  (let [slept (atom [])
+        calls (atom 0)
+        upstream (atom 0)
+        limited (ex-info "403" {:breto/problem :http-status :status 403
+                                :headers {"retry-after" "60"}})
+        f (main/paced 0 #(deref upstream) (fn [s _] (swap! slept conj s) (reset! upstream 0))
+                      (fn [x]
+                        (when (= 1 (swap! calls inc))
+                          (reset! upstream 60)
+                          (throw limited))
+                        x))]
+    (is (= "a" (f "a")))
+    (is (= [60] @slept))
+    (is (= 2 @calls))))

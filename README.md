@@ -43,10 +43,12 @@ breto reads `$XDG_CONFIG_HOME/breto/config.edn` (`~/.config/breto/config.edn` by
 | `:packages` | What `update` and `outdated` act on when no package is named. | none |
 | `:pins` | Versions `update` installs instead of the latest. | none |
 | `:keep` | Versions per package that `gc` keeps. | `3` |
-| `:delay` | Seconds `install`, `update` and `outdated` wait between packages, to stay under GitHub's rate limits; `--delay N` overrides it. | `0` |
+| `:delay` | Minimum seconds `install`, `update` and `outdated` wait between packages, e.g. to spread traffic on a slow link; `--delay N` overrides it. | `0` |
 | `:prune` | Whether `gc` without arguments also uninstalls every package `:packages` does not list. | `false` |
 | `:store` | Where versions are unpacked, as `<store>/<package>/<version>`. | `$XDG_DATA_HOME/breto/installations` |
 | `:bin-dir` | Where binaries are linked. | `~/.local/bin` |
+
+breto also reads the rate-limit headers of every response. When a host has no requests left (`x-ratelimit-remaining: 0`) or sends `retry-after`, the next package waits until that host accepts requests again, or for `:delay` if that is longer. A package refused by a rate limit that names a wait is retried once after it.
 
 Set `GITHUB_TOKEN` or `GH_TOKEN` to raise GitHub's API limit from 60 requests an hour. breto calls the API once for each download it verifies and once for each lookup of a rolling release.
 
