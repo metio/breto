@@ -61,7 +61,8 @@
               (swap! requests conj url)
               (or (contains? files url) (contains? texts url)))
    :upstream-wait (constantly 0)
-   :github-token (constantly nil)})
+   :github-token (constantly nil)
+   :which (constantly nil)})
 
 (defn breto!
   "Runs breto with `args` against the test registry, store and bin directory,

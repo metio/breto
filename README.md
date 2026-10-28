@@ -9,7 +9,7 @@ breto installs prebuilt binaries from their upstream releases, keeps several ver
 
 ## Requirements
 
-breto runs on [babashka](https://babashka.org/). Unpacking uses GNU `tar` together with `gzip`, `xz` and `bzip2`; zip archives are unpacked by babashka itself.
+breto runs on [babashka](https://babashka.org/). It unpacks zip archives and plain or gzip-compressed tar archives itself; `.tar.xz` and `.tar.bz2` need `tar` with `xz` or `bzip2`. Packages that require a signature need cosign, which breto installs itself when `cosign` is listed in `:packages`.
 
 ## Installation
 
@@ -46,7 +46,7 @@ breto reads `$XDG_CONFIG_HOME/breto/config.edn` (`~/.config/breto/config.edn` by
 | `:delay` | Seconds `install` and `update` wait after a package that downloaded something, e.g. to spread traffic on a slow link. A package found up to date costs no wait. `--delay N` overrides it. | `0` |
 | `:token-command` | A command printing a GitHub token on its first line, e.g. `["gh" "auth" "token"]` or `["gopass" "show" "--password" "github/token"]`. It runs at most once per breto process, only when a GitHub API request is made, and is stopped after 60 seconds. `GITHUB_TOKEN` and `GH_TOKEN` take precedence. | none |
 | `:lockfile` | A file breto rewrites after every change to the store with the active version and download hash of each configured package. Commit it, and `update --locked` installs exactly those versions elsewhere. | none |
-| `:cosign` | The cosign command that checks `:signature` bundles. | `cosign` |
+| `:cosign` | The cosign command that checks `:signature` bundles. Without it, breto uses the cosign it linked into `:bin-dir`, else `cosign` on `PATH`. | none |
 | `:hooks` | Commands run on the events of `install` and `update`; see [Hooks](#hooks). | none |
 | `:notifier` | The command the `:notify` hook sends with, with `{title}`, `{message}` and `{urgency}` placeholders, or `:auto` for the notifier of the operating system. | `:auto` |
 | `:messages` | Message templates of `:notify` per event, e.g. `{:installed "{package} is now {version}"}`. | see [Hooks](#hooks) |
@@ -152,7 +152,7 @@ A package is a file `<name>.edn` in a registry directory, and its file name is t
 | `:url` | Template for the download URL. | the GitHub release asset |
 | `:tag-prefix` | Text before the version in a tag: `v1.2.3` is version `1.2.3`. | `"v"` |
 | `:checksum` | Template for a checksum file, next to the asset unless it is a full URL. | none |
-| `:strip` | Leading path components to drop when unpacking, as `tar --strip-components`. | `0` |
+| `:strip` | Leading path components to drop when unpacking, counted as `tar --strip-components` does, a leading `./` included. | `0` |
 | `:layout` | `:binary` keeps only the files named in `:bins`; `:tree` keeps the whole archive. | `:binary` |
 | `:bins` | Command name to path inside the unpacked archive. | the package name, or the asset itself when it is not an archive |
 | `:links` | Further symlinks: target path to path inside the installed version. | none |
@@ -161,7 +161,7 @@ A package is a file `<name>.edn` in a registry directory, and its file name is t
 | `:signature` | A sigstore bundle signing the asset or its checksum file; see below. | none |
 | `:skip` | Versions never installed as the latest, e.g. a release without a build for this platform. When the latest release is listed, the newest unlisted one is installed instead, which costs one request listing the releases. An explicitly requested or pinned version is installed regardless. | none |
 
-Templates can use `{name}`, `{tag}`, `{version}`, `{repo}` and, except in `:asset` itself, `{asset}`. Files ending in `.tar.gz`, `.tgz`, `.tar.xz`, `.txz`, `.tar.bz2`, `.tbz2`, `.tar` or `.zip` are unpacked; anything else is the binary itself.
+Templates can use `{name}`, `{tag}`, `{version}`, `{repo}` and, except in `:asset` itself, `{asset}`. Files ending in `.tar.gz`, `.tgz`, `.tar.xz`, `.txz`, `.tar.bz2`, `.tbz2`, `.tar` or `.zip` are unpacked; anything else is the binary itself. An entry that would land outside the unpack directory, or a tar entry that would write through a symlink the archive created, fails the install.
 
 The command name is the key in `:bins`, independent of the package name. A package named `babashka` installs into `<store>/babashka/` and provides the command `bb`:
 
@@ -230,7 +230,7 @@ A checksum shows that a download is what the release lists; a signature shows wh
 | `:issuer` | The OIDC issuer of the signer's certificate. |
 | `:of` | `:asset` when the bundle signs the asset, `:checksum` when it signs the checksum file, whose hash is then trusted. Defaults to `:asset`. |
 
-The signer's identity is in the certificate inside the bundle. Projects usually document it next to their verification instructions. cosign must be installed for signed packages: list `cosign` first in `:packages`, and install it once with `breto install cosign --no-verify` when no cosign exists yet. Later updates of cosign are checked by the version already installed. `breto check` confirms the bundle is in the release, and `breto doctor` that cosign can run.
+The signer's identity is in the certificate inside the bundle. Projects usually document it next to their verification instructions. Signed packages need cosign: list `cosign` in `:packages`. `install` and `update` handle cosign before every other package, so on a fresh host the first run installs it, checked by its GitHub digest or checksum file only, since no cosign exists yet to check its signature, and then checks the other signatures with it. The report marks that install. Later updates of cosign are checked by the version already installed. `breto check` confirms the bundle is in the release, and `breto doctor` that cosign can run.
 
 ### Version history
 

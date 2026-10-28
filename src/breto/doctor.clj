@@ -8,6 +8,7 @@
             [breto.github :as github]
             [breto.hooks :as hooks]
             [breto.report :as report]
+            [breto.signature :as signature]
             [breto.store :as store]
             [cheshire.core :as json]
             [clojure.string :as str]))
@@ -113,17 +114,20 @@
 (defn signature-check
   "Whether cosign can run when a configured package requires a signature.
   `which` resolves a command name to its path."
-  [{:keys [packages cosign] :or {cosign "cosign"}} registry which]
-  (let [signed (filter #(get-in registry [% :signature]) packages)]
+  [{:keys [packages] :as config} registry which]
+  (let [signed (filter #(get-in registry [% :signature]) packages)
+        cosign (signature/locate config which)
+        provider (first (filter #(some-> (get registry %) signature/provides-cosign?) packages))]
     (cond
       (empty? signed) (check :ok "No configured package requires a signature" "")
-      (which cosign) (check :ok (str "cosign checks the signatures of " (count signed) " packages")
-                            (str (which cosign)))
-      :else (check :fail (str cosign " is missing, but packages require signatures") (str/join ", " signed)
-                   (if (some #{"cosign"} signed)
-                     "Install cosign once with breto install cosign --no-verify, or from the system package manager; later updates of it are verified."
-                     "Add \"cosign\" to :packages ahead of the signed packages, or install it from the system package manager.")
-                   "Set :cosign in the config to its path if it is installed outside PATH."))))
+      cosign (check :ok (str "cosign checks the signatures of " (count signed) " packages") cosign)
+      (and provider (nil? (:cosign config)))
+      (check :warn "cosign is not installed yet" (str "Packages that require signatures: " (str/join ", " signed))
+             (str "breto update installs " provider " first, checked by its checksum, and checks the other signatures with it."))
+      :else (check :fail (str (or (:cosign config) "cosign") " is missing, but packages require signatures") (str/join ", " signed)
+                   (if (:cosign config)
+                     (str "Install cosign at " (:cosign config) ", or remove :cosign from the config to use the one breto installs.")
+                     "Add \"cosign\" to :packages; breto installs it first and checks the other signatures with it.")))))
 
 (defn hooks-check
   "Whether the configured hooks can run. `os` is the os.name property and

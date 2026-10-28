@@ -409,13 +409,16 @@
    :advice ["It must hold one EDN map of package names to {:version … :sha256 …}, after optional ; comment lines."
             "Restore it from version control; breto rewrites it after the next change to the store."]})
 
-(defmethod explain :signature-tool [{:keys [cosign error package]} _]
-  {:summary (str "The definition of " package " requires a sigstore signature, and " cosign " could not run to check it.")
-   :facts [(str "Error: " error)]
-   :advice [(if (= "cosign" package)
-              "To bootstrap cosign itself, install it once with breto install cosign --no-verify, or from the system package manager."
-              "Install cosign, e.g. by adding \"cosign\" to :packages; breto installs packages in order, so list it first.")
-            "Set :cosign in the config to its path if it is not on PATH."]})
+(defmethod explain :signature-tool [{:keys [cosign error package missing bin-dir]} _]
+  (if missing
+    {:summary (str "The definition of " package " requires a sigstore signature, and no cosign is installed to check it.")
+     :facts [(str "breto looked for " cosign (when bin-dir (str " in " bin-dir)) " and on PATH.")]
+     :advice ["Add \"cosign\" to :packages; breto update installs it before the signed packages, checked by its checksum."
+              "Or install cosign from the system package manager, or set :cosign in the config to its path."]}
+    {:summary (str "The definition of " package " requires a sigstore signature, and " cosign " could not run to check it.")
+     :facts [(str "Error: " error)]
+     :advice [(str "Run " cosign " version yourself to see why it does not start.")
+              "Set :cosign in the config to a cosign that works, or remove it to use the one breto installs."]}))
 
 (defmethod explain :bundle-missing [{:keys [package version bundle assets]} _]
   {:summary (str "Release " version " of " package " has no signature bundle named " bundle ".")

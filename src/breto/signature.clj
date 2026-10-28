@@ -5,7 +5,25 @@
   "Sigstore signatures, checked with cosign verify-blob against the identity
   and OIDC issuer the definition expects. A checksum only shows the download
   is what the release lists; a signature shows who built the release."
-  (:require [clojure.string :as str]))
+  (:require [babashka.fs :as fs]
+            [clojure.string :as str]))
+
+(defn locate
+  "The cosign program to run, or nil when there is none: :cosign from the
+  config when it is set, else the cosign breto linked into the bin directory,
+  else cosign on PATH. `which` resolves a command name to its path."
+  [{:keys [cosign bin-dir]} which]
+  (if cosign
+    (which cosign)
+    (or (let [linked (fs/path bin-dir "cosign")]
+          (when (and bin-dir (fs/executable? linked)) (str linked)))
+        (which "cosign"))))
+
+(defn provides-cosign?
+  "Whether `pkg` links a command named cosign, so installing it is what makes
+  signatures checkable."
+  [pkg]
+  (contains? (:bins pkg) "cosign"))
 
 (defn command
   "The cosign command verifying `file` against `bundle` for `signature`."

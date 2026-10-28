@@ -4,6 +4,7 @@
 (ns breto.archive
   (:require [babashka.fs :as fs]
             [babashka.process :as process]
+            [breto.tar :as tar]
             [clojure.string :as str]))
 
 (defn listing
@@ -21,7 +22,8 @@
 
 (defn- strip!
   "Moves the entries `n` directory levels below `from` into `to`. Tar archives
-  strip with `--strip-components` instead, which also counts a leading `./`."
+  strip while unpacking instead, counting a leading `./` as GNU tar's
+  `--strip-components` does."
   [from to n]
   (let [dirs (nth (iterate #(mapcat subdirectories %) [from]) n)]
     (fs/create-dirs to)
@@ -52,14 +54,16 @@
     (let [scratch (fs/create-temp-dir {:dir (fs/parent dest) :prefix ".unpack-"})]
       (try
         (case archive-type
-          :tar (let [{:keys [exit err]} (process/shell {:out :string :err :string :continue true}
-                                                       "tar" "--extract" "--file" (str file)
-                                                       "--directory" (str scratch)
-                                                       (str "--strip-components=" strip))]
-                 (when-not (zero? exit)
-                   (throw (ex-info (str "tar could not unpack " (fs/file-name file) ": " (str/trim err))
-                                   {:breto/problem :unpack-failed :file (str (fs/file-name file)) :stderr err})))
-                 (strip! scratch dest 0))
+          :tar (do (if (tar/readable? file)
+                     (tar/unpack! file scratch strip)
+                     (let [{:keys [exit err]} (process/shell {:out :string :err :string :continue true}
+                                                             "tar" "--extract" "--file" (str file)
+                                                             "--directory" (str scratch)
+                                                             (str "--strip-components=" strip))]
+                       (when-not (zero? exit)
+                         (throw (ex-info (str "tar could not unpack " (fs/file-name file) ": " (str/trim err))
+                                         {:breto/problem :unpack-failed :file (str (fs/file-name file)) :stderr err})))))
+                   (strip! scratch dest 0))
           :zip (let [escaping (try (escaping-entries file)
                                    (catch java.io.IOException e
                                      (throw (ex-info (str (fs/file-name file) " is not a readable zip archive: " (ex-message e))

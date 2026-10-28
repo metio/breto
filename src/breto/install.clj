@@ -76,28 +76,49 @@
     (staged io :verify context #((:download! io) (:checksum-url artifact) file))
     file))
 
+(defn- which [io]
+  (or (:which io) #(some-> (fs/which %) str)))
+
 (defn- verify-signature!
-  "Checks the release's sigstore bundle for `target` with cosign."
-  [config io artifact target work context]
+  "Checks the release's sigstore bundle for `target` with cosign, returning
+  :checked. Without any cosign, a package that provides cosign itself is
+  installed on its checksum alone and :bootstrap is returned; any other
+  signed package fails."
+  [config io pkg artifact target work context]
   (let [sig (:signature artifact)
-        bundle (fs/path work ".bundle.sigstore.json")]
+        bundle (fs/path work ".bundle.sigstore.json")
+        cosign (signature/locate config (which io))]
     (staged io :signature context
-      #(do ((:download! io) (:bundle-url sig) bundle)
-           (signature/verify! (:run io) (or (:cosign config) "cosign") sig target bundle
-                              (assoc context :signed (str (fs/file-name target)) :bundle-url (:bundle-url sig)))))))
+      #(cond
+         cosign
+         (do ((:download! io) (:bundle-url sig) bundle)
+             (signature/verify! (:run io) cosign sig target bundle
+                                (assoc context :signed (str (fs/file-name target)) :bundle-url (:bundle-url sig)))
+             :checked)
+
+         (signature/provides-cosign? artifact)
+         :bootstrap
+
+         :else
+         (throw (ex-info (str (or (:cosign config) "cosign") " is not installed, so the signature of " (:name pkg)
+                              " cannot be checked")
+                         (assoc context :breto/problem :signature-tool :cosign (or (:cosign config) "cosign")
+                                :missing true :bin-dir (:bin-dir config))))))))
 
 (defn- fetch!
   "Downloads and verifies the artifact into `work`, returning the file and
   whether a signature was verified."
   [config pkg io release artifact work verify? context]
   (let [file (fs/path work (:asset artifact))
-        sig (:signature artifact)]
+        sig (:signature artifact)
+        outcome (volatile! nil)]
     (staged io :download context #((:download! io) (:url artifact) file))
     (when verify?
-      (let [checksums (when (= :checksum (:of sig)) (signed-checksum! io artifact work context))]
-        (when sig
-          (verify-signature! config io artifact (or checksums file) work
-                             (assoc context :signed-what (if checksums :checksum :asset))))
+      (let [checksums (when (= :checksum (:of sig)) (signed-checksum! io artifact work context))
+            signature (when sig
+                        (verify-signature! config io pkg artifact (or checksums file) work
+                                           (assoc context :signed-what (if checksums :checksum :asset))))]
+        (vreset! outcome signature)
         (staged io :verify context
           #(if-let [want (if checksums
                            (or (checksum/expected (slurp (str checksums)) (:asset artifact))
@@ -111,7 +132,7 @@
                                   " against; GitHub has no digest for it and the package names no :checksum."
                                   " Mark the release {:verify false} in :history, or use --no-verify once.")
                              {:breto/problem :no-checksum :package (:name pkg) :asset (:asset artifact)}))))))
-    {:file file :signed? (boolean (and verify? sig))}))
+    {:file file :signed? (= :checked @outcome) :bootstrap? (= :bootstrap @outcome)}))
 
 (defn- place!
   "Copies what `pkg` keeps from the unpacked archive into `dest`."
@@ -136,7 +157,8 @@
   or the definition for that version says `:verify false`; `expect-sha256`,
   from a lock file, must match it in any case. Returns {:version v
   :installed? bool :verified? bool :sha256 hex}, the hash only for a fresh
-  install. Failures carry the stage and release they happened in."
+  install, :signed? when a signature was checked, and :bootstrap? when cosign
+  itself was installed before any cosign could check it. Failures carry the stage and release they happened in."
   [config io pkg {:keys [version activate? verify? expect-sha256] :or {activate? true verify? true}}]
   (let [context {:package (:name pkg) :repo (package/repo pkg) :source (:source pkg)}
         release (staged io :resolve context #(resolve-release pkg io version))
@@ -150,12 +172,12 @@
         package-dir (store/package-dir config (:name pkg))
         bin-paths (package/bin-paths pkg artifact)
         fresh? (not (store/installed? config (:name pkg) version (vals bin-paths)))
-        {:keys [sha256 signed?]} (when fresh?
+        {:keys [sha256 signed? bootstrap?]} (when fresh?
                  (with-stage :place context #(fs/create-dirs package-dir))
                  (let [work (fs/create-temp-dir {:dir package-dir :prefix store/work-prefix})
                        lock (store/hold! work)]
                    (try
-                     (let [{:keys [file signed?]} (fetch! config pkg io release artifact work verify? context)
+                     (let [{:keys [file signed? bootstrap?]} (fetch! config pkg io release artifact work verify? context)
                            sha256 (checksum/digest "SHA-256" file)
                            unpacked (fs/path work "unpacked")
                            staging (fs/path work "staged")]
@@ -169,8 +191,9 @@
                               (fs/delete-tree (store/version-dir config (:name pkg) version))
                               (fs/move staging (store/version-dir config (:name pkg) version) {:atomic-move true})
                               (store/write-meta! config (:name pkg) version
-                                                 {:sha256 sha256 :asset (:asset artifact) :verified verify? :signed signed?})))
-                       {:sha256 sha256 :signed? signed?})
+                                                 (cond-> {:sha256 sha256 :asset (:asset artifact) :verified verify? :signed signed?}
+                                                   bootstrap? (assoc :signature-bootstrap true)))))
+                       {:sha256 sha256 :signed? signed? :bootstrap? bootstrap?})
                      (finally
                        (fs/delete-tree work)
                        (.close lock)
@@ -180,7 +203,8 @@
       (staged io :activate context #(store/activate! config pkg bin-paths version)))
     (cond-> {:version version :installed? fresh? :verified? (and fresh? verify?)}
       sha256 (assoc :sha256 sha256)
-      signed? (assoc :signed? true))))
+      signed? (assoc :signed? true)
+      bootstrap? (assoc :bootstrap? true))))
 
 (defn use!
   "Activates an already installed version."

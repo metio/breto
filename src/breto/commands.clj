@@ -16,6 +16,7 @@
             [breto.lockfile :as lockfile]
             [breto.registry :as registry]
             [breto.report :as report]
+            [breto.signature :as signature]
             [breto.source :as source]
             [breto.store :as store]
             [clojure.pprint :as pprint]
@@ -53,10 +54,19 @@
                  (batch/counting-down progress sleep-second!)
                  f)))
 
-(defn- installed-result [name {:keys [version installed? verified? signed?]}]
+(defn- installed-result [name {:keys [version installed? verified? signed? bootstrap?]}]
   (cond-> {:package name :version version :status (if installed? :installed :current)}
     (and installed? (not verified?)) (assoc :unverified true)
-    signed? (assoc :signed true)))
+    signed? (assoc :signed true)
+    bootstrap? (assoc :signature-bootstrap true)))
+
+(defn- cosign-first
+  "`specs` with the packages that provide cosign moved to the front, so that
+  on a fresh host cosign is installed before it is needed to check the
+  signatures of the others."
+  [registry specs]
+  (let [provides? #(some-> (get registry (first (batch/split-spec %))) signature/provides-cosign?)]
+    (concat (filter provides? specs) (remove provides? specs))))
 
 (defn- installing
   "Runs `install-one` (io, name, version -> install! options) over `specs`
@@ -66,7 +76,7 @@
         transferred (atom 0)
         io (batch/tracked-io io progress transferred)]
     (batch/finish! command
-                   (batch/run-batch io specs
+                   (batch/run-batch io (vec (cosign-first registry specs))
                                     ((pacer ctx progress transferred)
                                      (fn [spec]
                                        (let [[name version] (batch/split-spec spec)]

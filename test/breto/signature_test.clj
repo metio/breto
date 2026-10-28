@@ -45,11 +45,15 @@
     (swap! calls conj (vec command))
     (if (fn? result) (result command) result)))
 
-(defn- install [definition run & [args]]
+(def ^:private on-path
+  "A PATH holding only cosign."
+  {"cosign" "/usr/bin/cosign"})
+
+(defn- install [definition run & [args which]]
   (let [{:keys [files texts]} (world)]
     (s/define! "tool" (merge {:source {:github "acme/tool"} :asset "tool" :bins {"tool" "tool"}} definition))
     (s/breto! {:packages ["tool"]} (concat ["install" "tool"] args)
-              {:io (assoc (s/fake-io files texts (atom [])) :run run)})))
+              {:io (assoc (s/fake-io files texts (atom [])) :run run :which (or which on-path))})))
 
 (deftest commands-name-the-expected-signer
   (is (= ["cosign" "verify-blob" "--bundle" "b.json" "--certificate-identity" "me"
@@ -67,7 +71,7 @@
     (is (str/includes? out "[OK] tool 1.2.3 installed with a verified signature"))
     (is (= 1 (count @calls)))
     (let [cmd (first @calls)]
-      (is (= ["cosign" "verify-blob" "--bundle"] (take 3 cmd)))
+      (is (= ["/usr/bin/cosign" "verify-blob" "--bundle"] (take 3 cmd)))
       (is (some #{"https://github.com/acme/tool/.github/workflows/release.yaml@refs/tags/v1.2.3"} cmd))
       (is (str/ends-with? (last cmd) "/tool")))))
 
@@ -79,20 +83,62 @@
     (is (str/includes? out "none of the expected identities matched"))
     (is (not (fs/exists? (s/path "bin" "tool"))))))
 
-(deftest a-missing-cosign-explains-the-bootstrap
+(deftest a-missing-cosign-explains-how-to-get-one
+  (let [{:keys [code out]} (install {:signature sig} (cosign (atom []) {:exit 0}) [] (constantly nil))]
+    (is (= 1 code))
+    (is (str/includes? out "no cosign is installed"))
+    (is (str/includes? out "Add \"cosign\" to :packages"))
+    (is (not (fs/exists? (s/path "bin" "tool"))))))
+
+(deftest a-cosign-that-cannot-start-is-reported
   (let [{:keys [code out]} (install {:signature sig}
                                     (fn [_] (throw (java.io.IOException. "Cannot run program \"cosign\""))))]
     (is (= 1 code))
     (is (str/includes? out "could not run"))
-    (is (str/includes? out ":packages"))))
+    (is (str/includes? out "version yourself"))))
 
 (deftest the-configured-cosign-is-used
   (let [calls (atom [])
         {:keys [files texts]} (world)]
     (s/define! "tool" {:source {:github "acme/tool"} :asset "tool" :bins {"tool" "tool"} :signature sig})
     (s/breto! {:packages ["tool"] :cosign "/opt/cosign"} ["install" "tool"]
-              {:io (assoc (s/fake-io files texts (atom [])) :run (cosign calls {:exit 0}))})
+              {:io (assoc (s/fake-io files texts (atom [])) :run (cosign calls {:exit 0})
+                          :which {"/opt/cosign" "/opt/cosign" "cosign" "/usr/bin/cosign"})})
     (is (= "/opt/cosign" (ffirst @calls)))))
+
+(deftest the-cosign-breto-linked-wins-over-path
+  (let [linked (s/path "bin" "cosign")]
+    (fs/create-dirs (s/path "bin"))
+    (spit (str linked) "#!/bin/sh\n")
+    (fs/set-posix-file-permissions linked "rwxr-xr-x")
+    (is (= (str linked) (signature/locate {:bin-dir (str (s/path "bin"))} on-path)))
+    (is (= "/usr/bin/cosign" (signature/locate {:bin-dir (str (s/path "elsewhere"))} on-path)))
+    (is (nil? (signature/locate {:bin-dir (str (s/path "elsewhere"))} (constantly nil))))
+    (is (nil? (signature/locate {:cosign "/opt/c" :bin-dir (str (s/path "bin"))} (constantly nil))))))
+
+(deftest cosign-bootstraps-on-its-checksum-and-installs-first
+  (let [calls (atom [])
+        {:keys [files texts]} (world)]
+    (s/define! "cosign" {:source {:github "acme/tool"} :asset "tool" :bins {"cosign" "tool"} :signature sig})
+    (s/define! "signed" {:source {:github "acme/tool"} :asset "tool" :bins {"signed" "tool"} :signature sig})
+    (let [{:keys [code out]} (s/breto! {:packages ["signed" "cosign"]} ["update"]
+                                       {:io (assoc (s/fake-io files texts (atom [])) :run (cosign calls {:exit 0})
+                                                   :which (constantly nil))})]
+      (is (= 0 code) out)
+      (is (str/includes? out "[OK] cosign 1.2.3 installed by its checksum; no cosign existed yet to check its signature"))
+      (is (str/includes? out "[OK] signed 1.2.3 installed with a verified signature"))
+      (is (< (str/index-of out "cosign 1.2.3") (str/index-of out "signed 1.2.3")))
+      (is (= [(str (s/path "bin" "cosign"))] (map first @calls))))))
+
+(deftest a-bootstrap-still-needs-a-checksum
+  (let [{:keys [files texts]} (world)
+        texts (assoc texts "https://api.github.com/repos/acme/tool/releases/tags/v1.2.3"
+                     (json/generate-string {:tag_name "v1.2.3" :assets [{:name "tool" :digest nil}]}))]
+    (s/define! "cosign" {:source {:github "acme/tool"} :asset "tool" :bins {"cosign" "tool"} :signature sig})
+    (let [{:keys [code out]} (s/breto! {:packages ["cosign"]} ["update"]
+                                       {:io (assoc (s/fake-io files texts (atom [])) :which (constantly nil))})]
+      (is (= 1 code))
+      (is (str/includes? out "nothing to verify")))))
 
 (deftest signed-checksum-files-are-verified-before-their-hash-is-trusted
   (let [calls (atom [])

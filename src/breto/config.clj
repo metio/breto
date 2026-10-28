@@ -25,7 +25,7 @@
    :prune false
    :token-command nil
    :lockfile nil
-   :cosign "cosign"
+   :cosign nil
    :hooks {}
    :notifier :auto
    :messages {}
@@ -43,5 +43,5 @@
         (update :store expand-home)
         (update :bin-dir expand-home)
         (update :lockfile #(some-> % expand-home))
-        (update :cosign expand-home)
+        (update :cosign #(some-> % expand-home))
         (update :registries #(mapv expand-home %)))))

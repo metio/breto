@@ -60,13 +60,15 @@
   (is (= :ok (:level (doctor/unverified-check {:packages ["kind"]} {"kind" {}})))))
 
 (deftest signature-checks-need-cosign-only-for-signed-packages
-  (let [registry {"kind" {} "kyverno" {:signature {}} "cosign" {:signature {}}}]
+  (let [registry {"kind" {} "kyverno" {:signature {}} "cosign" {:signature {} :bins {"cosign" "cosign"}}}]
     (is (= :ok (:level (doctor/signature-check {:packages ["kind"]} registry (constantly nil)))))
     (is (= :ok (:level (doctor/signature-check {:packages ["kyverno"]} registry {"cosign" "/bin/cosign"}))))
     (let [missing (doctor/signature-check {:packages ["kyverno"]} registry (constantly nil))]
       (is (= :fail (:level missing)))
       (is (= "kyverno" (:detail missing)))
       (is (some #(str/includes? % "Add \"cosign\" to :packages") (:advice missing))))
-    (is (some #(str/includes? % "--no-verify")
-              (:advice (doctor/signature-check {:packages ["cosign" "kyverno"]} registry (constantly nil)))))
+    (let [pending (doctor/signature-check {:packages ["kyverno" "cosign"]} registry (constantly nil))]
+      (is (= :warn (:level pending)))
+      (is (some #(str/includes? % "installs cosign first") (:advice pending))))
+    (is (= :fail (:level (doctor/signature-check {:packages ["cosign" "kyverno"] :cosign "/opt/c"} registry (constantly nil)))))
     (is (= :ok (:level (doctor/signature-check {:packages ["kyverno"] :cosign "/opt/c"} registry {"/opt/c" "/opt/c"}))))))
