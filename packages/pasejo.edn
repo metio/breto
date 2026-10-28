@@ -5,4 +5,5 @@
  :source {:github "metio/pasejo"},
  :asset "pasejo-x86_64-unknown-linux-gnu.tar.gz",
  :tag-prefix "",
- :checksum "SHA256SUMS"}
+ :checksum "SHA256SUMS",
+ :completions {:bash {:env {"COMPLETE" "bash"}}}}

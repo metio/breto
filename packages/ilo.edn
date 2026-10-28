@@ -6,4 +6,5 @@
  :asset "ilo-{version}-linux.tar.gz",
  :tag-prefix "",
  :checksum "ilo-{version}-linux.tar.gz.sha512",
- :strip 1}
+ :strip 1,
+ :completions {:bash {:args ["generate-completion"]}}}
