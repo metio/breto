@@ -75,21 +75,25 @@
   (let [provides? #(some-> (get registry (first (batch/split-spec %))) signature/provides-cosign?)]
     (concat (filter provides? specs) (remove provides? specs))))
 
-(defn- installing
-  "Runs `install-one` (io, name, version -> install! options) over `specs`
-  with progress, pacing and a saved report under `command`."
+(defn- install-results
+  "Runs `install-one` (name, version -> install! options) over `specs` with
+  progress and pacing under `command`, returning a result per spec."
   [{:keys [config registry io] :as ctx} command specs install-one]
   (let [progress (batch/broadcast (tracker ctx command) (hook-listener ctx command))
         transferred (atom 0)
         io (batch/tracked-io io progress transferred)]
-    (batch/finish! command
-                   (batch/run-batch io (vec (cosign-first registry specs))
-                                    ((pacer ctx progress transferred)
-                                     (fn [spec]
-                                       (let [[name version] (batch/split-spec spec)]
-                                         (installed-result name (install/install! config io (registry/lookup registry name)
-                                                                                  (install-one name version))))))
-                                    progress))))
+    (batch/run-batch io (vec (cosign-first registry specs))
+                     ((pacer ctx progress transferred)
+                      (fn [spec]
+                        (let [[name version] (batch/split-spec spec)]
+                          (installed-result name (install/install! config io (registry/lookup registry name)
+                                                                   (install-one name version))))))
+                     progress)))
+
+(defn- installing
+  "install-results with a printed and saved report under `command`."
+  [ctx command specs install-one]
+  (batch/finish! command (install-results ctx command specs install-one)))
 
 (defn- locked
   "install! options for `name` from the lock file, when --locked asks for it."
@@ -180,7 +184,7 @@
       (let [links (into {} (mapcat #(nth % 2) (resolve-all)))
             bin (env/link! config project-dir links)
             shell (if (= "fish" (:shell opts)) :fish :sh)]
-        (println (env/exports shell (env/path-value config bin (System/getenv "PATH")) project-dir))
+        (println (env/exports shell (env/path-value config bin (System/getenv "PATH")) project-dir bin))
         0))))
 
 (defn update [{:keys [config opts] :as ctx} args]
@@ -307,6 +311,32 @@
                    r)
         results (into pruned failures)]
     (if (seq results) (batch/finish! "gc" results) 0)))
+
+(defn sync-store
+  "Makes the store match the lock file: installs and activates each locked
+  version, checked against its locked hash, and uninstalls every package the
+  lock file does not list and no project uses. --dry-run lists the changes."
+  [{:keys [config opts io] :as ctx} _]
+  (let [path (or (:lockfile config)
+                 (throw (ex-info "sync needs :lockfile in the config" {:breto/problem :no-lockfile :path nil})))
+        _ (when-not (fs/exists? path)
+            (throw (ex-info (str "there is no lock file at " path) {:breto/problem :no-lockfile :path (str path)})))
+        entries (into (sorted-map) (:entries (lockfile/read-lock path)))
+        extra (remove (into (set (keys entries)) (keys (env/used-versions config)))
+                      (store/installed-packages config))]
+    (if (:dry-run opts)
+      (do (doseq [[name {:keys [version]}] entries
+                  :when (not= version (store/current-version config name))]
+            (println (str name " would change from " (or (store/current-version config name) "nothing") " to " version)))
+          (doseq [name extra]
+            (println (str name " would be removed")))
+          0)
+      (let [installed (install-results ctx "sync" (mapv (fn [[name {:keys [version]}]] (str name "@" version)) entries)
+                                       (fn [name version]
+                                         {:version version :verify? (:verify opts true)
+                                          :expect-sha256 (get-in entries [name :sha256])}))
+            removed (batch/run-batch io extra #(uninstall-one ctx % false) (fn [_]))]
+        (batch/finish! "sync" (into installed removed))))))
 
 (defn uninstall [{:keys [config opts io] :as ctx} args]
   (when (empty? args)

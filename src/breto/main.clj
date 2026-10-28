@@ -32,6 +32,8 @@ Commands:
                             and what killed installs left behind;
                             with :prune true and no PKG, also uninstall unconfigured packages
   uninstall PKG...          delete a package and every link into it
+  sync [--dry-run]          install and activate exactly the versions in :lockfile, checked against
+                            their hashes, and uninstall the packages it does not list
   install                   choose packages to install in fzf or sk, else in a numbered prompt;
                             --query TERMS starts with a search
   search [TERM...]          the definitions whose name, description or source has every term
@@ -63,7 +65,8 @@ Every failure is explained with what to do; --debug adds each request and stack 
    "report" commands/show-report
    "doctor" commands/doctor
    "search" commands/search
-   "env" commands/env})
+   "env" commands/env
+   "sync" commands/sync-store})
 
 (defn network
   "The network operations for `config`: HTTP, the GitHub token from the
@@ -107,13 +110,15 @@ Every failure is explained with what to do; --debug adds each request and stack 
       (load ctx))))
 
 (def ^:private changes-store
-  #{"install" "use" "update" "gc" "uninstall" "env"})
+  #{"install" "use" "update" "gc" "uninstall" "env" "sync"})
 
 (defn- record-lock!
   "Rewrites the lock file, when one is configured, after a command changed the
-  store. A failure to write it is reported but does not fail the command."
-  [{:keys [config]}]
-  (when-let [path (:lockfile config)]
+  store. A dry run changed nothing, and rewriting the file from the store
+  would drop the versions sync was asked to install. A failure to write it is
+  reported but does not fail the command."
+  [{:keys [config opts]}]
+  (when-let [path (when-not (:dry-run opts) (:lockfile config))]
     (try (lockfile/write! path config)
          (catch Exception e
            (binding [*out* *err*]
@@ -139,7 +144,7 @@ Every failure is explained with what to do; --debug adds each request and stack 
 
 (def ^:private reported
   "Commands whose last run breto report shows."
-  #{"install" "update" "outdated" "check" "gc" "uninstall"})
+  #{"install" "update" "outdated" "check" "gc" "uninstall" "sync"})
 
 (defn- recording-aborts
   "Runs `f`, saving its error as the report of `command` when it stops before
