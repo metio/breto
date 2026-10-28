@@ -57,7 +57,11 @@
                     (cond unverified " without verification"
                           signed " with a verified signature"
                           signature-bootstrap " by its checksum; no cosign existed yet to check its signature"))
-    :current (when hash-recorded (str "[OK] " package " " version " is up to date; recorded upstream's hash for the lock file"))
+    :current (when hash-recorded
+               (str "[OK] " package " " version " is up to date; recorded "
+                    (if (= :download hash-recorded)
+                      "the hash of a fresh download for the lock file, since upstream publishes none"
+                      "upstream's hash for the lock file")))
     :removed (str "[OK] " package " removed" (when (seq links) (str " with " (count links) " links")))
     :would-remove (str package " would be removed" (when (seq links) (str " with links " (str/join ", " links))))
     :outdated (str package "\t" (or from "-") " -> " version)

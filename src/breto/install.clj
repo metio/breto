@@ -151,6 +151,30 @@
                            (merge meta {:sha256 sha256 :asset (:asset artifact) :sha256-source :upstream}))
         sha256))))
 
+(defn- record-download-hash!
+  "Records the hash of a fresh download of the asset of an installed version
+  that has no hash yet and whose upstream publishes none, so the lock file
+  pins the bytes this machine trusts. Returns it, or nil when the download
+  fails, so a later run tries again."
+  [config pkg io release artifact context]
+  (let [meta (store/read-meta config (:name pkg) (:version release))
+        package-dir (store/package-dir config (:name pkg))]
+    (when-not (:sha256 meta)
+      (let [work (fs/create-temp-dir {:dir package-dir :prefix store/work-prefix})
+            lock (store/hold! work)]
+        (try
+          (let [{:keys [file]} (fetch! config pkg io release artifact work false context)
+                sha256 (checksum/digest "SHA-256" file)]
+            (store/write-meta! config (:name pkg) (:version release)
+                               (merge meta {:sha256 sha256 :asset (:asset artifact) :sha256-source :download}))
+            sha256)
+          (catch Exception e
+            (log/debug "could not download" (:asset artifact) "to hash it:" (ex-message e))
+            nil)
+          (finally
+            (fs/delete-tree work)
+            (.close lock)))))))
+
 (defn- keep-share-files!
   "Copies the man pages and shipped completions of `pkg` from `unpacked` to
   the same paths under `dest`. A completion file the definition names must
@@ -205,7 +229,8 @@
   :installed? bool :verified? bool :sha256 hex}, the hash only for a fresh
   install, :signed? when a signature was checked, :bootstrap? when cosign
   itself was installed before any cosign could check it, and :hash-recorded?
-  when an installed version without a recorded hash got upstream's. Failures carry the stage and release they happened in."
+  :upstream or :download when an installed version without a recorded hash
+  got upstream's, or, when upstream publishes none, that of a fresh download. Failures carry the stage and release they happened in."
   [config io pkg {:keys [version activate? verify? expect-sha256] :or {activate? true verify? true}}]
   (let [context {:package (:name pkg) :repo (package/repo pkg) :source (:source pkg)}
         release (staged io :resolve context #(resolve-release pkg io version))
@@ -250,13 +275,15 @@
                      (staged io :activate context
                        #(do (store/activate! config pkg bin-paths version)
                             (vec (share! config io pkg version)))))
-          recorded (when (and (not fresh?) verify?)
-                     (record-upstream-hash! config pkg io release artifact))]
+          recorded (when-not fresh?
+                     (if verify?
+                       (some-> (record-upstream-hash! config pkg io release artifact) (and :upstream))
+                       (some-> (record-download-hash! config pkg io release artifact context) (and :download))))]
       (cond-> {:version version :installed? fresh? :verified? (and fresh? verify?)}
         sha256 (assoc :sha256 sha256)
         signed? (assoc :signed? true)
         bootstrap? (assoc :bootstrap? true)
-        recorded (assoc :hash-recorded? true)
+        recorded (assoc :hash-recorded? recorded)
         (seq warnings) (assoc :warnings (vec (distinct warnings)))))))
 
 (defn bin-targets

@@ -64,7 +64,7 @@
     (and installed? (not verified?)) (assoc :unverified true)
     signed? (assoc :signed true)
     bootstrap? (assoc :signature-bootstrap true)
-    hash-recorded? (assoc :hash-recorded true)
+    hash-recorded? (assoc :hash-recorded hash-recorded?)
     (seq warnings) (assoc :warnings warnings)))
 
 (defn- cosign-first

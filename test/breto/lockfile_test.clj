@@ -95,17 +95,36 @@
       (is (str/includes? out "1 up to date"))
       (is (not (fs/exists? (path "store" "kind" ".meta-0.33.0.edn")))))))
 
-(deftest unverified-versions-get-no-upstream-hash
-  (let [{:keys [io]} (kind-world)
-        requests (atom [])
-        config {:packages ["kind"]}]
+(deftest unverified-versions-get-the-hash-of-a-fresh-download
+  (let [{:keys [binary io]} (kind-world)
+        texts (atom [])
+        downloads (atom [])
+        config {:packages ["kind"] :lockfile (path "breto.lock")}
+        counted (assoc io
+                       :get-text (fn [url headers] (swap! texts conj url) ((:get-text io) url headers))
+                       :download! (fn [url dest & more] (swap! downloads conj url) (apply (:download! io) url dest more)))]
     (s/breto! config ["update"] {:io io})
     (forget-hash!)
     (s/define! "kind" {:source {:github "kubernetes-sigs/kind"} :asset "kind-linux-amd64"
                        :checksum "{asset}.sha256sum" :verify false})
-    (s/breto! config ["update"] {:io (assoc io :get-text (fn [url headers] (swap! requests conj url) ((:get-text io) url headers)))})
-    (is (= ["https://github.com/kubernetes-sigs/kind/releases/latest"] @requests))
-    (is (not (fs/exists? (path "store" "kind" ".meta-0.33.0.edn"))))))
+    (let [{:keys [code out]} (s/breto! config ["update"] {:io counted})]
+      (is (= 0 code))
+      (is (str/includes? out "recorded the hash of a fresh download for the lock file, since upstream publishes none")))
+    (is (= ["https://github.com/kubernetes-sigs/kind/releases/latest"] @texts))
+    (is (= ["https://github.com/kubernetes-sigs/kind/releases/download/v0.33.0/kind-linux-amd64"] @downloads))
+    (is (= {:sha256 (s/sha256 binary) :asset "kind-linux-amd64" :sha256-source :download}
+           (read-string (slurp (path "store" "kind" ".meta-0.33.0.edn")))))
+    (is (str/includes? (slurp (path "breto.lock")) (s/sha256 binary)))
+    (is (empty? (filter #(str/starts-with? (str (fs/file-name %)) ".work-") (fs/list-dir (path "store" "kind")))))
+    (testing "the next run downloads nothing"
+      (reset! downloads [])
+      (s/breto! config ["update"] {:io counted})
+      (is (empty? @downloads)))
+    (testing "a failed download leaves the update alone"
+      (forget-hash!)
+      (let [{:keys [code]} (s/breto! config ["update"] {:io (assoc io :download! (fn [& _] (throw (ex-info "GET returned 503" {:breto/problem :http-status :status 503}))))})]
+        (is (= 0 code))
+        (is (not (fs/exists? (path "store" "kind" ".meta-0.33.0.edn"))))))))
 
 (deftest locked-updates-install-the-locked-version-and-hash
   (let [{:keys [binary io]} (kind-world)]
