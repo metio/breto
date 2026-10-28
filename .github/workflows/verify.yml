@@ -58,13 +58,13 @@ jobs:
       - uses: actions/checkout@9c091bb21b7c1c1d1991bb908d89e4e9dddfe3e0 # v7
         with:
           fetch-depth: 0
-      - uses: metio/ci/dco@46616c49a31480c95fe6e3b2229f264645d28763 # 2026.9.19094139
+      - uses: metio/ci/dco@14ad475c5f5c4c0df727df1a22345298604e66ba # 2026.10.26174650
   policy:
     runs-on: ubuntu-latest
     timeout-minutes: 10
     steps:
       - uses: actions/checkout@9c091bb21b7c1c1d1991bb908d89e4e9dddfe3e0 # v7
-      - uses: metio/ci/policy-check@46616c49a31480c95fe6e3b2229f264645d28763 # 2026.9.19094139
+      - uses: metio/ci/policy-check@14ad475c5f5c4c0df727df1a22345298604e66ba # 2026.10.26174650
   verify:
     name: Verify
     needs: [test, reuse, yaml, github-actions, markdown, typos, dco, policy]
