@@ -6,6 +6,7 @@
             [breto.archive :as archive]
             [breto.checksum :as checksum]
             [breto.github :as github]
+            [breto.golang :as golang]
             [breto.log :as log]
             [breto.package :as package]
             [breto.share :as share]
@@ -231,7 +232,7 @@
   itself was installed before any cosign could check it, and :hash-recorded?
   :upstream or :download when an installed version without a recorded hash
   got upstream's, or, when upstream publishes none, that of a fresh download. Failures carry the stage and release they happened in."
-  [config io pkg {:keys [version activate? verify? expect-sha256] :or {activate? true verify? true}}]
+  [config io pkg {:keys [version activate? verify? expect-sha256 expect-sum go] :or {activate? true verify? true}}]
   (let [context {:package (:name pkg) :repo (package/repo pkg) :source (:source pkg)}
         release (staged io :resolve context #(resolve-release pkg io version))
         version (:version release)
@@ -250,11 +251,14 @@
                  (let [work (fs/create-temp-dir {:dir package-dir :prefix store/work-prefix})
                        lock (store/hold! work)]
                    (try
-                     (let [{:keys [file signed? bootstrap?]} (fetch! config pkg io release artifact work verify? context)
+                     (let [{:keys [file signed? bootstrap? sum]}
+                           (if (= :go (package/source-kind pkg))
+                             (staged io :download context #(golang/build! io pkg release artifact work go expect-sum context))
+                             (fetch! config pkg io release artifact work verify? context))
                            sha256 (checksum/digest "SHA-256" file)
                            unpacked (fs/path work "unpacked")
                            staging (fs/path work "staged")]
-                       (when expect-sha256
+                       (when (and expect-sha256 (not sum))
                          (staged io :verify context
                            #(checksum/verify! file (:asset artifact) expect-sha256 :lockfile)))
                        (staged io :unpack context
@@ -265,6 +269,7 @@
                               (fs/move staging (store/version-dir config (:name pkg) version) {:atomic-move true})
                               (store/write-meta! config (:name pkg) version
                                                  (cond-> {:sha256 sha256 :asset (:asset artifact) :verified verify? :signed signed?}
+                                                   sum (assoc :sum sum)
                                                    bootstrap? (assoc :signature-bootstrap true)))))
                        {:sha256 sha256 :signed? signed? :bootstrap? bootstrap?})
                      (finally
@@ -276,7 +281,7 @@
                      (staged io :activate context
                        #(do (store/activate! config pkg bin-paths version)
                             (vec (share! config io pkg version)))))
-          recorded (when-not fresh?
+          recorded (when-not (or fresh? (= :go (package/source-kind pkg)))
                      (if verify?
                        (some-> (record-upstream-hash! config pkg io release artifact) (and :upstream))
                        (some-> (record-download-hash! config pkg io release artifact context) (and :download))))]

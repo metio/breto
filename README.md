@@ -45,6 +45,7 @@ breto reads `$XDG_CONFIG_HOME/breto/config.edn` (`~/.config/breto/config.edn` by
 | `:keep` | Versions per package that `gc` keeps. | `3` |
 | `:delay` | Seconds `install` and `update` wait after a package that downloaded something, e.g. to spread traffic on a slow link. A package found up to date costs no wait. `--delay N` overrides it. | `0` |
 | `:token-command` | A command printing a GitHub token on its first line, e.g. `["gh" "auth" "token"]` or `["gopass" "show" "--password" "github/token"]`. It runs at most once per breto process, only when a GitHub API request is made, and is stopped after 60 seconds. `GITHUB_TOKEN` and `GH_TOKEN` take precedence. | none |
+| `:require-locked` | Whether installing a version a group pins fails when no `breto.lock` of the registry directories lists it, instead of warning; see [Registry lock files](#registry-lock-files). | `false` |
 | `:lockfile` | A file breto rewrites after every change to the store with the active version and download hash of each configured package. Commit it, and `update --locked` installs exactly those versions elsewhere. | none |
 | `:cosign` | The cosign command that checks `:signature` bundles. Without it, breto uses the cosign it linked into `:bin-dir`, else `cosign` on `PATH`. | none |
 | `:hooks` | Commands run on the events of `install` and `update`; see [Hooks](#hooks). | none |
@@ -80,6 +81,7 @@ Configure `:token-command`, or set `GITHUB_TOKEN` or `GH_TOKEN`, to raise GitHub
 | `breto gc [PKG...] [--keep N]` | Deletes all but the N most recently installed versions. The active version is always kept. Also removes what killed installs left behind. With `:prune true` and no package named, also uninstalls unconfigured packages. |
 | `breto uninstall PKG...` | Deletes a package with every link into it. |
 | `breto sync [--dry-run]` | Makes the store match `:lockfile`: installs and activates each locked version, refusing a download whose hash differs from the locked one, and uninstalls every package the lock file does not list and no project uses. `--dry-run` lists the changes. |
+| `breto lock DIR [--check]` | Writes `DIR/breto.lock` with the hash of every version the groups defined in the registry directory DIR pin; see [Registry lock files](#registry-lock-files). `--check` exits 1 when the file is out of date instead of writing it. |
 | `breto info PKG` | The package definition after defaults are applied. |
 | `breto report [COMMAND...] [--brief]` | The report of the last run of each command, or of the named ones. `--brief` prints only the latest of them in a few lines of at most 100 characters: when it ran, its counts, and the first three failures with their diagnosis. |
 | `breto doctor` | Checks tools, directories, configuration, store, GitHub API quota and the last runs. |
@@ -139,17 +141,23 @@ A group can pin versions, so projects of one kind can share a toolchain instead 
 {:packages ["@go"]}
 ```
 
-List the directory holding the group files under `:registries`. When a new version lands in a group file, for example through a Renovate pull request and a `git pull`, the next `breto update` or `breto sync` installs it and moves every project using the group to it, and the hook relinks a shell that is open in such a project. Lock files record the active versions of `:packages` only, so a version a group pins is verified the way its definition says, through upstream checksums or signatures, and not against a locked hash.
+List the directory holding the group files under `:registries`. When a new version lands in a group file, for example through a Renovate pull request and a `git pull`, the next `breto update` or `breto sync` installs it and moves every project using the group to it, and the hook relinks a shell that is open in such a project. A `breto.lock` next to the group files fixes the hash of each pinned version; see [Registry lock files](#registry-lock-files).
 
 `gc` keeps every version a project links to, and `:prune true` keeps the packages, for as long as the project's `.breto.edn` exists. Once the file is gone, `gc` removes the project's links and treats its versions like any other.
 
 ## Lock files
 
-With `:lockfile` set, `install`, `update`, `use`, `gc` and `uninstall` rewrite the file afterwards: one line per configured package with its active version, the SHA-256 of the download it came from, and the asset name. Comment lines at its top, such as a license header, are kept. A package that is not active on this machine keeps its entry, so a failed install never drops it.
+With `:lockfile` set, `install`, `update`, `use`, `gc` and `uninstall` rewrite the file afterwards: one line per configured package with its active version, the SHA-256 of the download it came from, or the module hash of a package built with `go install`, and the asset name. Comment lines at its top, such as a license header, are kept. A package that is not active on this machine keeps its entry, so a failed install never drops it.
 
 On another machine, `breto sync` turns the store into exactly what the lock file lists, removing the rest; `breto sync --dry-run` shows what that would change. A dry run never rewrites the lock file.
 
 `breto update --locked` installs the locked version of each configured package instead of the latest, and refuses a download whose hash differs from the locked one. This also covers releases that upstream publishes without checksums: once one machine installed them, every other one gets the same bytes. A version installed before breto recorded hashes gets one on the next `install` or `update` that finds it up to date: breto looks up the hash upstream publishes for that asset, the GitHub digest or the checksum-file entry its verified download had to match, and records it. The lookup costs one request per version, once; when it fails, a later run tries again. A version installed without verification has no upstream hash to look up, so breto downloads its asset once more and records the hash of that download instead. Such a hash does not show that the bytes are the ones upstream meant to publish; it makes every machine installing with `--locked` get the bytes this one trusted. A fresh install records the hash of its download either way.
+
+### Registry lock files
+
+A registry directory can hold a `breto.lock` with the hash of every version its groups pin, keyed `name@version`. breto reads the lock files of all `:registries`, and any install of a listed version, whether by `install`, `update`, `sync`, `env` or a project refresh, must match its entry; the check comes on top of the upstream verification. A pinned version that no lock file lists installs with a warning, or fails with `:require-locked true`.
+
+`breto lock DIR` installs the pinned versions of the groups defined in DIR beside the active ones, without activating them, and writes the file. An entry that already exists has to match, so a release whose asset changed upstream fails instead of being locked anew. Entries of versions no group pins any more are dropped. Since `breto lock` downloads and runs nothing a project would not, it suits CI: a workflow can run it on every Renovate pull request against the group files and push the result, and `breto lock DIR --check` fails a pull request whose lock file lags behind its groups.
 
 ## Hooks
 
@@ -264,6 +272,7 @@ A tool that ships support files next to its binary uses the tree layout, and `:l
 | `{:gitlab "gitlab.com/group/project"}` | GitLab's latest release. `:url` is required, because GitLab release links have no fixed shape. |
 | `{:text "https://…"}` | A URL whose body is the latest tag, such as Kubernetes' `stable.txt`. `:url` is required. |
 | `{:json "https://…" :version [:releases 0 :version]}` | A JSON document holding the latest tag at the `:version` path of keys and indices, such as JetBrains' release API. `:url` is required. |
+| `{:go "golang.org/x/vuln" :package "golang.org/x/vuln/cmd/govulncheck"}` | The version the Go module proxy reports as latest for the module. breto builds `:package`, which defaults to the module itself, with `go install`; see [Go modules](#go-modules). `:asset` and `:url` are filled in. |
 
 ble.sh publishes its nightly builds as a rolling release:
 
@@ -274,6 +283,12 @@ ble.sh publishes its nightly builds as a rolling release:
  :layout :tree
  :bins {}}
 ```
+
+### Go modules
+
+A package with a `:go` source is built from source with the `go` command of the installed `go` package, its active version or else the newest installed one. Any batch installs `go` before the packages that need it, so `breto install go govulncheck` works on a fresh host. The build runs with `GOTOOLCHAIN=local`, `CGO_ENABLED=0`, an empty `GOFLAGS` and `-trimpath`, and the binary is moved into the store like a downloaded asset. Nothing builds with cgo, so no C compiler is needed.
+
+The `go` command checks every module it downloads against the Go checksum database, sum.golang.org, so a module the proxy serves differently from the first time anyone fetched it fails. breto records the module's `h1:` hash, the one `go mod download -json` reports, in place of a SHA-256; a lock file entry with `:sum` makes a later build fail when the hash differs. `breto check` reports such packages as verifiable by the checksum database once the module zip exists on the proxy.
 
 ### Verification
 

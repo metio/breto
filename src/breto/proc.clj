@@ -35,3 +35,11 @@
   (print question)
   (flush)
   (read-line))
+
+(defn run-in
+  "Runs `command` in `dir` with `env` added to the environment, returning its
+  exit code and output. A program that cannot start throws."
+  [{:keys [command env dir]}]
+  (select-keys (apply process/shell {:out :string :err :string :continue true :extra-env env :dir (str dir)}
+                      (map str command))
+               [:exit :out :err]))

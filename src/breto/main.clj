@@ -34,6 +34,8 @@ Commands:
   uninstall PKG...          delete a package and every link into it
   sync [--dry-run]          install and activate exactly the versions in :lockfile, checked against
                             their hashes, and uninstall the packages it does not list
+  lock DIR [--check]        write DIR/breto.lock with the hash of every version a group in the
+                            registry directory DIR pins; --check fails when it is out of date
   install                   choose packages to install in fzf or sk, else in a numbered prompt;
                             --query TERMS starts with a search
   search [TERM...]          the definitions whose name, description or source has every term
@@ -69,7 +71,8 @@ Every failure is explained with what to do; --debug adds each request and stack 
    "doctor" commands/doctor
    "search" commands/search
    "env" commands/env
-   "sync" commands/sync-store})
+   "sync" commands/sync-store
+   "lock" commands/lock})
 
 (defn network
   "The network operations for `config`: HTTP, the GitHub token from the
@@ -105,7 +108,8 @@ Every failure is explained with what to do; --debug adds each request and stack 
         load (fn [ctx]
                (let [groups (registry/load-groups dirs)]
                  (-> ctx
-                     (assoc :registry (registry/load-registry dirs) :groups groups)
+                     (assoc :registry (registry/load-registry dirs) :groups groups
+                            :locks (registry/load-locks dirs lockfile/read-lock))
                      (update-in [:config :packages] #(registry/expand groups %)))))]
     (case command
       "report" ctx
@@ -113,7 +117,7 @@ Every failure is explained with what to do; --debug adds each request and stack 
       (load ctx))))
 
 (def ^:private changes-store
-  #{"install" "use" "update" "gc" "uninstall" "sync"})
+  #{"install" "use" "update" "gc" "uninstall" "sync" "lock"})
 
 (defn- record-lock!
   "Rewrites the lock file, when one is configured, after a command changed the
@@ -143,7 +147,7 @@ Every failure is explained with what to do; --debug adds each request and stack 
     (f)))
 
 (def parse-spec
-  {:coerce {:keep :long :delay :long :debug :boolean :verify :boolean :force :boolean :dry-run :boolean :all :boolean :previous :boolean :locked :boolean :brief :boolean :wait :boolean :install :boolean}
+  {:coerce {:keep :long :delay :long :debug :boolean :verify :boolean :force :boolean :dry-run :boolean :all :boolean :previous :boolean :locked :boolean :brief :boolean :wait :boolean :install :boolean :check :boolean}
    :alias {:d :debug}})
 
 (def ^:private reported

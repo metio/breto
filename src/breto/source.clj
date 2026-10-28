@@ -56,6 +56,9 @@
                                      (sequential? node) [(str (count node) " entries")]
                                      :else [])}))))))
 
+(defn- go-proxy-url [source suffix]
+  (str "https://proxy.golang.org/" (package/go-escape (:go source)) suffix))
+
 (defn latest
   "The tag and version of the newest release of `pkg`."
   [{:keys [source] :as pkg} {:keys [get-text] :as io}]
@@ -69,7 +72,10 @@
               (tagged pkg (or (get (json/parse-string (get-text url {})) "tag_name")
                               (throw (ex-info (str "no tag_name in " url) {:breto/problem :no-release :url url})))))
     :text (tagged pkg (str/trim (get-text (:text source) {})))
-    :json (tagged pkg (json-version pkg (json/parse-string (get-text (:json source) {"Accept" "application/json"}))))))
+    :json (tagged pkg (json-version pkg (json/parse-string (get-text (:json source) {"Accept" "application/json"}))))
+    :go (let [url (go-proxy-url source "/@latest")]
+          (tagged pkg (or (get (json/parse-string (get-text url {})) "Version")
+                          (throw (ex-info (str "no Version in " url) {:breto/problem :no-release :url url})))))))
 
 (defn- release-tags
   "Tags of the published, non-prerelease releases of `pkg`, or nil for a
@@ -85,6 +91,7 @@
     :gitlab (->> (json/parse-string (get-text (gitlab-api (:gitlab source) "/releases?per_page=100") {}) true)
                  (remove :upcoming_release)
                  (map :tag_name))
+    :go (remove str/blank? (str/split-lines (get-text (go-proxy-url source "/@v/list") {})))
     nil))
 
 (defn newest

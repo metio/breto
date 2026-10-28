@@ -136,3 +136,15 @@
               seen))]
     (let [used (reduce walk #{} names)]
       (vec (distinct (mapcat #(get-in groups [% :files]) (filter used (sort (keys groups)))))))))
+
+(def lock-file-name "breto.lock")
+
+(defn load-locks
+  "The entries of the breto.lock files of `dirs`, keyed by PKG@VERSION. An
+  entry in a later directory replaces one of the same key."
+  [dirs read-lock]
+  (->> dirs
+       (map #(fs/path % lock-file-name))
+       (filter fs/regular-file?)
+       (map #(:entries (read-lock (str %))))
+       (apply merge {})))

@@ -79,30 +79,58 @@
     hash-recorded? (assoc :hash-recorded hash-recorded?)
     (seq warnings) (assoc :warnings warnings)))
 
-(defn- cosign-first
-  "`specs` with the packages that provide cosign moved to the front, so that
-  on a fresh host cosign is installed before it is needed to check the
-  signatures of the others."
+(defn- tools-first
+  "`specs` with the packages that provide cosign or go moved to the front, so
+  that on a fresh host those are installed before they are needed to check
+  the signatures of the others or to build them."
   [registry specs]
-  (let [provides? #(some-> (get registry (first (batch/split-spec %))) signature/provides-cosign?)]
+  (let [provides? #(let [[name] (batch/split-spec %)]
+                     (or (= "go" name) (some-> (get registry name) signature/provides-cosign?)))]
     (concat (filter provides? specs) (remove provides? specs))))
+
+(defn go-command
+  "The go command packages with a :go source are built with: that of the
+  active version of the package go, else of its newest installed one."
+  [config registry]
+  (when-let [pkg (get registry "go")]
+    (when-let [version (or (store/current-version config "go") (:version (first (store/versions config "go"))))]
+      (get (install/bin-targets config pkg version) "go"))))
+
+(defn- lock-options
+  "install! options checking `name` at `version` against the lock files of
+  the registry directories, when one of them lists it."
+  [locks name version]
+  (when-let [{:keys [sha256 sum]} (and version (get locks (str name "@" version)))]
+    (cond-> {}
+      sha256 (assoc :expect-sha256 sha256)
+      sum (assoc :expect-sum sum))))
 
 (defn- install-results
   "Runs `install-one` (name, version -> install! options) over `specs` with
   progress and pacing under `command`, returning a result per spec."
-  [{:keys [config registry io] :as ctx} command specs install-one]
+  [{:keys [config registry locks io] :as ctx} command specs install-one]
   (let [progress (batch/broadcast (tracker ctx command) (hook-listener ctx command))
         transferred (atom 0)
         io (batch/tracked-io io progress transferred)]
-    (batch/run-batch io (vec (cosign-first registry specs))
+    (batch/run-batch io (vec (tools-first registry specs))
                      ((pacer ctx progress transferred)
                       (fn [spec]
                         (let [[name version] (batch/split-spec spec)
                               pkg (registry/lookup registry name)
-                              result (installed-result name (install/install! config io pkg (install-one name version)))]
-                          (if-let [warning (package/superseded-warning pkg)]
-                            (clojure.core/update result :warnings (fnil conj []) warning)
-                            result))))
+                              options (install-one name version)
+                              locked (lock-options locks name (or (:version options) version))
+                              unlocked? (and (::pinned options) (seq locks) (nil? locked))
+                              _ (when (and unlocked? (:require-locked config))
+                                  (throw (ex-info (str name " " version " is in no lock file of the registry directories, and :require-locked is set")
+                                                  {:breto/problem :not-locked :package name :version version})))
+                              options (cond-> (into (or locked {}) (remove (comp nil? val)) (dissoc options ::pinned))
+                                        (= :go (package/source-kind pkg)) (assoc :go (go-command config registry)))
+                              result (installed-result name (install/install! config io pkg options))
+                              warnings (cond-> []
+                                         (package/superseded-warning pkg) (conj (package/superseded-warning pkg))
+                                         unlocked? (conj (str version " is in no lock file of the registry directories, so only upstream verified it")))]
+                          (cond-> result
+                            (seq warnings) (clojure.core/update :warnings (fnil into []) warnings)))))
                      progress)))
 
 (defn- installing
@@ -117,8 +145,8 @@
     (when-not (:lockfile config)
       (throw (ex-info "--locked needs :lockfile in the config"
                       {:breto/problem :no-lockfile :path nil})))
-    (let [{:keys [version sha256]} (lockfile/locked-entry (:lockfile config) name)]
-      {:version version :expect-sha256 sha256})))
+    (let [{:keys [version sha256 sum]} (lockfile/locked-entry (:lockfile config) name)]
+      {:version version :expect-sha256 sha256 :expect-sum sum})))
 
 (defn- which [io]
   (or (:which io) #(some-> (fs/which %) str)))
@@ -205,9 +233,11 @@
 
 (defn- project-install
   "install! options for a version a project needs: installed beside the
-  active one, not in its place."
+  active one, not in its place, and expected in a registry lock file when it
+  is pinned."
   [opts]
-  (fn [_ version] {:version version :activate? false :verify? (:verify opts true)}))
+  (fn [_ version] (cond-> {:version version :activate? false :verify? (:verify opts true)}
+                    version (assoc ::pinned true))))
 
 (defn env
   "Links the versions the nearest .breto.edn lists into the project's bin
@@ -419,7 +449,8 @@
       (let [installed (install-results ctx "sync" (mapv (fn [[name {:keys [version]}]] (str name "@" version)) entries)
                                        (fn [name version]
                                          {:version version :verify? (:verify opts true)
-                                          :expect-sha256 (get-in entries [name :sha256])}))
+                                          :expect-sha256 (get-in entries [name :sha256])
+                                          :expect-sum (get-in entries [name :sum])}))
             removed (batch/run-batch io extra #(uninstall-one ctx % false) (fn [_]))]
         (batch/finish! "sync" (-> installed (into removed) (into (refresh-projects ctx "sync"))))))))
 
@@ -467,3 +498,44 @@
                        (doctor/run-checks config-path config (or registry {}) io))]
     (println (doctor/render checks))
     (if (some #(= :fail (:level %)) checks) 1 0)))
+
+(defn- lock-entry
+  "The lock entry of an installed version: the module hash of a package built
+  with go install, else the download hash and asset."
+  [config name version]
+  (let [{:keys [sha256 asset sum]} (store/read-meta config name version)]
+    (if sum
+      {:version version :sum sum}
+      (cond-> {:version version}
+        sha256 (assoc :sha256 sha256)
+        asset (assoc :asset asset)))))
+
+(defn lock
+  "Writes breto.lock in the registry directory `dir`: the hash of every
+  version a group defined there pins. The versions are installed first,
+  beside the active ones, and each one an existing entry lists must match it,
+  so a release that changed upstream fails instead of being locked anew.
+  Entries of versions no group pins any more are dropped. --check only
+  reports whether the file is up to date."
+  [{:keys [config groups opts] :as ctx} [dir & more]]
+  (when (or (nil? dir) (seq more))
+    (throw (ex-info "lock needs one registry directory" {:breto/problem :usage})))
+  (let [dir (str (fs/canonicalize dir))
+        path (str (fs/path dir registry/lock-file-name))
+        own (filter (fn [[_ {:keys [files]}]] (some #(= dir (str (fs/canonicalize (fs/parent %)))) files)) groups)
+        specs (filterv #(second (batch/split-spec %)) (registry/expand groups (map key own)))
+        results (install-results ctx "lock" specs (fn [_ version] {:version version :activate? false :verify? (:verify opts true)}))
+        failed? (some #(= :failed (:status %)) results)
+        before (lockfile/read-lock path)
+        text (lockfile/render {:header (:header before)
+                               :entries (into {} (for [spec specs
+                                                       :let [[name version] (batch/split-spec spec)]]
+                                                   [spec (dissoc (lock-entry config name version) :version)]))})
+        current? (and (fs/exists? path) (= text (slurp path)))]
+    (cond
+      failed? (batch/finish! "lock" results)
+      current? (do (println (str "[OK] " path " is up to date")) 0)
+      (:check opts) (do (println (str "[ERROR] " path " is out of date; run breto lock " dir)) 1)
+      :else (do (spit path text)
+                (println (str "[OK] wrote " path " with " (count specs) " versions"))
+                0))))

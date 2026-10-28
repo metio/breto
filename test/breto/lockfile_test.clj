@@ -5,6 +5,7 @@
   (:require [babashka.fs :as fs]
             [breto.diagnose :as diagnose]
             [breto.lockfile :as lockfile]
+            [breto.store :as store]
             [breto.support :as s :refer [path]]
             [clojure.string :as str]
             [clojure.test :refer [deftest is testing use-fixtures]]))
@@ -163,3 +164,11 @@
                                "dropped" {:version "9"}})))
     (is (= {"old" {:version "1.0"}}
            (lockfile/snapshot cfg ["old"] {"old" {:version "0.9" :sha256 "stale"}})))))
+
+(deftest snapshots-record-module-sums
+  (let [cfg {:store (path "store")}]
+    (fs/create-dirs (path "store" "tool" "1.0"))
+    (fs/create-sym-link (path "store" "tool" "current") "1.0")
+    (store/write-meta! cfg "tool" "1.0" {:sum "h1:abc=" :asset "tool"})
+    (is (= {"tool" {:version "1.0" :sum "h1:abc=" :asset "tool"}}
+           (lockfile/snapshot cfg ["tool"] {})))))

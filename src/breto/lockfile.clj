@@ -38,10 +38,12 @@
                            {:breto/problem :lockfile-format :path (str path) :error (ex-message e)}))))
     {:header "" :entries {}}))
 
-(defn- entry-line [name {:keys [version sha256 asset]}]
-  (str (pr-str name) " {:version " (pr-str version)
-       (when sha256 (str " :sha256 " (pr-str sha256)))
-       (when asset (str " :asset " (pr-str asset)))
+(defn- entry-line [name {:keys [version sha256 sum asset]}]
+  (str (pr-str name) " {"
+       (str/join " " (remove nil? [(when version (str ":version " (pr-str version)))
+                                   (when sha256 (str ":sha256 " (pr-str sha256)))
+                                   (when sum (str ":sum " (pr-str sum)))
+                                   (when asset (str ":asset " (pr-str asset)))]))
        "}"))
 
 (defn render [{:keys [header entries]}]
@@ -51,7 +53,7 @@
 
 (defn snapshot
   "The entries for the configured `names` given the store: the active version
-  of each with the hash recorded when it was installed. A package not active
+  of each with the hash, or module sum, recorded when it was installed. A package not active
   here keeps its old entry, and so does the hash of a version installed
   before hashes were recorded."
   [config names old]
@@ -60,10 +62,11 @@
                 (let [active (store/current-version config name)
                       previous (get old name)]
                   (if active
-                    (let [{:keys [sha256 asset]} (store/read-meta config name active)
+                    (let [{:keys [sha256 sum asset]} (store/read-meta config name active)
                           kept (when (= active (:version previous)) previous)]
                       [name (cond-> {:version active}
                               (or sha256 (:sha256 kept)) (assoc :sha256 (or sha256 (:sha256 kept)))
+                              (or sum (:sum kept)) (assoc :sum (or sum (:sum kept)))
                               (or asset (:asset kept)) (assoc :asset (or asset (:asset kept))))])
                     (when previous [name previous])))))
         names))

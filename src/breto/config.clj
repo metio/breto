@@ -25,6 +25,7 @@
    :prune false
    :token-command nil
    :lockfile nil
+   :require-locked false
    :cosign nil
    :hooks {}
    :notifier :auto

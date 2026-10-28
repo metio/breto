@@ -18,7 +18,7 @@
             archive-suffixes)
       :raw))
 
-(def source-kinds #{:github :gitlab :text :json})
+(def source-kinds #{:github :gitlab :text :json :go})
 
 (defn source-kind [{:keys [source]}]
   (let [kinds (filter source-kinds (keys source))]
@@ -32,7 +32,22 @@
   (some? (:tag source)))
 
 (defn repo [{:keys [source]}]
-  (or (:github source) (:gitlab source)))
+  (or (:github source) (:gitlab source) (:go source)))
+
+(defn file-name [path]
+  (subs path (inc (or (str/last-index-of path "/") -1))))
+
+(defn go-escape
+  "A module path as the Go module proxy spells it: every capital letter as !
+  and its lower case."
+  [module]
+  (str/replace module #"[A-Z]" #(str "!" (str/lower-case %))))
+
+(defn go-package
+  "The package `go install` builds for a :go source: its :package, else the
+  module itself."
+  [{:keys [source]}]
+  (or (:package source) (:go source)))
 
 (defn- relative-path?
   "Whether `s` is a path or glob inside the release: relative, without .."
@@ -69,6 +84,14 @@
 
     (and (:tag source) (not= :github (source-kind pkg)))
     (conj ":source :tag is only supported for :github")
+
+    (and (= :go (source-kind pkg))
+         (not (and (string? (:go source)) (re-matches #"[^\s@]+" (:go source))
+                   (or (nil? (:package source))
+                       (and (string? (:package source))
+                            (or (= (:package source) (:go source))
+                                (str/starts-with? (:package source) (str (:go source) "/"))))))))
+    (conj ":source {:go MODULE} names a module path, and its :package, when given, a package inside that module")
 
     (and (rolling? pkg) (not (str/includes? (str asset) "{version}")))
     (conj ":asset of a rolling release must contain {version}")
@@ -133,6 +156,10 @@
   [pkg]
   (let [pkg (merge {:tag-prefix "v" :strip 0 :layout :binary :links {}} pkg)
         pkg (cond-> pkg
+              (= :go (source-kind pkg))
+              (merge {:asset (file-name (go-package pkg))
+                      :url (str "https://proxy.golang.org/" (go-escape (get-in pkg [:source :go])) "/@v/{tag}.zip")})
+
               (and (nil? (:url pkg)) (= :github (source-kind pkg)))
               (assoc :url (str "https://github.com/" (get-in pkg [:source :github])
                                "/releases/download/{tag}/{asset}"))
@@ -214,9 +241,6 @@
                       (update :of #(or % :asset))))
      :archive (archive-type asset-name)
      :bins (update-vals bins #(template/render % file-vars))}))
-
-(defn file-name [path]
-  (subs path (inc (or (str/last-index-of path "/") -1))))
 
 (defn- stored-name
   "The command name a binary is kept under: the command named like the file
