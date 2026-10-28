@@ -1,0 +1,38 @@
+# SPDX-FileCopyrightText: The breto Authors
+# SPDX-License-Identifier: 0BSD
+
+name: Check definitions
+on:
+  schedule:
+    - cron: "23 4 * * SUN"
+  workflow_dispatch:
+permissions:
+  contents: read
+concurrency:
+  group: ${{ github.workflow }}
+  cancel-in-progress: false
+jobs:
+  check:
+    runs-on: ubuntu-latest
+    # About one GitHub API request per definition at 1000 an hour; breto waits out the limit.
+    timeout-minutes: 330
+    steps:
+      - uses: actions/checkout@9c091bb21b7c1c1d1991bb908d89e4e9dddfe3e0 # v7
+      - uses: metio/nix-devshell@d0c25fdb0d2c08f23bc62c867317a266b6f1a5c1 # 2026.9.12204255
+      - name: Check every definition against its latest release
+        env:
+          GITHUB_TOKEN: ${{ github.token }}
+          XDG_STATE_HOME: ${{ runner.temp }}/state
+        run: |
+          printf '{:registries ["%s/packages"]}\n' "$GITHUB_WORKSPACE" > "$RUNNER_TEMP/config.edn"
+          nix develop --command ./breto check --all --config "$RUNNER_TEMP/config.edn"
+      - name: Summarize the failures
+        if: always()
+        env:
+          XDG_STATE_HOME: ${{ runner.temp }}/state
+        run: |
+          {
+            echo '```'
+            nix develop --command ./breto report check --config "$RUNNER_TEMP/config.edn" | grep --invert-match '^\[OK\]' | head --bytes=900000
+            echo '```'
+          } >> "$GITHUB_STEP_SUMMARY"
