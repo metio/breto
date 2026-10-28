@@ -22,6 +22,7 @@
             [breto.signature :as signature]
             [breto.source :as source]
             [breto.store :as store]
+            [breto.template :as template]
             [clojure.pprint :as pprint]
             [clojure.string :as str]))
 
@@ -231,6 +232,32 @@
                           (:version (first (store/versions config name))))]]
     [spec (when version (install/bin-targets config pkg version))]))
 
+(defn- project-environment
+  "{:homes :vars} of `project`: the version directory of each package whose
+  definition has :env, and the variables those definitions set, rendered
+  with {home} as the project's stable link to that directory. Two packages
+  setting one variable is an error, since only one value can win."
+  [config registry {:keys [dir specs]}]
+  (let [entries (for [spec specs
+                      :let [[name version] (batch/split-spec spec)
+                            pkg (registry/lookup registry name)]
+                      :when (seq (:env pkg))
+                      :let [version (or version (store/current-version config name)
+                                        (:version (first (store/versions config name))))]
+                      :when version
+                      :let [pkg (package/at pkg version)
+                            vars (assoc (package/template-vars pkg {:tag (package/tag-of-version pkg version) :version version})
+                                        :home (str (env/home config dir name)))]]
+                  {:name name
+                   :home (str (store/version-dir config name version))
+                   :vars (update-vals (:env pkg) #(template/render % vars))})]
+    (doseq [[k owners] (group-by first (for [{:keys [name vars]} entries, [k _] vars] [k name]))
+            :when (< 1 (count owners))]
+      (throw (ex-info (str "the project's packages " (str/join " and " (map second owners)) " all set " k)
+                      {:breto/problem :env-conflict :variable k :packages (mapv second owners)})))
+    {:homes (into {} (map (juxt :name :home)) entries)
+     :vars (into {} (mapcat :vars) entries)}))
+
 (defn- project-install
   "install! options for a version a project needs: installed beside the
   active one, not in its place, and expected in a registry lock file when it
@@ -263,9 +290,10 @@
     (if (pos? code)
       code
       (let [links (into {} (mapcat second (project-targets config registry proj)))
-            bin (env/link! config dir links)
+            {:keys [homes vars]} (project-environment config registry proj)
+            bin (env/link! config dir links homes)
             shell (if (= "fish" (:shell opts)) :fish :sh)]
-        (println (env/exports shell (env/path-value config bin (System/getenv "PATH")) dir bin files))
+        (println (env/exports shell (env/path-value config bin (System/getenv "PATH")) dir bin files vars))
         0))))
 
 (defn- refresh-projects
@@ -291,7 +319,8 @@
         (try
           (let [targets (project-targets config registry p)]
             (if (every? second targets)
-              (env/link! config (:dir p) (into {} (mapcat second targets)))
+              (env/link! config (:dir p) (into {} (mapcat second targets))
+                         (:homes (project-environment config registry p)))
               (println (str "[WARN] project " (:dir p) " keeps its links: "
                             (str/join ", " (map first (remove second targets))) " not installed"))))
           (catch Exception e

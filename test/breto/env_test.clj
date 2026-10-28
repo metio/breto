@@ -86,8 +86,13 @@
     (is (= "/a b:/it's|/p|/a b|/p/.breto.edn:/r/@go.edn"
            (str/trim (:out (process/shell {:out :string} "sh" "-c"
                                           (str code "\nprintf '%s|%s|%s|%s' \"$PATH\" \"$BRETO_PROJECT\" \"$BRETO_ENV_BIN\" \"$BRETO_ENV_FILES\"")))))))
-  (is (= "set --global --export PATH '/a' '/b';\nset --global --export BRETO_PROJECT '/p';\nset --global --export BRETO_ENV_BIN '/a';\nset --global --export BRETO_ENV_FILES '/p/.breto.edn';"
-         (env/exports :fish "/a:/b" "/p" "/a" ["/p/.breto.edn"]))))
+  (testing "variables are quoted too"
+    (is (= "/it's x"
+           (str/trim (:out (process/shell {:out :string} "sh" "-c"
+                                          (str (env/exports :sh "/a" "/p" "/a" [] {"JAVA_HOME" "/it's x"}) "\nprintf '%s' \"$JAVA_HOME\"")))))))
+  (let [fish (env/exports :fish "/a:/b" "/p" "/a" ["/p/.breto.edn"] {"JAVA_HOME" "/it's"})]
+    (is (str/ends-with? fish "set --global --export PATH '/a' '/b';\nset --global --export BRETO_PROJECT '/p';\nset --global --export BRETO_ENV_BIN '/a';\nset --global --export BRETO_ENV_FILES '/p/.breto.edn';"))
+    (is (str/includes? fish "set --global --export JAVA_HOME '/it'\\''s';\nset --global --export BRETO_ENV_VARS 'JAVA_HOME';"))))
 
 (deftest gc-keeps-what-projects-use-and-forgets-removed-projects
   (let [io (world)

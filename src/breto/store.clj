@@ -117,11 +117,20 @@
 
 (defn activate!
   "Makes `version` the one that `current`, the binaries, any extra links, the
-  man pages and the completions of the package resolve to. Returns warnings
+  man pages and the completions of the package resolve to. Links in the bin
+  directory to commands `version` lacks are removed. Returns warnings
   about files in the way of man pages and completions."
   [config {:keys [name links] :as pkg} bin-paths version]
-  (let [current (fs/path (package-dir config name) current-link)]
+  (let [dir (package-dir config name)
+        current (fs/path dir current-link)
+        extra (set (map #(str (expand-home %)) (keys links)))]
     (link! current version)
+    (when (fs/directory? (:bin-dir config))
+      (doseq [link (fs/list-dir (:bin-dir config))
+              :when (and (points-into? dir link)
+                         (not (contains? bin-paths (str (fs/file-name link))))
+                         (not (extra (str link))))]
+        (fs/delete link)))
     (doseq [[link path] bin-paths]
       (link! (fs/path (:bin-dir config) link) (fs/path current path)))
     (doseq [[link path] links]

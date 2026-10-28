@@ -1,0 +1,15 @@
+;; SPDX-FileCopyrightText: The breto Authors
+;; SPDX-License-Identifier: 0BSD
+
+{:description "Eclipse Temurin OpenJDK, the newest generally available feature release"
+ :source {:json "https://api.adoptium.net/v3/info/release_names?release_type=ga&sort_order=DESC&page_size=1&os=linux&architecture=x64&image_type=jdk&vendor=eclipse"
+          :version [:releases 0]}
+ :tag-prefix "jdk-"
+ :vars {:feature {:match "^(\\d+)"} :file-version {:replace ["+" "_"]}}
+ :asset "OpenJDK{feature}U-jdk_x64_linux_hotspot_{file-version}.tar.gz"
+ :url "https://github.com/adoptium/temurin{feature}-binaries/releases/download/{tag}/{asset}"
+ :checksum "{asset}.sha256.txt"
+ :strip 1
+ :layout :tree
+ :bin-dir "bin"
+ :env {"JAVA_HOME" "{home}"}}

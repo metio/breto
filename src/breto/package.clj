@@ -69,6 +69,25 @@
                    false))
                completions)))
 
+(def ^:private reserved-vars #{:name :tag :version :repo :asset :home})
+
+(defn- vars-valid? [vars]
+  (and (map? vars)
+       (every? (fn [[k v]]
+                 (and (keyword? k) (re-matches #"[a-z-]+" (name k)) (not (reserved-vars k))
+                      (map? v) (= 1 (count v))
+                      (or (and (string? (:match v)) (try (re-pattern (:match v)) (catch Exception _ false)))
+                          (and (vector? (:replace v)) (= 2 (count (:replace v))) (every? string? (:replace v))))))
+               vars)))
+
+(defn- env-valid? [env]
+  (and (map? env)
+       (every? (fn [[k v]]
+                 (and (string? k) (re-matches #"[A-Za-z_][A-Za-z0-9_]*" k)
+                      (not= "PATH" k) (not (str/starts-with? k "BRETO_"))
+                      (string? v)))
+               env)))
+
 (defn- problems [{:keys [name asset url layout bins source] :as pkg}]
   (cond-> []
     (not (string? name))
@@ -125,6 +144,16 @@
     (not (boolean? (:verify pkg true)))
     (conj ":verify must be true or false")
 
+    (and (contains? pkg :bin-dir)
+         (not (and (= :tree layout) (relative-path? (:bin-dir pkg)))))
+    (conj ":bin-dir needs the :tree layout and is a relative path inside the release, without ..")
+
+    (not (vars-valid? (:vars pkg {})))
+    (conj ":vars maps placeholder keywords other than :name, :tag, :version, :repo, :asset and :home to {:match REGEX} or {:replace [FROM TO]}, applied to the version")
+
+    (not (env-valid? (:env pkg {})))
+    (conj ":env maps environment variable names other than PATH and BRETO_* to template strings")
+
     (not (string? (:description pkg "")))
     (conj ":description must be a string")
 
@@ -164,7 +193,10 @@
               (assoc :url (str "https://github.com/" (get-in pkg [:source :github])
                                "/releases/download/{tag}/{asset}"))
 
-              (nil? (:bins pkg))
+              (and (nil? (:bins pkg)) (:bin-dir pkg))
+              (assoc :bins {})
+
+              (and (nil? (:bins pkg)) (nil? (:bin-dir pkg)))
               (assoc :bins {(:name pkg) (if (= :raw (archive-type (str (:asset pkg))))
                                           "{asset}"
                                           (:name pkg))}))]
@@ -219,8 +251,25 @@
     checksum
     (str (subs asset-url 0 (inc (str/last-index-of asset-url "/"))) checksum)))
 
-(defn template-vars [{:keys [name] :as pkg} {:keys [tag version]}]
-  {:name name :tag (or tag "") :version (or version "") :repo (or (repo pkg) "")})
+(defn- derived
+  "The value of one of `:vars`: the first group of :match in `version`, or
+  the whole match without a group, or `version` with :replace applied."
+  [pkg k {:keys [match replace]} version]
+  (if match
+    (let [m (re-find (re-pattern match) version)]
+      (cond
+        (nil? m) (throw (ex-info (str (:name pkg) ": version " version " does not match the " k " pattern " match)
+                                 {:breto/problem :invalid-package :package (:name pkg)
+                                  :problems [(str ":vars " k " does not match version " version)]}))
+        (string? m) m
+        :else (second m)))
+    (str/replace version (first replace) (second replace))))
+
+(defn template-vars [{:keys [name vars] :as pkg} {:keys [tag version]}]
+  (into {:name name :tag (or tag "") :version (or version "") :repo (or (repo pkg) "")}
+        (when (seq version)
+          (for [[k spec] vars]
+            [k (derived pkg k spec version)]))))
 
 (defn artifact
   "Everything needed to fetch and unpack one release of `pkg`."

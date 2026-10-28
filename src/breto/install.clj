@@ -222,6 +222,23 @@
   (doseq [path (distinct (vals (package/bin-paths pkg artifact)))]
     (fs/set-posix-file-permissions (fs/path dest path) "rwxr-xr-x")))
 
+(defn- installed-bin-paths
+  "Command name -> path inside the version directory: the :bins of the
+  definition, plus every executable file in its :bin-dir. Commands found in
+  :bin-dir differ between versions, so they are read from the installed
+  version rather than from the definition."
+  [config pkg artifact version]
+  (let [static (package/bin-paths pkg artifact)
+        dir (when-let [bin-dir (:bin-dir pkg)]
+              (fs/path (store/version-dir config (:name pkg) version) bin-dir))]
+    (merge (when (and dir (fs/directory? dir))
+             (into {} (for [file (fs/list-dir dir)
+                            :when (and (fs/regular-file? file) (fs/executable? file))
+                            :let [command (str (fs/file-name file))]
+                            :when (not (str/starts-with? command "."))]
+                        [command (str (:bin-dir pkg) "/" command)])))
+           static)))
+
 (defn install!
   "Installs `pkg` at `version` (latest when nil) and activates it unless
   `:activate?` is false. The download is verified unless `verify?` is false
@@ -279,7 +296,7 @@
                          (fs/delete package-dir))))))]
     (let [warnings (when activate?
                      (staged io :activate context
-                       #(do (store/activate! config pkg bin-paths version)
+                       #(do (store/activate! config pkg (installed-bin-paths config pkg artifact version) version)
                             (vec (share! config io pkg version)))))
           recorded (when-not (or fresh? (= :go (package/source-kind pkg)))
                      (if verify?
@@ -298,18 +315,17 @@
   [config pkg version]
   (let [pkg (package/at pkg version)
         artifact (package/artifact pkg {:tag (package/tag-of-version pkg version) :version version})
-        bin-paths (package/bin-paths pkg artifact)
         dir (store/version-dir config (:name pkg) version)]
-    (when (store/installed? config (:name pkg) version (vals bin-paths))
-      (update-vals bin-paths #(str (fs/path dir %))))))
+    (when (store/installed? config (:name pkg) version (vals (package/bin-paths pkg artifact)))
+      (update-vals (installed-bin-paths config pkg artifact version) #(str (fs/path dir %))))))
 
 (defn use!
   "Activates an already installed version."
   [config pkg version]
   (let [pkg (package/at pkg version)
         artifact (package/artifact pkg {:tag (package/tag-of-version pkg version) :version version})
-        bin-paths (package/bin-paths pkg artifact)]
-    (when-not (store/installed? config (:name pkg) version (vals bin-paths))
+        bin-paths (installed-bin-paths config pkg artifact version)]
+    (when-not (store/installed? config (:name pkg) version (vals (package/bin-paths pkg artifact)))
       (throw (ex-info (str (:name pkg) " " version " is not installed")
                       {:breto/problem :not-installed :package (:name pkg) :version version
                        :installed (mapv :version (store/versions config (:name pkg)))})))

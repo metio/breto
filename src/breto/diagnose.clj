@@ -416,6 +416,11 @@
    :facts []
    :advice [(str "Run eval \"$(breto env)\" in " project " to install them and switch to the project.")]})
 
+(defmethod explain :env-conflict [{:keys [variable packages]} _]
+  {:summary (str (str/join " and " packages) " all set " variable ", and a shell holds only one value of it.")
+   :facts []
+   :advice [(str "Keep one of " (str/join ", " packages) " in the project's .breto.edn.")]})
+
 (defmethod explain :store-busy [{:keys [pid]} _]
   {:summary (str "A version of this project has to be installed, and another breto run (process " pid ") holds the store.")
    :facts []

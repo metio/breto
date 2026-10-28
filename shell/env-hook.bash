@@ -2,8 +2,9 @@
 # SPDX-License-Identifier: 0BSD
 
 # Runs breto env when the shell enters a directory with a .breto.edn above it,
-# or that file or a group file it names changes, and takes the project's bin
-# directory off PATH when the shell leaves the project. Source it from an
+# or that file or a group file it names changes. When the shell leaves the
+# project, it takes the project's bin directory off PATH and gives the
+# variables breto env set their earlier values back. Source it from an
 # interactive bash.
 #
 # A prompt hook cannot always be interrupted, so it never installs or waits:
@@ -47,7 +48,17 @@ __breto_env() {
             PATH=${PATH#:}
             PATH=${PATH%:}
         fi
-        unset BRETO_ENV_BIN BRETO_ENV_FILES BRETO_PROJECT __breto_project __breto_stamp
+        local var saved
+        for var in ${BRETO_ENV_VARS-}; do
+            saved=__breto_saved_$var
+            if [ -n "${!saved+x}" ]; then
+                export "$var=${!saved}"
+                unset "$saved"
+            else
+                unset "$var"
+            fi
+        done
+        unset BRETO_ENV_BIN BRETO_ENV_FILES BRETO_ENV_VARS BRETO_PROJECT __breto_project __breto_stamp
     fi
 }
 

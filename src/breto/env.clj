@@ -48,27 +48,44 @@
 (defn bin-dir [config project-dir]
   (fs/path (env-dir config project-dir) "bin"))
 
+(defn home
+  "The link to the version directory of `package` that the project at
+  `project-dir` uses. Its path stays the same when the version changes, so an
+  exported variable pointing at it never goes stale."
+  [config project-dir package]
+  (fs/path (env-dir config project-dir) "homes" package))
+
+(defn- hold-exactly!
+  "Makes `dir` hold exactly `links`, link name -> target, each replaced
+  atomically."
+  [dir links]
+  (fs/create-dirs dir)
+  (doseq [existing (fs/list-dir dir)
+          :when (not (contains? links (str (fs/file-name existing))))]
+    (fs/delete existing))
+  (doseq [[link target] links
+          :let [path (fs/path dir link)
+                staged (fs/path dir (str "." link ".breto"))]]
+    (fs/delete-if-exists staged)
+    (fs/create-sym-link staged (str target))
+    (fs/move staged path {:replace-existing true :atomic-move true})))
+
 (defn link!
   "Makes the bin directory of `project-dir` hold exactly `links`, link name ->
-  target, and records which project it belongs to. The directory's
-  modification time is the time of the run, so a shell hook can tell whether
-  the project file changed since."
-  [config project-dir links]
-  (let [dir (env-dir config project-dir)
-        bin (fs/path dir "bin")]
-    (fs/create-dirs bin)
-    (spit (str (fs/path dir "project")) (str (fs/absolutize project-dir)))
-    (doseq [existing (fs/list-dir bin)
-            :when (not (contains? links (str (fs/file-name existing))))]
-      (fs/delete existing))
-    (doseq [[link target] links
-            :let [path (fs/path bin link)
-                  staged (fs/path bin (str "." link ".breto"))]]
-      (fs/delete-if-exists staged)
-      (fs/create-sym-link staged (str target))
-      (fs/move staged path {:replace-existing true :atomic-move true}))
-    (fs/set-last-modified-time bin (java.nio.file.attribute.FileTime/from (java.time.Instant/now)))
-    (str bin)))
+  target, its homes directory exactly `homes`, package -> version directory,
+  and records which project it belongs to. The bin directory's modification
+  time is the time of the run, so a shell hook can tell whether the project
+  file changed since."
+  ([config project-dir links] (link! config project-dir links {}))
+  ([config project-dir links homes]
+   (let [dir (env-dir config project-dir)
+         bin (fs/path dir "bin")]
+     (fs/create-dirs dir)
+     (spit (str (fs/path dir "project")) (str (fs/absolutize project-dir)))
+     (hold-exactly! (fs/path dir "homes") homes)
+     (hold-exactly! bin links)
+     (fs/set-last-modified-time bin (java.nio.file.attribute.FileTime/from (java.time.Instant/now)))
+     (str bin))))
 
 (defn path-value
   "`path` with the bin directories of every project and repeated entries
@@ -82,20 +99,58 @@
 (defn- sh-quote [s]
   (str "'" (str/replace s "'" "'\\''") "'"))
 
+(def ^:private restore-sh
+  "Gives each variable the previous breto env set its value from before that
+  run back, or unsets it."
+  (str "for __breto_var in ${BRETO_ENV_VARS-}; do\n"
+       "  if eval \"[ -n \\\"\\${__breto_saved_$__breto_var+x}\\\" ]\"; then\n"
+       "    eval \"export $__breto_var=\\\"\\$__breto_saved_$__breto_var\\\"; unset __breto_saved_$__breto_var\"\n"
+       "  else\n"
+       "    unset \"$__breto_var\"\n"
+       "  fi\n"
+       "done\n"
+       "unset __breto_var\n"))
+
+(def ^:private restore-fish
+  (str "for __breto_var in (string split --no-empty ' ' -- \"$BRETO_ENV_VARS\");\n"
+       "  set --local __breto_saved __breto_saved_$__breto_var;\n"
+       "  if set --query $__breto_saved;\n"
+       "    set --global --export $__breto_var $$__breto_saved; set --erase $__breto_saved;\n"
+       "  else;\n"
+       "    set --erase $__breto_var;\n"
+       "  end;\n"
+       "end;\n"
+       "set --erase __breto_var;\n"))
+
 (defn exports
   "The shell code that sets PATH to `path`, BRETO_PROJECT to `project-dir`,
-  BRETO_ENV_BIN to `bin` and BRETO_ENV_FILES to the colon-separated `files`
-  the project's packages come from, for :sh (also bash and zsh) or :fish."
-  [shell path project-dir bin files]
-  (case shell
-    :fish (str "set --global --export PATH " (str/join " " (map sh-quote (str/split path #":"))) ";\n"
-               "set --global --export BRETO_PROJECT " (sh-quote project-dir) ";\n"
-               "set --global --export BRETO_ENV_BIN " (sh-quote bin) ";\n"
-               "set --global --export BRETO_ENV_FILES " (sh-quote (str/join ":" files)) ";")
-    (str "export PATH=" (sh-quote path) "\n"
-         "export BRETO_PROJECT=" (sh-quote project-dir) "\n"
-         "export BRETO_ENV_BIN=" (sh-quote bin) "\n"
-         "export BRETO_ENV_FILES=" (sh-quote (str/join ":" files)))))
+  BRETO_ENV_BIN to `bin`, BRETO_ENV_FILES to the colon-separated `files` the
+  project's packages come from, and the variables in `vars`, for :sh (also
+  bash and zsh) or :fish. The variables of a project entered before get
+  their earlier values back first, and the values the new ones replace are
+  saved, so leaving the project can restore them; BRETO_ENV_VARS names them."
+  ([shell path project-dir bin files] (exports shell path project-dir bin files {}))
+  ([shell path project-dir bin files vars]
+   (let [names (str/join " " (sort (keys vars)))]
+     (case shell
+       :fish (str restore-fish
+                  (apply str (for [[k v] (sort vars)]
+                               (str "set --query " k "; and set --global __breto_saved_" k " $" k ";\n"
+                                    "set --global --export " k " " (sh-quote v) ";\n")))
+                  "set --global --export BRETO_ENV_VARS " (sh-quote names) ";\n"
+                  "set --global --export PATH " (str/join " " (map sh-quote (str/split path #":"))) ";\n"
+                  "set --global --export BRETO_PROJECT " (sh-quote project-dir) ";\n"
+                  "set --global --export BRETO_ENV_BIN " (sh-quote bin) ";\n"
+                  "set --global --export BRETO_ENV_FILES " (sh-quote (str/join ":" files)) ";")
+       (str restore-sh
+            (apply str (for [[k v] (sort vars)]
+                         (str "if [ -n \"${" k "+x}\" ]; then __breto_saved_" k "=$" k "; fi\n"
+                              "export " k "=" (sh-quote v) "\n")))
+            "export BRETO_ENV_VARS=" (sh-quote names) "\n"
+            "export PATH=" (sh-quote path) "\n"
+            "export BRETO_PROJECT=" (sh-quote project-dir) "\n"
+            "export BRETO_ENV_BIN=" (sh-quote bin) "\n"
+            "export BRETO_ENV_FILES=" (sh-quote (str/join ":" files)))))))
 
 (defn environments
   "Every project bin directory: {:dir :project :bin}, :project nil when its
@@ -128,7 +183,8 @@
                   acc)))
             {}
             (for [env (remove stale? (environments config))
-                  :when (fs/directory? (:bin env))
-                  link (fs/list-dir (:bin env))
+                  dir [(:bin env) (str (fs/path (:dir env) "homes"))]
+                  :when (fs/directory? dir)
+                  link (fs/list-dir dir)
                   :when (fs/sym-link? link)]
               link))))

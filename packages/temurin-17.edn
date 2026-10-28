@@ -1,0 +1,13 @@
+;; SPDX-FileCopyrightText: The breto Authors
+;; SPDX-License-Identifier: 0BSD
+
+{:description "Eclipse Temurin OpenJDK 17, the newest update of the 17 long-term support release"
+ :source {:github "adoptium/temurin17-binaries"}
+ :tag-prefix "jdk-"
+ :vars {:file-version {:replace ["+" "_"]}}
+ :asset "OpenJDK17U-jdk_x64_linux_hotspot_{file-version}.tar.gz"
+ :checksum "{asset}.sha256.txt"
+ :strip 1
+ :layout :tree
+ :bin-dir "bin"
+ :env {"JAVA_HOME" "{home}"}}

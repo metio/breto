@@ -123,9 +123,27 @@ In bash, `shell/env-hook.bash` from this repository does this on its own: source
 source ~/src/breto/shell/env-hook.bash
 ```
 
+A package whose definition has `:env` also sets those variables, such as `JAVA_HOME`. `{home}` in their values is a link of the project's own to the version directory, so the variable keeps its value when the version changes and `update` or `sync` only moves the link. The values the variables had before the project are saved, and the hook restores them, or unsets the variables, when the shell leaves the project; entering another project does the same first. Two packages of one project setting the same variable is an error.
+
 A package without a version uses the active version, else the most recently installed one. Versions that are not installed yet are installed without activating them, so the commands in `:bin-dir` keep their versions. Everything but the shell code goes to stderr. Each run makes the project's bin directory hold exactly what the file lists and replaces the `PATH` entry of a project entered before. The `PATH` it prints also drops entries that repeat.
 
 `breto update` without package names and `breto sync` finish by bringing every project with a bin directory up to date: they install the versions its `.breto.edn` names, again without activating them, and link its bin directory anew. A shell already working in the project runs the new versions from its next command on. A project whose file no longer loads keeps its links and is reported with `[WARN]`.
+
+### Java
+
+`temurin` follows the newest generally available release of Eclipse Temurin, and `temurin-17`, `temurin-21` and `temurin-25` the newest update of one long-term support release each. A project names the line it needs and gets its JDK first on `PATH` with `JAVA_HOME` pointing at it:
+
+```clojure
+{:packages ["temurin-21"]}
+```
+
+Every command in the JDK's `bin` directory is linked. Outside of projects, the JDK listed in `:packages` is the one in `:bin-dir`. A `JAVA_HOME` set for the whole session can point at its `current` link, such as `$XDG_DATA_HOME/breto/installations/temurin/current`, which follows `update`; the hook restores that value when the shell leaves a project.
+
+The definitions show how `:vars` fits a release whose asset name is not a plain copy of its version: the tag `jdk-27.0.1.0.2+1` is version `27.0.1.0.2+1`, and the asset `OpenJDK27U-jdk_x64_linux_hotspot_27.0.1.0.2_1.tar.gz` uses `{feature}` and `{file-version}`:
+
+```clojure
+:vars {:feature {:match "^(\\d+)"} :file-version {:replace ["+" "_"]}}
+```
 
 ### Shared toolchains
 
@@ -228,6 +246,9 @@ A package is a file `<name>.edn` in a registry directory, and its file name is t
 | `:strip` | Leading path components to drop when unpacking, counted as `tar --strip-components` does, a leading `./` included. | `0` |
 | `:layout` | `:binary` keeps only the files named in `:bins`; `:tree` keeps the whole archive. | `:binary` |
 | `:bins` | Command name to path inside the unpacked archive. | the package name, or the asset itself when it is not an archive |
+| `:bin-dir` | With the `:tree` layout, a directory inside the release whose executable files all become commands, read from each installed version, so a command a newer version drops loses its link on activation. `:bins` adds to them. | none |
+| `:vars` | Further placeholders derived from the version, as `{:match REGEX}`, the first group or else the whole match, or `{:replace [FROM TO]}`; see [Java](#java). | none |
+| `:env` | Variables `breto env` sets in a project using the package, as templates; `{home}` is a link to the version the project uses. | none |
 | `:links` | Further symlinks: target path to path inside the installed version. | none |
 | `:history` | Definitions for older versions; see below. | none |
 | `:verify` | `false` installs without verification, for releases whose upstream publishes neither GitHub digests nor checksums. Usually set in a `:history` entry, so newer releases are still verified. | `true` |
