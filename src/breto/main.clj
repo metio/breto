@@ -120,9 +120,10 @@ Every failure is explained with what to do; --debug adds each request and stack 
   store. A dry run changed nothing, and rewriting the file from the store
   would drop the versions sync was asked to install. A failure to write it is
   reported but does not fail the command."
-  [{:keys [config opts]}]
+  [{:keys [config opts] :as ctx} command]
   (when-let [path (when-not (:dry-run opts) (:lockfile config))]
-    (try (lockfile/write! path config)
+    (try (when (lockfile/write! path config)
+           (commands/locked! ctx command path))
          (catch Exception e
            (binding [*out* *err*]
              (println (str "[WARN] could not update the lock file " path ": " (ex-message e))))))))
@@ -137,7 +138,7 @@ Every failure is explained with what to do; --debug adds each request and stack 
         (binding [*out* *err*]
           (println (str "waiting for another breto run (process " pid ") to finish with the store"))))
       #(let [code (f)]
-         (record-lock! ctx)
+         (record-lock! ctx command)
          code))
     (f)))
 

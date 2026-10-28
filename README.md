@@ -135,7 +135,7 @@ On another machine, `breto sync` turns the store into exactly what the lock file
 
 ## Hooks
 
-`install` and `update` run a command for each event `:hooks` lists. A hook is a vector of a program and its arguments, never a shell command line, so a version taken from an upstream tag reaches the program as one argument and cannot run anything else. The keyword `:notify` sends a desktop notification instead:
+`install` and `update` run a command for each event `:hooks` lists, and every command that changes the store runs the `:locked` hook. A hook is a vector of a program and its arguments, never a shell command line, so a version taken from an upstream tag reaches the program as one argument and cannot run anything else. The keyword `:notify` sends a desktop notification instead:
 
 ```clojure
 {:hooks {:installed :notify
@@ -148,6 +148,9 @@ On another machine, `breto sync` turns the store into exactly what the lock file
 | `:installed` | after each package that was installed and activated | `{package}`, `{version}`, `{command}` | `{package} {version} installed` |
 | `:failed` | after each package that failed | `{package}`, `{version}`, `{stage}`, `{summary}`, `{command}` | `{summary}` |
 | `:finished` | once at the end of the run, also when nothing changed | `{summary}`, `{installed}`, `{failed}`, `{current}`, `{command}` | `{summary}`, such as `breto update: 60 up to date, 2 installed` |
+| `:locked` | after a command rewrote `:lockfile` because its content changed; never after a dry run | `{lockfile}`, `{command}` | `{lockfile} updated` |
+
+The `:locked` hook can commit the lock file where it is shared, for example in a dotfiles repository that other machines pull: `["git" "-C" "/home/me/dotfiles" "commit" "--message=chore: update breto.lock" "--" "breto.lock"]`, or a script that also pushes. It runs while breto still holds the store lock.
 
 Every placeholder value is also in the hook's environment as `BRETO_<NAME>`, e.g. `BRETO_PACKAGE`, so a script can read them without arguments. A `:notify` hook additionally gets `{title}`, `{message}` and `{urgency}`. A run that stops before it reaches any package, for example on a broken definition, runs no hooks.
 

@@ -3,7 +3,8 @@
 
 (ns breto.hooks
   "Commands that install and update run on their events: a package installed,
-  a package failed, the run finished. A hook is a vector of a program and its
+  a package failed, the run finished, and any command that changes the store
+  on rewriting the lock file. A hook is a vector of a program and its
   arguments whose {placeholders} are filled from the event; the same values are
   in BRETO_* environment variables. Hooks never run through a shell, so a
   version taken from an upstream tag cannot turn into a command. The hook
@@ -13,13 +14,14 @@
             [breto.template :as template]
             [clojure.string :as str]))
 
-(def events #{:installed :failed :finished})
+(def events #{:installed :failed :finished :locked})
 
 (def notifications
   "The title, default message and urgency of the notification for each event."
   {:installed {:title "breto" :message "{package} {version} installed" :urgency "low"}
    :failed {:title "breto: {package} failed" :message "{summary}" :urgency "normal"}
-   :finished {:title "breto {command} finished" :message "{summary}" :urgency "low"}})
+   :finished {:title "breto {command} finished" :message "{summary}" :urgency "low"}
+   :locked {:title "breto {command}" :message "{lockfile} updated" :urgency "low"}})
 
 (def ^:private osascript
   "AppleScript that shows its first argument as the title and its second as the
@@ -119,24 +121,36 @@
        (cond timed-out (str " ran longer than " timeout " seconds and was stopped")
              :else (str " exited with " exit (when-not (str/blank? err) (str ": " (str/trim err)))))))
 
-(defn listener
-  "A progress callback that runs the hooks of `config` for `command`.
+(defn fire!
+  "Runs the hook of `config` for `event` with `vars`, if one is configured.
   `run-hook` runs {:command :env :timeout} and returns {:exit :err :timed-out};
-  `warn` receives a sentence for each hook that fails. A failing hook never
-  fails the command."
-  [config command {:keys [run-hook warn os which]}]
+  `warn` receives a sentence when the hook fails. A failing hook never fails
+  the command."
+  [config event vars {:keys [run-hook warn os which]}]
+  (let [timeout (:hook-timeout config)]
+    (try
+      (when-let [{:keys [command] :as inv} (invocation config (notifier config os which) event vars)]
+        (let [result (run-hook (assoc inv :timeout timeout))]
+          (when-not (zero? (or (:exit result) -1))
+            (warn (describe-failure command result timeout)))))
+      (catch Exception e
+        (warn (str "the " (name event) " hook did not run: " (ex-message e)))))))
+
+(defn locked!
+  "Runs the :locked hook of `config` after `command` rewrote the lock file at
+  `lockfile`, unless the hook settings are invalid; the listener of the
+  command already warned about those."
+  [config command lockfile deps]
+  (when (empty? (problems config))
+    (fire! config :locked {:event "locked" :command command :lockfile (str lockfile)} deps)))
+
+(defn listener
+  "A progress callback that runs the hooks of `config` for `command`; see
+  fire!."
+  [config command {:keys [warn] :as deps}]
   (let [wrong (problems config)
-        notifier (notifier config os which)
-        timeout (:hook-timeout config)
         results (atom [])
-        fire (fn [event vars]
-               (try
-                 (when-let [{:keys [command] :as inv} (invocation config notifier event vars)]
-                   (let [result (run-hook (assoc inv :timeout timeout))]
-                     (when-not (zero? (or (:exit result) -1))
-                       (warn (describe-failure command result timeout)))))
-                 (catch Exception e
-                   (warn (str "the " (name event) " hook did not run: " (ex-message e))))))]
+        fire #(fire! config %1 %2 deps)]
     (cond
       (seq wrong)
       (do (warn (str "no hooks run: " (str/join "; " wrong))) (fn [_]))

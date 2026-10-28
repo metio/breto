@@ -35,17 +35,28 @@
   [{:keys [reporter]} command]
   (batch/broadcast (reporter command) (batch/recorder command)))
 
+(defn- hook-deps
+  "What hooks need to run, or nil without a hook runner in the io."
+  [{:keys [io]}]
+  (when-let [run-hook (:run-hook io)]
+    {:run-hook run-hook
+     :warn #(binding [*out* *err*] (println (str "[WARN] " %)))
+     :os (System/getProperty "os.name")
+     :which #(some-> (fs/which %) str)}))
+
 (defn- hook-listener
   "Runs the configured hooks on the events of `command`; without a hook runner
   in the io, none."
-  [{:keys [config io]} command]
-  (if-let [run-hook (:run-hook io)]
-    (hooks/listener config command
-                    {:run-hook run-hook
-                     :warn #(binding [*out* *err*] (println (str "[WARN] " %)))
-                     :os (System/getProperty "os.name")
-                     :which #(some-> (fs/which %) str)})
+  [{:keys [config] :as ctx} command]
+  (if-let [deps (hook-deps ctx)]
+    (hooks/listener config command deps)
     (fn [_])))
+
+(defn locked!
+  "Runs the :locked hook after `command` rewrote the lock file at `path`."
+  [{:keys [config] :as ctx} command path]
+  (when-let [deps (hook-deps ctx)]
+    (hooks/locked! config command path deps)))
 
 (defn- pacer
   "Paces a batch so that :delay follows only packages that received download

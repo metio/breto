@@ -148,3 +148,21 @@
     (is (= :fail (level {:hooks {:finished :notify} :notifier ["toast" "{message}"]} "Windows 11" (constantly nil))))
     (is (= :fail (level {:hooks {:done ["x"]}} "Linux" everything)))
     (is (= :ok (level {:hooks {:finished ["logger" "{summary}"]}} "Windows 11" (constantly nil))))))
+
+(deftest the-locked-hook-runs-after-the-lock-file-changed
+  (let [calls (atom [])
+        lock (s/path "breto.lock")
+        run-hook (fn [inv] (swap! calls conj inv) {:exit 0 :err ""})
+        config {:packages ["kind"] :lockfile lock
+                :hooks {:locked ["commit" "{lockfile}" "{command}"]}}]
+    (update! config run-hook)
+    (is (= [["commit" lock "update"]] (map :command @calls)))
+    (is (= lock (get-in (first @calls) [:env "BRETO_LOCKFILE"])))
+    (testing "a run that leaves the lock file as it was"
+      (reset! calls [])
+      (update! config run-hook)
+      (is (empty? @calls)))
+    (testing "a dry run"
+      (reset! calls [])
+      (s/breto! config ["gc" "--dry-run"] {:io (assoc (kind-world) :run-hook run-hook)})
+      (is (empty? @calls)))))
