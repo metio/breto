@@ -40,7 +40,7 @@ breto reads `$XDG_CONFIG_HOME/breto/config.edn` (`~/.config/breto/config.edn` by
 | Key | Meaning | Default |
 | --- | --- | --- |
 | `:registries` | Directories of package definitions. A later directory overrides an earlier one key by key, so an overlay can change a single key of a package. | none |
-| `:packages` | What `update` and `outdated` act on when no package is named. | none |
+| `:packages` | What `update` and `outdated` act on when no package is named: package names and [groups](#groups) such as `"@pimalaya"`. | none |
 | `:pins` | Versions `update` installs instead of the latest. | none |
 | `:keep` | Versions per package that `gc` keeps. | `3` |
 | `:delay` | Seconds `install` and `update` wait after a package that downloaded something, e.g. to spread traffic on a slow link. A package found up to date costs no wait. `--delay N` overrides it. | `0` |
@@ -231,6 +231,18 @@ A checksum shows that a download is what the release lists; a signature shows wh
 | `:of` | `:asset` when the bundle signs the asset, `:checksum` when it signs the checksum file, whose hash is then trusted. Defaults to `:asset`. |
 
 The signer's identity is in the certificate inside the bundle. Projects usually document it next to their verification instructions. Signed packages need cosign: list `cosign` in `:packages`. `install` and `update` handle cosign before every other package, so on a fresh host the first run installs it, checked by its GitHub digest or checksum file only, since no cosign exists yet to check its signature, and then checks the other signatures with it. The report marks that install. Later updates of cosign are checked by the version already installed. `breto check` confirms the bundle is in the release, and `breto doctor` that cosign can run.
+
+### Groups
+
+A file named `@NAME.edn` in a registry defines a group of packages:
+
+```clojure
+{:members ["himalaya" "cardamum" "tcard" "calendula" "tcal"]}
+```
+
+`"@pimalaya"` in `:packages`, or as an argument to `install`, `update`, `outdated`, `check`, `gc` and `uninstall`, stands for its members, in order. Members can be groups themselves; a package listed twice is handled once. Everything after that sees the packages: the lock file lists each member, and reports name them. `breto info @pimalaya` shows the members and the files that define the group. A later registry directory replaces the members of a group with the same name, so an overlay can trim or extend one.
+
+With `:prune true`, a member that leaves a configured group is uninstalled by the next `breto gc`, as if its name had been removed from `:packages`. A group is a selection of definitions and declares none: each member still needs its own file.
 
 ### Version history
 

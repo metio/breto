@@ -46,6 +46,12 @@
        (check :warn "The bin directory is not on PATH" bin-dir
               (str "Add it to PATH in the shell profile: export PATH=\"" bin-dir ":$PATH\"")))]))
 
+(defn load-check
+  "The failure to load the definitions and groups, from its diagnosis."
+  [{:keys [message summary facts advice]}]
+  (apply check :fail "The definitions do not load, so the checks below see none" (str/join "; " (cons (or summary message) facts))
+         advice))
+
 (defn config-check [config-path {:keys [registries packages]} registry]
   (concat
    [(if (fs/exists? config-path)

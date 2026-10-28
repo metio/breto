@@ -22,8 +22,11 @@
             [clojure.pprint :as pprint]
             [clojure.string :as str]))
 
-(defn- targets [{:keys [config]} args]
-  (if (seq args) args (:packages config)))
+(defn- targets
+  "The packages a command acts on: the named ones, groups expanded, else the
+  configured ones."
+  [{:keys [config groups]} args]
+  (if (seq args) (registry/expand groups args) (:packages config)))
 
 (defn- tracker
   "The progress callback for `command`: the live display and the recorder."
@@ -95,8 +98,8 @@
     (let [{:keys [version sha256]} (lockfile/locked-entry (:lockfile config) name)]
       {:version version :expect-sha256 sha256})))
 
-(defn install [{:keys [opts] :as ctx} args]
-  (installing ctx "install" args
+(defn install [{:keys [opts groups] :as ctx} args]
+  (installing ctx "install" (registry/expand groups args)
               (fn [name version]
                 (merge {:version version :verify? (:verify opts true)} (locked ctx name)))))
 
@@ -124,7 +127,7 @@
   the registries, against their latest release without downloading it."
   [{:keys [registry opts io] :as ctx} args]
   (let [progress (tracker ctx "check")
-        names (cond (seq args) args
+        names (cond (seq args) (targets ctx args)
                     (:all opts) (sort (keys registry))
                     :else (targets ctx args))
         io (assoc io :progress progress)]
@@ -199,7 +202,7 @@
         prune (when (and (:prune config) (empty? args))
                 (store/prune-candidates (store/installed-packages config) (:packages config)))
         pruned (batch/run-batch io prune #(uninstall-one ctx % dry-run?) (fn [_]))
-        failures (for [name (if (seq args) args (remove (set prune) (store/installed-packages config)))
+        failures (for [name (if (seq args) (targets ctx args) (remove (set prune) (store/installed-packages config)))
                        :let [r (try
                                  (doseq [leftover (store/leftovers config name)]
                                    (when-not dry-run? (fs/delete-tree leftover))
@@ -219,7 +222,7 @@
   (when (empty? args)
     (throw (ex-info "uninstall needs at least one package" {:breto/problem :usage})))
   (batch/finish! "uninstall"
-                 (batch/run-batch io args
+                 (batch/run-batch io (targets ctx args)
                                   (fn [name]
                                     (when (and (some #{name} (:packages config)) (not (:force opts)))
                                       (throw (ex-info (str name " is still configured")
@@ -227,8 +230,11 @@
                                     (uninstall-one ctx name (:dry-run opts)))
                                   (fn [_]))))
 
-(defn info [{:keys [registry]} [name]]
-  (pprint/pprint (registry/lookup registry name))
+(defn info [{:keys [registry groups]} [name]]
+  (pprint/pprint (if (registry/group-name? name)
+                   (let [packages (registry/expand groups [name])]
+                     (assoc (get groups name) :packages packages))
+                   (registry/lookup registry name)))
   0)
 
 (defn show-report
@@ -251,7 +257,8 @@
                   (println))
                 0))))
 
-(defn doctor [{:keys [config-path config registry io]} _]
-  (let [checks (doctor/run-checks config-path config (or registry {}) io)]
+(defn doctor [{:keys [config-path config registry io load-error]} _]
+  (let [checks (concat (when load-error [(doctor/load-check load-error)])
+                       (doctor/run-checks config-path config (or registry {}) io))]
     (println (doctor/render checks))
     (if (some #(= :fail (:level %)) checks) 1 0)))

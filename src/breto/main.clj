@@ -80,15 +80,21 @@ Every failure is explained with what to do; --debug adds each request and stack 
      :sleep-second! #(Thread/sleep 1000)}))
 
 (defn- with-registry
-  "`ctx` with the registry loaded. doctor runs without one when it fails to
+  "`ctx` with the registry and groups loaded and the groups in :packages
+  expanded into their members. doctor runs without one when it fails to
   load, since diagnosing that is its job, and report needs none, so a broken
   definition still leaves the last run readable."
   [ctx command]
-  (let [load #(registry/load-registry (get-in ctx [:config :registries]))]
+  (let [dirs (get-in ctx [:config :registries])
+        load (fn [ctx]
+               (let [groups (registry/load-groups dirs)]
+                 (-> ctx
+                     (assoc :registry (registry/load-registry dirs) :groups groups)
+                     (update-in [:config :packages] #(registry/expand groups %)))))]
     (case command
       "report" ctx
-      "doctor" (assoc ctx :registry (try (load) (catch Exception _ nil)))
-      (assoc ctx :registry (load)))))
+      "doctor" (try (load ctx) (catch Exception e (assoc ctx :registry nil :load-error (diagnose/diagnose e {}))))
+      (load ctx))))
 
 (def ^:private changes-store
   #{"install" "use" "update" "gc" "uninstall"})

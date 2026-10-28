@@ -321,6 +321,14 @@
      :advice ["Fix the name in the command or in :packages of the config."
               "Or add a definition for it to one of the :registries directories."]}))
 
+(defmethod explain :unknown-group [{:keys [group known]} _]
+  (let [near (closest group known 3)]
+    {:summary (str "No registry defines a group called " group ".")
+     :facts (cond-> [(str "Groups are " (if (seq known) (str/join ", " known) "not defined in any registry") ".")]
+              (seq near) (conj (str "Similar names: " (str/join ", " near))))
+     :advice ["Fix the name in the command or in :packages of the config."
+              (str "Or add " group ".edn with {:members [...]} to one of the :registries directories.")]}))
+
 (defmethod explain :invalid-package [{:keys [package problems files]} _]
   {:summary (str "The definition of " package " is invalid.")
    :facts (cond-> (vec problems)
