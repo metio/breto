@@ -86,7 +86,9 @@
   (if error
     (str/join "\n" (concat [(failure-block {:package (str "breto " command) :diagnosis error}) ""]
                             [(aborted-line command error)]))
-    (let [lines (keep line results)
+    (let [lines (mapcat (fn [{:keys [package warnings] :as result}]
+                          (remove nil? (cons (line result) (map #(str "[WARN] " package ": " %) warnings))))
+                        results)
           failures (filter #(= :failed (:status %)) results)]
       (str/join "\n"
                 (concat lines

@@ -34,6 +34,26 @@
 (defn repo [{:keys [source]}]
   (or (:github source) (:gitlab source)))
 
+(defn- relative-path?
+  "Whether `s` is a path or glob inside the release: relative, without .."
+  [s]
+  (and (string? s) (not (str/blank? s)) (not (str/starts-with? s "/"))
+       (not-any? #{".."} (str/split s #"/"))))
+
+(defn- completions-valid? [completions]
+  (and (map? completions)
+       (every? (fn [[k v]]
+                 (case k
+                   :command (and (string? v) (re-matches #"[^/.][^/]*" v))
+                   (:bash :zsh :fish) (or (relative-path? v)
+                                          (and (map? v)
+                                               (every? #{:args :env} (keys v))
+                                               (every? string? (:args v []))
+                                               (map? (:env v {}))
+                                               (every? string? (mapcat identity (:env v {})))))
+                   false))
+               completions)))
+
 (defn- problems [{:keys [name asset url layout bins source] :as pkg}]
   (cond-> []
     (not (string? name))
@@ -81,6 +101,12 @@
 
     (not (boolean? (:verify pkg true)))
     (conj ":verify must be true or false")
+
+    (not (and (sequential? (:man pkg [])) (every? relative-path? (:man pkg []))))
+    (conj ":man must be a vector of relative paths or globs inside the release, without ..")
+
+    (not (completions-valid? (:completions pkg {})))
+    (conj ":completions maps :bash, :zsh or :fish to a relative path inside the release or to {:args [...] :env {...}}, and :command to a command name")
 
     (and (:signature pkg)
          (let [{:keys [bundle identity identity-regexp issuer of]} (:signature pkg)]

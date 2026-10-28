@@ -4,6 +4,7 @@
 (ns breto.store
   (:require [babashka.fs :as fs]
             [breto.filelock :as filelock]
+            [breto.share :as share]
             [clojure.edn :as edn]
             [breto.version :as version]
             [clojure.string :as str]))
@@ -79,16 +80,53 @@
     (fs/create-sym-link staged target)
     (fs/move staged link {:replace-existing true :atomic-move true})))
 
+(defn- points-into?
+  "Whether `link` is a symlink whose target lies in `dir`, read without
+  following it, so a link whose target is gone still counts."
+  [dir link]
+  (and (fs/sym-link? link)
+       (str/starts-with? (str (fs/read-link link)) (str dir "/"))))
+
+(defn share-links-into
+  "The man page and completion links that point into the store directory of
+  `name`."
+  [config name]
+  (let [dir (package-dir config name)]
+    (->> (share/link-dirs config)
+         (filter fs/directory?)
+         (mapcat fs/list-dir)
+         (filter #(points-into? dir %))
+         (map str)
+         sort)))
+
+(defn link-share!
+  "Links the man pages and completions of `version` of `pkg` and removes the
+  package's links whose target is gone. A file that breto did not link is
+  left alone; returns a sentence for each."
+  [config pkg version]
+  (let [dir (package-dir config (:name pkg))
+        wanted (share/links config pkg (version-dir config (:name pkg) version) (fs/path dir current-link))]
+    (doseq [link (share-links-into config (:name pkg))
+            :when (not (fs/exists? link))]
+      (fs/delete link))
+    (doall
+     (for [[link target] wanted
+           :let [taken? (and (fs/exists? link {:nofollow-links true}) (not (points-into? dir link)))]
+           :when (or taken? (do (link! link target) false))]
+       (str link " exists and was not linked by breto, so " (:name pkg) " leaves it alone")))))
+
 (defn activate!
-  "Makes `version` the one that `current`, the binaries, and any extra links of
-  the package resolve to."
-  [config {:keys [name links]} bin-paths version]
+  "Makes `version` the one that `current`, the binaries, any extra links, the
+  man pages and the completions of the package resolve to. Returns warnings
+  about files in the way of man pages and completions."
+  [config {:keys [name links] :as pkg} bin-paths version]
   (let [current (fs/path (package-dir config name) current-link)]
     (link! current version)
     (doseq [[link path] bin-paths]
       (link! (fs/path (:bin-dir config) link) (fs/path current path)))
     (doseq [[link path] links]
-      (link! (expand-home link) (fs/path current path)))))
+      (link! (expand-home link) (fs/path current path)))
+    (link-share! config pkg version)))
 
 (defn previous-version
   "The newest of `versions` older than `active`, or nil."
@@ -130,15 +168,17 @@
        (fs/starts-with? (fs/canonicalize (fs/path (fs/parent link) (fs/read-link link))) dir)))
 
 (defn links-into
-  "The links in the bin directory, or among `extra-links`, that resolve into
-  the store directory of `name`, whatever definition created them."
+  "The links in the bin directory, among `extra-links`, and among the man page
+  and completion links that resolve into the store directory of `name`,
+  whatever definition created them."
   [config name extra-links]
   (let [dir (fs/canonicalize (package-dir config name))
         bin-dir (:bin-dir config)]
-    (->> (concat (when (fs/directory? bin-dir) (fs/list-dir bin-dir))
-                 (map (comp fs/path expand-home) extra-links))
-         (filter #(resolves-into? dir %))
-         (map str)
+    (->> (concat (->> (concat (when (fs/directory? bin-dir) (fs/list-dir bin-dir))
+                              (map (comp fs/path expand-home) extra-links))
+                      (filter #(resolves-into? dir %))
+                      (map str))
+                 (share-links-into config name))
          distinct
          sort)))
 

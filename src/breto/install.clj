@@ -8,6 +8,7 @@
             [breto.github :as github]
             [breto.log :as log]
             [breto.package :as package]
+            [breto.share :as share]
             [breto.signature :as signature]
             [breto.source :as source]
             [breto.store :as store]
@@ -150,6 +151,34 @@
                            (merge meta {:sha256 sha256 :asset (:asset artifact) :sha256-source :upstream}))
         sha256))))
 
+(defn- keep-share-files!
+  "Copies the man pages and shipped completions of `pkg` from `unpacked` to
+  the same paths under `dest`. A completion file the definition names must
+  exist; a man page glob may match nothing."
+  [pkg artifact unpacked dest]
+  (doseq [path (filter string? (vals (select-keys (:completions pkg) share/shells)))]
+    (when-not (fs/regular-file? (fs/path unpacked path))
+      (throw (ex-info (str (:name pkg) ": " path " is not in " (:asset artifact))
+                      {:breto/problem :path-missing :package (:name pkg) :path path
+                       :asset (:asset artifact) :strip (:strip pkg)
+                       :listing (archive/listing unpacked 200)}))))
+  (doseq [pattern (share/kept-files pkg)
+          file (fs/glob unpacked pattern)
+          :when (fs/regular-file? file)
+          :let [target (fs/path dest (fs/relativize unpacked file))]]
+    (fs/create-dirs (fs/parent target))
+    (fs/copy file target {:replace-existing true})))
+
+(defn- share!
+  "Generates the completions of the active `version` that a command prints,
+  then links its man pages and completions. Returns the warnings of both."
+  [config io pkg version]
+  (let [command (share/command pkg)
+        program (when command (fs/path (:bin-dir config) command))
+        generated (when (and (:run-hook io) program (fs/executable? program))
+                    (share/generate! config pkg program (store/version-dir config (:name pkg) version) (:run-hook io)))]
+    (concat generated (store/link-share! config pkg version))))
+
 (defn- place!
   "Copies what `pkg` keeps from the unpacked archive into `dest`."
   [{:keys [layout] :as pkg} artifact unpacked dest]
@@ -163,7 +192,8 @@
                               {:breto/problem :path-missing :package (:name pkg) :path path
                                :asset (:asset artifact) :strip (:strip pkg)
                                :listing (archive/listing unpacked 200)})))
-            (fs/copy src (fs/path dest stored))))))
+            (fs/copy src (fs/path dest stored))))
+        (keep-share-files! pkg artifact unpacked dest)))
   (doseq [path (distinct (vals (package/bin-paths pkg artifact)))]
     (fs/set-posix-file-permissions (fs/path dest path) "rwxr-xr-x")))
 
@@ -216,15 +246,18 @@
                        (.close lock)
                        (when (empty? (fs/list-dir package-dir))
                          (fs/delete package-dir))))))]
-    (when activate?
-      (staged io :activate context #(store/activate! config pkg bin-paths version)))
-    (let [recorded (when (and (not fresh?) verify?)
+    (let [warnings (when activate?
+                     (staged io :activate context
+                       #(do (store/activate! config pkg bin-paths version)
+                            (vec (share! config io pkg version)))))
+          recorded (when (and (not fresh?) verify?)
                      (record-upstream-hash! config pkg io release artifact))]
       (cond-> {:version version :installed? fresh? :verified? (and fresh? verify?)}
         sha256 (assoc :sha256 sha256)
         signed? (assoc :signed? true)
         bootstrap? (assoc :bootstrap? true)
-        recorded (assoc :hash-recorded? true)))))
+        recorded (assoc :hash-recorded? true)
+        (seq warnings) (assoc :warnings (vec (distinct warnings)))))))
 
 (defn use!
   "Activates an already installed version."

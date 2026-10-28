@@ -29,7 +29,11 @@
    :hooks {}
    :notifier :auto
    :messages {}
-   :hook-timeout 30})
+   :hook-timeout 30
+   :man-dir (str (fs/path (env-dir "XDG_DATA_HOME" ".local/share") "man"))
+   :completion-dirs {:bash (str (fs/path (env-dir "XDG_DATA_HOME" ".local/share") "bash-completion" "completions"))
+                     :zsh (str (fs/path (env-dir "XDG_DATA_HOME" ".local/share") "zsh" "site-functions"))
+                     :fish (str (fs/path (env-dir "XDG_CONFIG_HOME" ".config") "fish" "completions"))}})
 
 (defn- expand-home [s]
   (str/replace-first s #"^~(?=/|$)" (System/getProperty "user.home")))
@@ -44,4 +48,6 @@
         (update :bin-dir expand-home)
         (update :lockfile #(some-> % expand-home))
         (update :cosign #(some-> % expand-home))
+        (update :man-dir #(some-> % expand-home))
+        (update :completion-dirs #(update-vals % expand-home))
         (update :registries #(mapv expand-home %)))))

@@ -54,6 +54,8 @@ breto reads `$XDG_CONFIG_HOME/breto/config.edn` (`~/.config/breto/config.edn` by
 | `:prune` | Whether `gc` without arguments also uninstalls every package `:packages` does not list. | `false` |
 | `:store` | Where versions are unpacked, as `<store>/<package>/<version>`. | `$XDG_DATA_HOME/breto/installations` |
 | `:bin-dir` | Where binaries are linked. | `~/.local/bin` |
+| `:man-dir` | Where man pages are linked, as `<man-dir>/man<section>/<file>`. | `$XDG_DATA_HOME/man` |
+| `:completion-dirs` | Where shell completions are linked, per shell. Leaving a shell out skips its completions. | `{:bash "$XDG_DATA_HOME/bash-completion/completions" :zsh "$XDG_DATA_HOME/zsh/site-functions" :fish "$XDG_CONFIG_HOME/fish/completions"}` |
 
 breto also reads the rate-limit headers of every response. When a host has no requests left (`x-ratelimit-remaining: 0`) or sends `retry-after`, the next package waits until that host accepts requests again, or for `:delay` if that applies and is longer. A package refused by a rate limit that names a wait is retried once after it.
 
@@ -243,6 +245,27 @@ A file named `@NAME.edn` in a registry defines a group of packages:
 `"@pimalaya"` in `:packages`, or as an argument to `install`, `update`, `outdated`, `check`, `gc` and `uninstall`, stands for its members, in order. Members can be groups themselves; a package listed twice is handled once. Everything after that sees the packages: the lock file lists each member, and reports name them. `breto info @pimalaya` shows the members and the files that define the group. A later registry directory replaces the members of a group with the same name, so an overlay can trim or extend one.
 
 With `:prune true`, a member that leaves a configured group is uninstalled by the next `breto gc`, as if its name had been removed from `:packages`. A group is a selection of definitions and declares none: each member still needs its own file.
+
+### Man pages and completions
+
+`:man` lists the man pages of a release as paths or globs inside the unpacked archive, after `:strip`. `:completions` names a completion file per shell, or the arguments and environment that make the command print one:
+
+```clojure
+{:man ["share/man/*.1.gz"]
+ :completions {:bash "share/completions/himalaya.bash"
+               :zsh "share/completions/_himalaya"
+               :fish {:args ["completion" "fish"]}}}
+```
+
+```clojure
+{:completions {:bash {:env {"COMPLETE" "bash"}}}}
+```
+
+The binary layout keeps the named files beside the binaries. A completion file the release lacks fails the install, while a man page glob may match nothing. A printed completion is generated once per installed version, right after it becomes active, by running the command with the given arguments and environment for at most 30 seconds; a command that fails or prints nothing leaves a warning in the report and the install stands. The command is the package's own name when it links a command of that name, else its first command, or `:command` under `:completions`.
+
+Links go to `:man-dir` and `:completion-dirs`, named after the command as each shell expects (`tool`, `_tool`, `tool.fish`), and resolve through the package's `current` link, so `use` and `update` switch them with the binaries and `uninstall` removes them. A file in the way that breto did not link is left alone with a warning.
+
+man finds `$XDG_DATA_HOME/man` through a `PATH` entry `~/.local/bin` once that directory exists, bash-completion 2 loads `$XDG_DATA_HOME/bash-completion/completions` on demand, and fish reads `~/.config/fish/completions`. zsh needs `$XDG_DATA_HOME/zsh/site-functions` in `fpath` before `compinit`.
 
 ### Version history
 

@@ -57,12 +57,13 @@
                  (batch/counting-down progress sleep-second!)
                  f)))
 
-(defn- installed-result [name {:keys [version installed? verified? signed? bootstrap? hash-recorded?]}]
+(defn- installed-result [name {:keys [version installed? verified? signed? bootstrap? hash-recorded? warnings]}]
   (cond-> {:package name :version version :status (if installed? :installed :current)}
     (and installed? (not verified?)) (assoc :unverified true)
     signed? (assoc :signed true)
     bootstrap? (assoc :signature-bootstrap true)
-    hash-recorded? (assoc :hash-recorded true)))
+    hash-recorded? (assoc :hash-recorded true)
+    (seq warnings) (assoc :warnings warnings)))
 
 (defn- cosign-first
   "`specs` with the packages that provide cosign moved to the front, so that
@@ -160,8 +161,10 @@
   (let [version (if (:previous opts) (when name (previous! config name)) version)]
     (when-not (and name version)
       (throw (ex-info "use needs a package and a version, or a package and --previous" {:breto/problem :usage})))
-    (install/use! config (registry/lookup registry name) version)
-    (println (str "[OK] " name " " version " active"))
+    (let [warnings (install/use! config (registry/lookup registry name) version)]
+      (println (str "[OK] " name " " version " active"))
+      (doseq [warning warnings]
+        (println (str "[WARN] " name ": " warning))))
     (when (some #{name} (:packages config))
       (println (str "breto update activates the latest release again unless the config pins it: :pins {"
                     (pr-str name) " " (pr-str version) "}")))
