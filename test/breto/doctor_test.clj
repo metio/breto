@@ -39,7 +39,9 @@
     (is (= :warn (:level (doctor/github-check (io "{\"rate\":{\"limit\":60,\"remaining\":59}}")))))
     (is (= :fail (:level (doctor/github-check (io "{\"rate\":{\"limit\":60,\"remaining\":0}}")))))
     (is (= :ok (:level (doctor/github-check (io "{\"rate\":{\"limit\":5000,\"remaining\":4999}}")))))
-    (is (= :fail (:level (doctor/github-check {:get-text (fn [_ _] (throw (ex-info "offline" {})))}))))))
+    (is (= :fail (:level (doctor/github-check {:get-text (fn [_ _] (throw (ex-info "offline" {})))}))))
+    (is (= "GitHub rejects the token"
+           (:title (doctor/github-check {:get-text (fn [_ _] (throw (ex-info "GET returned 401" {:breto/problem :http-status :status 401})))}))))))
 
 (deftest rendering-shows-advice-only-for-problems
   (let [text (doctor/render [{:level :ok :title "fine" :detail "d" :advice ["no"]}

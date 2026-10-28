@@ -80,6 +80,13 @@
     (is (str/includes? text "--no-verify"))
     (is (not (str/includes? text "Set :checksum")))))
 
+(deftest rejected-tokens-are-named
+  (let [d (diagnose/diagnose (ex-info "x" {:breto/problem :http-status :status 401 :stage :verify
+                                           :url "https://api.github.com/repos/a/b/releases/tags/v1"})
+                             {})]
+    (is (= "GitHub's API rejected the token breto sent." (:summary d)))
+    (is (some #(str/includes? % "expired") (:advice d)))))
+
 (deftest checksum-mismatches-warn-against-bypassing
   (is (str/includes? (advice {:breto/problem :checksum-mismatch :asset "a" :expected "0" :actual "1"} {})
                      "Do not bypass")))

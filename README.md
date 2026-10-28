@@ -44,7 +44,7 @@ breto reads `$XDG_CONFIG_HOME/breto/config.edn` (`~/.config/breto/config.edn` by
 | `:pins` | Versions `update` installs instead of the latest. | none |
 | `:keep` | Versions per package that `gc` keeps. | `3` |
 | `:delay` | Seconds `install` and `update` wait after a package that downloaded something, e.g. to spread traffic on a slow link. A package found up to date costs no wait. `--delay N` overrides it. | `0` |
-| `:token-command` | A command printing a GitHub token on its first line, e.g. `["gh" "auth" "token"]` or `["gopass" "show" "--password" "github/token"]`. It runs at most once per breto process, and only when a GitHub API request is made. `GITHUB_TOKEN` and `GH_TOKEN` take precedence. | none |
+| `:token-command` | A command printing a GitHub token on its first line, e.g. `["gh" "auth" "token"]` or `["gopass" "show" "--password" "github/token"]`. It runs at most once per breto process, only when a GitHub API request is made, and is stopped after 60 seconds. `GITHUB_TOKEN` and `GH_TOKEN` take precedence. | none |
 | `:lockfile` | A file breto rewrites after every change to the store with the active version and download hash of each configured package. Commit it, and `update --locked` installs exactly those versions elsewhere. | none |
 | `:cosign` | The cosign command that checks `:signature` bundles. | `cosign` |
 | `:hooks` | Commands run on the events of `install` and `update`; see [Hooks](#hooks). | none |

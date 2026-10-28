@@ -65,7 +65,7 @@ Every failure is explained with what to do; --debug adds each request and stack 
   (assoc http/io
          :github-token (token/provider (:token-command config))
          :run proc/run-command
-         :run-hook proc/run-hook))
+         :run-hook proc/run-bounded))
 
 (defn context
   "Everything a command needs, from the parsed options."

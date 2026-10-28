@@ -186,8 +186,15 @@
 
         :else (check :ok "GitHub API requests are authenticated" (str remaining " of " limit " left"))))
     (catch clojure.lang.ExceptionInfo e
-      (if (= :token-command (:breto/problem (ex-data e)))
+      (cond
+        (= :token-command (:breto/problem (ex-data e)))
         (check :warn "The GitHub API was not checked" "The :token-command fails; see above.")
+
+        (= 401 (:status (ex-data e)))
+        (check :fail "GitHub rejects the token" (ex-message e)
+               "The token has expired or was revoked; create a new one and store it where :token-command reads it.")
+
+        :else
         (check :fail "GitHub's API cannot be reached" (ex-message e)
                "Check the network connection; installs from GitHub need api.github.com for verification.")))
     (catch Exception e

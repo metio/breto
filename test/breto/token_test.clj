@@ -48,6 +48,14 @@
   (testing "a real command that is missing"
     (is (= :token-command (:breto/problem (problem #(token/resolve-token (env {}) ["/nonexistent/breto-token"] breto.proc/run-command)))))))
 
+(deftest commands-that-hang-are-stopped
+  (let [data (problem #(token/resolve-token (env {}) ["pasejo" "secret" "show" "github"]
+                                            (constantly {:exit nil :out "" :err "" :timed-out true})))]
+    (is (= :token-command (:breto/problem data)))
+    (is (= token/timeout (:timed-out data)))
+    (is (some #(str/includes? % "stopped after 60 seconds")
+              (:facts (diagnose/diagnose (ex-info "x" data) {}))))))
+
 (deftest providers-run-the-command-once-even-when-it-fails
   (let [runs (atom 0)
         ok (token/provider (env {}) ["x"] (fn [_] (swap! runs inc) {:exit 0 :out "t" :err ""}))]

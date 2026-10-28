@@ -122,6 +122,13 @@
                 "Or export GITHUB_TOKEN or GH_TOKEN, e.g. with an EnvironmentFile= for the systemd service."
                 "Otherwise the next run after the reset time succeeds without changes."]}
 
+      (and (= 401 status) (str/starts-with? (str url) "https://api.github.com/"))
+      {:summary "GitHub's API rejected the token breto sent."
+       :facts [(str "GET " url " returned 401")]
+       :advice ["The token has expired, was revoked, or the :token-command prints something other than the token on its first line."
+                "Create a new token on GitHub and store it where :token-command reads it, or fix GITHUB_TOKEN or GH_TOKEN."
+                "breto doctor checks the token against GitHub."]}
+
       (>= (or status 0) 500)
       {:summary "The server answered with an error of its own; this is usually temporary."
        :facts [(str "GET " url " returned " status)]
@@ -331,13 +338,14 @@
               "Remove a version from :skip, or pin a version under :pins in the config."
               "This source lists no older releases; pin a version under :pins in the config.")]})
 
-(defmethod explain :token-command [{:keys [command exit stderr error empty]} _]
+(defmethod explain :token-command [{:keys [command exit stderr error empty timed-out]} _]
   {:summary "The :token-command that provides the GitHub token failed, so no GitHub API request was made."
    :facts (cond-> [(str "Command: " (str/join " " command))]
             exit (conj (str "Exit code: " exit))
             (not (str/blank? stderr)) (conj (str "It reported: " stderr))
             error (conj (str "It could not start: " error))
-            empty (conj "It printed nothing."))
+            empty (conj "It printed nothing.")
+            timed-out (conj (str "It was stopped after " timed-out " seconds without finishing.")))
    :advice [(str "Run " (str/join " " command) " yourself; it must print the token on its first line and exit with 0.")
             "Under systemd the command runs without your interactive session; a password manager may need its agent or an unlocked store."
             "Remove :token-command to fall back to 60 unauthenticated requests an hour."]})

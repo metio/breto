@@ -129,12 +129,12 @@
     (is (str/includes? err "no hooks run: :hooks :installed must be"))))
 
 (deftest hooks-are-real-processes-with-the-values-in-their-environment
-  (is (= 0 (:exit (proc/run-hook {:command ["sh" "-c" "test \"$BRETO_PACKAGE\" = kind"]
+  (is (= 0 (:exit (proc/run-bounded {:command ["sh" "-c" "test \"$BRETO_PACKAGE\" = kind"]
                                   :env {"BRETO_PACKAGE" "kind"} :timeout 10}))))
-  (is (= 1 (:exit (proc/run-hook {:command ["sh" "-c" "test \"$BRETO_PACKAGE\" = kind"]
+  (is (= 1 (:exit (proc/run-bounded {:command ["sh" "-c" "test \"$BRETO_PACKAGE\" = kind"]
                                   :env {"BRETO_PACKAGE" "other"} :timeout 10}))))
   (let [started (System/nanoTime)
-        result (proc/run-hook {:command ["sleep" "30"] :env {} :timeout 1})]
+        result (proc/run-bounded {:command ["sleep" "30"] :env {} :timeout 1})]
     (is (:timed-out result))
     (is (< (/ (- (System/nanoTime) started) 1e9) 10))))
 
