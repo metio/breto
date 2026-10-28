@@ -70,14 +70,16 @@
 
 (defn write!
   "Rewrites the lock file at `path` from the store, keeping its header. The
-  file is replaced in one rename."
+  file is replaced in one rename, and left alone when its content would not
+  change, so a command that changed nothing leaves no trace in a checkout."
   [path config]
   (let [{:keys [header entries]} (read-lock path)
         text (render {:header header :entries (snapshot config (:packages config) entries)})
         staged (str path ".tmp")]
-    (fs/create-dirs (fs/parent (fs/absolutize path)))
-    (spit staged text)
-    (fs/move staged path {:replace-existing true :atomic-move true})))
+    (when-not (and (fs/exists? path) (= text (slurp (str path))))
+      (fs/create-dirs (fs/parent (fs/absolutize path)))
+      (spit staged text)
+      (fs/move staged path {:replace-existing true :atomic-move true}))))
 
 (defn locked-entry
   "The entry of `name` for an install from the lock file at `path`."

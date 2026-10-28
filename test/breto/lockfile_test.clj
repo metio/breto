@@ -24,6 +24,16 @@
   (is (= {} (:entries (lockfile/read-lock (path "missing.lock")))))
   (is (= "{}\n" (lockfile/render {:header "" :entries {}}))))
 
+(deftest unchanged-lock-files-are-not-rewritten
+  (let [file (path "breto.lock")
+        config {:store (path "store") :packages ["absent"]}]
+    (spit file "{\"absent\" {:version \"1\"}}\n")
+    (fs/set-last-modified-time file (java.nio.file.attribute.FileTime/fromMillis 0))
+    (lockfile/write! (str file) config)
+    (is (zero? (.toMillis (fs/last-modified-time file))))
+    (lockfile/write! (str file) (assoc config :packages []))
+    (is (= "{}\n" (slurp (str file))))))
+
 (deftest broken-lock-files-are-diagnosed
   (spit (path "broken.lock") "{\"a\" ")
   (let [e (try (lockfile/read-lock (path "broken.lock")) nil (catch clojure.lang.ExceptionInfo e e))]
