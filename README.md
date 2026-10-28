@@ -139,6 +139,8 @@ A package without a version uses the active version, else the most recently inst
 {:packages ["temurin-21"]}
 ```
 
+`graalvm` follows the newest feature release of Oracle GraalVM that Oracle publishes for download, and `graalvm-21` and `graalvm-25` the newest update of one long-term support release each. They set `GRAALVM_HOME` as well as `JAVA_HOME` and link `native-image` with the other commands of the JDK. The versions come from the [foojay Disco API](https://api.foojay.io), the archives and their checksum files from download.oracle.com. Oracle GraalVM is licensed under the GraalVM Free Terms and Conditions.
+
 Every command in the JDK's `bin` directory is linked. Outside of projects, the JDK listed in `:packages` is the one in `:bin-dir`. A `JAVA_HOME` set for the whole session can point at its `current` link, such as `$XDG_DATA_HOME/breto/installations/temurin/current`, which follows `update`; the hook restores that value when the shell leaves a project.
 
 The definitions show how `:vars` fits a release whose asset name is not a plain copy of its version: the tag `jdk-27.0.1.0.2+1` is version `27.0.1.0.2+1`, and the asset `OpenJDK27U-jdk_x64_linux_hotspot_27.0.1.0.2_1.tar.gz` uses `{feature}` and `{file-version}`:
