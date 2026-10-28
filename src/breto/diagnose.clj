@@ -174,11 +174,16 @@
 (defmethod explain :http-status [data probes]
   (http-explanation data probes))
 
-(defmethod explain :network [{:keys [url exception]} _]
-  {:summary "The server could not be reached."
-   :facts [(str "GET " url " failed with " exception)]
-   :advice ["Check the network connection, DNS and any VPN that is required."
-            "A scheduled run needs Wants=network-online.target and After=network-online.target in its unit."]})
+(defmethod explain :network [{:keys [url exception received expected]} _]
+  (if received
+    {:summary (str "The download broke off after " received (when expected (str " of " expected)) " bytes.")
+     :facts [(str "GET " url " failed with " exception)]
+     :advice ["Run the command again; nothing was installed from the partial download."
+              "If it keeps breaking off, check for a proxy or a flaky link, or raise :delay to spread the traffic."]}
+    {:summary "The server could not be reached."
+     :facts [(str "GET " url " failed with " exception)]
+     :advice ["Check the network connection, DNS and any VPN that is required."
+              "A scheduled run needs Wants=network-online.target and After=network-online.target in its unit."]}))
 
 (defmethod explain :tag-prefix [{:keys [tag tag-prefix]} _]
   (let [suggested (suggest-tag-prefix tag)]
@@ -235,14 +240,19 @@
    :facts [(str "Got " checksum)]
    :advice ["Check that :checksum names a checksum file and not a signature or another asset."]})
 
-(defmethod explain :unpack-failed [{:keys [file stderr]} _]
+(defmethod explain :unpack-failed [{:keys [file stderr escaping]} _]
+  (if (seq escaping)
+    {:summary (str file " holds entries that would unpack outside of its directory, so nothing was unpacked.")
+     :facts [(str "Entries: " (str/join ", " escaping))]
+     :advice ["Do not install this archive; an entry like ../file can overwrite files anywhere you can write."
+              "Report it upstream, and compare the download with the release page."]}
   (let [missing (second (re-find #"(?i)(\w+): Cannot exec" (str stderr)))]
-    {:summary (str "tar could not unpack " file ".")
+    {:summary (str "Could not unpack " file ".")
      :facts [(str/trim (str stderr))]
      :advice (if missing
                [(str "Install " missing "; tar needs it for this archive format.")]
                ["The download may not be the archive its name suggests; check the asset in the release."
-                "breto doctor checks that tar and its compressors are installed."])}))
+                "breto doctor checks that tar and its compressors are installed."])})))
 
 (defmethod explain :path-missing [{:keys [path listing strip asset]} _]
   (let [strip-hint (suggest-strip listing path strip)
@@ -271,10 +281,12 @@
      :advice ["Fix the name in the command or in :packages of the config."
               "Or add a definition for it to one of the :registries directories."]}))
 
-(defmethod explain :invalid-package [{:keys [package problems]} _]
+(defmethod explain :invalid-package [{:keys [package problems files]} _]
   {:summary (str "The definition of " package " is invalid.")
-   :facts (vec problems)
-   :advice ["Fix the definition; breto info PKG shows it once it loads."]})
+   :facts (cond-> (vec problems)
+            (seq files) (conj (str "Defined in: " (str/join ", " files))))
+   :advice ["Fix the definition; breto info PKG shows it once it loads."
+            "Every command loads all definitions, so one broken file stops them all; breto report and breto doctor still run."]})
 
 (defmethod explain :not-installed [{:keys [package version installed]} _]
   {:summary (str package " " version " is not installed.")
@@ -381,6 +393,13 @@
    :advice ["If cosign names another signer, upstream changed its release workflow; compare with the project's documentation before changing :identity."
             "A signature that verifies for nobody means the download or the bundle was altered: do not install it."
             "Do not bypass this with --no-verify unless upstream confirms the change."]})
+
+(defmethod explain :unsafe-name [{:keys [kind value]} _]
+  {:summary (str "The " (name kind) " " (pr-str value) " cannot name a directory in the store.")
+   :facts ["Names and versions must be one path segment: not empty, no slash or control character, no leading dot or surrounding space."]
+   :advice (if (= :version kind)
+             ["Check the version the source reports, e.g. with breto info PKG and the :source URL; adjust :tag-prefix or the :json :version path."]
+             ["Name the package as breto list shows it."])})
 
 (defmethod explain :usage [_ _]
   {:summary "The command line is incomplete."

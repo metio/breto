@@ -68,6 +68,14 @@
     (and (= :binary layout) (empty? bins))
     (conj ":bins must name at least one binary for the :binary layout")
 
+    (and (map? bins)
+         (not (every? (fn [[link path]]
+                        (and (string? link) (re-matches #"[^/.][^/]*" link)
+                             (string? path) (not (str/starts-with? path "/"))
+                             (not-any? #{".."} (str/split path #"/"))))
+                      bins)))
+    (conj ":bins must map plain command names to relative paths inside the release, without ..")
+
     (not (and (sequential? (:skip pkg [])) (every? string? (:skip pkg []))))
     (conj ":skip must be a vector of version strings")
 

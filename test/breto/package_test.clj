@@ -160,3 +160,18 @@
 (deftest skip-lists-must-hold-version-strings
   (is (thrown? clojure.lang.ExceptionInfo
                (package/normalize {:name "x" :source {:github "a/x"} :asset "x" :skip "0.5.1"}))))
+
+(deftest bins-stay-inside-the-release-and-the-bin-directory
+  (doseq [bins [{"../evil" "tool"} {"sub/tool" "tool"} {".hidden" "tool"} {"tool" "/etc/passwd"} {"tool" "a/../../x"}]]
+    (is (thrown-with-msg? clojure.lang.ExceptionInfo #":bins must map plain command names"
+                          (package/normalize {:name "t" :source {:github "a/t"} :asset "t" :bins bins}))
+        (pr-str bins)))
+  (is (package/normalize {:name "t" :source {:github "a/t"} :asset "t.tar.gz" :bins {"t" "t-1.0/bin/t"}})))
+
+(deftest pre-releases-precede-their-release
+  (is (version/older? "1.0.0-rc1" "1.0.0"))
+  (is (version/older? "2.0.0-beta.2" "2.0.0"))
+  (is (version/older? "1.0.0" "1.0.1-rc1"))
+  (is (version/older? "1.0.0-rc1" "1.0.0-rc2"))
+  (is (version/older? "1.1.1" "1.1.1a"))
+  (is (version/older? "1.0" "1.0.1")))

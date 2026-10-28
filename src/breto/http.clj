@@ -73,22 +73,40 @@
 (defn get-text [url headers]
   (:body (ok! url (request url {:headers headers}))))
 
+(defn- copy-body!
+  "Copies `in` to `out`, returning the byte count. A read that fails is the
+  connection failing, so it is reported as a network problem."
+  [url ^java.io.InputStream in out on-bytes expected]
+  (let [buffer (byte-array 65536)]
+    (loop [done 0]
+      (let [n (try (.read in buffer)
+                   (catch java.io.IOException e
+                     (throw (ex-info (str "GET " url " broke off after " done " bytes: "
+                                          (or (ex-message e) (.getName (class e))))
+                                     {:breto/problem :network :url url :exception (.getName (class e))
+                                      :received done :expected expected}
+                                     e))))]
+        (if (pos? n)
+          (do (.write out buffer 0 n)
+              (when on-bytes (on-bytes (+ done n) expected))
+              (recur (+ done n)))
+          done)))))
+
 (defn download!
   "Saves `url` to `dest`, calling `on-bytes` with the bytes written so far and
-  the expected total, when the server states one."
+  the expected total, when the server states one. A body shorter than the
+  stated length fails, so an unverified install never keeps a truncated file."
   ([url dest] (download! url dest nil))
   ([url dest on-bytes]
    (let [response (ok! url (request url {:as :stream}))
          expected (some-> (get-in response [:headers "content-length"]) str parse-long)
-         buffer (byte-array 65536)]
-     (with-open [in ^java.io.InputStream (:body response)
-                 out (io/output-stream (io/file (str dest)))]
-       (loop [done 0]
-         (let [n (.read in buffer)]
-           (when (pos? n)
-             (.write out buffer 0 n)
-             (when on-bytes (on-bytes (+ done n) expected))
-             (recur (+ done n)))))))))
+         received (with-open [in ^java.io.InputStream (:body response)
+                              out (io/output-stream (io/file (str dest)))]
+                    (copy-body! url in out on-bytes expected))]
+     (when (and expected (not= expected received))
+       (throw (ex-info (str "GET " url " ended after " received " of " expected " bytes")
+                       {:breto/problem :network :url url :exception "truncated body"
+                        :received received :expected expected}))))))
 
 (def io
   "The network operations the installer needs, as a map so tests can swap them."

@@ -83,7 +83,7 @@
         bundle (fs/path work ".bundle.sigstore.json")]
     (staged io :signature context
       #(do ((:download! io) (:bundle-url sig) bundle)
-           (signature/verify! (:run io) (:cosign config "cosign") sig target bundle
+           (signature/verify! (:run io) (or (:cosign config) "cosign") sig target bundle
                               (assoc context :signed (str (fs/file-name target)) :bundle-url (:bundle-url sig)))))))
 
 (defn- fetch!

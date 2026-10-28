@@ -10,11 +10,24 @@
 
 (def ^:private current-link "current")
 
+(defn segment!
+  "`s` when it is usable as one directory name in the store, else throws. A
+  name like .. or one with a slash would put a package or version outside of
+  its directory, where deleting it deletes something else."
+  [kind s]
+  (when-not (and (string? s)
+                 (re-matches #"[^/\x00-\x1f]+" s)
+                 (not (str/starts-with? s "."))
+                 (= s (str/trim s)))
+    (throw (ex-info (str "unusable " (name kind) " " (pr-str s))
+                    {:breto/problem :unsafe-name :kind kind :value (str s)})))
+  s)
+
 (defn package-dir [{:keys [store]} name]
-  (fs/path store name))
+  (fs/path store (segment! :package name)))
 
 (defn version-dir [config name version]
-  (fs/path (package-dir config name) version))
+  (fs/path (package-dir config name) (segment! :version version)))
 
 (defn installed-packages [{:keys [store]}]
   (if (fs/directory? store)
@@ -95,7 +108,7 @@
        (remove #{current})))
 
 (defn- meta-file [config name version]
-  (fs/path (package-dir config name) (str ".meta-" version ".edn")))
+  (fs/path (package-dir config name) (str ".meta-" (segment! :version version) ".edn")))
 
 (defn write-meta!
   "Records what is known about an installed version, such as the hash of the

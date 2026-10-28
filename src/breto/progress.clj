@@ -69,7 +69,7 @@
         finished (reduce + 0 (vals counts))
         tally (str/join " " (keep (fn [[status mark code]]
                                     (when-let [n (get counts status)] (paint code (str mark n))))
-                                  [[:installed "✓" "32"] [:current "=" "2"] [:outdated "↑" "33"] [:failed "✗" "31"]]))
+                                  [[:installed "✓" "32"] [:checked "✓" "32"] [:current "=" "2"] [:outdated "↑" "33"] [:failed "✗" "31"]]))
         activity (cond
                    wait (str "waiting " (clock (:left wait)) " for " (:why wait))
                    (and (= :download stage) done) (str "downloading " (size done) (when expected (str " / " (size expected))))

@@ -24,7 +24,8 @@
    :keep 3
    :prune false
    :token-command nil
-   :lockfile nil})
+   :lockfile nil
+   :cosign "cosign"})
 
 (defn- expand-home [s]
   (str/replace-first s #"^~(?=/|$)" (System/getProperty "user.home")))
@@ -38,4 +39,5 @@
         (update :store expand-home)
         (update :bin-dir expand-home)
         (update :lockfile #(some-> % expand-home))
+        (update :cosign expand-home)
         (update :registries #(mapv expand-home %)))))

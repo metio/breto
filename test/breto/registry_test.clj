@@ -49,3 +49,18 @@
     (is (= "https://download.jetbrains.com/idea/idea-2026.2.3.tar.gz.sha256" (:checksum-url artifact)))
     (is (= {"jetbrains-idea" "bin/idea"} (:bins pkg)))
     (is (= {"~/.local/bin/jetbrains-idea.svg" "bin/idea.svg"} (:links pkg)))))
+
+(deftest broken-definitions-name-their-file
+  (let [dir (fs/create-temp-dir)]
+    (try
+      (spit (str (fs/path dir "bad.edn")) "{:source")
+      (let [data (try (registry/load-registry [(str dir)]) nil
+                      (catch clojure.lang.ExceptionInfo e (ex-data e)))]
+        (is (= :invalid-package (:breto/problem data)))
+        (is (= [(str (fs/path dir "bad.edn"))] (:files data))))
+      (spit (str (fs/path dir "bad.edn")) "{:source {:github \"a/b\"} :layout :weird}")
+      (let [data (try (registry/load-registry [(str dir)]) nil
+                      (catch clojure.lang.ExceptionInfo e (ex-data e)))]
+        (is (some #(re-find #":layout" %) (:problems data)))
+        (is (= [(str (fs/path dir "bad.edn"))] (:files data))))
+      (finally (fs/delete-tree dir)))))

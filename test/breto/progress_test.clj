@@ -66,3 +66,7 @@
                 "[FAIL] helm (download): The release has no asset named helm.tgz. The report at the end says what to do.\n"
                 "waiting 300s for :delay\n")
            (str out)))))
+
+(deftest checked-packages-count-as-successes
+  (is (str/includes? (progress/status-line {:index 2 :total 3 :package "p" :counts {:checked 1 :failed 1}} false)
+                     "✓1 ✗1")))

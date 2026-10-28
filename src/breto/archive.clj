@@ -29,6 +29,18 @@
             entry (fs/list-dir dir)]
       (fs/move entry (fs/path to (fs/file-name entry)) {:replace-existing true}))))
 
+(defn escaping-entries
+  "Names of the entries in the zip `file` that would unpack outside of the
+  directory they are unpacked into."
+  [file]
+  (let [root (fs/path "/unpack")]
+    (with-open [zip (java.util.zip.ZipFile. (fs/file file))]
+      (->> (enumeration-seq (.entries zip))
+           (map #(.getName ^java.util.zip.ZipEntry %))
+           (remove #(let [target (.normalize (fs/path root %))]
+                      (and (not (fs/absolute? (fs/path %))) (.startsWith target root) (not= target root))))
+           vec))))
+
 (defn unpack!
   "Unpacks `file` into the empty directory `dest`. A raw download is copied in
   under `file-name`. The scratch space sits next to `dest` so that moving out of
@@ -48,7 +60,16 @@
                    (throw (ex-info (str "tar could not unpack " (fs/file-name file) ": " (str/trim err))
                                    {:breto/problem :unpack-failed :file (str (fs/file-name file)) :stderr err})))
                  (strip! scratch dest 0))
-          :zip (do (fs/unzip file scratch)
-                   (strip! scratch dest strip)))
+          :zip (let [escaping (try (escaping-entries file)
+                                   (catch java.io.IOException e
+                                     (throw (ex-info (str (fs/file-name file) " is not a readable zip archive: " (ex-message e))
+                                                     {:breto/problem :unpack-failed :file (str (fs/file-name file))
+                                                      :stderr (str (ex-message e))}))))]
+                 (when (seq escaping)
+                   (throw (ex-info (str (fs/file-name file) " has entries outside of the archive: " (str/join ", " (take 5 escaping)))
+                                   {:breto/problem :unpack-failed :file (str (fs/file-name file))
+                                    :escaping (vec (take 5 escaping))})))
+                 (fs/unzip file scratch)
+                 (strip! scratch dest strip)))
         (finally
           (fs/delete-tree scratch))))))

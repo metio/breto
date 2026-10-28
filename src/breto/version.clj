@@ -14,17 +14,24 @@
     (number? b) -1
     :else (compare a b)))
 
+(def ^:private pre-release-words
+  #{"alpha" "beta" "rc" "pre" "preview" "dev" "snapshot" "nightly" "canary" "milestone" "ea"})
+
+(defn- pre-release? [token]
+  (and (string? token) (contains? pre-release-words (.toLowerCase ^String token))))
+
 (defn compare-versions
   "Orders version strings by their runs of digits and letters, with numbers
   compared numerically and ranked above words, so `1.10` follows `1.9` and
-  `2026.9` follows `2025.12`. A version that is a prefix of another sorts first."
+  `2026.9` follows `2025.12`. A version that is a prefix of another sorts
+  first, unless the rest marks a pre-release: `1.0.0-rc1` precedes `1.0.0`."
   [a b]
   (loop [[x & xs :as as] (tokens a)
          [y & ys :as bs] (tokens b)]
     (cond
       (and (empty? as) (empty? bs)) 0
-      (empty? as) -1
-      (empty? bs) 1
+      (empty? as) (if (pre-release? y) 1 -1)
+      (empty? bs) (if (pre-release? x) -1 1)
       :else (let [c (compare-token x y)]
               (if (zero? c) (recur xs ys) c)))))
 

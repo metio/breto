@@ -192,3 +192,12 @@
 (deftest report-saves-leave-the-lock-free
   (report/save! {:command "update" :results []})
   (is (not (breto.filelock/held? (fs/parent (report/state-path))))))
+
+(deftest names-that-leave-the-store-are-refused
+  (fs/create-dirs (path "store" "kept"))
+  (doseq [name [".." "." "a/../.." "" " kept"]]
+    (let [{:keys [code out]} (breto! {} "uninstall" name)]
+      (is (= 1 code) name)
+      (is (str/includes? out "cannot name a directory in the store") name)))
+  (is (fs/exists? (path "store" "kept")))
+  (is (fs/exists? (path "store"))))
