@@ -11,6 +11,7 @@
             [breto.batch :as batch]
             [breto.check :as check]
             [breto.doctor :as doctor]
+            [breto.hooks :as hooks]
             [breto.install :as install]
             [breto.lockfile :as lockfile]
             [breto.registry :as registry]
@@ -27,6 +28,18 @@
   "The progress callback for `command`: the live display and the recorder."
   [{:keys [reporter]} command]
   (batch/broadcast (reporter command) (batch/recorder command)))
+
+(defn- hook-listener
+  "Runs the configured hooks on the events of `command`; without a hook runner
+  in the io, none."
+  [{:keys [config io]} command]
+  (if-let [run-hook (:run-hook io)]
+    (hooks/listener config command
+                    {:run-hook run-hook
+                     :warn #(binding [*out* *err*] (println (str "[WARN] " %)))
+                     :os (System/getProperty "os.name")
+                     :which #(some-> (fs/which %) str)})
+    (fn [_])))
 
 (defn- pacer
   "Paces a batch so that :delay follows only packages that received download
@@ -49,7 +62,7 @@
   "Runs `install-one` (io, name, version -> install! options) over `specs`
   with progress, pacing and a saved report under `command`."
   [{:keys [config registry io] :as ctx} command specs install-one]
-  (let [progress (tracker ctx command)
+  (let [progress (batch/broadcast (tracker ctx command) (hook-listener ctx command))
         transferred (atom 0)
         io (batch/tracked-io io progress transferred)]
     (batch/finish! command

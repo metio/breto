@@ -6,6 +6,7 @@
   when it fails."
   (:require [babashka.fs :as fs]
             [breto.github :as github]
+            [breto.hooks :as hooks]
             [breto.report :as report]
             [breto.store :as store]
             [cheshire.core :as json]
@@ -124,6 +125,36 @@
                      "Add \"cosign\" to :packages ahead of the signed packages, or install it from the system package manager.")
                    "Set :cosign in the config to its path if it is installed outside PATH."))))
 
+(defn hooks-check
+  "Whether the configured hooks can run. `os` is the os.name property and
+  `which` resolves a command name to its path."
+  [config os which]
+  (let [wrong (hooks/problems config)
+        configured (:hooks config)
+        notify (sort (keep (fn [[event hook]] (when (= :notify hook) (name event))) configured))
+        notifier (hooks/notifier config os which)]
+    (cond
+      (seq wrong)
+      (apply check :fail "The hook settings are invalid, so no hooks run" (str/join "; " wrong)
+             ["Fix :hooks, :notifier, :messages or :hook-timeout in the config."])
+
+      (empty? configured)
+      (check :ok "No hooks are configured" "")
+
+      (and (seq notify) (nil? notifier))
+      (check :fail "No desktop notifier is available" (str "Hooks that notify: " (str/join ", " notify))
+             (if (= :auto (:notifier config))
+               (str "breto knows notify-send for Linux and BSD and osascript for macOS; on " os
+                    " set :notifier to a command with {title} and {message}, or install the one for the system.")
+               "Set :notifier to a command with {title} and {message}."))
+
+      (and (seq notify) (not (which (first notifier))))
+      (check :fail (str (first notifier) " is missing") (str "Hooks that notify: " (str/join ", " notify))
+             "Install it, or set :notifier to another command.")
+
+      :else
+      (check :ok "Hooks run on these events" (str/join ", " (map name (sort (keys configured))))))))
+
 (defn token-check
   "Where the GitHub token comes from, never the token itself."
   [{:keys [token-command]} io]
@@ -190,6 +221,7 @@
           [(unconfigured-check config)
            (unverified-check config registry)
            (signature-check config registry #(some-> (fs/which %) str))
+           (hooks-check config (System/getProperty "os.name") #(some-> (fs/which %) str))
            (token-check config io)
            (github-check io)]
           (last-run-checks (report/load-runs))))

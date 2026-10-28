@@ -25,7 +25,11 @@
    :prune false
    :token-command nil
    :lockfile nil
-   :cosign "cosign"})
+   :cosign "cosign"
+   :hooks {}
+   :notifier :auto
+   :messages {}
+   :hook-timeout 30})
 
 (defn- expand-home [s]
   (str/replace-first s #"^~(?=/|$)" (System/getProperty "user.home")))

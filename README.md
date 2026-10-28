@@ -47,6 +47,10 @@ breto reads `$XDG_CONFIG_HOME/breto/config.edn` (`~/.config/breto/config.edn` by
 | `:token-command` | A command printing a GitHub token on its first line, e.g. `["gh" "auth" "token"]` or `["gopass" "show" "--password" "github/token"]`. It runs at most once per breto process, and only when a GitHub API request is made. `GITHUB_TOKEN` and `GH_TOKEN` take precedence. | none |
 | `:lockfile` | A file breto rewrites after every change to the store with the active version and download hash of each configured package. Commit it, and `update --locked` installs exactly those versions elsewhere. | none |
 | `:cosign` | The cosign command that checks `:signature` bundles. | `cosign` |
+| `:hooks` | Commands run on the events of `install` and `update`; see [Hooks](#hooks). | none |
+| `:notifier` | The command the `:notify` hook sends with, with `{title}`, `{message}` and `{urgency}` placeholders, or `:auto` for the notifier of the operating system. | `:auto` |
+| `:messages` | Message templates of `:notify` per event, e.g. `{:installed "{package} is now {version}"}`. | see [Hooks](#hooks) |
+| `:hook-timeout` | Seconds a hook may run before it is stopped. | `30` |
 | `:prune` | Whether `gc` without arguments also uninstalls every package `:packages` does not list. | `false` |
 | `:store` | Where versions are unpacked, as `<store>/<package>/<version>`. | `$XDG_DATA_HOME/breto/installations` |
 | `:bin-dir` | Where binaries are linked. | `~/.local/bin` |
@@ -87,6 +91,28 @@ A daily or weekly `breto update && breto gc` from a systemd timer or cron job ke
 With `:lockfile` set, `install`, `update`, `use`, `gc` and `uninstall` rewrite the file afterwards: one line per configured package with its active version, the SHA-256 of the download it came from, and the asset name. Comment lines at its top, such as a license header, are kept. A package that is not active on this machine keeps its entry, so a failed install never drops it.
 
 `breto update --locked` installs the locked version of each configured package instead of the latest, and refuses a download whose hash differs from the locked one. This also covers releases that upstream publishes without checksums: once one machine installed them, every other one gets the same bytes. Versions installed before hashes were recorded have an entry without `:sha256` until they are installed again.
+
+## Hooks
+
+`install` and `update` run a command for each event `:hooks` lists. A hook is a vector of a program and its arguments, never a shell command line, so a version taken from an upstream tag reaches the program as one argument and cannot run anything else. The keyword `:notify` sends a desktop notification instead:
+
+```clojure
+{:hooks {:installed :notify
+         :finished :notify
+         :failed ["logger" "--tag=breto" "{package} failed in {stage}: {summary}"]}}
+```
+
+| Event | When | Placeholders | `:notify` message |
+| --- | --- | --- | --- |
+| `:installed` | after each package that was installed and activated | `{package}`, `{version}`, `{command}` | `{package} {version} installed` |
+| `:failed` | after each package that failed | `{package}`, `{version}`, `{stage}`, `{summary}`, `{command}` | `{summary}` |
+| `:finished` | once at the end of the run, also when nothing changed | `{summary}`, `{installed}`, `{failed}`, `{current}`, `{command}` | `{summary}`, such as `breto update: 60 up to date, 2 installed` |
+
+Every placeholder value is also in the hook's environment as `BRETO_<NAME>`, e.g. `BRETO_PACKAGE`, so a script can read them without arguments. A `:notify` hook additionally gets `{title}`, `{message}` and `{urgency}`. A run that stops before it reaches any package, for example on a broken definition, runs no hooks.
+
+`:notifier :auto` uses `notify-send` on Linux and the BSDs and `osascript` on macOS, each only when it is installed. On other systems, or for another tool, set `:notifier` to a command that takes the title and message as arguments, such as `["my-notifier" "{title}" "{message}"]`.
+
+A hook that exits with an error, runs longer than `:hook-timeout` seconds or cannot start is reported as a warning; it never fails the install or update. Invalid hook settings are reported once per run, and no hooks run then. `breto doctor` checks the settings and that the notifier is installed. Under systemd, a user service has the session bus `notify-send` needs; a system service or a cron job usually has not.
 
 ## Uninstalling
 
