@@ -60,7 +60,7 @@
 
 (def ^:private stage-label
   {:resolve "resolving" :download "downloading" :verify "verifying" :unpack "unpacking"
-   :place "placing" :activate "activating" :check "checking"})
+   :place "placing" :activate "activating" :check "checking" :signature "checking the signature"})
 
 (defn status-line
   "The status line for `state`, colored with ANSI escapes when `color?`."

@@ -353,6 +353,29 @@
    :advice ["It must hold one EDN map of package names to {:version … :sha256 …}, after optional ; comment lines."
             "Restore it from version control; breto rewrites it after the next change to the store."]})
 
+(defmethod explain :signature-tool [{:keys [cosign error package]} _]
+  {:summary (str "The definition of " package " requires a sigstore signature, and " cosign " could not run to check it.")
+   :facts [(str "Error: " error)]
+   :advice [(if (= "cosign" package)
+              "To bootstrap cosign itself, install it once with breto install cosign --no-verify, or from the system package manager."
+              "Install cosign, e.g. by adding \"cosign\" to :packages; breto installs packages in order, so list it first.")
+            "Set :cosign in the config to its path if it is not on PATH."]})
+
+(defmethod explain :bundle-missing [{:keys [package version bundle assets]} _]
+  {:summary (str "Release " version " of " package " has no signature bundle named " bundle ".")
+   :facts (cond-> [] (seq assets) (conj (str "Signature-like assets in the release: "
+                                             (str/join ", " (or (seq (filter #(re-find #"(?i)sig|bundle|\\.pem$" %) assets)) ["none"])))))
+   :advice ["Correct :bundle in the definition if upstream renamed it."
+            "If upstream stopped signing, or started later, scope :signature with a :history entry."]})
+
+(defmethod explain :signature-invalid [{:keys [signed bundle-url identity issuer stderr]} _]
+  {:summary (str "The sigstore signature of " signed " does not verify.")
+   :facts (cond-> [(str "Bundle: " bundle-url) (str "Expected signer: " identity " via " issuer)]
+            (not (str/blank? stderr)) (conj (str "cosign: " stderr)))
+   :advice ["If cosign names another signer, upstream changed its release workflow; compare with the project's documentation before changing :identity."
+            "A signature that verifies for nobody means the download or the bundle was altered: do not install it."
+            "Do not bypass this with --no-verify unless upstream confirms the change."]})
+
 (defmethod explain :usage [_ _]
   {:summary "The command line is incomplete."
    :facts []

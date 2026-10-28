@@ -46,6 +46,7 @@ breto reads `$XDG_CONFIG_HOME/breto/config.edn` (`~/.config/breto/config.edn` by
 | `:delay` | Seconds `install` and `update` wait after a package that downloaded something, e.g. to spread traffic on a slow link. A package found up to date costs no wait. `--delay N` overrides it. | `0` |
 | `:token-command` | A command printing a GitHub token on its first line, e.g. `["gh" "auth" "token"]` or `["gopass" "show" "--password" "github/token"]`. It runs at most once per breto process, and only when a GitHub API request is made. `GITHUB_TOKEN` and `GH_TOKEN` take precedence. | none |
 | `:lockfile` | A file breto rewrites after every change to the store with the active version and download hash of each configured package. Commit it, and `update --locked` installs exactly those versions elsewhere. | none |
+| `:cosign` | The cosign command that checks `:signature` bundles. | `cosign` |
 | `:prune` | Whether `gc` without arguments also uninstalls every package `:packages` does not list. | `false` |
 | `:store` | Where versions are unpacked, as `<store>/<package>/<version>`. | `$XDG_DATA_HOME/breto/installations` |
 | `:bin-dir` | Where binaries are linked. | `~/.local/bin` |
@@ -121,6 +122,7 @@ A package is a file `<name>.edn` in a registry directory, and its file name is t
 | `:links` | Further symlinks: target path to path inside the installed version. | none |
 | `:history` | Definitions for older versions; see below. | none |
 | `:verify` | `false` installs without verification, for releases whose upstream publishes neither GitHub digests nor checksums. Usually set in a `:history` entry, so newer releases are still verified. | `true` |
+| `:signature` | A sigstore bundle signing the asset or its checksum file; see below. | none |
 | `:skip` | Versions never installed as the latest, e.g. a release without a build for this platform. When the latest release is listed, the newest unlisted one is installed instead, which costs one request listing the releases. An explicitly requested or pinned version is installed regardless. | none |
 
 Templates can use `{name}`, `{tag}`, `{version}`, `{repo}` and, except in `:asset` itself, `{asset}`. Files ending in `.tar.gz`, `.tgz`, `.tar.xz`, `.txz`, `.tar.bz2`, `.tbz2`, `.tar` or `.zip` are unpacked; anything else is the binary itself.
@@ -175,6 +177,24 @@ ble.sh publishes its nightly builds as a rolling release:
 ### Verification
 
 A download from a GitHub release is checked against the sha256 digest GitHub recorded for the asset. Assets uploaded before GitHub began recording digests carry none; for those, and for downloads from other hosts, breto uses the file named by `:checksum`. A checksum file can list many assets in `sha256sum` format or hold a single hash. The algorithm follows from the length of the hash. A download with neither a digest nor a checksum file is refused unless `--no-verify` is given. A failed digest lookup, for example once the API limit is reached, falls back to the checksum file when there is one and fails otherwise.
+
+A checksum shows that a download is what the release lists; a signature shows who built the release. A definition with `:signature` has every verified download checked with `cosign verify-blob` against a sigstore bundle published next to the asset:
+
+```clojure
+:signature {:bundle "{asset}.sigstore.json"
+            :identity "https://github.com/kyverno/kyverno/.github/workflows/release.yaml@refs/tags/{tag}"
+            :issuer "https://token.actions.githubusercontent.com"}
+```
+
+| Key | Meaning |
+| --- | --- |
+| `:bundle` | Template for the bundle file name, or a full URL. |
+| `:identity` | Template for the exact certificate identity of the signer, usually the release workflow. |
+| `:identity-regexp` | A regular expression for the identity, instead of `:identity`. |
+| `:issuer` | The OIDC issuer of the signer's certificate. |
+| `:of` | `:asset` when the bundle signs the asset, `:checksum` when it signs the checksum file, whose hash is then trusted. Defaults to `:asset`. |
+
+The signer's identity is in the certificate inside the bundle. Projects usually document it next to their verification instructions. cosign must be installed for signed packages: list `cosign` first in `:packages`, and install it once with `breto install cosign --no-verify` when no cosign exists yet. Later updates of cosign are checked by the version already installed. `breto check` confirms the bundle is in the release, and `breto doctor` that cosign can run.
 
 ### Version history
 

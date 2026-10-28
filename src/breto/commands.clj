@@ -40,9 +40,10 @@
                  (batch/counting-down progress sleep-second!)
                  f)))
 
-(defn- installed-result [name {:keys [version installed? verified?]}]
+(defn- installed-result [name {:keys [version installed? verified? signed?]}]
   (cond-> {:package name :version version :status (if installed? :installed :current)}
-    (and installed? (not verified?)) (assoc :unverified true)))
+    (and installed? (not verified?)) (assoc :unverified true)
+    signed? (assoc :signed true)))
 
 (defn- installing
   "Runs `install-one` (io, name, version -> install! options) over `specs`

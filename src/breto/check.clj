@@ -68,10 +68,17 @@
                                                    (assoc context :breto/problem :http-status :status 404
                                                           :stage :verify :url checksum-url :headers {})))
                       :else nil)))]
-          (cond
+          (when-let [bundle (get-in artifact [:signature :bundle-url])]
+            (let [file (subs bundle (inc (str/last-index-of bundle "/")))]
+              (when-not (if @listed (@listed file) ((:exists? io) bundle))
+                (throw (ex-info (str (:name pkg) " " version ": no signature bundle at " bundle)
+                                (cond-> (assoc context :breto/problem :bundle-missing :bundle-url bundle :bundle file)
+                                  @listed (assoc :assets (vec (sort @listed)))))))))
+          (cond-> (cond
             verified-by {:package (:name pkg) :version version :status :checked :verified-by verified-by}
             (false? (:verify pkg true)) {:package (:name pkg) :version version :status :checked :verified-by :none}
             :else (throw (ex-info (str (:name pkg) " " version ": nothing can verify " (:asset artifact))
                                   (cond-> (assoc context :breto/problem :unverifiable
                                                  :suggested-before (next-version version))
-                                    @listed (assoc :assets (vec (sort @listed))))))))))))
+                                    @listed (assoc :assets (vec (sort @listed)))))))
+            (:signature artifact) (assoc :signed true)))))))

@@ -3,6 +3,7 @@
 
 (ns breto.token-test
   (:require [breto.diagnose :as diagnose]
+            [breto.proc]
             [breto.github :as github]
             [breto.token :as token]
             [clojure.string :as str]
@@ -45,7 +46,7 @@
     (is (= :token-command (:breto/problem (problem #(token/resolve-token (env {}) ["nope"]
                                                                          (fn [_] (throw (java.io.IOException. "No such file")))))))))
   (testing "a real command that is missing"
-    (is (= :token-command (:breto/problem (problem #(token/resolve-token (env {}) ["/nonexistent/breto-token"] token/run-command)))))))
+    (is (= :token-command (:breto/problem (problem #(token/resolve-token (env {}) ["/nonexistent/breto-token"] breto.proc/run-command)))))))
 
 (deftest providers-run-the-command-once-even-when-it-fails
   (let [runs (atom 0)

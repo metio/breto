@@ -9,6 +9,7 @@
             [breto.http :as http]
             [breto.lockfile :as lockfile]
             [breto.log :as log]
+            [breto.proc :as proc]
             [breto.progress :as progress]
             [breto.registry :as registry]
             [breto.store :as store]
@@ -59,7 +60,9 @@ Every failure is explained with what to do; --debug adds each request and stack 
   "The network operations for `config`: HTTP, the GitHub token from the
   environment or :token-command, and the waits upstream hosts announced."
   [config]
-  (assoc http/io :github-token (token/provider (:token-command config))))
+  (assoc http/io
+         :github-token (token/provider (:token-command config))
+         :run proc/run-command))
 
 (defn context
   "Everything a command needs, from the parsed options."

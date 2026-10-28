@@ -109,6 +109,21 @@
              "Remove :verify false from a definition once upstream publishes either.")
       (check :ok "Every configured package is verified" ""))))
 
+(defn signature-check
+  "Whether cosign can run when a configured package requires a signature.
+  `which` resolves a command name to its path."
+  [{:keys [packages cosign] :or {cosign "cosign"}} registry which]
+  (let [signed (filter #(get-in registry [% :signature]) packages)]
+    (cond
+      (empty? signed) (check :ok "No configured package requires a signature" "")
+      (which cosign) (check :ok (str "cosign checks the signatures of " (count signed) " packages")
+                            (str (which cosign)))
+      :else (check :fail (str cosign " is missing, but packages require signatures") (str/join ", " signed)
+                   (if (some #{"cosign"} signed)
+                     "Install cosign once with breto install cosign --no-verify, or from the system package manager; later updates of it are verified."
+                     "Add \"cosign\" to :packages ahead of the signed packages, or install it from the system package manager.")
+                   "Set :cosign in the config to its path if it is installed outside PATH."))))
+
 (defn token-check
   "Where the GitHub token comes from, never the token itself."
   [{:keys [token-command]} io]
@@ -174,6 +189,7 @@
           (store-check config registry)
           [(unconfigured-check config)
            (unverified-check config registry)
+           (signature-check config registry #(some-> (fs/which %) str))
            (token-check config io)
            (github-check io)]
           (last-run-checks (report/load-runs))))

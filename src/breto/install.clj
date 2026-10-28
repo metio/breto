@@ -7,6 +7,7 @@
             [breto.checksum :as checksum]
             [breto.github :as github]
             [breto.package :as package]
+            [breto.signature :as signature]
             [breto.source :as source]
             [breto.store :as store]
             [clojure.string :as str]))
@@ -67,20 +68,50 @@
     (progress {:type :stage :stage stage}))
   (with-stage stage context f))
 
+(defn- signed-checksum!
+  "Downloads the checksum file a signature covers into `work`, so the bytes
+  cosign checks are the ones the expected hash is read from."
+  [io artifact work context]
+  (let [file (fs/path work ".checksums")]
+    (staged io :verify context #((:download! io) (:checksum-url artifact) file))
+    file))
+
+(defn- verify-signature!
+  "Checks the release's sigstore bundle for `target` with cosign."
+  [config io artifact target work context]
+  (let [sig (:signature artifact)
+        bundle (fs/path work ".bundle.sigstore.json")]
+    (staged io :signature context
+      #(do ((:download! io) (:bundle-url sig) bundle)
+           (signature/verify! (:run io) (:cosign config "cosign") sig target bundle
+                              (assoc context :signed (str (fs/file-name target)) :bundle-url (:bundle-url sig)))))))
+
 (defn- fetch!
-  "Downloads and verifies the artifact into `work`, returning the file."
-  [pkg io release artifact work verify? context]
-  (let [file (fs/path work (:asset artifact))]
+  "Downloads and verifies the artifact into `work`, returning the file and
+  whether a signature was verified."
+  [config pkg io release artifact work verify? context]
+  (let [file (fs/path work (:asset artifact))
+        sig (:signature artifact)]
     (staged io :download context #((:download! io) (:url artifact) file))
     (when verify?
-      (staged io :verify context
-        #(if-let [want (expected-hash pkg io release artifact)]
-           (checksum/verify! file (:asset artifact) want)
-           (throw (ex-info (str (:name pkg) ": nothing to verify " (:asset artifact)
-                                " against; GitHub has no digest for it and the package names no :checksum."
-                                " Use --no-verify to install it anyway.")
-                           {:breto/problem :no-checksum :package (:name pkg) :asset (:asset artifact)})))))
-    file))
+      (let [checksums (when (= :checksum (:of sig)) (signed-checksum! io artifact work context))]
+        (when sig
+          (verify-signature! config io artifact (or checksums file) work
+                             (assoc context :signed-what (if checksums :checksum :asset))))
+        (staged io :verify context
+          #(if-let [want (if checksums
+                           (or (checksum/expected (slurp (str checksums)) (:asset artifact))
+                               (throw (ex-info (str "no entry for " (:asset artifact) " in " (:checksum-url artifact))
+                                               {:breto/problem :checksum-entry-missing :url (:checksum-url artifact)
+                                                :asset (:asset artifact)
+                                                :entries (checksum/listed-names (slurp (str checksums)))})))
+                           (expected-hash pkg io release artifact))]
+             (checksum/verify! file (:asset artifact) want)
+             (throw (ex-info (str (:name pkg) ": nothing to verify " (:asset artifact)
+                                  " against; GitHub has no digest for it and the package names no :checksum."
+                                  " Use --no-verify to install it anyway.")
+                             {:breto/problem :no-checksum :package (:name pkg) :asset (:asset artifact)}))))))
+    {:file file :signed? (boolean (and verify? sig))}))
 
 (defn- place!
   "Copies what `pkg` keeps from the unpacked archive into `dest`."
@@ -119,12 +150,12 @@
         package-dir (store/package-dir config (:name pkg))
         bin-paths (package/bin-paths pkg artifact)
         fresh? (not (store/installed? config (:name pkg) version (vals bin-paths)))
-        sha256 (when fresh?
+        {:keys [sha256 signed?]} (when fresh?
                  (with-stage :place context #(fs/create-dirs package-dir))
                  (let [work (fs/create-temp-dir {:dir package-dir :prefix store/work-prefix})
                        lock (store/hold! work)]
                    (try
-                     (let [file (fetch! pkg io release artifact work verify? context)
+                     (let [{:keys [file signed?]} (fetch! config pkg io release artifact work verify? context)
                            sha256 (checksum/digest "SHA-256" file)
                            unpacked (fs/path work "unpacked")
                            staging (fs/path work "staged")]
@@ -138,8 +169,8 @@
                               (fs/delete-tree (store/version-dir config (:name pkg) version))
                               (fs/move staging (store/version-dir config (:name pkg) version) {:atomic-move true})
                               (store/write-meta! config (:name pkg) version
-                                                 {:sha256 sha256 :asset (:asset artifact) :verified verify?})))
-                       sha256)
+                                                 {:sha256 sha256 :asset (:asset artifact) :verified verify? :signed signed?})))
+                       {:sha256 sha256 :signed? signed?})
                      (finally
                        (fs/delete-tree work)
                        (.close lock)
@@ -148,7 +179,8 @@
     (when activate?
       (staged io :activate context #(store/activate! config pkg bin-paths version)))
     (cond-> {:version version :installed? fresh? :verified? (and fresh? verify?)}
-      sha256 (assoc :sha256 sha256))))
+      sha256 (assoc :sha256 sha256)
+      signed? (assoc :signed? true))))
 
 (defn use!
   "Activates an already installed version."

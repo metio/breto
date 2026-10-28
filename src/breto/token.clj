@@ -4,16 +4,10 @@
 (ns breto.token
   "The GitHub token: from GITHUB_TOKEN or GH_TOKEN, else from the output of the
   configured :token-command, which runs at most once per process."
-  (:require [babashka.process :as process]
+  (:require [breto.proc :as proc]
             [clojure.string :as str]))
 
 (def env-names ["GITHUB_TOKEN" "GH_TOKEN"])
-
-(defn run-command
-  "Runs `command`, returning its exit code and output."
-  [command]
-  (select-keys (process/shell {:out :string :err :string :continue true} (map str command))
-               [:exit :out :err]))
 
 (defn resolve-token
   "{:token t :source s} from `env` (a function of a variable name) or from
@@ -43,7 +37,7 @@
 (defn provider
   "A function returning the token map, resolving it on first use only. A
   failure is remembered too, so a broken command runs once."
-  ([command] (provider #(System/getenv %) command run-command))
+  ([command] (provider #(System/getenv %) command proc/run-command))
   ([env command run]
    (let [memo (atom nil)]
      (fn []

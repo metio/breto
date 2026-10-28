@@ -72,7 +72,15 @@
     (conj ":skip must be a vector of version strings")
 
     (not (boolean? (:verify pkg true)))
-    (conj ":verify must be true or false")))
+    (conj ":verify must be true or false")
+
+    (and (:signature pkg)
+         (let [{:keys [bundle identity identity-regexp issuer of]} (:signature pkg)]
+           (not (and (string? bundle) (string? issuer)
+                     (or (string? identity) (string? identity-regexp))
+                     (contains? #{nil :asset :checksum} of)
+                     (or (not= :checksum of) (:checksum pkg))))))
+    (conj ":signature needs :bundle, :issuer and :identity or :identity-regexp; :of is :asset or :checksum, which needs :checksum")))
 
 (defn- complete
   "Fills in defaults and validates one flat definition."
@@ -143,7 +151,7 @@
 
 (defn artifact
   "Everything needed to fetch and unpack one release of `pkg`."
-  [{:keys [asset url checksum bins] :as pkg} release]
+  [{:keys [asset url checksum bins signature] :as pkg} release]
   (let [vars (template-vars pkg release)
         asset-name (template/render asset vars)
         asset-url (template/render url (assoc vars
@@ -153,6 +161,11 @@
     {:asset asset-name
      :url asset-url
      :checksum-url (some->> checksum (#(template/render % file-vars)) (sibling-url asset-url))
+     :signature (when-let [{:keys [bundle] :as sig} signature]
+                  (-> sig
+                      (assoc :bundle-url (sibling-url asset-url (template/render bundle file-vars)))
+                      (update :identity #(some-> % (template/render file-vars)))
+                      (update :of #(or % :asset))))
      :archive (archive-type asset-name)
      :bins (update-vals bins #(template/render % file-vars))}))
 

@@ -49,10 +49,12 @@
   {:digest "verifiable by its GitHub digest" :checksum "verifiable by its checksum file"
    :none "installs unverified, as its definition says"})
 
-(defn- line [{:keys [package status version from links unverified verified-by]}]
+(defn- line [{:keys [package status version from links unverified signed verified-by]}]
   (case status
-    :checked (str "[OK] " package " " version " " (verification verified-by))
-    :installed (str "[OK] " package " " version " installed" (when unverified " without verification"))
+    :checked (str "[OK] " package " " version " " (verification verified-by)
+                  (when signed ", signature bundle present"))
+    :installed (str "[OK] " package " " version " installed"
+                    (cond unverified " without verification" signed " with a verified signature"))
     :removed (str "[OK] " package " removed" (when (seq links) (str " with " (count links) " links")))
     :would-remove (str package " would be removed" (when (seq links) (str " with links " (str/join ", " links))))
     :outdated (str package "\t" (or from "-") " -> " version)
