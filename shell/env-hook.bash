@@ -15,16 +15,16 @@ __breto_env() {
         dir=${dir%/*}
     done
     if [ -n "$dir" ]; then
-        # A failed run stamps the file itself, which is never newer than
-        # itself, so it is retried once the file changes or the shell enters
-        # the project again, and not on every prompt.
+        # A failed run stamps a marker of this shell, so it is retried once the
+        # file changes or the shell enters the project again, not on every prompt.
         if [ "$dir" != "$__breto_project" ] || [ "$dir/.breto.edn" -nt "$__breto_stamp" ]; then
             __breto_project=$dir
             if code=$(breto env --no-install --dir "$dir"); then
                 eval "$code"
                 __breto_stamp=$BRETO_ENV_BIN
             else
-                __breto_stamp=$dir/.breto.edn
+                __breto_stamp=${XDG_RUNTIME_DIR:-/tmp}/breto-hook-$$
+                : > "$__breto_stamp"
             fi
         fi
     elif [ -n "$__breto_project" ]; then

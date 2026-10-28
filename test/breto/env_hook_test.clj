@@ -74,8 +74,18 @@
   (project! "app" "{:fail true}")
   (testing "stays off PATH and runs once"
     (is (= (str "PATH=" (path "fake") ":/usr/bin:/bin|PROJECT=")
-           (session (str "cd " (path "app")) "true" "true")))
+           (session (str "export XDG_RUNTIME_DIR=" (path)) (str "cd " (path "app")) "true" "true")))
     (is (= 1 (count (calls))))))
+
+(deftest a-failing-env-is-retried-once-the-file-changes
+  (fake-breto!)
+  (project! "app" "{:fail true}")
+  (is (= (str "PATH=" (path "envs" "app") ":" (path "fake") ":/usr/bin:/bin|PROJECT=" (path "app"))
+         (session (str "export XDG_RUNTIME_DIR=" (path))
+                  (str "cd " (path "app"))
+                  "sleep 1.1; echo '{:packages [\"kind\"]}' > .breto.edn"
+                  "true")))
+  (is (= 2 (count (calls)))))
 
 (deftest sourcing-twice-hooks-once
   (is (= "__breto_env;x"
