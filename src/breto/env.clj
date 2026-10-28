@@ -50,7 +50,9 @@
 
 (defn link!
   "Makes the bin directory of `project-dir` hold exactly `links`, link name ->
-  target, and records which project it belongs to."
+  target, and records which project it belongs to. The directory's
+  modification time is the time of the run, so a shell hook can tell whether
+  the project file changed since."
   [config project-dir links]
   (let [dir (env-dir config project-dir)
         bin (fs/path dir "bin")]
@@ -65,6 +67,7 @@
       (fs/delete-if-exists staged)
       (fs/create-sym-link staged (str target))
       (fs/move staged path {:replace-existing true :atomic-move true}))
+    (fs/set-last-modified-time bin (java.nio.file.attribute.FileTime/from (java.time.Instant/now)))
     (str bin)))
 
 (defn path-value
@@ -80,14 +83,16 @@
   (str "'" (str/replace s "'" "'\\''") "'"))
 
 (defn exports
-  "The shell code that sets PATH to `path` and BRETO_PROJECT to `project-dir`,
-  for :sh (also bash and zsh) or :fish."
-  [shell path project-dir]
+  "The shell code that sets PATH to `path`, BRETO_PROJECT to `project-dir` and
+  BRETO_ENV_BIN to `bin`, for :sh (also bash and zsh) or :fish."
+  [shell path project-dir bin]
   (case shell
     :fish (str "set --global --export PATH " (str/join " " (map sh-quote (str/split path #":"))) ";\n"
-               "set --global --export BRETO_PROJECT " (sh-quote project-dir) ";")
+               "set --global --export BRETO_PROJECT " (sh-quote project-dir) ";\n"
+               "set --global --export BRETO_ENV_BIN " (sh-quote bin) ";")
     (str "export PATH=" (sh-quote path) "\n"
-         "export BRETO_PROJECT=" (sh-quote project-dir))))
+         "export BRETO_PROJECT=" (sh-quote project-dir) "\n"
+         "export BRETO_ENV_BIN=" (sh-quote bin))))
 
 (defn environments
   "Every project bin directory: {:dir :project :bin}, :project nil when its

@@ -79,6 +79,7 @@ Configure `:token-command`, or set `GITHUB_TOKEN` or `GH_TOKEN`, to raise GitHub
 | `breto check [PKG...] [--all]` | Checks each configured package, or every package of the registries with `--all`, against its latest release without downloading it: the asset must exist and a GitHub digest, a checksum file or `:verify false` must cover it. Run it after editing definitions, or before a scheduled update. |
 | `breto gc [PKG...] [--keep N]` | Deletes all but the N most recently installed versions. The active version is always kept. Also removes what killed installs left behind. With `:prune true` and no package named, also uninstalls unconfigured packages. |
 | `breto uninstall PKG...` | Deletes a package with every link into it. |
+| `breto sync [--dry-run]` | Makes the store match `:lockfile`: installs and activates each locked version, refusing a download whose hash differs from the locked one, and uninstalls every package the lock file does not list and no project uses. `--dry-run` lists the changes. |
 | `breto info PKG` | The package definition after defaults are applied. |
 | `breto report [COMMAND...] [--brief]` | The report of the last run of each command, or of the named ones. `--brief` prints only the latest of them in a few lines of at most 100 characters: when it ran, its counts, and the first three failures with their diagnosis. |
 | `breto doctor` | Checks tools, directories, configuration, store, GitHub API quota and the last runs. |
@@ -89,7 +90,7 @@ On a terminal, `install`, `update` and `outdated` show a status line with the po
 
 `install` and `update` refuse a download they cannot verify. `--no-verify` skips verification entirely. `gc` and `uninstall` take `--dry-run` to list what they would delete.
 
-Each package directory has a `current` symlink pointing at the active version, and the links in the bin directory resolve through it. Switching versions replaces `current` with an atomic rename, so a command never sees a half-switched package. A version is unpacked into a hidden `.work-*` directory inside the package directory and renamed into place once complete, so an interrupted install never looks installed. Each install holds a lock on its work directory, which the operating system releases when the process dies, however it dies; `gc` deletes the work directories nobody holds, so it can run while another install is in progress. Commands that change the store (`install`, `update`, `use`, `gc`, `uninstall` and `env`) also take a lock on the whole store, so a manual run started while the timer's update is busy waits for it, naming its process, instead of racing it.
+Each package directory has a `current` symlink pointing at the active version, and the links in the bin directory resolve through it. Switching versions replaces `current` with an atomic rename, so a command never sees a half-switched package. A version is unpacked into a hidden `.work-*` directory inside the package directory and renamed into place once complete, so an interrupted install never looks installed. Each install holds a lock on its work directory, which the operating system releases when the process dies, however it dies; `gc` deletes the work directories nobody holds, so it can run while another install is in progress. Commands that change the store (`install`, `update`, `use`, `gc`, `uninstall`, `sync` and `env`) also take a lock on the whole store, so a manual run started while the timer's update is busy waits for it, naming its process, instead of racing it.
 
 A daily or weekly `breto update && breto gc` from a systemd timer or cron job keeps everything current.
 
@@ -107,11 +108,17 @@ A `.breto.edn` file in a project lists the packages it needs, with versions wher
 {:packages ["helm@3.19.0" "kind" "@pimalaya"]}
 ```
 
-`breto env`, run anywhere below that directory, links the commands of those versions into a bin directory of the project's own and prints the shell code that puts it first on `PATH` and sets `BRETO_PROJECT`:
+`breto env`, run anywhere below that directory, links the commands of those versions into a bin directory of the project's own and prints the shell code that puts it first on `PATH` and sets `BRETO_PROJECT` and `BRETO_ENV_BIN`:
 
 ```sh
 eval "$(breto env)"
 breto env --shell fish | source
+```
+
+In bash, `shell/env-hook.bash` from this repository does this on its own: sourced from `.bashrc`, it runs `breto env` when the shell enters a directory below a `.breto.edn` or the file changes, and takes the project's bin directory off `PATH` again, through `BRETO_ENV_BIN`, when the shell leaves the project. Between those it costs a few file tests per prompt. A failing `breto env` is retried once the file changes, not on every prompt.
+
+```sh
+source ~/src/breto/shell/env-hook.bash
 ```
 
 A package without a version uses the active version, else the most recently installed one. Versions that are not installed yet are installed without activating them, so the commands in `:bin-dir` keep their versions. Everything but the shell code goes to stderr. Each run makes the project's bin directory hold exactly what the file lists and replaces the `PATH` entry of a project entered before. The `PATH` it prints also drops entries that repeat.
@@ -121,6 +128,8 @@ A package without a version uses the active version, else the most recently inst
 ## Lock files
 
 With `:lockfile` set, `install`, `update`, `use`, `gc` and `uninstall` rewrite the file afterwards: one line per configured package with its active version, the SHA-256 of the download it came from, and the asset name. Comment lines at its top, such as a license header, are kept. A package that is not active on this machine keeps its entry, so a failed install never drops it.
+
+On another machine, `breto sync` turns the store into exactly what the lock file lists, removing the rest; `breto sync --dry-run` shows what that would change. A dry run never rewrites the lock file.
 
 `breto update --locked` installs the locked version of each configured package instead of the latest, and refuses a download whose hash differs from the locked one. This also covers releases that upstream publishes without checksums: once one machine installed them, every other one gets the same bytes. A version installed before breto recorded hashes gets one on the next `install` or `update` that finds it up to date: breto looks up the hash upstream publishes for that asset, the GitHub digest or the checksum-file entry its verified download had to match, and records it. The lookup costs one request per version, once; when it fails, a later run tries again. A version installed without verification has no upstream hash to look up, so breto downloads its asset once more and records the hash of that download instead. Such a hash does not show that the bytes are the ones upstream meant to publish; it makes every machine installing with `--locked` get the bytes this one trusted. A fresh install records the hash of its download either way.
 
@@ -320,6 +329,10 @@ Projects rename assets, change archive formats and move between hosts. The top l
 Version 0.0.11 installs `iamb-x86_64-unknown-linux-musl.tgz` with one leading component stripped, and 0.13.1 uses the top level. A project that moved from GitLab to GitHub keeps one package name with an entry such as `{:before "2.0.0" :source {:gitlab "gitlab.com/group/project"} :url "…"}`, and both old and new versions stay installable. Defaults such as the GitHub download URL are worked out separately for each entry.
 
 Versions compare by their runs of digits and letters, with numbers compared numerically, so `0.0.13` follows `0.0.12` and `2026.9` follows `2025.12`.
+
+## Definition checks
+
+A scheduled workflow runs `breto check --all` every week against the latest release of every definition and lists the failures in its summary. It makes about one GitHub API request per definition, so a run spends a couple of hours waiting out the rate limit of the workflow's token.
 
 ## Development
 

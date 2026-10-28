@@ -80,12 +80,12 @@
            (env/path-value cfg (path "envs" "b" "bin") (str (path "envs" "a" "bin") ":/usr/bin::/bin:/usr/bin"))))))
 
 (deftest exports-quote-for-the-shell
-  (let [code (env/exports :sh "/a b:/it's" "/p")]
-    (is (= "/a b:/it's|/p"
+  (let [code (env/exports :sh "/a b:/it's" "/p" "/a b")]
+    (is (= "/a b:/it's|/p|/a b"
            (str/trim (:out (process/shell {:out :string} "sh" "-c"
-                                          (str code "\nprintf '%s|%s' \"$PATH\" \"$BRETO_PROJECT\"")))))))
-  (is (= "set --global --export PATH '/a' '/b';\nset --global --export BRETO_PROJECT '/p';"
-         (env/exports :fish "/a:/b" "/p"))))
+                                          (str code "\nprintf '%s|%s|%s' \"$PATH\" \"$BRETO_PROJECT\" \"$BRETO_ENV_BIN\"")))))))
+  (is (= "set --global --export PATH '/a' '/b';\nset --global --export BRETO_PROJECT '/p';\nset --global --export BRETO_ENV_BIN '/a';"
+         (env/exports :fish "/a:/b" "/p" "/a"))))
 
 (deftest gc-keeps-what-projects-use-and-forgets-removed-projects
   (let [io (world)
