@@ -7,6 +7,7 @@
   offline; a probe that fails is ignored rather than hiding the original error."
   (:require [breto.github :as github]
             [breto.package :as package]
+            [breto.version :as version]
             [clojure.string :as str])
   (:import (java.time Instant)))
 
@@ -205,15 +206,25 @@
      :facts (cond-> [] (seq names) (conj (str "Assets include: " (str/join ", " (take 5 (closest asset names 5))))))
      :advice ["Adjust :asset so that {version} stands where the build identifier appears in the asset names."]}))
 
-(defmethod explain :no-checksum [{:keys [repo tag asset] :as data} probes]
+(defn- unverified-advice
+  "What to do about an asset nothing can verify, given the checksum-like
+  assets of its release."
+  [sums tag version]
+  (cond-> []
+    (seq sums) (conj (str "Set :checksum to " (pr-str (as-template (first sums) {:tag tag :version version})) "."))
+    (seq version) (conj (str "If upstream publishes nothing to verify against, add {:before "
+                             (pr-str (version/next-version version))
+                             " :verify false} to :history; newer releases stay verified."))
+    true (conj "GitHub only records digests for assets uploaded since mid-2025, so a new release usually fixes this."
+               "breto install --no-verify installs this one release once while accepting the risk.")))
+
+(defmethod explain :no-checksum [{:keys [repo tag asset version] :as data} probes]
   (let [sums (when (github-repo data)
                (filter #(re-find checksum-like %) (map :name (probe probes :assets repo tag))))]
     {:summary (str "There is nothing to verify " asset " against.")
      :facts (cond-> ["GitHub recorded no digest for this asset, and the package names no :checksum file."]
               (seq sums) (conj (str "Checksum-like assets in " tag ": " (str/join ", " sums))))
-     :advice (cond-> []
-               (seq sums) (conj (str "Set :checksum to " (pr-str (as-template (first sums) {:tag tag :version (:version data)})) "."))
-               true (conj "If upstream publishes no checksums at all, breto install --no-verify installs it while accepting the risk."))}))
+     :advice (unverified-advice sums tag version)}))
 
 (defmethod explain :checksum-entry-missing [{:keys [asset url entries]} _]
   {:summary (str "The checksum file does not list " asset ".")
@@ -335,16 +346,12 @@
   (missing-asset {:asset asset :tag tag :version version :repo repo :names assets
                   :fact (str "The release lists " (count assets) " assets, none named " asset)}))
 
-(defmethod explain :unverifiable [{:keys [package version asset tag assets suggested-before]} _]
+(defmethod explain :unverifiable [{:keys [package version asset tag assets]} _]
   (let [sums (filter #(re-find checksum-like %) assets)]
     {:summary (str "Nothing can verify " asset " of " package " " version ", so breto update refuses to install it.")
      :facts (cond-> ["GitHub records no digest for it, and the definition names no :checksum."]
               (seq sums) (conj (str "Checksum-like assets in " tag ": " (str/join ", " sums))))
-     :advice (cond-> []
-               (seq sums) (conj (str "Set :checksum to " (pr-str (as-template (first sums) {:tag tag :version version})) "."))
-               true (conj (str "If upstream publishes nothing to verify against, add {:before " (pr-str suggested-before)
-                               " :verify false} to :history; newer releases stay verified.")
-                          "GitHub only records digests for assets uploaded since mid-2025, so a new release usually fixes this."))}))
+     :advice (unverified-advice sums tag version)}))
 
 (defmethod explain :json-path [{:keys [url path found keys]} _]
   {:summary (str "The JSON document at " url " has no version at " (pr-str path) ".")

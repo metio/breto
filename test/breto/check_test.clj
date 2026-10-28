@@ -2,8 +2,7 @@
 ;; SPDX-License-Identifier: 0BSD
 
 (ns breto.check-test
-  (:require [breto.check :as check]
-            [breto.support :as s]
+  (:require [breto.support :as s]
             [cheshire.core :as json]
             [clojure.string :as str]
             [clojure.test :refer [deftest is use-fixtures]]))
@@ -82,10 +81,3 @@
   (s/define! "b" {:source {:github "acme/b"} :asset "b"})
   (let [{:keys [events]} (s/breto! {:packages []} ["check" "--all"])]
     (is (= ["a" "b"] (keep #(when (= :start (:type %)) (:package %)) events)))))
-
-(deftest next-versions-cover-the-given-one
-  (is (= "1.2.4" (check/next-version "1.2.3")))
-  (is (= "0.10" (check/next-version "0.9")))
-  (is (= "2026.10.19" (check/next-version "2026.10.18")))
-  (is (= "1.0.0-rc.2" (check/next-version "1.0.0-rc.1")))
-  (is (= "nightly.1" (check/next-version "nightly"))))

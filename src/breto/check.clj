@@ -9,14 +9,6 @@
             [breto.package :as package]
             [clojure.string :as str]))
 
-(defn next-version
-  "`version` with its last number incremented, the smallest :before boundary
-  that still covers `version`."
-  [version]
-  (if-let [[_ head n tail] (re-matches #"(.*?)(\d+)(\D*)" version)]
-    (str head (inc (parse-long n)) tail)
-    (str version ".1")))
-
 (defn- release-assets [io pkg release]
   (let [data (github/release io (get-in pkg [:source :github]) (:tag release))]
     {:names (set (map :name (:assets data))) :data data}))
@@ -78,7 +70,6 @@
             verified-by {:package (:name pkg) :version version :status :checked :verified-by verified-by}
             (false? (:verify pkg true)) {:package (:name pkg) :version version :status :checked :verified-by :none}
             :else (throw (ex-info (str (:name pkg) " " version ": nothing can verify " (:asset artifact))
-                                  (cond-> (assoc context :breto/problem :unverifiable
-                                                 :suggested-before (next-version version))
+                                  (cond-> (assoc context :breto/problem :unverifiable)
                                     @listed (assoc :assets (vec (sort @listed)))))))
             (:signature artifact) (assoc :signed true)))))))

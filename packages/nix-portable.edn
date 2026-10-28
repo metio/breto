@@ -3,4 +3,5 @@
 
 {:source {:github "DavHau/nix-portable"},
  :asset "nix-portable-x86_64",
- :tag-prefix ""}
+ :tag-prefix "",
+ :history [{:before "v013" :verify false}]}

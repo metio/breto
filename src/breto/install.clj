@@ -109,7 +109,7 @@
              (checksum/verify! file (:asset artifact) want)
              (throw (ex-info (str (:name pkg) ": nothing to verify " (:asset artifact)
                                   " against; GitHub has no digest for it and the package names no :checksum."
-                                  " Use --no-verify to install it anyway.")
+                                  " Mark the release {:verify false} in :history, or use --no-verify once.")
                              {:breto/problem :no-checksum :package (:name pkg) :asset (:asset artifact)}))))))
     {:file file :signed? (boolean (and verify? sig))}))
 

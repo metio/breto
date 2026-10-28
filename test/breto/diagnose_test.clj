@@ -72,6 +72,14 @@
                              {:assets (fn [_ _] [{:name "tool_linux.tar.gz"} {:name "tool_1.0.0_checksums.txt"}])})
                      "Set :checksum to \"tool_{version}_checksums.txt\"")))
 
+(deftest unverifiable-installs-suggest-a-history-entry
+  (let [text (advice {:breto/problem :no-checksum :source {:github "a/tool"} :repo "a/tool"
+                      :tag "v0.4.0" :version "0.4.0" :asset "tool.tar.gz"}
+                     {:assets (fn [_ _] [{:name "tool.tar.gz"}])})]
+    (is (str/includes? text "{:before \"0.4.1\" :verify false}"))
+    (is (str/includes? text "--no-verify"))
+    (is (not (str/includes? text "Set :checksum")))))
+
 (deftest checksum-mismatches-warn-against-bypassing
   (is (str/includes? (advice {:breto/problem :checksum-mismatch :asset "a" :expected "0" :actual "1"} {})
                      "Do not bypass")))

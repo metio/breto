@@ -3,4 +3,5 @@
 
 {:source {:github "doitintl/kube-no-trouble"},
  :asset "kubent-{version}-linux-amd64.tar.gz",
- :tag-prefix ""}
+ :tag-prefix "",
+ :history [{:before "0.7.4" :verify false}]}

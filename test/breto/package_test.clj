@@ -100,6 +100,16 @@
   (is (version/older? "1.0" "1.0.1"))
   (is (zero? (version/compare-versions "1.2.0" "1.2.0"))))
 
+(deftest next-versions-cover-the-given-one
+  (is (= "1.2.4" (version/next-version "1.2.3")))
+  (is (= "0.10" (version/next-version "0.9")))
+  (is (= "2026.10.19" (version/next-version "2026.10.18")))
+  (is (= "1.0.0-rc.2" (version/next-version "1.0.0-rc.1")))
+  (is (= "v013" (version/next-version "v012")))
+  (is (= "v100" (version/next-version "v099")))
+  (is (= "nightly.1" (version/next-version "nightly")))
+  (is (version/older? "v012" (version/next-version "v012"))))
+
 (deftest matcher-captures-the-version
   (let [m (re-matcher (template/matcher "ble-{name}-{version}.tar.xz" {:name "nightly"})
                       "ble-nightly-20261027+c70c0e4.tar.xz")]

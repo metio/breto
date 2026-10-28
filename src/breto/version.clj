@@ -37,3 +37,11 @@
 
 (defn older? [a b]
   (neg? (compare-versions a b)))
+
+(defn next-version
+  "`version` with its last number incremented, the smallest :before boundary
+  that still covers `version`. The number keeps its zero padding."
+  [version]
+  (if-let [[_ head n tail] (re-matches #"(.*?)(\d+)(\D*)" version)]
+    (str head (format (str "%0" (count n) "d") (inc (parse-long n))) tail)
+    (str version ".1")))
