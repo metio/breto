@@ -8,7 +8,7 @@
   "Runs `command`, a sequence of program and arguments, returning its exit code
   and output. A program that cannot start throws."
   [command]
-  (select-keys (process/shell {:out :string :err :string :continue true} (map str command))
+  (select-keys (apply process/shell {:out :string :err :string :continue true} (map str command))
                [:exit :out :err]))
 
 (defn run-bounded
