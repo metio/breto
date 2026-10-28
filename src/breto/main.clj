@@ -38,7 +38,10 @@ Commands:
                             --query TERMS starts with a search
   search [TERM...]          the definitions whose name, description or source has every term
   env [--shell fish]        link the versions .breto.edn lists for this project and print the
-                            shell code putting them first on PATH: eval \"$(breto env)\"
+                            shell code putting them first on PATH: eval \"$(breto env)\";
+                            --no-install fails instead of installing a missing version;
+                            --no-wait fails instead of waiting when it must install while
+                            another run changes the store
   info PKG                  the resolved package definition
   report [COMMAND...]       the reports of the last run of each command;
                             --brief prints the latest in a few lines, for notifications
@@ -110,7 +113,7 @@ Every failure is explained with what to do; --debug adds each request and stack 
       (load ctx))))
 
 (def ^:private changes-store
-  #{"install" "use" "update" "gc" "uninstall" "env" "sync"})
+  #{"install" "use" "update" "gc" "uninstall" "sync"})
 
 (defn- record-lock!
   "Rewrites the lock file, when one is configured, after a command changed the
@@ -139,7 +142,7 @@ Every failure is explained with what to do; --debug adds each request and stack 
     (f)))
 
 (def parse-spec
-  {:coerce {:keep :long :delay :long :debug :boolean :verify :boolean :force :boolean :dry-run :boolean :all :boolean :previous :boolean :locked :boolean :brief :boolean}
+  {:coerce {:keep :long :delay :long :debug :boolean :verify :boolean :force :boolean :dry-run :boolean :all :boolean :previous :boolean :locked :boolean :brief :boolean :wait :boolean :install :boolean}
    :alias {:d :debug}})
 
 (def ^:private reported

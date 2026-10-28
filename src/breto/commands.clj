@@ -152,11 +152,25 @@
       (println (str "No package matches " (str/join " " terms) ".")))
     0))
 
+(defn- with-store-lock
+  "Runs `f` under the store lock. Waits for another run holding it, or with
+  --no-wait gives up at once."
+  [{:keys [config opts]} f]
+  (store/with-store-lock config
+    (fn [pid]
+      (if (false? (:wait opts))
+        (throw (ex-info (str "another breto run (process " pid ") is changing the store")
+                        {:breto/problem :store-busy :pid pid}))
+        (binding [*out* *err*]
+          (println (str "waiting for another breto run (process " pid ") to finish with the store")))))
+    f))
+
 (defn env
   "Links the versions the nearest .breto.edn lists into the project's bin
   directory, installing those that are missing without activating them, and
   prints the shell code that puts that directory in front of PATH. Everything
-  else goes to stderr, so the output can be evaluated."
+  else goes to stderr, so the output can be evaluated. Only installing needs
+  the store lock, so linking installed versions never waits for another run."
   [{:keys [config registry groups opts] :as ctx} _]
   (let [file (or (env/find-project (or (:dir opts) "."))
                  (throw (ex-info (str "no " env/file-name " in " (fs/absolutize (or (:dir opts) ".")) " or above it")
@@ -174,10 +188,14 @@
         missing (for [[spec [_ _ targets]] (map vector specs (resolve-all))
                       :when (nil? targets)]
                   spec)
+        _ (when (and (seq missing) (false? (:install opts)))
+            (throw (ex-info (str "the project needs " (str/join ", " missing) ", which " (if (= 1 (count missing)) "is" "are") " not installed")
+                            {:breto/problem :env-missing :missing (vec missing) :project project-dir})))
         code (if (seq missing)
                (binding [*out* *err*]
-                 (installing ctx "env" (vec missing)
-                             (fn [_ version] {:version version :activate? false :verify? (:verify opts true)})))
+                 (with-store-lock ctx
+                   #(installing ctx "env" (vec missing)
+                                (fn [_ version] {:version version :activate? false :verify? (:verify opts true)}))))
                0)]
     (if (pos? code)
       code

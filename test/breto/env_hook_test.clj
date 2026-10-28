@@ -17,11 +17,12 @@
   (fs/create-dirs (path "fake"))
   (spit (path "fake" "breto")
         (str "#!/bin/sh\n"
-             "echo \"$3\" >> " (path "calls") "\n"
-             "grep -q :fail \"$3/.breto.edn\" && { echo failed >&2; exit 1; }\n"
-             "bin=" (path "envs") "/$(basename \"$3\")\n"
+             "for dir; do :; done\n"
+             "echo \"$dir\" >> " (path "calls") "\n"
+             "grep -q :fail \"$dir/.breto.edn\" && { echo failed >&2; exit 1; }\n"
+             "bin=" (path "envs") "/$(basename \"$dir\")\n"
              "mkdir -p \"$bin\" && touch \"$bin\"\n"
-             "printf 'export PATH=%s:\"$PATH\"\\nexport BRETO_PROJECT=%s\\nexport BRETO_ENV_BIN=%s\\n' \"$bin\" \"$3\" \"$bin\"\n"))
+             "printf 'export PATH=%s:\"$PATH\"\\nexport BRETO_PROJECT=%s\\nexport BRETO_ENV_BIN=%s\\n' \"$bin\" \"$dir\" \"$bin\"\n"))
   (fs/set-posix-file-permissions (path "fake" "breto") "rwxr-xr-x"))
 
 (defn- project! [name content]

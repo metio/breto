@@ -411,6 +411,16 @@
    :advice [(str "breto update " package " without --locked installs its latest release and adds it to the lock file.")
             "Then commit the lock file so other machines install the same version."]})
 
+(defmethod explain :env-missing [{:keys [missing project]} _]
+  {:summary (str project " needs versions that are not installed: " (str/join ", " missing) ".")
+   :facts []
+   :advice [(str "Run eval \"$(breto env)\" in " project " to install them and switch to the project.")]})
+
+(defmethod explain :store-busy [{:keys [pid]} _]
+  {:summary (str "A version of this project has to be installed, and another breto run (process " pid ") holds the store.")
+   :facts []
+   :advice ["Enter the project again once that run finished, or run breto env without --no-wait to wait for it."]})
+
 (defmethod explain :lockfile-format [{:keys [path error]} _]
   {:summary (str "The lock file " path " cannot be read.")
    :facts (cond-> [] error (conj error))

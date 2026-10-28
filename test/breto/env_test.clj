@@ -4,7 +4,9 @@
 (ns breto.env-test
   (:require [babashka.fs :as fs]
             [babashka.process :as process]
+            [breto.diagnose :as diagnose]
             [breto.env :as env]
+            [breto.store :as store]
             [breto.support :as s :refer [path]]
             [clojure.string :as str]
             [clojure.test :refer [deftest is testing use-fixtures]]))
@@ -114,3 +116,40 @@
                         (env/read-project (path "app" ".breto.edn"))))
   (is (thrown-with-msg? clojure.lang.ExceptionInfo #"no \.breto\.edn"
                         (s/breto! {} ["env" "--dir" (str (fs/temp-dir))]))))
+
+(deftest env-waits-for-the-store-only-to-install
+  (let [io (world)
+        cfg (assoc config :env-dir (path "envs"))]
+    (s/breto! cfg ["install" "alpha"] {:io io})
+    (project! "app" ["alpha"])
+    (fs/create-dirs (path "store"))
+    (let [held (java.util.concurrent.CountDownLatch. 1)
+          release (promise)
+          holder (future (store/with-store-lock {:store (path "store")} (fn [_]) #(do (.countDown held) @release)))]
+      (.await held)
+      (try
+        (testing "installed versions link while another run holds the store"
+          (let [{:keys [code out]} (env! io "app" "--no-wait")]
+            (is (= 0 code))
+            (is (str/includes? out "export BRETO_PROJECT"))))
+        (testing "a missing version fails at once with --no-wait"
+          (project! "app" ["alpha@0.9.0"])
+          (let [e (try (env! io "app" "--no-wait") nil (catch clojure.lang.ExceptionInfo e e))]
+            (is (= :store-busy (:breto/problem (ex-data e))))
+            (is (str/includes? (:summary (diagnose/diagnose e {})) "another breto run"))))
+        (finally
+          (deliver release nil)
+          @holder)))))
+
+(deftest no-install-links-what-is-installed-and-names-the-rest
+  (let [io (world)
+        cfg (assoc config :env-dir (path "envs"))]
+    (s/breto! cfg ["install" "alpha"] {:io io})
+    (project! "app" ["alpha"])
+    (is (= 0 (:code (env! io "app" "--no-install"))))
+    (project! "app" ["alpha" "beta@0.9.0"])
+    (let [e (try (env! io "app" "--no-install") nil (catch clojure.lang.ExceptionInfo e e))]
+      (is (= :env-missing (:breto/problem (ex-data e))))
+      (is (= ["beta@0.9.0"] (:missing (ex-data e))))
+      (is (str/includes? (first (:advice (diagnose/diagnose e {}))) "eval \"$(breto env)\"")))
+    (is (not (fs/exists? (path "store" "beta"))))))
