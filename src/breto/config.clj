@@ -33,6 +33,8 @@
    :hook-timeout 30
    :finder :auto
    :env-dir (str (fs/path (env-dir "XDG_DATA_HOME" ".local/share") "breto" "envs"))
+   :python "3.13"
+   :python-dir (str (fs/path (env-dir "XDG_DATA_HOME" ".local/share") "breto" "python"))
    :man-dir (str (fs/path (env-dir "XDG_DATA_HOME" ".local/share") "man"))
    :completion-dirs {:bash (str (fs/path (env-dir "XDG_DATA_HOME" ".local/share") "bash-completion" "completions"))
                      :zsh (str (fs/path (env-dir "XDG_DATA_HOME" ".local/share") "zsh" "site-functions"))
@@ -52,6 +54,7 @@
         (update :lockfile #(some-> % expand-home))
         (update :cosign #(some-> % expand-home))
         (update :env-dir expand-home)
+        (update :python-dir expand-home)
         (update :man-dir #(some-> % expand-home))
         (update :completion-dirs #(update-vals % expand-home))
         (update :registries #(mapv expand-home %)))))

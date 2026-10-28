@@ -59,6 +59,9 @@
 (defn- go-proxy-url [source suffix]
   (str "https://proxy.golang.org/" (package/go-escape (:go source)) suffix))
 
+(defn- pypi-url [source suffix]
+  (str "https://pypi.org/pypi/" (:pypi source) suffix))
+
 (defn latest
   "The tag and version of the newest release of `pkg`."
   [{:keys [source] :as pkg} {:keys [get-text] :as io}]
@@ -71,11 +74,21 @@
     :gitlab (let [url (gitlab-latest-url (:gitlab source))]
               (tagged pkg (or (get (json/parse-string (get-text url {})) "tag_name")
                               (throw (ex-info (str "no tag_name in " url) {:breto/problem :no-release :url url})))))
-    :text (tagged pkg (str/trim (get-text (:text source) {})))
+    :text (let [body (get-text (:text source) {})]
+            (tagged pkg (if-let [pattern (:match source)]
+                          (let [m (re-find (re-pattern pattern) body)]
+                            (cond (nil? m) (throw (ex-info (str "nothing in " (:text source) " matches " pattern)
+                                                           {:breto/problem :no-release :url (:text source)}))
+                                  (string? m) m
+                                  :else (second m)))
+                          (str/trim body))))
     :json (tagged pkg (json-version pkg (json/parse-string (get-text (:json source) {"Accept" "application/json"}))))
     :go (let [url (go-proxy-url source "/@latest")]
           (tagged pkg (or (get (json/parse-string (get-text url {})) "Version")
-                          (throw (ex-info (str "no Version in " url) {:breto/problem :no-release :url url})))))))
+                          (throw (ex-info (str "no Version in " url) {:breto/problem :no-release :url url})))))
+    :pypi (let [url (pypi-url source "/json")]
+            (tagged pkg (or (get-in (json/parse-string (get-text url {"Accept" "application/json"})) ["info" "version"])
+                            (throw (ex-info (str "no info.version in " url) {:breto/problem :no-release :url url})))))))
 
 (defn- release-tags
   "Tags of the published, non-prerelease releases of `pkg`, or nil for a
@@ -92,6 +105,9 @@
                  (remove :upcoming_release)
                  (map :tag_name))
     :go (remove str/blank? (str/split-lines (get-text (go-proxy-url source "/@v/list") {})))
+    :pypi (->> (get (json/parse-string (get-text (pypi-url source "/json") {"Accept" "application/json"})) "releases")
+               (keep (fn [[version files]] (when (and (seq files) (not-every? #(get % "yanked") files)) version)))
+               (remove #(re-find #"\d(a|b|rc|\.dev)\d*" %)))
     nil))
 
 (defn newest

@@ -7,6 +7,7 @@
             [breto.checksum :as checksum]
             [breto.github :as github]
             [breto.golang :as golang]
+            [breto.pypi :as pypi]
             [breto.log :as log]
             [breto.package :as package]
             [breto.share :as share]
@@ -243,13 +244,15 @@
   "Installs `pkg` at `version` (latest when nil) and activates it unless
   `:activate?` is false. The download is verified unless `verify?` is false
   or the definition for that version says `:verify false`; `expect-sha256`,
-  from a lock file, must match it in any case. Returns {:version v
+  from a lock file, must match it in any case, and for a :pypi package it is
+  the hash of the resolved requirements, resolved with the lock file's
+  `exclude-newer` cut-off. Returns {:version v
   :installed? bool :verified? bool :sha256 hex}, the hash only for a fresh
   install, :signed? when a signature was checked, :bootstrap? when cosign
   itself was installed before any cosign could check it, and :hash-recorded?
   :upstream or :download when an installed version without a recorded hash
   got upstream's, or, when upstream publishes none, that of a fresh download. Failures carry the stage and release they happened in."
-  [config io pkg {:keys [version activate? verify? expect-sha256 expect-sum go] :or {activate? true verify? true}}]
+  [config io pkg {:keys [version activate? verify? expect-sha256 expect-sum exclude-newer go uv] :or {activate? true verify? true}}]
   (let [context {:package (:name pkg) :repo (package/repo pkg) :source (:source pkg)}
         release (staged io :resolve context #(resolve-release pkg io version))
         version (:version release)
@@ -268,9 +271,14 @@
                  (let [work (fs/create-temp-dir {:dir package-dir :prefix store/work-prefix})
                        lock (store/hold! work)]
                    (try
-                     (let [{:keys [file signed? bootstrap? sum]}
-                           (if (= :go (package/source-kind pkg))
-                             (staged io :download context #(golang/build! io pkg release artifact work go expect-sum context))
+                     (let [{:keys [file signed? bootstrap? sum built exclude-newer]}
+                           (case (package/source-kind pkg)
+                             :go (staged io :download context #(golang/build! io pkg release artifact work go expect-sum context))
+                             :pypi (let [{:keys [file unpacked exclude-newer]}
+                                         (staged io :download context
+                                           #(pypi/build! io pkg release work uv (or (:python pkg) (:python config "3.13"))
+                                                         (:python-dir config) exclude-newer context))]
+                                     {:file file :built unpacked :exclude-newer exclude-newer})
                              (fetch! config pkg io release artifact work verify? context))
                            sha256 (checksum/digest "SHA-256" file)
                            unpacked (fs/path work "unpacked")
@@ -278,15 +286,17 @@
                        (when (and expect-sha256 (not sum))
                          (staged io :verify context
                            #(checksum/verify! file (:asset artifact) expect-sha256 :lockfile)))
-                       (staged io :unpack context
-                         #(archive/unpack! file (:archive artifact) (:asset artifact) unpacked (:strip pkg)))
+                       (when-not built
+                         (staged io :unpack context
+                           #(archive/unpack! file (:archive artifact) (:asset artifact) unpacked (:strip pkg))))
                        (staged io :place context
-                         #(do (place! pkg artifact unpacked staging)
+                         #(do (place! pkg artifact (or built unpacked) staging)
                               (fs/delete-tree (store/version-dir config (:name pkg) version))
                               (fs/move staging (store/version-dir config (:name pkg) version) {:atomic-move true})
                               (store/write-meta! config (:name pkg) version
                                                  (cond-> {:sha256 sha256 :asset (:asset artifact) :verified verify? :signed signed?}
                                                    sum (assoc :sum sum)
+                                                   exclude-newer (assoc :exclude-newer exclude-newer)
                                                    bootstrap? (assoc :signature-bootstrap true)))))
                        {:sha256 sha256 :signed? signed? :bootstrap? bootstrap?})
                      (finally
@@ -298,7 +308,7 @@
                      (staged io :activate context
                        #(do (store/activate! config pkg (installed-bin-paths config pkg artifact version) version)
                             (vec (share! config io pkg version)))))
-          recorded (when-not (or fresh? (= :go (package/source-kind pkg)))
+          recorded (when-not (or fresh? (#{:go :pypi} (package/source-kind pkg)))
                      (if verify?
                        (some-> (record-upstream-hash! config pkg io release artifact) (and :upstream))
                        (some-> (record-download-hash! config pkg io release artifact context) (and :download))))]

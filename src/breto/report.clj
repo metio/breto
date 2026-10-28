@@ -48,6 +48,7 @@
 (def ^:private verification
   {:digest "verifiable by its GitHub digest" :checksum "verifiable by its checksum file"
    :sumdb "verifiable by the Go checksum database"
+   :pypi "verifiable by the hashes PyPI publishes"
    :none "installs unverified, as its definition says"})
 
 (defn- line [{:keys [package status version from links unverified signed signature-bootstrap hash-recorded verified-by]}]

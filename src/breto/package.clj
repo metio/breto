@@ -18,7 +18,7 @@
             archive-suffixes)
       :raw))
 
-(def source-kinds #{:github :gitlab :text :json :go})
+(def source-kinds #{:github :gitlab :text :json :go :pypi})
 
 (defn source-kind [{:keys [source]}]
   (let [kinds (filter source-kinds (keys source))]
@@ -101,6 +101,11 @@
                    (every? #(or (keyword? %) (string? %) (nat-int? %)) (:version source)))))
     (conj ":source {:json URL} needs :version, a path of keys and indices to the version, e.g. [:releases 0 :version]")
 
+    (and (contains? source :match)
+         (not (and (= :text (source-kind pkg)) (string? (:match source))
+                   (try (re-pattern (:match source)) (catch Exception _ false)))))
+    (conj ":source :match is a regular expression for a :text source, whose first group, or else whole match, is the tag")
+
     (and (:tag source) (not= :github (source-kind pkg)))
     (conj ":source :tag is only supported for :github")
 
@@ -111,6 +116,13 @@
                             (or (= (:package source) (:go source))
                                 (str/starts-with? (:package source) (str (:go source) "/"))))))))
     (conj ":source {:go MODULE} names a module path, and its :package, when given, a package inside that module")
+
+    (and (= :pypi (source-kind pkg))
+         (not (and (string? (:pypi source)) (re-matches #"[A-Za-z0-9][A-Za-z0-9._-]*" (:pypi source)))))
+    (conj ":source {:pypi NAME} names a project on PyPI")
+
+    (not (or (nil? (:python pkg)) (and (string? (:python pkg)) (re-matches #"\d+\.\d+" (:python pkg)))))
+    (conj ":python is a Python version such as \"3.13\"")
 
     (and (rolling? pkg) (not (str/includes? (str asset) "{version}")))
     (conj ":asset of a rolling release must contain {version}")
@@ -189,6 +201,13 @@
               (merge {:asset (file-name (go-package pkg))
                       :url (str "https://proxy.golang.org/" (go-escape (get-in pkg [:source :go])) "/@v/{tag}.zip")})
 
+              (= :pypi (source-kind pkg))
+              (merge {:tag-prefix "" :layout :tree
+                      :asset "requirements.txt"
+                      :url (str "https://pypi.org/project/" (get-in pkg [:source :pypi]) "/{version}/")}
+                     (when (nil? (:bins pkg))
+                       {:bins {(:name pkg) (str "venv/bin/" (:name pkg))}}))
+
               (and (nil? (:url pkg)) (= :github (source-kind pkg)))
               (assoc :url (str "https://github.com/" (get-in pkg [:source :github])
                                "/releases/download/{tag}/{asset}"))
@@ -196,7 +215,7 @@
               (and (nil? (:bins pkg)) (:bin-dir pkg))
               (assoc :bins {})
 
-              (and (nil? (:bins pkg)) (nil? (:bin-dir pkg)))
+              (and (nil? (:bins pkg)) (nil? (:bin-dir pkg)) (not= :pypi (source-kind pkg)))
               (assoc :bins {(:name pkg) (if (= :raw (archive-type (str (:asset pkg))))
                                           "{asset}"
                                           (:name pkg))}))]

@@ -56,6 +56,7 @@
                                              :stage :download :headers {}))))
                     (cond
                       (= :go (package/source-kind pkg)) :sumdb
+                      (= :pypi (package/source-kind pkg)) :pypi
                       (and checksum-url ((:exists? io) checksum-url)) :checksum
                       checksum-url (throw (ex-info (str "no checksum file at " checksum-url)
                                                    (assoc context :breto/problem :http-status :status 404

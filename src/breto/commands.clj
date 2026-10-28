@@ -81,30 +81,32 @@
     (seq warnings) (assoc :warnings warnings)))
 
 (defn- tools-first
-  "`specs` with the packages that provide cosign or go moved to the front, so
-  that on a fresh host those are installed before they are needed to check
-  the signatures of the others or to build them."
+  "`specs` with the packages that provide cosign, go or uv moved to the
+  front, so that on a fresh host those are installed before they are needed
+  to check the signatures of the others or to build them."
   [registry specs]
   (let [provides? #(let [[name] (batch/split-spec %)]
-                     (or (= "go" name) (some-> (get registry name) signature/provides-cosign?)))]
+                     (or (#{"go" "uv"} name) (some-> (get registry name) signature/provides-cosign?)))]
     (concat (filter provides? specs) (remove provides? specs))))
 
-(defn go-command
-  "The go command packages with a :go source are built with: that of the
-  active version of the package go, else of its newest installed one."
-  [config registry]
-  (when-let [pkg (get registry "go")]
-    (when-let [version (or (store/current-version config "go") (:version (first (store/versions config "go"))))]
-      (get (install/bin-targets config pkg version) "go"))))
+(defn tool-command
+  "The command `name` of the package of the same name, which builds the
+  packages of a :go or :pypi source: that of its active version, else of its
+  newest installed one."
+  [config registry name]
+  (when-let [pkg (get registry name)]
+    (when-let [version (or (store/current-version config name) (:version (first (store/versions config name))))]
+      (get (install/bin-targets config pkg version) name))))
 
 (defn- lock-options
   "install! options checking `name` at `version` against the lock files of
   the registry directories, when one of them lists it."
   [locks name version]
-  (when-let [{:keys [sha256 sum]} (and version (get locks (str name "@" version)))]
+  (when-let [{:keys [sha256 sum exclude-newer]} (and version (get locks (str name "@" version)))]
     (cond-> {}
       sha256 (assoc :expect-sha256 sha256)
-      sum (assoc :expect-sum sum))))
+      sum (assoc :expect-sum sum)
+      exclude-newer (assoc :exclude-newer exclude-newer))))
 
 (defn- install-results
   "Runs `install-one` (name, version -> install! options) over `specs` with
@@ -125,7 +127,8 @@
                                   (throw (ex-info (str name " " version " is in no lock file of the registry directories, and :require-locked is set")
                                                   {:breto/problem :not-locked :package name :version version})))
                               options (cond-> (into (or locked {}) (remove (comp nil? val)) (dissoc options ::pinned))
-                                        (= :go (package/source-kind pkg)) (assoc :go (go-command config registry)))
+                                        (= :go (package/source-kind pkg)) (assoc :go (tool-command config registry "go"))
+                                        (= :pypi (package/source-kind pkg)) (assoc :uv (tool-command config registry "uv")))
                               result (installed-result name (install/install! config io pkg options))
                               warnings (cond-> []
                                          (package/superseded-warning pkg) (conj (package/superseded-warning pkg))
@@ -146,8 +149,8 @@
     (when-not (:lockfile config)
       (throw (ex-info "--locked needs :lockfile in the config"
                       {:breto/problem :no-lockfile :path nil})))
-    (let [{:keys [version sha256 sum]} (lockfile/locked-entry (:lockfile config) name)]
-      {:version version :expect-sha256 sha256 :expect-sum sum})))
+    (let [{:keys [version sha256 sum exclude-newer]} (lockfile/locked-entry (:lockfile config) name)]
+      {:version version :expect-sha256 sha256 :expect-sum sum :exclude-newer exclude-newer})))
 
 (defn- which [io]
   (or (:which io) #(some-> (fs/which %) str)))
@@ -479,7 +482,8 @@
                                        (fn [name version]
                                          {:version version :verify? (:verify opts true)
                                           :expect-sha256 (get-in entries [name :sha256])
-                                          :expect-sum (get-in entries [name :sum])}))
+                                          :expect-sum (get-in entries [name :sum])
+                                          :exclude-newer (get-in entries [name :exclude-newer])}))
             removed (batch/run-batch io extra #(uninstall-one ctx % false) (fn [_]))]
         (batch/finish! "sync" (-> installed (into removed) (into (refresh-projects ctx "sync"))))))))
 
@@ -530,14 +534,16 @@
 
 (defn- lock-entry
   "The lock entry of an installed version: the module hash of a package built
-  with go install, else the download hash and asset."
+  with go install, else the download hash and asset, with the cut-off a
+  package from PyPI was resolved with."
   [config name version]
-  (let [{:keys [sha256 asset sum]} (store/read-meta config name version)]
+  (let [{:keys [sha256 asset sum exclude-newer]} (store/read-meta config name version)]
     (if sum
       {:version version :sum sum}
       (cond-> {:version version}
         sha256 (assoc :sha256 sha256)
-        asset (assoc :asset asset)))))
+        asset (assoc :asset asset)
+        exclude-newer (assoc :exclude-newer exclude-newer)))))
 
 (defn lock
   "Writes breto.lock in the registry directory `dir`: the hash of every

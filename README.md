@@ -46,6 +46,8 @@ breto reads `$XDG_CONFIG_HOME/breto/config.edn` (`~/.config/breto/config.edn` by
 | `:delay` | Seconds `install` and `update` wait after a package that downloaded something, e.g. to spread traffic on a slow link. A package found up to date costs no wait. `--delay N` overrides it. | `0` |
 | `:token-command` | A command printing a GitHub token on its first line, e.g. `["gh" "auth" "token"]` or `["gopass" "show" "--password" "github/token"]`. It runs at most once per breto process, only when a GitHub API request is made, and is stopped after 60 seconds. `GITHUB_TOKEN` and `GH_TOKEN` take precedence. | none |
 | `:require-locked` | Whether installing a version a group pins fails when no `breto.lock` of the registry directories lists it, instead of warning; see [Registry lock files](#registry-lock-files). | `false` |
+| `:python` | The Python version environments of `:pypi` packages are created for, unless their definition names one. | `"3.13"` |
+| `:python-dir` | Where uv keeps the Pythons of those environments. | `$XDG_DATA_HOME/breto/python` |
 | `:lockfile` | A file breto rewrites after every change to the store with the active version and download hash of each configured package. Commit it, and `update --locked` installs exactly those versions elsewhere. | none |
 | `:cosign` | The cosign command that checks `:signature` bundles. Without it, breto uses the cosign it linked into `:bin-dir`, else `cosign` on `PATH`. | none |
 | `:hooks` | Commands run on the events of `install` and `update`; see [Hooks](#hooks). | none |
@@ -248,6 +250,7 @@ A package is a file `<name>.edn` in a registry directory, and its file name is t
 | `:bins` | Command name to path inside the unpacked archive. | the package name, or the asset itself when it is not an archive |
 | `:bin-dir` | With the `:tree` layout, a directory inside the release whose executable files all become commands, read from each installed version, so a command a newer version drops loses its link on activation. `:bins` adds to them. | none |
 | `:vars` | Further placeholders derived from the version, as `{:match REGEX}`, the first group or else the whole match, or `{:replace [FROM TO]}`; see [Java](#java). | none |
+| `:python` | For a `:pypi` source, the Python version of its environment, overriding the config's `:python`. | none |
 | `:env` | Variables `breto env` sets in a project using the package, as templates; `{home}` is a link to the version the project uses. | none |
 | `:links` | Further symlinks: target path to path inside the installed version. | none |
 | `:history` | Definitions for older versions; see below. | none |
@@ -292,7 +295,9 @@ A tool that ships support files next to its binary uses the tree layout, and `:l
 | `{:github "owner/repo" :tag "nightly"}` | A rolling release: every build is an asset under one fixed tag, and `:asset` must contain `{version}`. The newest matching asset by upload time is the latest version. |
 | `{:gitlab "gitlab.com/group/project"}` | GitLab's latest release. `:url` is required, because GitLab release links have no fixed shape. |
 | `{:text "https://…"}` | A URL whose body is the latest tag, such as Kubernetes' `stable.txt`. `:url` is required. |
+| `{:text "https://…" :match "(?m)^version = '([^']+)'"}` | The first group of a regular expression in the body, or the whole match without one, is the latest tag. |
 | `{:json "https://…" :version [:releases 0 :version]}` | A JSON document holding the latest tag at the `:version` path of keys and indices, such as JetBrains' release API. `:url` is required. |
+| `{:pypi "reuse"}` | The version PyPI reports as latest for the project. breto installs it with uv into a virtual environment of its own; see [Python packages](#python-packages). `:asset` and `:url` are filled in, and `:bins` defaults to the package name in the environment's `bin`. |
 | `{:go "golang.org/x/vuln" :package "golang.org/x/vuln/cmd/govulncheck"}` | The version the Go module proxy reports as latest for the module. breto builds `:package`, which defaults to the module itself, with `go install`; see [Go modules](#go-modules). `:asset` and `:url` are filled in. |
 
 ble.sh publishes its nightly builds as a rolling release:
@@ -310,6 +315,24 @@ ble.sh publishes its nightly builds as a rolling release:
 A package with a `:go` source is built from source with the `go` command of the installed `go` package, its active version or else the newest installed one. Any batch installs `go` before the packages that need it, so `breto install go govulncheck` works on a fresh host. The build runs with `GOTOOLCHAIN=local`, `CGO_ENABLED=0`, an empty `GOFLAGS` and `-trimpath`, and the binary is moved into the store like a downloaded asset. Nothing builds with cgo, so no C compiler is needed.
 
 The `go` command checks every module it downloads against the Go checksum database, sum.golang.org, so a module the proxy serves differently from the first time anyone fetched it fails. breto records the module's `h1:` hash, the one `go mod download -json` reports, in place of a SHA-256; a lock file entry with `:sum` makes a later build fail when the hash differs. `breto check` reports such packages as verifiable by the checksum database once the module zip exists on the proxy.
+
+### Python packages
+
+A package with a `:pypi` source is installed with the `uv` command of the installed `uv` package, which any batch installs first. uv resolves the project and all its dependencies into a requirements file that pins every file by its hash, creates a relocatable virtual environment in the version's directory, and installs exactly those files into it. Each version has an environment of its own, so projects can use different versions side by side. A dependency without a fitting wheel is built from its source distribution, which works for pure Python packages; one that needs a C compiler fails.
+
+The environment's Python is one uv downloads itself, in the version `:python` of the definition or of the config names, kept in `:python-dir` and shared by every environment of that version. uv runs without the user's uv configuration and never uses a Python of the system or links one into the user's bin directory.
+
+The resolution depends on a cut-off: uv considers only files published before it. breto records it with the hash of the requirements file, and a lock file entry carries both, so resolving again elsewhere gives the same file or fails:
+
+```clojure
+{"reuse@6.2.0" {:sha256 "…" :asset "requirements.txt" :exclude-newer "2026-10-28T13:53:11Z"}}
+```
+
+The files of a resolution are pinned by hash, the build dependencies of a source distribution are not.
+
+### Rust
+
+`rustup` links the rustup binary as `rustup`, `cargo`, `rustc`, `rustfmt`, `rust-analyzer`, `cargo-clippy` and the other commands it proxies. Each proxy runs the toolchain the nearest `rust-toolchain.toml` names, else the one `rustup default` chose, and rustup installs a missing toolchain on first use. Toolchains live in `~/.rustup` and are downloaded and checked by rustup, outside of breto's store and lock files. breto updates rustup itself, so `rustup self update` is not needed. Linking a Rust program needs a C linker such as `cc`.
 
 ### Verification
 

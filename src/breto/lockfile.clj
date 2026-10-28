@@ -38,12 +38,13 @@
                            {:breto/problem :lockfile-format :path (str path) :error (ex-message e)}))))
     {:header "" :entries {}}))
 
-(defn- entry-line [name {:keys [version sha256 sum asset]}]
+(defn- entry-line [name {:keys [version sha256 sum asset exclude-newer]}]
   (str (pr-str name) " {"
        (str/join " " (remove nil? [(when version (str ":version " (pr-str version)))
                                    (when sha256 (str ":sha256 " (pr-str sha256)))
                                    (when sum (str ":sum " (pr-str sum)))
-                                   (when asset (str ":asset " (pr-str asset)))]))
+                                   (when asset (str ":asset " (pr-str asset)))
+                                   (when exclude-newer (str ":exclude-newer " (pr-str exclude-newer)))]))
        "}"))
 
 (defn render [{:keys [header entries]}]
@@ -62,12 +63,13 @@
                 (let [active (store/current-version config name)
                       previous (get old name)]
                   (if active
-                    (let [{:keys [sha256 sum asset]} (store/read-meta config name active)
+                    (let [{:keys [sha256 sum asset exclude-newer]} (store/read-meta config name active)
                           kept (when (= active (:version previous)) previous)]
                       [name (cond-> {:version active}
                               (or sha256 (:sha256 kept)) (assoc :sha256 (or sha256 (:sha256 kept)))
                               (or sum (:sum kept)) (assoc :sum (or sum (:sum kept)))
-                              (or asset (:asset kept)) (assoc :asset (or asset (:asset kept))))])
+                              (or asset (:asset kept)) (assoc :asset (or asset (:asset kept)))
+                              (or exclude-newer (:exclude-newer kept)) (assoc :exclude-newer (or exclude-newer (:exclude-newer kept))))])
                     (when previous [name previous])))))
         names))
 
