@@ -7,6 +7,7 @@
             [breto.config :as config]
             [breto.diagnose :as diagnose]
             [breto.http :as http]
+            [breto.lockfile :as lockfile]
             [breto.log :as log]
             [breto.progress :as progress]
             [breto.registry :as registry]
@@ -37,7 +38,8 @@ After a package that downloaded something, install and update wait :delay second
 as an upstream host's rate limit asks if that is longer; --delay N overrides :delay.
 gc and uninstall accept --dry-run. uninstall refuses configured packages unless --force,
 since the next update would install them again.
-install and update refuse downloads they cannot verify unless --no-verify is given.
+install and update refuse downloads they cannot verify unless --no-verify is given; with
+--locked they install the versions in :lockfile and check each download against its hash.
 Every failure is explained with what to do; --debug adds each request and stack traces.")
 
 (def ^:private dispatch
@@ -83,19 +85,32 @@ Every failure is explained with what to do; --debug adds each request and stack 
 (def ^:private changes-store
   #{"install" "use" "update" "gc" "uninstall"})
 
+(defn- record-lock!
+  "Rewrites the lock file, when one is configured, after a command changed the
+  store. A failure to write it is reported but does not fail the command."
+  [{:keys [config]}]
+  (when-let [path (:lockfile config)]
+    (try (lockfile/write! path config)
+         (catch Exception e
+           (binding [*out* *err*]
+             (println (str "[WARN] could not update the lock file " path ": " (ex-message e))))))))
+
 (defn- locked
-  "Runs `f` under the store lock when `command` changes the store."
+  "Runs `f` under the store lock when `command` changes the store, and records
+  the lock file afterwards."
   [ctx command f]
   (if (changes-store command)
     (store/with-store-lock (:config ctx)
       (fn [pid]
         (binding [*out* *err*]
           (println (str "waiting for another breto run (process " pid ") to finish with the store"))))
-      f)
+      #(let [code (f)]
+         (record-lock! ctx)
+         code))
     (f)))
 
 (def parse-spec
-  {:coerce {:keep :long :delay :long :debug :boolean :verify :boolean :force :boolean :dry-run :boolean :all :boolean :previous :boolean}
+  {:coerce {:keep :long :delay :long :debug :boolean :verify :boolean :force :boolean :dry-run :boolean :all :boolean :previous :boolean :locked :boolean}
    :alias {:d :debug}})
 
 (defn run

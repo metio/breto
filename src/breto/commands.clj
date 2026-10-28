@@ -12,6 +12,7 @@
             [breto.check :as check]
             [breto.doctor :as doctor]
             [breto.install :as install]
+            [breto.lockfile :as lockfile]
             [breto.registry :as registry]
             [breto.report :as report]
             [breto.source :as source]
@@ -59,13 +60,25 @@
                                                                                   (install-one name version))))))
                                     progress))))
 
+(defn- locked
+  "install! options for `name` from the lock file, when --locked asks for it."
+  [{:keys [config opts]} name]
+  (when (:locked opts)
+    (when-not (:lockfile config)
+      (throw (ex-info "--locked needs :lockfile in the config"
+                      {:breto/problem :no-lockfile :path nil})))
+    (let [{:keys [version sha256]} (lockfile/locked-entry (:lockfile config) name)]
+      {:version version :expect-sha256 sha256})))
+
 (defn install [{:keys [opts] :as ctx} args]
   (installing ctx "install" args
-              (fn [_ version] {:version version :verify? (:verify opts true)})))
+              (fn [name version]
+                (merge {:version version :verify? (:verify opts true)} (locked ctx name)))))
 
 (defn update [{:keys [config opts] :as ctx} args]
   (installing ctx "update" (targets ctx args)
-              (fn [name _] {:version (get-in config [:pins name]) :verify? (:verify opts true)})))
+              (fn [name _]
+                (merge {:version (get-in config [:pins name]) :verify? (:verify opts true)} (locked ctx name)))))
 
 (defn outdated [{:keys [config registry io] :as ctx} args]
   (let [progress (tracker ctx "outdated")]

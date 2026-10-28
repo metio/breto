@@ -49,17 +49,20 @@
 
 (defn verify!
   "Throws unless `file` hashes to the hex string `want`. The algorithm follows
-  from the length of `want`."
-  [file asset want]
-  (let [want (str/lower-case want)
-        algorithm (algorithm-by-hex-length (count want))]
-    (when-not algorithm
-      (throw (ex-info (str "unrecognised checksum for " asset ": " want)
-                      {:breto/problem :checksum-format :asset asset :checksum want})))
-    (let [have (digest algorithm file)]
-      (when-not (= want have)
-        (throw (ex-info (str "checksum mismatch for " asset ": expected " want ", got " have)
-                        {:breto/problem :checksum-mismatch :asset asset :expected want :actual have}))))))
+  from the length of `want`; `origin` names where `want` came from when it is
+  not the release itself, such as :lockfile."
+  ([file asset want] (verify! file asset want nil))
+  ([file asset want origin]
+   (let [want (str/lower-case want)
+         algorithm (algorithm-by-hex-length (count want))]
+     (when-not algorithm
+       (throw (ex-info (str "unrecognised checksum for " asset ": " want)
+                       {:breto/problem :checksum-format :asset asset :checksum want})))
+     (let [have (digest algorithm file)]
+       (when-not (= want have)
+         (throw (ex-info (str "checksum mismatch for " asset ": expected " want ", got " have)
+                         (cond-> {:breto/problem :checksum-mismatch :asset asset :expected want :actual have}
+                           origin (assoc :origin origin)))))))))
 
 (defn listed-names
   "The file names a checksum listing mentions."

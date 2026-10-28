@@ -102,10 +102,11 @@
 (defn install!
   "Installs `pkg` at `version` (latest when nil) and activates it unless
   `:activate?` is false. The download is verified unless `verify?` is false
-  or the definition for that version says `:verify false`. Returns
-  {:version v :installed? bool :verified? bool}. Failures carry
-  the stage and release they happened in."
-  [config io pkg {:keys [version activate? verify?] :or {activate? true verify? true}}]
+  or the definition for that version says `:verify false`; `expect-sha256`,
+  from a lock file, must match it in any case. Returns {:version v
+  :installed? bool :verified? bool :sha256 hex}, the hash only for a fresh
+  install. Failures carry the stage and release they happened in."
+  [config io pkg {:keys [version activate? verify? expect-sha256] :or {activate? true verify? true}}]
   (let [context {:package (:name pkg) :repo (package/repo pkg) :source (:source pkg)}
         release (staged io :resolve context #(resolve-release pkg io version))
         version (:version release)
@@ -117,29 +118,37 @@
                        :repo (package/repo pkg) :source (:source pkg))
         package-dir (store/package-dir config (:name pkg))
         bin-paths (package/bin-paths pkg artifact)
-        installed? (not (store/installed? config (:name pkg) version (vals bin-paths)))]
-    (when installed?
-      (with-stage :place context #(fs/create-dirs package-dir))
-      (let [work (fs/create-temp-dir {:dir package-dir :prefix store/work-prefix})
-            lock (store/hold! work)]
-        (try
-          (let [file (fetch! pkg io release artifact work verify? context)
-                unpacked (fs/path work "unpacked")
-                staging (fs/path work "staged")]
-            (staged io :unpack context
-              #(archive/unpack! file (:archive artifact) (:asset artifact) unpacked (:strip pkg)))
-            (staged io :place context
-              #(do (place! pkg artifact unpacked staging)
-                   (fs/delete-tree (store/version-dir config (:name pkg) version))
-                   (fs/move staging (store/version-dir config (:name pkg) version) {:atomic-move true}))))
-          (finally
-            (fs/delete-tree work)
-            (.close lock)
-            (when (empty? (fs/list-dir package-dir))
-              (fs/delete package-dir))))))
+        fresh? (not (store/installed? config (:name pkg) version (vals bin-paths)))
+        sha256 (when fresh?
+                 (with-stage :place context #(fs/create-dirs package-dir))
+                 (let [work (fs/create-temp-dir {:dir package-dir :prefix store/work-prefix})
+                       lock (store/hold! work)]
+                   (try
+                     (let [file (fetch! pkg io release artifact work verify? context)
+                           sha256 (checksum/digest "SHA-256" file)
+                           unpacked (fs/path work "unpacked")
+                           staging (fs/path work "staged")]
+                       (when expect-sha256
+                         (staged io :verify context
+                           #(checksum/verify! file (:asset artifact) expect-sha256 :lockfile)))
+                       (staged io :unpack context
+                         #(archive/unpack! file (:archive artifact) (:asset artifact) unpacked (:strip pkg)))
+                       (staged io :place context
+                         #(do (place! pkg artifact unpacked staging)
+                              (fs/delete-tree (store/version-dir config (:name pkg) version))
+                              (fs/move staging (store/version-dir config (:name pkg) version) {:atomic-move true})
+                              (store/write-meta! config (:name pkg) version
+                                                 {:sha256 sha256 :asset (:asset artifact) :verified verify?})))
+                       sha256)
+                     (finally
+                       (fs/delete-tree work)
+                       (.close lock)
+                       (when (empty? (fs/list-dir package-dir))
+                         (fs/delete package-dir))))))]
     (when activate?
       (staged io :activate context #(store/activate! config pkg bin-paths version)))
-    {:version version :installed? installed? :verified? (and installed? verify?)}))
+    (cond-> {:version version :installed? fresh? :verified? (and fresh? verify?)}
+      sha256 (assoc :sha256 sha256))))
 
 (defn use!
   "Activates an already installed version."

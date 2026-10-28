@@ -211,12 +211,18 @@
    :advice ["If the file lists the asset under another name, the asset itself may have been renamed; check :asset."
             "If the checksum file covers other assets only, point :checksum at the right one."]})
 
-(defmethod explain :checksum-mismatch [{:keys [asset expected actual]} _]
+(defmethod explain :checksum-mismatch [{:keys [asset expected actual origin]} _]
+  (if (= :lockfile origin)
+    {:summary (str "The download of " asset " differs from the one the lock file recorded.")
+     :facts [(str "Locked   " expected) (str "Got      " actual)]
+     :advice ["Upstream replaced the asset after it was locked, or the download was corrupted; retry first."
+              "If upstream confirms the new file, breto update without --locked installs it and records its hash."
+              "Do not delete the entry from the lock file to make this go away: this is what it is there to catch."]}
   {:summary (str "The download of " asset " does not match its published checksum.")
    :facts [(str "Expected " expected) (str "Got      " actual)]
    :advice ["Retry later: an interrupted download or a stale mirror produces this."
             "If it persists, upstream replaced the file after publishing the checksum; report it to the project."
-            "Do not bypass this with --no-verify: a mismatch is exactly what verification exists to catch."]})
+            "Do not bypass this with --no-verify: a mismatch is exactly what verification exists to catch."]}))
 
 (defmethod explain :checksum-format [{:keys [checksum]} _]
   {:summary "The checksum does not look like a SHA or MD5 hash."
@@ -328,6 +334,24 @@
            (str "Keys there: " (if (seq keys) (str/join ", " keys) "none"))]
    :advice ["Fix :version under :source to the path of the version in the document."
             (str "Inspect the document with: curl --silent '" url "' | jq .")]})
+
+(defmethod explain :no-lockfile [{:keys [path]} _]
+  {:summary (if path (str "--locked found no lock file at " path ".") "--locked needs a lock file, and the config names none.")
+   :facts []
+   :advice ["Set :lockfile in the config to the file's path."
+            "breto writes it after every install, update, use, gc and uninstall; run one without --locked to create it."]})
+
+(defmethod explain :not-locked [{:keys [package path]} _]
+  {:summary (str package " has no entry in the lock file " path ".")
+   :facts []
+   :advice [(str "breto update " package " without --locked installs its latest release and adds it to the lock file.")
+            "Then commit the lock file so other machines install the same version."]})
+
+(defmethod explain :lockfile-format [{:keys [path error]} _]
+  {:summary (str "The lock file " path " cannot be read.")
+   :facts (cond-> [] error (conj error))
+   :advice ["It must hold one EDN map of package names to {:version … :sha256 …}, after optional ; comment lines."
+            "Restore it from version control; breto rewrites it after the next change to the store."]})
 
 (defmethod explain :usage [_ _]
   {:summary "The command line is incomplete."

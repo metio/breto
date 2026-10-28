@@ -23,7 +23,8 @@
    :pins {}
    :keep 3
    :prune false
-   :token-command nil})
+   :token-command nil
+   :lockfile nil})
 
 (defn- expand-home [s]
   (str/replace-first s #"^~(?=/|$)" (System/getProperty "user.home")))
@@ -36,4 +37,5 @@
     (-> (merge (defaults) user)
         (update :store expand-home)
         (update :bin-dir expand-home)
+        (update :lockfile #(some-> % expand-home))
         (update :registries #(mapv expand-home %)))))

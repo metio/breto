@@ -4,6 +4,7 @@
 (ns breto.store
   (:require [babashka.fs :as fs]
             [breto.filelock :as filelock]
+            [clojure.edn :as edn]
             [breto.version :as version]
             [clojure.string :as str]))
 
@@ -93,8 +94,23 @@
        (map :version)
        (remove #{current})))
 
+(defn- meta-file [config name version]
+  (fs/path (package-dir config name) (str ".meta-" version ".edn")))
+
+(defn write-meta!
+  "Records what is known about an installed version, such as the hash of the
+  download it came from, beside its directory."
+  [config name version m]
+  (spit (str (meta-file config name version)) (pr-str m)))
+
+(defn read-meta [config name version]
+  (let [file (meta-file config name version)]
+    (when (fs/exists? file)
+      (edn/read-string (slurp (str file))))))
+
 (defn remove-version! [config name version]
-  (fs/delete-tree (version-dir config name version)))
+  (fs/delete-tree (version-dir config name version))
+  (fs/delete-if-exists (meta-file config name version)))
 
 (defn- resolves-into? [dir link]
   (and (fs/sym-link? link)

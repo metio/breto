@@ -45,6 +45,7 @@ breto reads `$XDG_CONFIG_HOME/breto/config.edn` (`~/.config/breto/config.edn` by
 | `:keep` | Versions per package that `gc` keeps. | `3` |
 | `:delay` | Seconds `install` and `update` wait after a package that downloaded something, e.g. to spread traffic on a slow link. A package found up to date costs no wait. `--delay N` overrides it. | `0` |
 | `:token-command` | A command printing a GitHub token on its first line, e.g. `["gh" "auth" "token"]` or `["gopass" "show" "--password" "github/token"]`. It runs at most once per breto process, and only when a GitHub API request is made. `GITHUB_TOKEN` and `GH_TOKEN` take precedence. | none |
+| `:lockfile` | A file breto rewrites after every change to the store with the active version and download hash of each configured package. Commit it, and `update --locked` installs exactly those versions elsewhere. | none |
 | `:prune` | Whether `gc` without arguments also uninstalls every package `:packages` does not list. | `false` |
 | `:store` | Where versions are unpacked, as `<store>/<package>/<version>`. | `$XDG_DATA_HOME/breto/installations` |
 | `:bin-dir` | Where binaries are linked. | `~/.local/bin` |
@@ -79,6 +80,12 @@ On a terminal, `install`, `update` and `outdated` show a status line with the po
 Each package directory has a `current` symlink pointing at the active version, and the links in the bin directory resolve through it. Switching versions replaces `current` with an atomic rename, so a command never sees a half-switched package. A version is unpacked into a hidden `.work-*` directory inside the package directory and renamed into place once complete, so an interrupted install never looks installed. Each install holds a lock on its work directory, which the operating system releases when the process dies, however it dies; `gc` deletes the work directories nobody holds, so it can run while another install is in progress. Commands that change the store (`install`, `update`, `use`, `gc` and `uninstall`) also take a lock on the whole store, so a manual run started while the timer's update is busy waits for it, naming its process, instead of racing it.
 
 A daily or weekly `breto update && breto gc` from a systemd timer or cron job keeps everything current.
+
+## Lock files
+
+With `:lockfile` set, `install`, `update`, `use`, `gc` and `uninstall` rewrite the file afterwards: one line per configured package with its active version, the SHA-256 of the download it came from, and the asset name. Comment lines at its top, such as a license header, are kept. A package that is not active on this machine keeps its entry, so a failed install never drops it.
+
+`breto update --locked` installs the locked version of each configured package instead of the latest, and refuses a download whose hash differs from the locked one. This also covers releases that upstream publishes without checksums: once one machine installed them, every other one gets the same bytes. Versions installed before hashes were recorded have an entry without `:sha256` until they are installed again.
 
 ## Uninstalling
 
