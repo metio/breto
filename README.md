@@ -86,7 +86,7 @@ Configure `:token-command`, or set `GITHUB_TOKEN` or `GH_TOKEN`, to raise GitHub
 | `breto lock DIR [--check]` | Writes `DIR/breto.lock` with the hash of every version the groups defined in the registry directory DIR pin; see [Registry lock files](#registry-lock-files). `--check` exits 1 when the file is out of date instead of writing it. |
 | `breto info PKG` | The package definition after defaults are applied. |
 | `breto report [COMMAND...] [--brief]` | The report of the last run of each command, or of the named ones. `--brief` prints only the latest of them in a few lines of at most 100 characters: when it ran, its counts, and the first three failures with their diagnosis. |
-| `breto doctor` | Checks tools, directories, configuration, store, GitHub API quota and the last runs. |
+| `breto doctor` | Checks tools, directories, configuration, store, commands that several installed packages provide, GitHub API quota and the last runs. |
 
 Options follow the arguments, as in `breto uninstall helm --force`.
 

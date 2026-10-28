@@ -7,6 +7,7 @@
   (:require [babashka.fs :as fs]
             [breto.github :as github]
             [breto.hooks :as hooks]
+            [breto.install :as install]
             [breto.report :as report]
             [breto.search :as search]
             [breto.signature :as signature]
@@ -246,6 +247,39 @@
       (check :warn "Configured packages are superseded" (str/join ", " superseded)
              "Install the successor, check that scripts call its commands, then replace the name under :packages."))))
 
+(defn- link-owner
+  "The installed package among `names` whose store directory the bin
+  directory's link for `command` points into, or nil."
+  [config names command]
+  (let [link (fs/path (:bin-dir config) command)]
+    (when (fs/sym-link? link)
+      (let [target (str (fs/read-link link))]
+        (some #(when (str/starts-with? target (str (store/package-dir config %) "/")) %) names)))))
+
+(defn shared-commands-check
+  "Commands that the active versions of several installed packages provide,
+  grouped by those packages and the one whose command the link runs."
+  [config registry]
+  (let [installed (filter #(and (get registry %) (store/current-version config %))
+                          (store/installed-packages config))
+        providers (->> (for [name installed
+                             command (keys (install/bin-targets config (get registry name)
+                                                                (store/current-version config name)))]
+                         {command [name]})
+                       (apply merge-with into {}))
+        groups (->> providers
+                    (filter #(< 1 (count (val %))))
+                    (group-by (fn [[command names]] [(sort names) (link-owner config names command)]))
+                    (sort-by key))]
+    (if (empty? groups)
+      (check :ok "No two installed packages provide the same command" "")
+      (check :warn "Several installed packages provide the same commands"
+             (str/join "; " (for [[[names owner] entries] groups]
+                              (str (str/join " and " names) " provide " (str/join ", " (sort (map key entries)))
+                                   ", " (if owner (str "linked to " owner) "linked to none of them"))))
+             "breto update links the commands of the package listed last under :packages."
+             "breto use PKG VERSION links that package's commands until the next update."))))
+
 (defn unconfigured-check [{:keys [packages prune] :as config}]
   (let [extra (store/prune-candidates (store/installed-packages config) packages)]
     (cond
@@ -261,6 +295,7 @@
           (store-check config registry)
           [(superseded-check config registry)
            (unconfigured-check config)
+           (shared-commands-check config registry)
            (unverified-check config registry)
            (signature-check config registry #(some-> (fs/which %) str))
            (hooks-check config (System/getProperty "os.name") #(some-> (fs/which %) str))

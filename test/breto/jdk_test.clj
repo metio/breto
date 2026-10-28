@@ -165,3 +165,26 @@
         (is (= :env-conflict (:breto/problem (ex-data e))))
         (is (= "JAVA_HOME" (:variable (ex-data e))))
         (is (= ["jdk" "jdk-again"] (:packages (ex-data e))))))))
+
+(deftest doctor-reports-commands-several-packages-provide
+  (let [io (world)]
+    (s/define! "jdk-again" definition)
+    (let [io (assoc io :download! (let [d (:download! io)]
+                                    (fn [url dest & more]
+                                      (apply d (str/replace url "acme/jdk-again" "acme/jdk") dest more))))
+          doctor (fn [] (:out (s/breto! {:packages ["jdk" "jdk-again"]} ["doctor"] {:io io})))]
+      (is (= 0 (:code (s/breto! {} ["install" "jdk@25.0.1+8" "jdk-again@27.0.1+2"] {:io io}))))
+      (is (str/includes? (doctor) (str "[WARN] Several installed packages provide the same commands\n"
+                                       "       jdk and jdk-again provide java, javac, linked to jdk-again\n")))
+      (testing "use moves the links and the report follows"
+        (is (= 0 (:code (s/breto! {} ["use" "jdk" "25.0.1+8"] {:io io}))))
+        (is (str/includes? (doctor) "jdk and jdk-again provide java, javac, linked to jdk\n")))
+      (testing "commands only one package provides are left out"
+        (is (not (str/includes? (doctor) "jrunscript")))
+        (is (not (str/includes? (doctor) "jwebserver")))))))
+
+(deftest doctor-finds-no-shared-commands-in-one-package
+  (let [io (world)]
+    (is (= 0 (:code (s/breto! {} ["install" "jdk@25.0.1+8"] {:io io}))))
+    (is (str/includes? (:out (s/breto! {} ["doctor"] {:io io}))
+                       "[OK]   No two installed packages provide the same command"))))
