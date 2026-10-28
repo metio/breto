@@ -83,16 +83,19 @@
   (str "'" (str/replace s "'" "'\\''") "'"))
 
 (defn exports
-  "The shell code that sets PATH to `path`, BRETO_PROJECT to `project-dir` and
-  BRETO_ENV_BIN to `bin`, for :sh (also bash and zsh) or :fish."
-  [shell path project-dir bin]
+  "The shell code that sets PATH to `path`, BRETO_PROJECT to `project-dir`,
+  BRETO_ENV_BIN to `bin` and BRETO_ENV_FILES to the colon-separated `files`
+  the project's packages come from, for :sh (also bash and zsh) or :fish."
+  [shell path project-dir bin files]
   (case shell
     :fish (str "set --global --export PATH " (str/join " " (map sh-quote (str/split path #":"))) ";\n"
                "set --global --export BRETO_PROJECT " (sh-quote project-dir) ";\n"
-               "set --global --export BRETO_ENV_BIN " (sh-quote bin) ";")
+               "set --global --export BRETO_ENV_BIN " (sh-quote bin) ";\n"
+               "set --global --export BRETO_ENV_FILES " (sh-quote (str/join ":" files)) ";")
     (str "export PATH=" (sh-quote path) "\n"
          "export BRETO_PROJECT=" (sh-quote project-dir) "\n"
-         "export BRETO_ENV_BIN=" (sh-quote bin))))
+         "export BRETO_ENV_BIN=" (sh-quote bin) "\n"
+         "export BRETO_ENV_FILES=" (sh-quote (str/join ":" files)))))
 
 (defn environments
   "Every project bin directory: {:dir :project :bin}, :project nil when its

@@ -124,3 +124,15 @@
                 (mapcat #(walk (conj path name) %) (:members group)))
               [name]))]
     (vec (distinct (mapcat #(walk [] %) names)))))
+
+(defn group-files
+  "The files defining the groups `names` uses, directly or through other
+  groups, in the order they are reached."
+  [groups names]
+  (letfn [(walk [seen name]
+            (if (and (group-name? name) (not (seen name)))
+              (let [group (get groups name)]
+                (reduce walk (conj seen name) (:members group)))
+              seen))]
+    (let [used (reduce walk #{} names)]
+      (vec (distinct (mapcat #(get-in groups [% :files]) (filter used (sort (keys groups)))))))))

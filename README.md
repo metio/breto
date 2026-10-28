@@ -108,20 +108,38 @@ A `.breto.edn` file in a project lists the packages it needs, with versions wher
 {:packages ["helm@3.19.0" "kind" "@pimalaya"]}
 ```
 
-`breto env`, run anywhere below that directory, links the commands of those versions into a bin directory of the project's own and prints the shell code that puts it first on `PATH` and sets `BRETO_PROJECT` and `BRETO_ENV_BIN`:
+`breto env`, run anywhere below that directory, links the commands of those versions into a bin directory of the project's own and prints the shell code that puts it first on `PATH` and sets `BRETO_PROJECT`, `BRETO_ENV_BIN`, and `BRETO_ENV_FILES`, the project file and the group files its packages come from:
 
 ```sh
 eval "$(breto env)"
 breto env --shell fish | source
 ```
 
-In bash, `shell/env-hook.bash` from this repository does this on its own: sourced from `.bashrc`, it runs `breto env` when the shell enters a directory below a `.breto.edn` or the file changes, and takes the project's bin directory off `PATH` again, through `BRETO_ENV_BIN`, when the shell leaves the project. Between those it costs a few file tests per prompt. The hook runs `breto env --no-install`, which only links versions that are installed and never waits for another breto run, since Ctrl-C may not reach a command a prompt hook runs. A project that needs a missing version gets a message to run `eval "$(breto env)"`, which installs it, waiting for a running update if necessary. `--no-wait` instead fails at once when installing has to wait for another run. A failing `breto env` is retried once the file changes or the shell enters the project again, not on every prompt.
+In bash, `shell/env-hook.bash` from this repository does this on its own: sourced from `.bashrc`, it runs `breto env` when the shell enters a directory below a `.breto.edn` or one of the files in `BRETO_ENV_FILES` changes, and takes the project's bin directory off `PATH` again, through `BRETO_ENV_BIN`, when the shell leaves the project. Between those it costs a few file tests per prompt. The hook runs `breto env --no-install`, which only links versions that are installed and never waits for another breto run, since Ctrl-C may not reach a command a prompt hook runs. A project that needs a missing version gets a message to run `eval "$(breto env)"`, which installs it, waiting for a running update if necessary. `--no-wait` instead fails at once when installing has to wait for another run. A failing `breto env` is retried once the file changes or the shell enters the project again, not on every prompt.
 
 ```sh
 source ~/src/breto/shell/env-hook.bash
 ```
 
 A package without a version uses the active version, else the most recently installed one. Versions that are not installed yet are installed without activating them, so the commands in `:bin-dir` keep their versions. Everything but the shell code goes to stderr. Each run makes the project's bin directory hold exactly what the file lists and replaces the `PATH` entry of a project entered before. The `PATH` it prints also drops entries that repeat.
+
+`breto update` without package names and `breto sync` finish by bringing every project with a bin directory up to date: they install the versions its `.breto.edn` names, again without activating them, and link its bin directory anew. A shell already working in the project runs the new versions from its next command on. A project whose file no longer loads keeps its links and is reported with `[WARN]`.
+
+### Shared toolchains
+
+A group can pin versions, so projects of one kind can share a toolchain instead of each pinning its own:
+
+```clojure
+;; @go.edn in a registry directory of its own
+{:members ["go@1.25.3" "gopls@0.20.0" "staticcheck@2025.1.1"]}
+```
+
+```clojure
+;; .breto.edn of every Go project
+{:packages ["@go"]}
+```
+
+List the directory holding the group files under `:registries`. When a new version lands in a group file, for example through a Renovate pull request and a `git pull`, the next `breto update` or `breto sync` installs it and moves every project using the group to it, and the hook relinks a shell that is open in such a project. Lock files record the active versions of `:packages` only, so a version a group pins is verified the way its definition says, through upstream checksums or signatures, and not against a locked hash.
 
 `gc` keeps every version a project links to, and `:prune true` keeps the packages, for as long as the project's `.breto.edn` exists. Once the file is gone, `gc` removes the project's links and treats its versions like any other.
 

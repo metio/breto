@@ -82,12 +82,12 @@
            (env/path-value cfg (path "envs" "b" "bin") (str (path "envs" "a" "bin") ":/usr/bin::/bin:/usr/bin"))))))
 
 (deftest exports-quote-for-the-shell
-  (let [code (env/exports :sh "/a b:/it's" "/p" "/a b")]
-    (is (= "/a b:/it's|/p|/a b"
+  (let [code (env/exports :sh "/a b:/it's" "/p" "/a b" ["/p/.breto.edn" "/r/@go.edn"])]
+    (is (= "/a b:/it's|/p|/a b|/p/.breto.edn:/r/@go.edn"
            (str/trim (:out (process/shell {:out :string} "sh" "-c"
-                                          (str code "\nprintf '%s|%s|%s' \"$PATH\" \"$BRETO_PROJECT\" \"$BRETO_ENV_BIN\"")))))))
-  (is (= "set --global --export PATH '/a' '/b';\nset --global --export BRETO_PROJECT '/p';\nset --global --export BRETO_ENV_BIN '/a';"
-         (env/exports :fish "/a:/b" "/p" "/a"))))
+                                          (str code "\nprintf '%s|%s|%s|%s' \"$PATH\" \"$BRETO_PROJECT\" \"$BRETO_ENV_BIN\" \"$BRETO_ENV_FILES\"")))))))
+  (is (= "set --global --export PATH '/a' '/b';\nset --global --export BRETO_PROJECT '/p';\nset --global --export BRETO_ENV_BIN '/a';\nset --global --export BRETO_ENV_FILES '/p/.breto.edn';"
+         (env/exports :fish "/a:/b" "/p" "/a" ["/p/.breto.edn"]))))
 
 (deftest gc-keeps-what-projects-use-and-forgets-removed-projects
   (let [io (world)
@@ -181,3 +181,59 @@
         (let [second-run (env!)]
           (is (= 0 (:code second-run)) (:err second-run))
           (is (= "#!/bin/sh\necho alpha 1.0.0\n" (slurp (str (fs/path (bin second-run) "alpha"))))))))))
+
+(defn- shared-world
+  "world with a registry directory `shared` holding @toolchain, pinning
+  alpha to `version`, and a project app using it."
+  [version]
+  (let [io (world)]
+    (fs/create-dirs (path "shared"))
+    (spit (path "shared" "@toolchain.edn") (pr-str {:members [(str "alpha@" version)]}))
+    (project! "app" ["@toolchain"])
+    io))
+
+(def ^:private shared-config
+  (delay {:packages ["beta"] :env-dir nil}))
+
+(defn- shared! [io & args]
+  (s/breto! (assoc @shared-config :env-dir (path "envs") :registries [(path "packages") (path "shared")]) args {:io io}))
+
+(defn- linked-alpha []
+  (let [bin (:bin (first (filter #(= (path "app") (:project %)) (env/environments {:env-dir (path "envs")}))))]
+    (slurp (str (fs/path bin "alpha")))))
+
+(deftest env-exports-the-files-its-packages-come-from
+  (let [io (shared-world "0.9.0")
+        {:keys [out]} (binding [*err* (java.io.StringWriter.)] (shared! io "env" "--dir" (path "app")))]
+    (is (str/includes? out (str "export BRETO_ENV_FILES='" (path "app" ".breto.edn") ":" (path "shared" "@toolchain.edn") "'")))))
+
+(deftest update-moves-projects-to-the-versions-their-groups-name
+  (let [io (shared-world "0.9.0")]
+    (binding [*err* (java.io.StringWriter.)] (shared! io "env" "--dir" (path "app")))
+    (is (= "#!/bin/sh\necho alpha 0.9.0\n" (linked-alpha)))
+    (spit (path "shared" "@toolchain.edn") (pr-str {:members ["alpha@1.0.0"]}))
+    (let [{:keys [code out]} (shared! io "update")]
+      (is (= 0 code) out)
+      (is (= "#!/bin/sh\necho alpha 1.0.0\n" (linked-alpha))))
+    (testing "the project's version is installed beside, not activated"
+      (is (not (fs/exists? (path "bin" "alpha"))))
+      (is (= "#!/bin/sh\necho beta 1.0.0\n" (slurp (path "bin" "beta")))))
+    (testing "the old version is free for gc"
+      (s/breto! (assoc @shared-config :env-dir (path "envs") :registries [(path "packages") (path "shared")] :prune true :keep 1) ["gc"] {:io io})
+      (is (= ["1.0.0"] (map :version (store/versions {:store (path "store")} "alpha")))))))
+
+(deftest update-of-named-packages-leaves-projects-alone
+  (let [io (shared-world "0.9.0")]
+    (binding [*err* (java.io.StringWriter.)] (shared! io "env" "--dir" (path "app")))
+    (spit (path "shared" "@toolchain.edn") (pr-str {:members ["alpha@1.0.0"]}))
+    (shared! io "update" "beta")
+    (is (= "#!/bin/sh\necho alpha 0.9.0\n" (linked-alpha)))))
+
+(deftest a-broken-project-keeps-its-links
+  (let [io (shared-world "0.9.0")]
+    (binding [*err* (java.io.StringWriter.)] (shared! io "env" "--dir" (path "app")))
+    (spit (path "app" ".breto.edn") "{:packages [\"@nothing\"]}")
+    (let [{:keys [code out]} (shared! io "update")]
+      (is (= 0 code))
+      (is (str/includes? out (str "[WARN] project " (path "app") " keeps its links: unknown group @nothing")))
+      (is (= "#!/bin/sh\necho alpha 0.9.0\n" (linked-alpha))))))

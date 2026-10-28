@@ -22,7 +22,7 @@
              "grep -q :fail \"$dir/.breto.edn\" && { echo failed >&2; exit 1; }\n"
              "bin=" (path "envs") "/$(basename \"$dir\")\n"
              "mkdir -p \"$bin\" && touch \"$bin\"\n"
-             "printf 'export PATH=%s:\"$PATH\"\\nexport BRETO_PROJECT=%s\\nexport BRETO_ENV_BIN=%s\\n' \"$bin\" \"$dir\" \"$bin\"\n"))
+             "printf 'export PATH=%s:\"$PATH\"\\nexport BRETO_PROJECT=%s\\nexport BRETO_ENV_BIN=%s\\nexport BRETO_ENV_FILES=%s/.breto.edn:%s\\n' \"$bin\" \"$dir\" \"$bin\" \"$dir\" " (path "shared" "@group.edn") "\n"))
   (fs/set-posix-file-permissions (path "fake" "breto") "rwxr-xr-x"))
 
 (defn- project! [name content]
@@ -91,3 +91,20 @@
   (is (= "__breto_env;x"
          (str/trim (:out (process/shell {:out :string} "bash" "--norc" "-c"
                                         "PROMPT_COMMAND=x; source shell/env-hook.bash; source shell/env-hook.bash; echo \"$PROMPT_COMMAND\""))))))
+
+(deftest editing-a-group-file-runs-env-again
+  (fake-breto!)
+  (project! "app" "{:packages [\"@group\"]}")
+  (fs/create-dirs (path "shared"))
+  (spit (path "shared" "@group.edn") "{:members [\"kind\"]}")
+  (session (str "cd " (path "app")) (str "sleep 1.1; echo '{:members [\"helm\"]}' > " (path "shared" "@group.edn")) "true")
+  (is (= [(path "app") (path "app")] (calls))))
+
+(deftest leaving-a-project-unsets-its-files
+  (fake-breto!)
+  (project! "app" "{:packages [\"kind\"]}")
+  (is (= "unset"
+         (str/trim (:out (process/shell {:out :string :err :string} "bash" "--norc" "-c"
+                                        (str "PATH=" (path "fake") ":/usr/bin:/bin\nsource shell/env-hook.bash\n"
+                                             "cd " (path "app") "\n__breto_env\ncd " (path) "\n__breto_env\n"
+                                             "echo \"${BRETO_ENV_FILES-unset}\"")))))))

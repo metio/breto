@@ -79,3 +79,22 @@
                         (s/breto! config ["sync"])))
   (is (thrown-with-msg? clojure.lang.ExceptionInfo #"there is no lock file"
                         (s/breto! (configured) ["sync"]))))
+
+(deftest sync-moves-projects-to-the-versions-their-groups-name
+  (let [{:keys [io hash]} (world)
+        cfg (assoc (configured) :env-dir (path "envs") :registries [(path "packages") (path "shared")])]
+    (fs/create-dirs (path "shared"))
+    (fs/create-dirs (path "app"))
+    (spit (path "shared" "@toolchain.edn") (pr-str {:members ["gamma@0.9.0"]}))
+    (spit (path "app" ".breto.edn") (pr-str {:packages ["@toolchain"]}))
+    (lock! {"alpha" {:version "1.0.0" :sha256 (hash "alpha" "1.0.0")}
+            "beta" {:version "1.0.0" :sha256 (hash "beta" "1.0.0")}})
+    (binding [*err* (java.io.StringWriter.)]
+      (s/breto! cfg ["env" "--dir" (path "app")] {:io io}))
+    (spit (path "shared" "@toolchain.edn") (pr-str {:members ["gamma@1.0.0"]}))
+    (let [{:keys [code out]} (s/breto! cfg ["sync"] {:io io})
+          bin (first (filter #(str/includes? (str %) "envs") (map str (fs/glob (path "envs") "*/bin"))))]
+      (is (= 0 code) out)
+      (is (str/includes? out "[OK] gamma 1.0.0 installed"))
+      (is (not (str/includes? out "gamma would be removed")))
+      (is (= "#!/bin/sh\necho gamma 1.0.0\n" (slurp (str (fs/path bin "gamma"))))))))

@@ -180,6 +180,35 @@
           (println (str "waiting for another breto run (process " pid ") to finish with the store")))))
     f))
 
+(defn- project
+  "The packages of the project file `file`: {:dir :file :specs :files}, the
+  specs with groups expanded and :files the project file and the group files
+  the specs come from."
+  [groups file]
+  (let [names (env/read-project file)]
+    {:dir (str (fs/parent (fs/absolutize file)))
+     :file (str (fs/absolutize file))
+     :specs (registry/expand groups names)
+     :files (vec (cons (str (fs/absolutize file)) (registry/group-files groups names)))}))
+
+(defn- project-targets
+  "[spec bin-targets] for each spec of `project`, bin-targets nil for a
+  version that is not installed. A spec without version uses the active
+  version, else the newest installed one."
+  [config registry {:keys [specs]}]
+  (for [spec specs
+        :let [[name version] (batch/split-spec spec)
+              pkg (registry/lookup registry name)
+              version (or version (store/current-version config name)
+                          (:version (first (store/versions config name))))]]
+    [spec (when version (install/bin-targets config pkg version))]))
+
+(defn- project-install
+  "install! options for a version a project needs: installed beside the
+  active one, not in its place."
+  [opts]
+  (fn [_ version] {:version version :activate? false :verify? (:verify opts true)}))
+
 (defn env
   "Links the versions the nearest .breto.edn lists into the project's bin
   directory, installing those that are missing without activating them, and
@@ -190,40 +219,63 @@
   (let [file (or (env/find-project (or (:dir opts) "."))
                  (throw (ex-info (str "no " env/file-name " in " (fs/absolutize (or (:dir opts) ".")) " or above it")
                                  {:breto/problem :no-project :dir (str (fs/absolutize (or (:dir opts) ".")))})))
-        project-dir (str (fs/parent file))
-        specs (registry/expand groups (env/read-project file))
-        chosen (fn [name version]
-                 (or version (store/current-version config name)
-                     (:version (first (store/versions config name)))))
-        resolve-all #(for [spec specs
-                           :let [[name version] (batch/split-spec spec)
-                                 pkg (registry/lookup registry name)
-                                 version (chosen name version)]]
-                       [name version (when version (install/bin-targets config pkg version))])
-        missing (for [[spec [_ _ targets]] (map vector specs (resolve-all))
+        {:keys [dir files] :as proj} (project groups file)
+        missing (for [[spec targets] (project-targets config registry proj)
                       :when (nil? targets)]
                   spec)
         _ (when (and (seq missing) (false? (:install opts)))
             (throw (ex-info (str "the project needs " (str/join ", " missing) ", which " (if (= 1 (count missing)) "is" "are") " not installed")
-                            {:breto/problem :env-missing :missing (vec missing) :project project-dir})))
+                            {:breto/problem :env-missing :missing (vec missing) :project dir})))
         code (if (seq missing)
                (binding [*out* *err*]
-                 (with-store-lock ctx
-                   #(installing ctx "env" (vec missing)
-                                (fn [_ version] {:version version :activate? false :verify? (:verify opts true)}))))
+                 (with-store-lock ctx #(installing ctx "env" (vec missing) (project-install opts))))
                0)]
     (if (pos? code)
       code
-      (let [links (into {} (mapcat #(nth % 2) (resolve-all)))
-            bin (env/link! config project-dir links)
+      (let [links (into {} (mapcat second (project-targets config registry proj)))
+            bin (env/link! config dir links)
             shell (if (= "fish" (:shell opts)) :fish :sh)]
-        (println (env/exports shell (env/path-value config bin (System/getenv "PATH")) project-dir bin))
+        (println (env/exports shell (env/path-value config bin (System/getenv "PATH")) dir bin files))
         0))))
 
-(defn update [{:keys [config opts] :as ctx} args]
-  (installing ctx "update" (targets ctx args)
-              (fn [name _]
-                (merge {:version (get-in config [:pins name]) :verify? (:verify opts true)} (locked ctx name)))))
+(defn- refresh-projects
+  "Installs the versions the projects with an environment need and links
+  each project's bin directory again, so a version a shared group moved to
+  reaches every project, its open shells included. A project whose file no
+  longer loads keeps its links and is reported. Returns the install results."
+  [{:keys [config registry groups opts] :as ctx} command]
+  (let [projects (for [environment (remove env/stale? (env/environments config))
+                       :let [dir (:project environment)]]
+                   (try (project groups (str (fs/path dir env/file-name)))
+                        (catch Exception e {:dir dir :problem (ex-message e)})))
+        projects (doall projects)
+        missing (distinct (for [p projects
+                                :when (not (:problem p))
+                                [spec targets] (try (project-targets config registry p) (catch Exception _ []))
+                                :when (and (nil? targets) (second (batch/split-spec spec)))]
+                            spec))
+        results (when (seq missing) (install-results ctx command (vec missing) (project-install opts)))]
+    (doseq [p projects]
+      (if (:problem p)
+        (println (str "[WARN] project " (:dir p) " keeps its links: " (:problem p)))
+        (try
+          (let [targets (project-targets config registry p)]
+            (if (every? second targets)
+              (env/link! config (:dir p) (into {} (mapcat second targets)))
+              (println (str "[WARN] project " (:dir p) " keeps its links: "
+                            (str/join ", " (map first (remove second targets))) " not installed"))))
+          (catch Exception e
+            (println (str "[WARN] project " (:dir p) " keeps its links: " (ex-message e)))))))
+    (vec results)))
+
+(defn update
+  "Updates the named packages, else the configured ones and then the projects
+  with an environment."
+  [{:keys [config opts] :as ctx} args]
+  (let [results (install-results ctx "update" (targets ctx args)
+                                 (fn [name _]
+                                   (merge {:version (get-in config [:pins name]) :verify? (:verify opts true)} (locked ctx name))))]
+    (batch/finish! "update" (into results (when (empty? args) (refresh-projects ctx "update"))))))
 
 (defn outdated [{:keys [config registry io] :as ctx} args]
   (let [progress (tracker ctx "outdated")]
@@ -369,7 +421,7 @@
                                          {:version version :verify? (:verify opts true)
                                           :expect-sha256 (get-in entries [name :sha256])}))
             removed (batch/run-batch io extra #(uninstall-one ctx % false) (fn [_]))]
-        (batch/finish! "sync" (into installed removed))))))
+        (batch/finish! "sync" (-> installed (into removed) (into (refresh-projects ctx "sync"))))))))
 
 (defn uninstall [{:keys [config opts io] :as ctx} args]
   (when (empty? args)
