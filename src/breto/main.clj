@@ -12,6 +12,7 @@
             [breto.proc :as proc]
             [breto.progress :as progress]
             [breto.registry :as registry]
+            [breto.report :as report]
             [breto.store :as store]
             [breto.token :as token]))
 
@@ -32,7 +33,8 @@ Commands:
                             with :prune true and no PKG, also uninstall unconfigured packages
   uninstall PKG...          delete a package and every link into it
   info PKG                  the resolved package definition
-  report                    the reports of the last run of each command
+  report [COMMAND...]       the reports of the last run of each command;
+                            --brief prints the latest in a few lines, for notifications
   doctor                    check the environment, configuration and store
 
 After a package that downloaded something, install and update wait :delay seconds, or as long
@@ -78,12 +80,14 @@ Every failure is explained with what to do; --debug adds each request and stack 
 
 (defn- with-registry
   "`ctx` with the registry loaded. doctor runs without one when it fails to
-  load, since diagnosing that is its job."
+  load, since diagnosing that is its job, and report needs none, so a broken
+  definition still leaves the last run readable."
   [ctx command]
   (let [load #(registry/load-registry (get-in ctx [:config :registries]))]
-    (assoc ctx :registry (if (= "doctor" command)
-                           (try (load) (catch Exception _ nil))
-                           (load)))))
+    (case command
+      "report" ctx
+      "doctor" (assoc ctx :registry (try (load) (catch Exception _ nil)))
+      (assoc ctx :registry (load)))))
 
 (def ^:private changes-store
   #{"install" "use" "update" "gc" "uninstall"})
@@ -113,8 +117,24 @@ Every failure is explained with what to do; --debug adds each request and stack 
     (f)))
 
 (def parse-spec
-  {:coerce {:keep :long :delay :long :debug :boolean :verify :boolean :force :boolean :dry-run :boolean :all :boolean :previous :boolean :locked :boolean}
+  {:coerce {:keep :long :delay :long :debug :boolean :verify :boolean :force :boolean :dry-run :boolean :all :boolean :previous :boolean :locked :boolean :brief :boolean}
    :alias {:d :debug}})
+
+(def ^:private reported
+  "Commands whose last run breto report shows."
+  #{"install" "update" "outdated" "check" "gc" "uninstall"})
+
+(defn- recording-aborts
+  "Runs `f`, saving its error as the report of `command` when it stops before
+  reporting on any package, so breto report never shows an older run as the
+  latest one."
+  [command f]
+  (try (f)
+       (catch Exception e
+         (when (reported command)
+           (try (report/save! {:command command :results [] :error (diagnose/diagnose e {})})
+                (catch Exception _)))
+         (throw e))))
 
 (defn run
   "Runs the command line and returns the process exit code. `overrides` replace
@@ -125,8 +145,9 @@ Every failure is explained with what to do; --debug adds each request and stack 
          [command & more] args]
      (binding [log/*debug* (boolean (:debug opts))]
        (if-let [f (dispatch command)]
-         (let [ctx (with-registry (merge (context opts) overrides) command)]
-           (locked ctx command #(f ctx more)))
+         (recording-aborts command
+           #(let [ctx (with-registry (merge (context opts) overrides) command)]
+              (locked ctx command (fn [] (f ctx more)))))
          (do (println usage) (if (#{nil "help"} command) 0 2)))))))
 
 (defn -main [& args]

@@ -207,14 +207,25 @@
   (pprint/pprint (registry/lookup registry name))
   0)
 
-(defn show-report [_ _]
-  (if-let [runs (seq (report/load-runs))]
-    (do (doseq [run runs]
-          (println (report/heading run))
-          (println (report/render run))
-          (println))
-        0)
-    (do (println "No run recorded yet in" (report/state-path)) 0)))
+(defn show-report
+  "The saved reports of `commands`, or of every command. With --brief, only
+  the latest of them in a few short lines, as a notification shows it."
+  [{:keys [opts]} commands]
+  (let [runs (cond->> (report/load-runs) (seq commands) (filter #((set commands) (:command %))))]
+    (cond
+      (empty? runs)
+      (do (println (if (seq commands)
+                     (str "No run of " (str/join ", " commands) " recorded yet in " (report/state-path))
+                     (str "No run recorded yet in " (report/state-path))))
+          0)
+
+      (:brief opts) (do (println (report/brief (last runs) {})) 0)
+
+      :else (do (doseq [run runs]
+                  (println (report/heading run))
+                  (println (report/render run))
+                  (println))
+                0))))
 
 (defn doctor [{:keys [config-path config registry io]} _]
   (let [checks (doctor/run-checks config-path config (or registry {}) io)]

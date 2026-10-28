@@ -60,18 +60,60 @@
     :outdated (str package "\t" (or from "-") " -> " version)
     nil))
 
+(defn- local-time [instant]
+  (.format (.atZone (Instant/parse instant) (ZoneId/systemDefault))
+           (DateTimeFormatter/ofPattern "yyyy-MM-dd HH:mm:ss z")))
+
+(defn heading
+  "The line above a saved run: when it finished, or how far a running one got."
+  [{:keys [command running total results updated finished]}]
+  (if running
+    (str "breto " command " is running: " (count results) (when total (str " of " total)) " done"
+         (when updated (str ", last at " (local-time updated))))
+    (str "breto " command " finished " (local-time finished))))
+
+(defn- aborted-line [command {:keys [message]}]
+  (str "breto " command " stopped: " message))
+
 (defn render
   "The report a command prints: one line per change, a block per failure, and
-  a summary line."
-  [{:keys [command results]}]
-  (let [lines (keep line results)
-        failures (filter #(= :failed (:status %)) results)]
+  a summary line. A command that stopped before reaching any package has its
+  error in `:error` instead."
+  [{:keys [command results error]}]
+  (if error
+    (str/join "\n" (concat [(failure-block {:package (str "breto " command) :diagnosis error}) ""]
+                            [(aborted-line command error)]))
+    (let [lines (keep line results)
+          failures (filter #(= :failed (:status %)) results)]
+      (str/join "\n"
+                (concat lines
+                        (when (and (seq lines) (seq failures)) [""])
+                        (interpose "" (map failure-block failures))
+                        (when (or (seq lines) (seq failures)) [""])
+                        [(summary-line command results)])))))
+
+(defn- clip [width text]
+  (if (> (count text) width) (str (subs text 0 (dec width)) "…") text))
+
+(defn brief
+  "A few short lines for a desktop notification: when `run` finished, its
+  counts, and the first failures with their diagnosis summaries. The full
+  report stays one breto report away."
+  [{:keys [command results error running] :as run} {:keys [failures width] :or {failures 3 width 100}}]
+  (let [when-line (if running (heading run) (str "breto " command ", " (local-time (:finished run))))
+        failed (filter #(= :failed (:status %)) results)
+        shown (take failures failed)]
     (str/join "\n"
-              (concat lines
-                      (when (and (seq lines) (seq failures)) [""])
-                      (interpose "" (map failure-block failures))
-                      (when (or (seq lines) (seq failures)) [""])
-                      [(summary-line command results)]))))
+              (map #(clip width %)
+                   (concat [when-line]
+                           (if error
+                             [(:message error) (:summary error)]
+                             (concat [(subs (summary-line command results) (count (str "breto " command ": ")))]
+                                     (for [{:keys [package version diagnosis]} shown]
+                                       (str "✗ " package (when version (str " " version)) ": "
+                                            (or (:summary diagnosis) (:message diagnosis))))
+                                     (when (> (count failed) (count shown))
+                                       [(str "+" (- (count failed) (count shown)) " more failures; breto report shows them all")]))))))))
 
 (defn load-runs
   "The last recorded run of each command, oldest first."
@@ -98,14 +140,3 @@
   [report]
   (filelock/with-lock (str (fs/parent (state-path))) (fn [_])
     #(save-unlocked! report)))
-
-(defn- local-time [instant]
-  (.format (.atZone (Instant/parse instant) (ZoneId/systemDefault))
-           (DateTimeFormatter/ofPattern "yyyy-MM-dd HH:mm:ss z")))
-
-(defn heading
-  "The line above a saved run: when it finished, or how far a running one got."
-  [{:keys [command running total results updated finished]}]
-  (if running
-    (str "breto " command " is running: " (count results) " of " total " done, last at " (local-time updated))
-    (str "breto " command " finished " (local-time finished))))

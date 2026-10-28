@@ -69,7 +69,7 @@ Configure `:token-command`, or set `GITHUB_TOKEN` or `GH_TOKEN`, to raise GitHub
 | `breto gc [PKG...] [--keep N]` | Deletes all but the N most recently installed versions. The active version is always kept. Also removes what killed installs left behind. With `:prune true` and no package named, also uninstalls unconfigured packages. |
 | `breto uninstall PKG...` | Deletes a package with every link into it. |
 | `breto info PKG` | The package definition after defaults are applied. |
-| `breto report` | The report of the last run of each command. |
+| `breto report [COMMAND...] [--brief]` | The report of the last run of each command, or of the named ones. `--brief` prints only the latest of them in a few lines of at most 100 characters: when it ran, its counts, and the first three failures with their diagnosis. |
 | `breto doctor` | Checks tools, directories, configuration, store, GitHub API quota and the last runs. |
 
 Options follow the arguments, as in `breto uninstall helm --force`.
@@ -98,7 +98,17 @@ With a configuration that is managed declaratively, for example from dotfiles, `
 
 `install`, `update`, `outdated`, `gc` and `uninstall` keep going past a failing package. Each failure is reported with the stage it happened in (resolve, download, verify, unpack, place or activate), the facts breto could establish, and what to do about it. For a download that returns 404, for example, breto lists the release's assets closest to the expected name and suggests an `:asset` template, or a `:history` entry when only newer releases changed their naming. Rate limits, moved repositories, tag prefixes, archive layouts and missing checksums get the same treatment. The exit code is 1 when any package failed.
 
-The last run of each command is saved to `$XDG_STATE_HOME/breto/last-run.edn`, and updated after every package while a run is still going, so `breto report` shows what a scheduled run did after the fact and how far a running one got. `breto doctor` checks the environment breto depends on. `--debug` adds every HTTP request and the stack trace of each failure.
+The last run of each command is saved to `$XDG_STATE_HOME/breto/last-run.edn`, and updated after every package while a run is still going, so `breto report` shows what a scheduled run did after the fact and how far a running one got. A command that stops before reaching any package, for example on a broken definition, saves its error as its report, so the report never shows an older run as the latest. `breto report` loads no definitions and works while one is broken.
+
+A scheduled update can show its failures as a desktop notification from an `OnFailure=` unit:
+
+```ini
+[Service]
+Type=oneshot
+ExecStart=/usr/bin/sh -c 'notify-send --urgency=critical "Software installations failed" "$$(breto report update gc --brief)"'
+```
+
+`breto doctor` checks the environment breto depends on. `--debug` adds every HTTP request and the stack trace of each failure.
 
 ## Package definitions
 
