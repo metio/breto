@@ -180,7 +180,7 @@
   the same paths under `dest`. A completion file the definition names must
   exist; a man page glob may match nothing."
   [pkg artifact unpacked dest]
-  (doseq [path (filter string? (vals (select-keys (:completions pkg) share/shells)))]
+  (doseq [path (share/shipped-completions pkg)]
     (when-not (fs/regular-file? (fs/path unpacked path))
       (throw (ex-info (str (:name pkg) ": " path " is not in " (:asset artifact))
                       {:breto/problem :path-missing :package (:name pkg) :path path
@@ -243,7 +243,8 @@
                        :repo (package/repo pkg) :source (:source pkg))
         package-dir (store/package-dir config (:name pkg))
         bin-paths (package/bin-paths pkg artifact)
-        fresh? (not (store/installed? config (:name pkg) version (vals bin-paths)))
+        fresh? (not (store/installed? config (:name pkg) version
+                                      (concat (vals bin-paths) (share/shipped-completions pkg))))
         {:keys [sha256 signed? bootstrap?]} (when fresh?
                  (with-stage :place context #(fs/create-dirs package-dir))
                  (let [work (fs/create-temp-dir {:dir package-dir :prefix store/work-prefix})

@@ -206,3 +206,15 @@
     (is (str/includes? (problems {:completions {:nu "x"}}) ":completions"))
     (is (str/includes? (problems {:completions {:bash "../x"}}) ":completions"))
     (is (str/includes? (problems {:completions {:bash {:args "x"}}}) ":completions"))))
+
+(deftest versions-installed-before-the-definition-named-completions-get-them
+  (let [cfg (config)
+        io (serve (sorted-map "1.0.0" (release "1.0.0")))]
+    (install/install! cfg io (tool {}) {:version "1.0.0"})
+    (is (not (fs/exists? (at "bash" "tool"))))
+    (let [{:keys [installed?]} (install/install! cfg io (tool shipped) {:version "1.0.0"})]
+      (is installed?))
+    (is (= "bash 1.0.0" (content "bash" "tool")))
+    (is (= "man 1.0.0" (content "man" "man1" "tool.1.gz")))
+    (testing "and only once"
+      (is (not (:installed? (install/install! cfg io (tool shipped) {:version "1.0.0"})))))))

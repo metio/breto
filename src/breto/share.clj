@@ -30,11 +30,16 @@
       (when (contains? bins name) name)
       (first (sort (keys bins)))))
 
+(defn shipped-completions
+  "The paths of the completion files the release ships."
+  [{:keys [completions]}]
+  (filter string? (vals (select-keys completions shells))))
+
 (defn kept-files
   "Globs of the files the binary layout keeps besides the binaries: the man
   pages and the completions the release ships."
-  [{:keys [man completions]}]
-  (concat man (filter string? (vals (select-keys completions shells)))))
+  [{:keys [man] :as pkg}]
+  (concat man (shipped-completions pkg)))
 
 (defn man-section
   "The section a man page belongs to, from its name: ortie.1.gz is in 1."
