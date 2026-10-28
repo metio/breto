@@ -3,5 +3,5 @@
 ;; SPDX-License-Identifier: MIT
 
 {:source {:github "nklmilojevic/sofka"}
- :asset "sofka-{tag}-x86_64-unknown-linux-gnu.tar.gz"
+ :asset "sofka-{tag}-x86_64-unknown-linux-musl.tar.gz"
  :checksum "SHA256SUMS"}
