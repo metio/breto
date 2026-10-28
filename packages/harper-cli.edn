@@ -1,0 +1,6 @@
+;; SPDX-FileCopyrightText: The breto Authors
+;; SPDX-License-Identifier: 0BSD
+
+{:description "The command line interface of Harper, the grammar checker for developers"
+ :source {:github "Automattic/harper"}
+ :asset "harper-cli-x86_64-unknown-linux-gnu.tar.gz"}

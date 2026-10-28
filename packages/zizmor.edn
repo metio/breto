@@ -1,0 +1,6 @@
+;; SPDX-FileCopyrightText: The breto Authors
+;; SPDX-License-Identifier: 0BSD
+
+{:description "A static analysis tool for GitHub Actions that finds security problems in workflows"
+ :source {:github "zizmorcore/zizmor"}
+ :asset "zizmor-x86_64-unknown-linux-gnu.tar.gz"}

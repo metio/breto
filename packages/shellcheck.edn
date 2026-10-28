@@ -1,0 +1,7 @@
+;; SPDX-FileCopyrightText: The breto Authors
+;; SPDX-License-Identifier: 0BSD
+
+{:description "A static analysis tool for shell scripts"
+ :source {:github "koalaman/shellcheck"}
+ :asset "shellcheck-v{version}.linux.x86_64.tar.gz"
+ :strip 1}
