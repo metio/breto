@@ -32,6 +32,11 @@ Commands:
                             and what killed installs left behind;
                             with :prune true and no PKG, also uninstall unconfigured packages
   uninstall PKG...          delete a package and every link into it
+  install                   choose packages to install in fzf or sk, else in a numbered prompt;
+                            --query TERMS starts with a search
+  search [TERM...]          the definitions whose name, description or source has every term
+  env [--shell fish]        link the versions .breto.edn lists for this project and print the
+                            shell code putting them first on PATH: eval \"$(breto env)\"
   info PKG                  the resolved package definition
   report [COMMAND...]       the reports of the last run of each command;
                             --brief prints the latest in a few lines, for notifications
@@ -56,7 +61,9 @@ Every failure is explained with what to do; --debug adds each request and stack 
    "uninstall" commands/uninstall
    "info" commands/info
    "report" commands/show-report
-   "doctor" commands/doctor})
+   "doctor" commands/doctor
+   "search" commands/search
+   "env" commands/env})
 
 (defn network
   "The network operations for `config`: HTTP, the GitHub token from the
@@ -65,7 +72,10 @@ Every failure is explained with what to do; --debug adds each request and stack 
   (assoc http/io
          :github-token (token/provider (:token-command config))
          :run proc/run-command
-         :run-hook proc/run-bounded))
+         :run-hook proc/run-bounded
+         :pick proc/pick
+         :ask proc/ask
+         :interactive? (some? (System/console))))
 
 (defn context
   "Everything a command needs, from the parsed options."
@@ -97,7 +107,7 @@ Every failure is explained with what to do; --debug adds each request and stack 
       (load ctx))))
 
 (def ^:private changes-store
-  #{"install" "use" "update" "gc" "uninstall"})
+  #{"install" "use" "update" "gc" "uninstall" "env"})
 
 (defn- record-lock!
   "Rewrites the lock file, when one is configured, after a command changed the
@@ -153,8 +163,12 @@ Every failure is explained with what to do; --debug adds each request and stack 
      (binding [log/*debug* (boolean (:debug opts))]
        (if-let [f (dispatch command)]
          (recording-aborts command
-           #(let [ctx (with-registry (merge (context opts) overrides) command)]
-              (locked ctx command (fn [] (f ctx more)))))
+           #(let [ctx (with-registry (merge (context opts) overrides) command)
+                  chosen? (and (= "install" command) (empty? more))
+                  args (if chosen? (commands/install-args ctx more) more)]
+              (if (and chosen? (empty? args))
+                (do (println "Nothing chosen.") 0)
+                (locked (assoc ctx :chosen? chosen?) command (fn [] (f (assoc ctx :chosen? chosen?) args))))))
          (do (println usage) (if (#{nil "help"} command) 0 2)))))))
 
 (defn -main [& args]

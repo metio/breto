@@ -34,14 +34,38 @@
        (catch clojure.lang.ExceptionInfo e
          (throw (ex-info (ex-message e) (assoc (ex-data e) :files files) e)))))
 
+(defn- origin
+  "Where a definition's releases come from: its :source without the keys that
+  only refine the lookup."
+  [{:keys [source]}]
+  (not-empty (select-keys source package/source-kinds)))
+
+(defn- layer
+  "`pkg` merged over the definition `earlier` of the same name. A definition
+  with :replace true stands alone. One whose :source names another project
+  is a different tool under the same name, and merging the two would mix
+  their keys, so it is refused."
+  [earlier pkg]
+  (cond
+    (nil? earlier) (dissoc pkg :replace)
+    (:replace pkg) (dissoc pkg :replace)
+    (and (origin pkg) (not= (origin earlier) (origin pkg)))
+    (let [files (into (vec (::files earlier)) (::files pkg))]
+      (throw (ex-info (str "conflicting package " (pr-str (:name pkg)) ": " (last files)
+                           " has a different :source than " (str/join ", " (butlast files)))
+                      {:breto/problem :invalid-package :package (:name pkg) :files files
+                       :problems [(str (last files) " defines " (pr-str (origin pkg)) " while "
+                                       (str/join ", " (butlast files)) " define " (pr-str (origin earlier))
+                                       "; rename one of the files, or set :replace true in the later one"
+                                       " to replace the earlier definition instead of merging over it")]})))
+    :else (-> (merge earlier pkg) (assoc ::files (into (vec (::files earlier)) (::files pkg))))))
+
 (defn load-registry
   "Package definitions from `dirs`, keyed by name. A definition in a later
   directory is merged over the one before it, so an overlay can change a single
-  key of an upstream package."
+  key of an upstream package, or replaces it with :replace true."
   [dirs]
-  (let [merged (reduce (fn [acc pkg]
-                         (update acc (:name pkg)
-                                 #(-> (merge % pkg) (assoc ::files (into (vec (::files %)) (::files pkg))))))
+  (let [merged (reduce (fn [acc pkg] (update acc (:name pkg) layer pkg))
                        {}
                        (mapcat read-dir (filter fs/directory? dirs)))]
     (update-vals merged normalize)))

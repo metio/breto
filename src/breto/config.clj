@@ -30,6 +30,8 @@
    :notifier :auto
    :messages {}
    :hook-timeout 30
+   :finder :auto
+   :env-dir (str (fs/path (env-dir "XDG_DATA_HOME" ".local/share") "breto" "envs"))
    :man-dir (str (fs/path (env-dir "XDG_DATA_HOME" ".local/share") "man"))
    :completion-dirs {:bash (str (fs/path (env-dir "XDG_DATA_HOME" ".local/share") "bash-completion" "completions"))
                      :zsh (str (fs/path (env-dir "XDG_DATA_HOME" ".local/share") "zsh" "site-functions"))
@@ -48,6 +50,7 @@
         (update :bin-dir expand-home)
         (update :lockfile #(some-> % expand-home))
         (update :cosign #(some-> % expand-home))
+        (update :env-dir expand-home)
         (update :man-dir #(some-> % expand-home))
         (update :completion-dirs #(update-vals % expand-home))
         (update :registries #(mapv expand-home %)))))

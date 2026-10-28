@@ -39,7 +39,7 @@ breto reads `$XDG_CONFIG_HOME/breto/config.edn` (`~/.config/breto/config.edn` by
 
 | Key | Meaning | Default |
 | --- | --- | --- |
-| `:registries` | Directories of package definitions. A later directory overrides an earlier one key by key, so an overlay can change a single key of a package. | none |
+| `:registries` | Directories of package definitions. A later directory overrides an earlier one key by key, so an overlay can change a single key of a package; see [Overlays](#overlays). | none |
 | `:packages` | What `update` and `outdated` act on when no package is named: package names and [groups](#groups) such as `"@pimalaya"`. | none |
 | `:pins` | Versions `update` installs instead of the latest. | none |
 | `:keep` | Versions per package that `gc` keeps. | `3` |
@@ -54,6 +54,8 @@ breto reads `$XDG_CONFIG_HOME/breto/config.edn` (`~/.config/breto/config.edn` by
 | `:prune` | Whether `gc` without arguments also uninstalls every package `:packages` does not list. | `false` |
 | `:store` | Where versions are unpacked, as `<store>/<package>/<version>`. | `$XDG_DATA_HOME/breto/installations` |
 | `:bin-dir` | Where binaries are linked. | `~/.local/bin` |
+| `:finder` | The fuzzy finder `breto install` without packages chooses with: `:auto` for fzf or sk from `:bin-dir` or `PATH`, or a command that reads tab-separated lines on stdin and prints the chosen ones. | `:auto` |
+| `:env-dir` | Where `breto env` keeps the bin directory of each project. | `$XDG_DATA_HOME/breto/envs` |
 | `:man-dir` | Where man pages are linked, as `<man-dir>/man<section>/<file>`. | `$XDG_DATA_HOME/man` |
 | `:completion-dirs` | Where shell completions are linked, per shell. Leaving a shell out skips its completions. | `{:bash "$XDG_DATA_HOME/bash-completion/completions" :zsh "$XDG_DATA_HOME/zsh/site-functions" :fish "$XDG_CONFIG_HOME/fish/completions"}` |
 
@@ -67,6 +69,9 @@ Configure `:token-command`, or set `GITHUB_TOKEN` or `GH_TOKEN`, to raise GitHub
 | --- | --- |
 | `breto list` | Installed packages and their versions; `*` marks the active one. |
 | `breto install PKG[@VERSION]...` | Installs and activates the given version, or the latest. |
+| `breto install [--query TERMS]` | Without packages, lists every definition in fzf or sk to choose any number from, and installs them. Without a finder it asks for a search and the numbers of the matches instead. |
+| `breto search [TERM...]` | The definitions whose name, description or source contains every term, one per line: name, description, source. |
+| `breto env [--shell fish] [--dir DIR]` | Links the versions the nearest `.breto.edn` lists into a bin directory of the project and prints the shell code putting it first on `PATH`; see [Project environments](#project-environments). |
 | `breto use PKG VERSION` | Activates a version that is already installed. |
 | `breto use PKG --previous` | Rolls back to the newest installed version older than the active one. For a configured package it prints the `:pins` entry that keeps the next `update` from switching back. |
 | `breto update [PKG...]` | Installs and activates the latest, or pinned, version. |
@@ -84,9 +89,34 @@ On a terminal, `install`, `update` and `outdated` show a status line with the po
 
 `install` and `update` refuse a download they cannot verify. `--no-verify` skips verification entirely. `gc` and `uninstall` take `--dry-run` to list what they would delete.
 
-Each package directory has a `current` symlink pointing at the active version, and the links in the bin directory resolve through it. Switching versions replaces `current` with an atomic rename, so a command never sees a half-switched package. A version is unpacked into a hidden `.work-*` directory inside the package directory and renamed into place once complete, so an interrupted install never looks installed. Each install holds a lock on its work directory, which the operating system releases when the process dies, however it dies; `gc` deletes the work directories nobody holds, so it can run while another install is in progress. Commands that change the store (`install`, `update`, `use`, `gc` and `uninstall`) also take a lock on the whole store, so a manual run started while the timer's update is busy waits for it, naming its process, instead of racing it.
+Each package directory has a `current` symlink pointing at the active version, and the links in the bin directory resolve through it. Switching versions replaces `current` with an atomic rename, so a command never sees a half-switched package. A version is unpacked into a hidden `.work-*` directory inside the package directory and renamed into place once complete, so an interrupted install never looks installed. Each install holds a lock on its work directory, which the operating system releases when the process dies, however it dies; `gc` deletes the work directories nobody holds, so it can run while another install is in progress. Commands that change the store (`install`, `update`, `use`, `gc`, `uninstall` and `env`) also take a lock on the whole store, so a manual run started while the timer's update is busy waits for it, naming its process, instead of racing it.
 
 A daily or weekly `breto update && breto gc` from a systemd timer or cron job keeps everything current.
+
+## Choosing packages
+
+`breto install` without packages chooses them interactively. With fzf or sk, linked by breto or on `PATH`, every definition is listed with its description; type to filter, Tab marks several, Enter installs them. The finder in `:bin-dir` counts even before that directory is on `PATH`, so `breto install fzf` makes the finder available on a fresh host. Without one, breto asks for search terms, lists up to 30 numbered matches and reads the numbers to install. `breto doctor` names the finder it found.
+
+A chosen package is not added to `:packages`, since the configuration may be managed elsewhere. breto prints the names to add; until then `update` leaves the package alone, and with `:prune true` the next `gc` uninstalls it.
+
+## Project environments
+
+A `.breto.edn` file in a project lists the packages it needs, with versions where it needs a particular one:
+
+```clojure
+{:packages ["helm@3.19.0" "kind" "@pimalaya"]}
+```
+
+`breto env`, run anywhere below that directory, links the commands of those versions into a bin directory of the project's own and prints the shell code that puts it first on `PATH` and sets `BRETO_PROJECT`:
+
+```sh
+eval "$(breto env)"
+breto env --shell fish | source
+```
+
+A package without a version uses the active version, else the most recently installed one. Versions that are not installed yet are installed without activating them, so the commands in `:bin-dir` keep their versions. Everything but the shell code goes to stderr. Each run makes the project's bin directory hold exactly what the file lists and replaces the `PATH` entry of a project entered before. The `PATH` it prints also drops entries that repeat.
+
+`gc` keeps every version a project links to, and `:prune true` keeps the packages, for as long as the project's `.breto.edn` exists. Once the file is gone, `gc` removes the project's links and treats its versions like any other.
 
 ## Lock files
 
@@ -149,7 +179,9 @@ A package is a file `<name>.edn` in a registry directory, and its file name is t
 
 | Key | Meaning | Default |
 | --- | --- | --- |
+| `:description` | One line about the tool, shown and searched by `breto search` and `breto install`. | none |
 | `:source` | Where releases are discovered; see below. | required |
+| `:replace` | In an overlay, replaces the earlier definition of the name instead of merging over it; see [Overlays](#overlays). | `false` |
 | `:asset` | Template for the file name to download. | required |
 | `:url` | Template for the download URL. | the GitHub release asset |
 | `:tag-prefix` | Text before the version in a tag: `v1.2.3` is version `1.2.3`. | `"v"` |
@@ -267,6 +299,10 @@ Links go to `:man-dir` and `:completion-dirs`, named after the command as each s
 
 man finds `$XDG_DATA_HOME/man` through a `PATH` entry `~/.local/bin` once that directory exists, bash-completion 2 loads `$XDG_DATA_HOME/bash-completion/completions` on demand, and fish reads `~/.config/fish/completions`. zsh needs `$XDG_DATA_HOME/zsh/site-functions` in `fpath` before `compinit`.
 
+### Overlays
+
+A definition in a later registry directory is merged over the one of the same name, so an overlay can change one key, such as `:asset` for another architecture. An overlay whose `:source` names another project defines a different tool under the same name; merging the two would mix the keys of both, so breto refuses to load it and names both files. Rename one of them, or set `:replace true` in the overlay to replace the earlier definition instead of merging over it.
+
 ### Version history
 
 Projects rename assets, change archive formats and move between hosts. The top level of a definition describes current releases, and each `:history` entry overrides keys for every version older than its `:before`. Entries apply cumulatively from the newest boundary down, so an entry only lists what changed at its boundary:
@@ -297,4 +333,4 @@ nix develop --command bb test
 
 ## License
 
-0BSD, REUSE-compliant. The definitions in `packages/` whose header names Shunsuke Suzuki were converted from the [aqua registry](https://github.com/aquaproj/aqua-registry) and are MIT-licensed.
+0BSD, REUSE-compliant. The definitions in `packages/` whose header names Shunsuke Suzuki were converted from the [aqua registry](https://github.com/aquaproj/aqua-registry) and are MIT-licensed. The descriptions of the definitions come from the aqua registry or from the description of the project's repository; `bb descriptions AQUA-REGISTRY-DIR packages` fills in the ones that are missing.

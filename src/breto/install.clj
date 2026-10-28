@@ -259,6 +259,17 @@
         recorded (assoc :hash-recorded? true)
         (seq warnings) (assoc :warnings (vec (distinct warnings)))))))
 
+(defn bin-targets
+  "Command name -> the file in the store that `version` of `pkg` runs, or nil
+  when that version is not installed completely."
+  [config pkg version]
+  (let [pkg (package/at pkg version)
+        artifact (package/artifact pkg {:tag (package/tag-of-version pkg version) :version version})
+        bin-paths (package/bin-paths pkg artifact)
+        dir (store/version-dir config (:name pkg) version)]
+    (when (store/installed? config (:name pkg) version (vals bin-paths))
+      (update-vals bin-paths #(str (fs/path dir %))))))
+
 (defn use!
   "Activates an already installed version."
   [config pkg version]

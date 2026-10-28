@@ -1,0 +1,116 @@
+;; SPDX-FileCopyrightText: The breto Authors
+;; SPDX-License-Identifier: 0BSD
+
+(ns breto.env-test
+  (:require [babashka.fs :as fs]
+            [babashka.process :as process]
+            [breto.env :as env]
+            [breto.support :as s :refer [path]]
+            [clojure.string :as str]
+            [clojure.test :refer [deftest is testing use-fixtures]]))
+
+(use-fixtures :each s/with-root)
+
+(defn- world
+  "Packages alpha and beta, each with releases 1.0.0 (the latest) and 0.9.0."
+  []
+  (doseq [name ["alpha" "beta"]]
+    (s/define! name {:source {:github (str "acme/" name)} :asset name :verify false}))
+  (s/fake-io (into {} (for [name ["alpha" "beta"] version ["0.9.0" "1.0.0"]]
+                        [(str "https://github.com/acme/" name "/releases/download/v" version "/" name)
+                         (s/file! (str name "-" version) (str "#!/bin/sh\necho " name " " version "\n"))]))
+             (into {} (for [name ["alpha" "beta"]]
+                        [(str "https://github.com/acme/" name "/releases/latest") "{\"tag_name\":\"v1.0.0\"}"]))
+             (atom [])))
+
+(defn- project! [dir packages]
+  (fs/create-dirs (path dir))
+  (spit (path dir ".breto.edn") (pr-str {:packages packages})))
+
+(def ^:private config {:packages ["alpha"] :env-dir nil})
+
+(defn- env! [io dir & args]
+  (let [err (java.io.StringWriter.)
+        result (binding [*err* err]
+                 (s/breto! (assoc config :env-dir (path "envs")) (concat ["env" "--dir" (path dir)] args) {:io io}))]
+    (assoc result :err (str err))))
+
+(defn- exported-path [out]
+  (second (re-find #"export PATH='([^']*)'" out)))
+
+(deftest projects-get-their-versions-first-on-path
+  (let [io (world)]
+    (s/breto! (assoc config :env-dir (path "envs")) ["update"] {:io io})
+    (project! "app" ["alpha@0.9.0" "beta"])
+    (let [{:keys [code out err]} (env! io "app/src")]
+      (is (= 0 code) err)
+      (is (str/includes? err "2 installed"))
+      (let [bin (first (str/split (exported-path out) #":"))]
+        (is (str/starts-with? bin (path "envs")))
+        (is (= "#!/bin/sh\necho alpha 0.9.0\n" (slurp (str (fs/path bin "alpha")))))
+        (is (= "#!/bin/sh\necho beta 1.0.0\n" (slurp (str (fs/path bin "beta")))))
+        (is (str/includes? out (str "export BRETO_PROJECT='" (path "app") "'")))))
+    (testing "the global versions stay as they were"
+      (is (= "#!/bin/sh\necho alpha 1.0.0\n" (slurp (path "bin" "alpha"))))
+      (is (not (fs/exists? (path "bin" "beta")))))
+    (testing "a second run installs nothing"
+      (let [{:keys [code err]} (env! io "app")]
+        (is (= 0 code))
+        (is (not (str/includes? err "installed")))))))
+
+(deftest unversioned-packages-use-the-active-version
+  (let [io (world)]
+    (s/breto! (assoc config :env-dir (path "envs")) ["install" "alpha@0.9.0"] {:io io})
+    (project! "app" ["alpha"])
+    (let [{:keys [out]} (env! io "app")
+          bin (first (str/split (exported-path out) #":"))]
+      (is (= "#!/bin/sh\necho alpha 0.9.0\n" (slurp (str (fs/path bin "alpha"))))))))
+
+(deftest the-bin-dir-holds-only-what-the-project-lists
+  (let [io (world)]
+    (project! "app" ["alpha" "beta"])
+    (let [bin (first (str/split (exported-path (:out (env! io "app"))) #":"))]
+      (project! "app" ["beta"])
+      (env! io "app")
+      (is (= ["beta"] (map (comp str fs/file-name) (fs/list-dir bin)))))))
+
+(deftest path-entries-of-other-projects-are-replaced
+  (let [cfg {:env-dir (path "envs")}]
+    (is (= (str (path "envs" "b" "bin") ":/usr/bin:/bin")
+           (env/path-value cfg (path "envs" "b" "bin") (str (path "envs" "a" "bin") ":/usr/bin::/bin:/usr/bin"))))))
+
+(deftest exports-quote-for-the-shell
+  (let [code (env/exports :sh "/a b:/it's" "/p")]
+    (is (= "/a b:/it's|/p"
+           (str/trim (:out (process/shell {:out :string} "sh" "-c"
+                                          (str code "\nprintf '%s|%s' \"$PATH\" \"$BRETO_PROJECT\"")))))))
+  (is (= "set --global --export PATH '/a' '/b';\nset --global --export BRETO_PROJECT '/p';"
+         (env/exports :fish "/a:/b" "/p"))))
+
+(deftest gc-keeps-what-projects-use-and-forgets-removed-projects
+  (let [io (world)
+        cfg (assoc config :env-dir (path "envs") :keep 1 :prune true)]
+    (s/breto! cfg ["install" "alpha@0.9.0" "beta"] {:io io})
+    (s/breto! cfg ["install" "alpha"] {:io io})
+    (project! "app" ["alpha@0.9.0" "beta"])
+    (env! io "app")
+    (let [{:keys [out]} (s/breto! cfg ["gc"] {:io io})]
+      (is (not (str/includes? out "alpha 0.9.0")) out)
+      (is (not (str/includes? out "beta removed")) out))
+    (fs/delete (path "app" ".breto.edn"))
+    (let [{:keys [out]} (s/breto! cfg ["gc"] {:io io})]
+      (is (str/includes? out (str "removed the links of " (path "app"))))
+      (is (str/includes? out "[OK] removed alpha 0.9.0") out)
+      (is (str/includes? out "[OK] beta removed") out))
+    (is (empty? (fs/list-dir (path "envs"))))))
+
+(deftest projects-are-found-upwards-and-validated
+  (project! "app" ["alpha"])
+  (fs/create-dirs (path "app" "a" "b"))
+  (is (= (path "app" ".breto.edn") (env/find-project (path "app" "a" "b"))))
+  (is (nil? (env/find-project (fs/temp-dir))))
+  (spit (path "app" ".breto.edn") "{:packages []}")
+  (is (thrown-with-msg? clojure.lang.ExceptionInfo #"needs :packages"
+                        (env/read-project (path "app" ".breto.edn"))))
+  (is (thrown-with-msg? clojure.lang.ExceptionInfo #"no \.breto\.edn"
+                        (s/breto! {} ["env" "--dir" (str (fs/temp-dir))]))))

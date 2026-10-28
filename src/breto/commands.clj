@@ -11,11 +11,13 @@
             [breto.batch :as batch]
             [breto.check :as check]
             [breto.doctor :as doctor]
+            [breto.env :as env]
             [breto.hooks :as hooks]
             [breto.install :as install]
             [breto.lockfile :as lockfile]
             [breto.registry :as registry]
             [breto.report :as report]
+            [breto.search :as search]
             [breto.signature :as signature]
             [breto.source :as source]
             [breto.store :as store]
@@ -99,10 +101,87 @@
     (let [{:keys [version sha256]} (lockfile/locked-entry (:lockfile config) name)]
       {:version version :expect-sha256 sha256})))
 
-(defn install [{:keys [opts groups] :as ctx} args]
-  (installing ctx "install" (registry/expand groups args)
-              (fn [name version]
-                (merge {:version version :verify? (:verify opts true)} (locked ctx name)))))
+(defn- which [io]
+  (or (:which io) #(some-> (fs/which %) str)))
+
+(defn choose
+  "The packages to install, chosen in a fuzzy finder over every definition,
+  or without one through a numbered prompt. --query starts with a search."
+  [{:keys [config registry io opts]}]
+  (when-not (:interactive? io)
+    (throw (ex-info "install needs a package; run it in a terminal to choose from the registries"
+                    {:breto/problem :usage})))
+  (if-let [finder (search/finder config (which io))]
+    (let [{:keys [exit out]} ((:pick io) (search/finder-command config finder (:query opts))
+                                         (str (str/join "\n" (map search/row (search/matches registry []))) "\n"))]
+      (if (= 0 exit) (search/selected out) []))
+    (or (search/prompt! registry (:ask io) (:query opts)) [])))
+
+(defn install-args
+  "The arguments of install: the named packages, else the chosen ones."
+  [ctx args]
+  (if (seq args) args (choose ctx)))
+
+(defn- unconfigured-hint [{:keys [config groups]} args]
+  (let [configured (set (:packages config))
+        names (remove configured (map (comp first batch/split-spec) (registry/expand groups args)))]
+    (when (seq names)
+      (println)
+      (println (str "Not in :packages, so breto update leaves "
+                    (if (= 1 (count names)) "it" "them") " alone"
+                    (when (:prune config) " and breto gc uninstalls them")
+                    "; add " (str/join " " (map pr-str names)) " to keep them.")))))
+
+(defn install [{:keys [opts groups chosen?] :as ctx} args]
+  (let [code (installing ctx "install" (registry/expand groups args)
+                         (fn [name version]
+                           (merge {:version version :verify? (:verify opts true)} (locked ctx name))))]
+    (when chosen? (unconfigured-hint ctx args))
+    code))
+
+(defn search
+  "The definitions whose name, description or source contains every term."
+  [{:keys [registry]} terms]
+  (let [found (search/matches registry terms)]
+    (if (seq found)
+      (run! #(println (search/row %)) found)
+      (println (str "No package matches " (str/join " " terms) ".")))
+    0))
+
+(defn env
+  "Links the versions the nearest .breto.edn lists into the project's bin
+  directory, installing those that are missing without activating them, and
+  prints the shell code that puts that directory in front of PATH. Everything
+  else goes to stderr, so the output can be evaluated."
+  [{:keys [config registry groups opts] :as ctx} _]
+  (let [file (or (env/find-project (or (:dir opts) "."))
+                 (throw (ex-info (str "no " env/file-name " in " (fs/absolutize (or (:dir opts) ".")) " or above it")
+                                 {:breto/problem :no-project :dir (str (fs/absolutize (or (:dir opts) ".")))})))
+        project-dir (str (fs/parent file))
+        specs (registry/expand groups (env/read-project file))
+        chosen (fn [name version]
+                 (or version (store/current-version config name)
+                     (:version (first (store/versions config name)))))
+        resolve-all #(for [spec specs
+                           :let [[name version] (batch/split-spec spec)
+                                 pkg (registry/lookup registry name)
+                                 version (chosen name version)]]
+                       [name version (when version (install/bin-targets config pkg version))])
+        missing (for [[spec [_ _ targets]] (map vector specs (resolve-all))
+                      :when (nil? targets)]
+                  spec)
+        code (if (seq missing)
+               (binding [*out* *err*]
+                 (installing ctx "env" (vec missing)
+                             (fn [_ version] {:version version :activate? false :verify? (:verify opts true)})))
+               0)]
+    (if (pos? code)
+      code
+      (let [links (into {} (mapcat #(nth % 2) (resolve-all)))
+            bin (env/link! config project-dir links)
+            shell (if (= "fish" (:shell opts)) :fish :sh)]
+        (println (env/exports shell (env/path-value config bin (System/getenv "PATH")) project-dir))
+        0))))
 
 (defn update [{:keys [config opts] :as ctx} args]
   (installing ctx "update" (targets ctx args)
@@ -202,16 +281,24 @@
 (defn gc [{:keys [config opts io] :as ctx} args]
   (let [keep (or (:keep opts) (:keep config))
         dry-run? (:dry-run opts)
+        used (env/used-versions config)
         prune (when (and (:prune config) (empty? args))
-                (store/prune-candidates (store/installed-packages config) (:packages config)))
+                (remove used (store/prune-candidates (store/installed-packages config) (:packages config))))
+        _ (when (empty? args)
+            (doseq [{:keys [dir project] :as e} (env/environments config)
+                    :when (env/stale? e)]
+              (when-not dry-run? (fs/delete-tree dir))
+              (println (str (if dry-run? "would remove " "[OK] removed ") "the links of " (or project dir)
+                            ", which has no " env/file-name " any more"))))
         pruned (batch/run-batch io prune #(uninstall-one ctx % dry-run?) (fn [_]))
         failures (for [name (if (seq args) (targets ctx args) (remove (set prune) (store/installed-packages config)))
                        :let [r (try
                                  (doseq [leftover (store/leftovers config name)]
                                    (when-not dry-run? (fs/delete-tree leftover))
                                    (println (str (if dry-run? "would remove " "[OK] removed ") leftover)))
-                                 (doseq [version (store/gc-candidates (store/versions config name)
-                                                                      (store/current-version config name) keep)]
+                                 (doseq [version (remove (get used name #{})
+                                                         (store/gc-candidates (store/versions config name)
+                                                                              (store/current-version config name) keep))]
                                    (when-not dry-run? (store/remove-version! config name version))
                                    (println (str (if dry-run? "would remove " "[OK] removed ") name " " version)))
                                  nil

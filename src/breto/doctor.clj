@@ -8,6 +8,7 @@
             [breto.github :as github]
             [breto.hooks :as hooks]
             [breto.report :as report]
+            [breto.search :as search]
             [breto.signature :as signature]
             [breto.store :as store]
             [cheshire.core :as json]
@@ -135,6 +136,17 @@
                      (str "Install cosign at " (:cosign config) ", or remove :cosign from the config to use the one breto installs.")
                      "Add \"cosign\" to :packages; breto installs it first and checks the other signatures with it.")))))
 
+(defn finder-check
+  "Which fuzzy finder breto install chooses packages with."
+  [config which]
+  (if-let [finder (search/finder config which)]
+    (check :ok (str "breto install chooses packages in " (str/join " " finder)) "")
+    (check :warn "No fuzzy finder is available, so breto install asks with a numbered prompt"
+           (if (vector? (:finder config))
+             (str (first (:finder config)) " from :finder is not on PATH")
+             "Neither fzf nor sk is in the bin directory or on PATH")
+           "Run breto install fzf, or set :finder to the command of another finder.")))
+
 (defn hooks-check
   "Whether the configured hooks can run. `os` is the os.name property and
   `which` resolves a command name to its path."
@@ -239,6 +251,7 @@
            (unverified-check config registry)
            (signature-check config registry #(some-> (fs/which %) str))
            (hooks-check config (System/getProperty "os.name") #(some-> (fs/which %) str))
+           (finder-check config #(some-> (fs/which %) str))
            (token-check config io)
            (github-check io)]
           (last-run-checks (report/load-runs))))

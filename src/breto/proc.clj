@@ -21,3 +21,17 @@
     (if (= ::timeout result)
       (do (process/destroy p) {:exit nil :out "" :err "" :timed-out true})
       (select-keys result [:exit :out :err]))))
+
+(defn pick
+  "Runs the interactive `command` with `input` on its stdin and the terminal
+  for everything else, returning its exit code and what it printed."
+  [command input]
+  (select-keys @(apply process/process {:in input :out :string :err :inherit} (map str command))
+               [:exit :out]))
+
+(defn ask
+  "Prints `question` and reads one line of the answer, nil at the end of input."
+  [question]
+  (print question)
+  (flush)
+  (read-line))
