@@ -1,0 +1,7 @@
+;; SPDX-FileCopyrightText: 2021 Shunsuke Suzuki
+;; SPDX-FileCopyrightText: The breto Authors
+;; SPDX-License-Identifier: MIT
+
+{:source {:github "t-kikuc/ecstop"}
+ :asset "ecstop_{version}_Linux_x86_64.tar.gz"
+ :checksum "ecstop_{version}_checksums.txt"}

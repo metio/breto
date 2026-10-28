@@ -1,0 +1,7 @@
+;; SPDX-FileCopyrightText: 2021 Shunsuke Suzuki
+;; SPDX-FileCopyrightText: The breto Authors
+;; SPDX-License-Identifier: MIT
+
+{:source {:github "upx/upx"}
+ :asset "upx-{version}-amd64_linux.tar.xz"
+ :bins {"upx" "upx-{version}-amd64_linux/upx"}}

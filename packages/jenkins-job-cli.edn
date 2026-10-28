@@ -1,0 +1,8 @@
+;; SPDX-FileCopyrightText: 2021 Shunsuke Suzuki
+;; SPDX-FileCopyrightText: The breto Authors
+;; SPDX-License-Identifier: MIT
+
+{:source {:github "artemsalimov/jenkins-job-cli"}
+ :asset "jenkins-job-cli-{version}-linux-amd64"
+ :checksum "sha256sums.txt"
+ :bins {"jj" "{asset}"}}

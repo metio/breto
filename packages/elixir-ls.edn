@@ -1,0 +1,7 @@
+;; SPDX-FileCopyrightText: 2021 Shunsuke Suzuki
+;; SPDX-FileCopyrightText: The breto Authors
+;; SPDX-License-Identifier: MIT
+
+{:source {:github "elixir-lsp/elixir-ls"}
+ :asset "elixir-ls-{tag}.zip"
+ :bins {"elixir-debug-adapter" "debug_adapter.sh", "elixir-ls" "language_server.sh"}}

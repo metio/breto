@@ -1,0 +1,7 @@
+;; SPDX-FileCopyrightText: 2021 Shunsuke Suzuki
+;; SPDX-FileCopyrightText: The breto Authors
+;; SPDX-License-Identifier: MIT
+
+{:source {:github "skeema/skeema"}
+ :asset "skeema_{version}_linux_amd64.tar.gz"
+ :checksum "skeema_checksums_{version}.txt"}

@@ -1,0 +1,8 @@
+;; SPDX-FileCopyrightText: 2021 Shunsuke Suzuki
+;; SPDX-FileCopyrightText: The breto Authors
+;; SPDX-License-Identifier: MIT
+
+{:source {:github "PSU3D0/agent-spreadsheet"}
+ :asset "agent-spreadsheet-linux-x86_64.tar.gz"
+ :checksum "SHA256SUMS"
+ :bins {"agent-spreadsheet" "agent-spreadsheet", "asp" "asp"}}

@@ -1,0 +1,7 @@
+;; SPDX-FileCopyrightText: 2021 Shunsuke Suzuki
+;; SPDX-FileCopyrightText: The breto Authors
+;; SPDX-License-Identifier: MIT
+
+{:source {:github "kcp-dev/kcp"}
+ :asset "kubectl-kcp-plugin_{version}_linux_amd64.tar.gz"
+ :bins {"kubectl-kcp" "bin/kubectl-kcp"}}

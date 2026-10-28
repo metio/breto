@@ -1,0 +1,7 @@
+;; SPDX-FileCopyrightText: 2021 Shunsuke Suzuki
+;; SPDX-FileCopyrightText: The breto Authors
+;; SPDX-License-Identifier: MIT
+
+{:source {:github "suzuki-shunsuke/renovate-issue-action"}
+ :asset "renovate-issue-action_linux_amd64.tar.gz"
+ :checksum "renovate-issue-action_{version}_checksums.txt"}

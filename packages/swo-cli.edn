@@ -1,0 +1,8 @@
+;; SPDX-FileCopyrightText: 2021 Shunsuke Suzuki
+;; SPDX-FileCopyrightText: The breto Authors
+;; SPDX-License-Identifier: MIT
+
+{:source {:github "solarwinds/swo-cli"}
+ :asset "swo-cli_linux_amd64.zip"
+ :checksum "swo-cli_checksums.txt"
+ :bins {"swo" "swo"}}

@@ -1,0 +1,7 @@
+;; SPDX-FileCopyrightText: 2021 Shunsuke Suzuki
+;; SPDX-FileCopyrightText: The breto Authors
+;; SPDX-License-Identifier: MIT
+
+{:source {:github "bojand/ghz"}
+ :asset "ghz-linux-x86_64.tar.gz"
+ :checksum "ghz-linux-x86_64.tar.gz.sha256"}

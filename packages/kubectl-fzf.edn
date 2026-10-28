@@ -1,0 +1,8 @@
+;; SPDX-FileCopyrightText: 2021 Shunsuke Suzuki
+;; SPDX-FileCopyrightText: The breto Authors
+;; SPDX-License-Identifier: MIT
+
+{:source {:github "bonnefoa/kubectl-fzf"}
+ :asset "kubectl-fzf_linux_amd64.tar.gz"
+ :checksum "kubectl-fzf_checksums.txt"
+ :bins {"kubectl-fzf-completion" "kubectl-fzf-completion", "kubectl-fzf-server" "kubectl-fzf-server"}}

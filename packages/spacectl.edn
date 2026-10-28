@@ -1,0 +1,7 @@
+;; SPDX-FileCopyrightText: 2021 Shunsuke Suzuki
+;; SPDX-FileCopyrightText: The breto Authors
+;; SPDX-License-Identifier: MIT
+
+{:source {:github "spacelift-io/spacectl"}
+ :asset "spacectl_{version}_linux_amd64.zip"
+ :checksum "spacectl_{version}_SHA256SUMS"}

@@ -1,0 +1,8 @@
+;; SPDX-FileCopyrightText: 2021 Shunsuke Suzuki
+;; SPDX-FileCopyrightText: The breto Authors
+;; SPDX-License-Identifier: MIT
+
+{:source {:github "skaji/relocatable-perl"}
+ :tag-prefix ""
+ :asset "perl-linux-amd64.tar.gz"
+ :bins {"cpanm" "perl-linux-amd64/bin/cpanm", "perl" "perl-linux-amd64/bin/perl", "perldoc" "perl-linux-amd64/bin/perldoc", "prove" "perl-linux-amd64/bin/prove"}}

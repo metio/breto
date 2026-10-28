@@ -1,0 +1,7 @@
+;; SPDX-FileCopyrightText: 2021 Shunsuke Suzuki
+;; SPDX-FileCopyrightText: The breto Authors
+;; SPDX-License-Identifier: MIT
+
+{:source {:github "rfjakob/gocryptfs"}
+ :asset "gocryptfs_{tag}_linux-static_amd64.tar.gz"
+ :bins {"gocryptfs" "gocryptfs", "gocryptfs-xray" "gocryptfs-xray"}}

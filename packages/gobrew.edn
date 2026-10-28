@@ -1,0 +1,7 @@
+;; SPDX-FileCopyrightText: 2021 Shunsuke Suzuki
+;; SPDX-FileCopyrightText: The breto Authors
+;; SPDX-License-Identifier: MIT
+
+{:source {:github "kevincobain2000/gobrew"}
+ :asset "gobrew-linux-amd64"
+ :checksum "gobrew_{version}_checksums.txt"}

@@ -1,0 +1,7 @@
+;; SPDX-FileCopyrightText: 2021 Shunsuke Suzuki
+;; SPDX-FileCopyrightText: The breto Authors
+;; SPDX-License-Identifier: MIT
+
+{:source {:github "modem-dev/hunk"}
+ :asset "hunkdiff-linux-x64.tar.gz"
+ :bins {"hunk" "hunkdiff-linux-x64/hunk"}}

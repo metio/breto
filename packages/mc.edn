@@ -1,0 +1,8 @@
+;; SPDX-FileCopyrightText: 2021 Shunsuke Suzuki
+;; SPDX-FileCopyrightText: The breto Authors
+;; SPDX-License-Identifier: MIT
+
+{:source {:github "minio/mc"}
+ :tag-prefix ""
+ :asset "mc.linux-amd64.{tag}"
+ :checksum "{asset}.sha256sum"}

@@ -1,0 +1,7 @@
+;; SPDX-FileCopyrightText: 2021 Shunsuke Suzuki
+;; SPDX-FileCopyrightText: The breto Authors
+;; SPDX-License-Identifier: MIT
+
+{:source {:github "plumber-cd/terraform-backend-git"}
+ :asset "terraform-backend-git-linux-amd64"
+ :checksum "SHA256SUMS"}

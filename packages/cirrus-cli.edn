@@ -1,0 +1,8 @@
+;; SPDX-FileCopyrightText: 2021 Shunsuke Suzuki
+;; SPDX-FileCopyrightText: The breto Authors
+;; SPDX-License-Identifier: MIT
+
+{:source {:github "cirruslabs/cirrus-cli"}
+ :asset "cirrus-linux-amd64.tar.gz"
+ :checksum "cirrus_{version}_checksums.txt"
+ :bins {"cirrus" "cirrus"}}

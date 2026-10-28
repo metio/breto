@@ -1,0 +1,6 @@
+;; SPDX-FileCopyrightText: 2021 Shunsuke Suzuki
+;; SPDX-FileCopyrightText: The breto Authors
+;; SPDX-License-Identifier: MIT
+
+{:source {:github "gabrie30/ghorg"}
+ :asset "ghorg_{version}_Linux_x86_64.tar.gz"}

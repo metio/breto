@@ -1,0 +1,7 @@
+;; SPDX-FileCopyrightText: 2021 Shunsuke Suzuki
+;; SPDX-FileCopyrightText: The breto Authors
+;; SPDX-License-Identifier: MIT
+
+{:source {:github "fortio/fortio"}
+ :asset "fortio-linux_amd64-{version}.tgz"
+ :bins {"fortio" "usr/bin/fortio"}}

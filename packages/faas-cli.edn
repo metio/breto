@@ -1,0 +1,8 @@
+;; SPDX-FileCopyrightText: 2021 Shunsuke Suzuki
+;; SPDX-FileCopyrightText: The breto Authors
+;; SPDX-License-Identifier: MIT
+
+{:source {:github "openfaas/faas-cli"}
+ :tag-prefix ""
+ :asset "faas-cli"
+ :checksum "{asset}.sha256"}

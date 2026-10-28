@@ -1,0 +1,7 @@
+;; SPDX-FileCopyrightText: 2021 Shunsuke Suzuki
+;; SPDX-FileCopyrightText: The breto Authors
+;; SPDX-License-Identifier: MIT
+
+{:source {:github "authzed/zed"}
+ :asset "zed_{version}_linux_amd64_gnu.tar.gz"
+ :checksum "checksums.txt"}

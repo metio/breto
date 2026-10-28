@@ -1,0 +1,8 @@
+;; SPDX-FileCopyrightText: 2021 Shunsuke Suzuki
+;; SPDX-FileCopyrightText: The breto Authors
+;; SPDX-License-Identifier: MIT
+
+{:source {:github "Kotlin/kotlin-interactive-shell"}
+ :asset "ki-archive.zip"
+ :checksum "checksums_sha256.txt"
+ :bins {"ki" "ki/bin/ki.sh"}}

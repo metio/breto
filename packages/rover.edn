@@ -1,0 +1,8 @@
+;; SPDX-FileCopyrightText: 2021 Shunsuke Suzuki
+;; SPDX-FileCopyrightText: The breto Authors
+;; SPDX-License-Identifier: MIT
+
+{:source {:github "im2nguyen/rover"}
+ :asset "rover_{version}_linux_amd64.zip"
+ :checksum "rover_{version}_SHA256SUMS"
+ :bins {"rover" "rover_{tag}"}}

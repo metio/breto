@@ -1,0 +1,8 @@
+;; SPDX-FileCopyrightText: 2021 Shunsuke Suzuki
+;; SPDX-FileCopyrightText: The breto Authors
+;; SPDX-License-Identifier: MIT
+
+{:source {:github "cloudsmith-io/cloudsmith-cli"}
+ :asset "cloudsmith-{version}-linux-x86_64-gnu.tar.gz"
+ :checksum "{asset}.sha256"
+ :bins {"cloudsmith" "cloudsmith/cloudsmith"}}

@@ -1,0 +1,8 @@
+;; SPDX-FileCopyrightText: 2021 Shunsuke Suzuki
+;; SPDX-FileCopyrightText: The breto Authors
+;; SPDX-License-Identifier: MIT
+
+{:source {:github "Shopify/kubeaudit"}
+ :asset "kubeaudit_{version}_linux_amd64.tar.gz"
+ :checksum "kubeaudit_{version}_checksums.txt"
+ :bins {"kubeaudit" "kubeaudit", "kubectl-audit" "kubeaudit"}}

@@ -1,0 +1,9 @@
+;; SPDX-FileCopyrightText: 2021 Shunsuke Suzuki
+;; SPDX-FileCopyrightText: The breto Authors
+;; SPDX-License-Identifier: MIT
+
+{:source {:github "theseus-rs/postgresql-binaries"}
+ :tag-prefix ""
+ :asset "postgresql-{tag}-x86_64-unknown-linux-gnu.tar.gz"
+ :checksum "{asset}.sha256"
+ :bins {"psql" "postgresql-{tag}-x86_64-unknown-linux-gnu/bin/psql"}}

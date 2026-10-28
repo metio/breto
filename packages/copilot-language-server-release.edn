@@ -1,0 +1,8 @@
+;; SPDX-FileCopyrightText: 2021 Shunsuke Suzuki
+;; SPDX-FileCopyrightText: The breto Authors
+;; SPDX-License-Identifier: MIT
+
+{:source {:github "github/copilot-language-server-release"}
+ :tag-prefix ""
+ :asset "copilot-language-server-linux-x64-{tag}.zip"
+ :bins {"copilot-language-server" "copilot-language-server"}}

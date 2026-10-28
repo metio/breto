@@ -1,0 +1,8 @@
+;; SPDX-FileCopyrightText: 2021 Shunsuke Suzuki
+;; SPDX-FileCopyrightText: The breto Authors
+;; SPDX-License-Identifier: MIT
+
+{:source {:github "kubevela/kubevela"}
+ :asset "vela-{tag}-linux-amd64.tar.gz"
+ :checksum "sha256sums.txt"
+ :bins {"vela" "linux-amd64/vela"}}

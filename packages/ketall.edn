@@ -1,0 +1,8 @@
+;; SPDX-FileCopyrightText: 2021 Shunsuke Suzuki
+;; SPDX-FileCopyrightText: The breto Authors
+;; SPDX-License-Identifier: MIT
+
+{:source {:github "corneliusweig/ketall"}
+ :asset "ketall-amd64-linux.tar.gz"
+ :checksum "{asset}.sha256"
+ :bins {"ketall" "ketall-amd64-linux", "kubectl-get_all" "ketall-amd64-linux"}}

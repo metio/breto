@@ -1,0 +1,7 @@
+;; SPDX-FileCopyrightText: 2021 Shunsuke Suzuki
+;; SPDX-FileCopyrightText: The breto Authors
+;; SPDX-License-Identifier: MIT
+
+{:source {:github "DeNA/unity-meta-check"}
+ :asset "unity-meta-autofix-linux-amd64"
+ :checksum "checksums.txt"}

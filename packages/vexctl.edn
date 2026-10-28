@@ -1,0 +1,7 @@
+;; SPDX-FileCopyrightText: 2021 Shunsuke Suzuki
+;; SPDX-FileCopyrightText: The breto Authors
+;; SPDX-License-Identifier: MIT
+
+{:source {:github "openvex/vexctl"}
+ :asset "vexctl-linux-amd64"
+ :checksum "vexctl_checksums.txt"}

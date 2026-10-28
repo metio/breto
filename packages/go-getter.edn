@@ -1,0 +1,7 @@
+;; SPDX-FileCopyrightText: 2021 Shunsuke Suzuki
+;; SPDX-FileCopyrightText: The breto Authors
+;; SPDX-License-Identifier: MIT
+
+{:source {:github "hashicorp/go-getter"}
+ :asset "go-getter_{version}_linux_amd64.zip"
+ :checksum "go-getter_{version}_SHA256SUMS"}

@@ -1,0 +1,8 @@
+;; SPDX-FileCopyrightText: 2021 Shunsuke Suzuki
+;; SPDX-FileCopyrightText: The breto Authors
+;; SPDX-License-Identifier: MIT
+
+{:source {:github "fastfetch-cli/fastfetch"}
+ :tag-prefix ""
+ :asset "fastfetch-linux-amd64.tar.gz"
+ :bins {"fastfetch" "fastfetch-linux-amd64/usr/bin/fastfetch"}}

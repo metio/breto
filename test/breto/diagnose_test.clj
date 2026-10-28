@@ -110,3 +110,12 @@
     (is (str/includes? text "[FAIL] iamb 0.13.1 (download)"))
     (is (str/includes? text "  - Set :asset to \"b\"."))
     (is (str/ends-with? text "breto update: 1 up to date, 1 installed, 1 failed"))))
+
+(deftest platform-spellings-count-as-equal
+  (is (= ["go-jsonnet_0.22.0_linux_amd64.tar.gz"]
+         (diagnose/closest "go-jsonnet_Linux_x86_64.tar.gz"
+                           ["go-jsonnet_0.22.0_linux_386.tar.gz" "go-jsonnet_0.22.0_linux_amd64.tar.gz"
+                            "go-jsonnet_0.22.0_linux_arm64.tar.gz"]
+                           1)))
+  (is (= ["tool-aarch64-apple-darwin.zip"]
+         (diagnose/closest "tool-arm64-macos.zip" ["tool-x86_64-apple-darwin.zip" "tool-aarch64-apple-darwin.zip"] 1))))

@@ -1,0 +1,7 @@
+;; SPDX-FileCopyrightText: 2021 Shunsuke Suzuki
+;; SPDX-FileCopyrightText: The breto Authors
+;; SPDX-License-Identifier: MIT
+
+{:source {:github "git-lfs/git-lfs"}
+ :asset "git-lfs-linux-amd64-{tag}.tar.gz"
+ :bins {"git-lfs" "git-lfs-{version}/git-lfs"}}

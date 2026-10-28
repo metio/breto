@@ -1,0 +1,9 @@
+;; SPDX-FileCopyrightText: 2021 Shunsuke Suzuki
+;; SPDX-FileCopyrightText: The breto Authors
+;; SPDX-License-Identifier: MIT
+
+{:source {:github "alexpasmantier/television"}
+ :tag-prefix ""
+ :asset "tv-{tag}-x86_64-unknown-linux-musl.tar.gz"
+ :checksum "tv-{tag}-x86_64-unknown-linux-musl.sha256"
+ :bins {"tv" "tv-{tag}-x86_64-unknown-linux-musl/tv"}}

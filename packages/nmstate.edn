@@ -1,0 +1,7 @@
+;; SPDX-FileCopyrightText: 2021 Shunsuke Suzuki
+;; SPDX-FileCopyrightText: The breto Authors
+;; SPDX-License-Identifier: MIT
+
+{:source {:github "nmstate/nmstate"}
+ :asset "nmstatectl-linux-x64.zip"
+ :bins {"nmstatectl" "nmstatectl"}}

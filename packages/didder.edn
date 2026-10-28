@@ -1,0 +1,7 @@
+;; SPDX-FileCopyrightText: 2021 Shunsuke Suzuki
+;; SPDX-FileCopyrightText: The breto Authors
+;; SPDX-License-Identifier: MIT
+
+{:source {:github "makew0rld/didder"}
+ :asset "didder_{version}_linux_64-bit"
+ :checksum "didder_{version}_checksums.txt"}

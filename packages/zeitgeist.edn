@@ -1,0 +1,7 @@
+;; SPDX-FileCopyrightText: 2021 Shunsuke Suzuki
+;; SPDX-FileCopyrightText: The breto Authors
+;; SPDX-License-Identifier: MIT
+
+{:source {:github "kubernetes-sigs/zeitgeist"}
+ :asset "zeitgeist-amd64-linux"
+ :checksum "checksums.txt"}

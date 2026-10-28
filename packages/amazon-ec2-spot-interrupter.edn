@@ -1,0 +1,8 @@
+;; SPDX-FileCopyrightText: 2021 Shunsuke Suzuki
+;; SPDX-FileCopyrightText: The breto Authors
+;; SPDX-License-Identifier: MIT
+
+{:source {:github "aws/amazon-ec2-spot-interrupter"}
+ :asset "ec2-spot-interrupter_linux_amd64.tar.gz"
+ :checksum "ec2-spot-interrupter_{version}_checksums.txt"
+ :bins {"ec2-spot-interrupter" "ec2-spot-interrupter"}}

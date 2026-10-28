@@ -1,0 +1,7 @@
+;; SPDX-FileCopyrightText: 2021 Shunsuke Suzuki
+;; SPDX-FileCopyrightText: The breto Authors
+;; SPDX-License-Identifier: MIT
+
+{:source {:github "out-of-cheese-error/the-way"}
+ :asset "the-way-linux.tar.gz"
+ :checksum "the-way-linux.sha256"}

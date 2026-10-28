@@ -1,0 +1,7 @@
+;; SPDX-FileCopyrightText: 2021 Shunsuke Suzuki
+;; SPDX-FileCopyrightText: The breto Authors
+;; SPDX-License-Identifier: MIT
+
+{:source {:github "goark/depm"}
+ :asset "depm_{version}_Linux_64bit.tar.gz"
+ :checksum "depm_{version}_checksums.txt"}

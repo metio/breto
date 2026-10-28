@@ -1,0 +1,7 @@
+;; SPDX-FileCopyrightText: 2021 Shunsuke Suzuki
+;; SPDX-FileCopyrightText: The breto Authors
+;; SPDX-License-Identifier: MIT
+
+{:source {:github "kvz/json2hcl"}
+ :asset "json2hcl_{version}_linux_amd64.tar.gz"
+ :checksum "json2hcl_{version}_checksums.txt"}

@@ -1,0 +1,7 @@
+;; SPDX-FileCopyrightText: 2021 Shunsuke Suzuki
+;; SPDX-FileCopyrightText: The breto Authors
+;; SPDX-License-Identifier: MIT
+
+{:source {:github "cycloidio/terracognita"}
+ :asset "terracognita-linux-amd64.tar.gz"
+ :bins {"terracognita" "terracognita-linux-amd64"}}

@@ -1,0 +1,9 @@
+;; SPDX-FileCopyrightText: 2021 Shunsuke Suzuki
+;; SPDX-FileCopyrightText: The breto Authors
+;; SPDX-License-Identifier: MIT
+
+{:source {:github "mitsuhiko/insta"}
+ :tag-prefix ""
+ :asset "cargo-insta-x86_64-unknown-linux-musl.tar.xz"
+ :checksum "{asset}.sha256"
+ :bins {"cargo-insta" "cargo-insta-x86_64-unknown-linux-musl/cargo-insta"}}

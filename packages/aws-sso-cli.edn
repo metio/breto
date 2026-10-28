@@ -1,0 +1,7 @@
+;; SPDX-FileCopyrightText: 2021 Shunsuke Suzuki
+;; SPDX-FileCopyrightText: The breto Authors
+;; SPDX-License-Identifier: MIT
+
+{:source {:github "synfinatic/aws-sso-cli"}
+ :asset "aws-sso-{version}-linux-amd64"
+ :bins {"aws-sso" "{asset}"}}

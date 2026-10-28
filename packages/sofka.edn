@@ -1,0 +1,7 @@
+;; SPDX-FileCopyrightText: 2021 Shunsuke Suzuki
+;; SPDX-FileCopyrightText: The breto Authors
+;; SPDX-License-Identifier: MIT
+
+{:source {:github "nklmilojevic/sofka"}
+ :asset "sofka-{tag}-x86_64-unknown-linux-gnu.tar.gz"
+ :checksum "SHA256SUMS"}

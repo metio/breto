@@ -1,0 +1,7 @@
+;; SPDX-FileCopyrightText: 2021 Shunsuke Suzuki
+;; SPDX-FileCopyrightText: The breto Authors
+;; SPDX-License-Identifier: MIT
+
+{:source {:github "docker/hub-tool"}
+ :asset "hub-tool-linux-amd64.tar.gz"
+ :bins {"hub-tool" "hub-tool/hub-tool"}}

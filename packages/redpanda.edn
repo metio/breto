@@ -1,0 +1,8 @@
+;; SPDX-FileCopyrightText: 2021 Shunsuke Suzuki
+;; SPDX-FileCopyrightText: The breto Authors
+;; SPDX-License-Identifier: MIT
+
+{:source {:github "redpanda-data/redpanda"}
+ :asset "rpk-linux-amd64.zip"
+ :checksum "rpk_{version}_checksums.txt"
+ :bins {"rpk" "rpk"}}

@@ -1,0 +1,7 @@
+;; SPDX-FileCopyrightText: 2021 Shunsuke Suzuki
+;; SPDX-FileCopyrightText: The breto Authors
+;; SPDX-License-Identifier: MIT
+
+{:source {:github "git-town/git-town"}
+ :asset "git-town_linux_intel_64.tar.gz"
+ :checksum "checksums.txt"}

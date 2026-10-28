@@ -1,0 +1,9 @@
+;; SPDX-FileCopyrightText: 2021 Shunsuke Suzuki
+;; SPDX-FileCopyrightText: The breto Authors
+;; SPDX-License-Identifier: MIT
+
+{:source {:github "godotengine/godot"}
+ :tag-prefix ""
+ :asset "Godot_v{tag}_linux.x86_64.zip"
+ :checksum "SHA512-SUMS.txt"
+ :bins {"godot" "Godot_v{tag}_linux.x86_64"}}

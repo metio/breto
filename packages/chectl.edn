@@ -1,0 +1,8 @@
+;; SPDX-FileCopyrightText: 2021 Shunsuke Suzuki
+;; SPDX-FileCopyrightText: The breto Authors
+;; SPDX-License-Identifier: MIT
+
+{:source {:github "che-incubator/chectl"}
+ :tag-prefix ""
+ :asset "chectl-linux-x64.tar.gz"
+ :bins {"chectl" "chectl/bin/chectl"}}

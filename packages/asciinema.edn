@@ -1,0 +1,6 @@
+;; SPDX-FileCopyrightText: 2021 Shunsuke Suzuki
+;; SPDX-FileCopyrightText: The breto Authors
+;; SPDX-License-Identifier: MIT
+
+{:source {:github "asciinema/asciinema"}
+ :asset "asciinema-x86_64-unknown-linux-musl"}

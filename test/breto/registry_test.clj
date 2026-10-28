@@ -5,12 +5,29 @@
   (:require [babashka.fs :as fs]
             [breto.package :as package]
             [breto.registry :as registry]
+            [clojure.string :as str]
             [clojure.test :refer [deftest is]]))
 
 (deftest every-shipped-package-is-valid
   (let [reg (registry/load-registry ["packages"])]
     (is (< 60 (count reg)))
     (is (every? :url (vals reg)))))
+
+(deftest every-shipped-package-renders-a-release
+  (doseq [[name pkg] (registry/load-registry ["packages"])
+          :let [tag (str (:tag-prefix pkg) "1.2.3")
+                {:keys [url bins checksum-url]} (package/artifact (package/at pkg "1.2.3") {:tag tag :version "1.2.3"})]]
+    (is (str/starts-with? url "https://") name)
+    (is (or (nil? checksum-url) (str/starts-with? checksum-url "https://")) name)
+    (is (or (seq bins) (= :tree (:layout pkg))) name)
+    (is (every? #(not (or (str/starts-with? % "/") (str/includes? % ".."))) (vals bins)) name)))
+
+(deftest imported-definitions-follow-upstream-naming
+  (let [rg (get (registry/load-registry ["packages"]) "ripgrep")
+        artifact (package/artifact rg {:tag "14.1.1" :version "14.1.1"})]
+    (is (= "https://github.com/BurntSushi/ripgrep/releases/download/14.1.1/ripgrep-14.1.1-x86_64-unknown-linux-musl.tar.gz"
+           (:url artifact)))
+    (is (= {"rg" "ripgrep-14.1.1-x86_64-unknown-linux-musl/rg"} (:bins artifact)))))
 
 (deftest overlays-merge-over-earlier-registries
   (let [overlay (fs/create-temp-dir)]

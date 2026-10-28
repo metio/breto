@@ -1,0 +1,7 @@
+;; SPDX-FileCopyrightText: 2021 Shunsuke Suzuki
+;; SPDX-FileCopyrightText: The breto Authors
+;; SPDX-License-Identifier: MIT
+
+{:source {:github "SurgeDM/Surge"}
+ :asset "Surge_{version}_linux_amd64.tar.gz"
+ :checksum "Surge_{version}_checksums.txt"}

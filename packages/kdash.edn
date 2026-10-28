@@ -1,0 +1,7 @@
+;; SPDX-FileCopyrightText: 2021 Shunsuke Suzuki
+;; SPDX-FileCopyrightText: The breto Authors
+;; SPDX-License-Identifier: MIT
+
+{:source {:github "kdash-rs/kdash"}
+ :asset "kdash-linux.tar.gz"
+ :checksum "kdash-linux.sha256"}

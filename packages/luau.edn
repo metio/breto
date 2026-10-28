@@ -1,0 +1,8 @@
+;; SPDX-FileCopyrightText: 2021 Shunsuke Suzuki
+;; SPDX-FileCopyrightText: The breto Authors
+;; SPDX-License-Identifier: MIT
+
+{:source {:github "luau-lang/luau"}
+ :tag-prefix ""
+ :asset "luau-ubuntu.zip"
+ :bins {"luau" "luau", "luau-analyze" "luau-analyze", "luau-ast" "luau-ast", "luau-compile" "luau-compile"}}

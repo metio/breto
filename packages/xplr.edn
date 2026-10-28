@@ -1,0 +1,7 @@
+;; SPDX-FileCopyrightText: 2021 Shunsuke Suzuki
+;; SPDX-FileCopyrightText: The breto Authors
+;; SPDX-License-Identifier: MIT
+
+{:source {:github "sayanarijit/xplr"}
+ :asset "xplr-linux.tar.gz"
+ :checksum "xplr-linux.sha256"}

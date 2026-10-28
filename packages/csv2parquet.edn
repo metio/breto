@@ -1,0 +1,8 @@
+;; SPDX-FileCopyrightText: 2021 Shunsuke Suzuki
+;; SPDX-FileCopyrightText: The breto Authors
+;; SPDX-License-Identifier: MIT
+
+{:source {:github "domoritz/arrow-tools"}
+ :asset "csv2parquet-x86_64-unknown-linux-gnu.tar.xz"
+ :checksum "{asset}.sha256"
+ :bins {"csv2parquet" "csv2parquet-x86_64-unknown-linux-gnu/csv2parquet"}}

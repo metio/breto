@@ -1,0 +1,8 @@
+;; SPDX-FileCopyrightText: 2021 Shunsuke Suzuki
+;; SPDX-FileCopyrightText: The breto Authors
+;; SPDX-License-Identifier: MIT
+
+{:source {:github "bcicen/slackcat"}
+ :tag-prefix ""
+ :asset "slackcat-{tag}-linux-amd64"
+ :checksum "sha256sums.txt"}

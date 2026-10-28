@@ -18,8 +18,14 @@
   (when-let [f (get probes k)]
     (try (apply f args) (catch Exception _ nil))))
 
+(def ^:private platform-aliases
+  "Spellings of one platform, so x86_64 and amd64 count as the same token."
+  [[#"x86[-_]64|x64" "amd64"] [#"aarch64" "arm64"] [#"i[36]86|x86(?![-_]?64)" "386"]
+   [#"macos|osx|apple-darwin" "darwin"]])
+
 (defn- tokens [s]
-  (set (remove str/blank? (str/split (str/lower-case (str s)) #"[-_.+/]+"))))
+  (let [canonical (reduce (fn [t [re to]] (str/replace t re to)) (str/lower-case (str s)) platform-aliases)]
+    (set (remove str/blank? (str/split canonical #"[-_.+/]+")))))
 
 (defn similarity [a b]
   (let [x (tokens a) y (tokens b)

@@ -1,0 +1,7 @@
+;; SPDX-FileCopyrightText: 2021 Shunsuke Suzuki
+;; SPDX-FileCopyrightText: The breto Authors
+;; SPDX-License-Identifier: MIT
+
+{:source {:github "argoproj-labs/argocd-image-updater"}
+ :asset "argocd-image-updater-linux_amd64"
+ :checksum "release-{tag}.sha256"}

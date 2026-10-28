@@ -1,0 +1,8 @@
+;; SPDX-FileCopyrightText: 2021 Shunsuke Suzuki
+;; SPDX-FileCopyrightText: The breto Authors
+;; SPDX-License-Identifier: MIT
+
+{:source {:github "jumppad-labs/jumppad"}
+ :tag-prefix ""
+ :asset "jumppad_{tag}_linux_x86_64.tar.gz"
+ :checksum "checksums.txt"}

@@ -1,0 +1,8 @@
+;; SPDX-FileCopyrightText: 2021 Shunsuke Suzuki
+;; SPDX-FileCopyrightText: The breto Authors
+;; SPDX-License-Identifier: MIT
+
+{:source {:github "GoogleCloudPlatform/terraformer"}
+ :tag-prefix ""
+ :asset "terraformer-aws-linux-amd64"
+ :bins {"terraformer" "{asset}"}}

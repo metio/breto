@@ -1,0 +1,8 @@
+;; SPDX-FileCopyrightText: 2021 Shunsuke Suzuki
+;; SPDX-FileCopyrightText: The breto Authors
+;; SPDX-License-Identifier: MIT
+
+{:source {:github "tofuutils/tenv"}
+ :asset "tenv_{tag}_Linux_x86_64.tar.gz"
+ :checksum "tenv_{tag}_checksums.txt"
+ :bins {"atmos" "atmos", "tenv" "tenv", "terraform" "terraform", "terragrunt" "terragrunt", "tf" "tf", "tofu" "tofu"}}

@@ -1,0 +1,8 @@
+;; SPDX-FileCopyrightText: 2021 Shunsuke Suzuki
+;; SPDX-FileCopyrightText: The breto Authors
+;; SPDX-License-Identifier: MIT
+
+{:source {:github "fatedier/frp"}
+ :asset "frp_{version}_linux_amd64.tar.gz"
+ :checksum "frp_sha256_checksums.txt"
+ :bins {"frpc" "frp_{version}_linux_amd64/frpc", "frps" "frp_{version}_linux_amd64/frps"}}

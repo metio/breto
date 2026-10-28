@@ -1,0 +1,7 @@
+;; SPDX-FileCopyrightText: 2021 Shunsuke Suzuki
+;; SPDX-FileCopyrightText: The breto Authors
+;; SPDX-License-Identifier: MIT
+
+{:source {:github "alvinunreal/tmuxai"}
+ :asset "tmuxai_Linux_amd64.tar.gz"
+ :checksum "checksums.sha256"}

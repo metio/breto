@@ -1,0 +1,7 @@
+;; SPDX-FileCopyrightText: 2021 Shunsuke Suzuki
+;; SPDX-FileCopyrightText: The breto Authors
+;; SPDX-License-Identifier: MIT
+
+{:source {:github "AGWA/git-crypt"}
+ :tag-prefix ""
+ :asset "git-crypt-{tag}-linux-x86_64"}

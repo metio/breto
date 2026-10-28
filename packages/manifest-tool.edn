@@ -1,0 +1,8 @@
+;; SPDX-FileCopyrightText: 2021 Shunsuke Suzuki
+;; SPDX-FileCopyrightText: The breto Authors
+;; SPDX-License-Identifier: MIT
+
+{:source {:github "estesp/manifest-tool"}
+ :asset "binaries-manifest-tool-{version}.tar.gz"
+ :checksum "binaries-manifest-tool-{version}.tar.gz.sha256sum"
+ :bins {"manifest-tool" "manifest-tool-linux-amd64"}}

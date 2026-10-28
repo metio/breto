@@ -1,0 +1,7 @@
+;; SPDX-FileCopyrightText: 2021 Shunsuke Suzuki
+;; SPDX-FileCopyrightText: The breto Authors
+;; SPDX-License-Identifier: MIT
+
+{:source {:github "Shopify/ejson"}
+ :asset "ejson_{version}_linux_amd64.tar.gz"
+ :checksum "ejson_{version}_checksums.txt"}

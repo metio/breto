@@ -3,5 +3,4 @@
 
 {:source {:github "owenthereal/upterm"},
  :asset "upterm_linux_amd64.tar.gz",
- :tag-prefix "",
  :checksum "checksums.txt"}

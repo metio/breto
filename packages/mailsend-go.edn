@@ -1,0 +1,8 @@
+;; SPDX-FileCopyrightText: 2021 Shunsuke Suzuki
+;; SPDX-FileCopyrightText: The breto Authors
+;; SPDX-License-Identifier: MIT
+
+{:source {:github "muquit/mailsend-go"}
+ :asset "mailsend-go-{tag}-linux-amd64.d.tar.gz"
+ :checksum "mailsend-go-{tag}-checksums.txt"
+ :bins {"mailsend-go" "mailsend-go-{tag}-linux-amd64"}}

@@ -1,0 +1,6 @@
+;; SPDX-FileCopyrightText: 2021 Shunsuke Suzuki
+;; SPDX-FileCopyrightText: The breto Authors
+;; SPDX-License-Identifier: MIT
+
+{:source {:github "ivanilves/lstags"}
+ :asset "lstags-linux-{tag}.tar.gz"}

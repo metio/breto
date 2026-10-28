@@ -1,0 +1,8 @@
+;; SPDX-FileCopyrightText: 2021 Shunsuke Suzuki
+;; SPDX-FileCopyrightText: The breto Authors
+;; SPDX-License-Identifier: MIT
+
+{:source {:github "zaghaghi/openapi-tui"}
+ :tag-prefix ""
+ :asset "openapi-tui-{tag}-linux-x86_64.tar.gz"
+ :checksum "openapi-tui-{tag}-linux-x86_64.sha256"}

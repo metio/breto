@@ -1,0 +1,8 @@
+;; SPDX-FileCopyrightText: 2021 Shunsuke Suzuki
+;; SPDX-FileCopyrightText: The breto Authors
+;; SPDX-License-Identifier: MIT
+
+{:source {:github "arduino/arduino-language-server"}
+ :tag-prefix ""
+ :asset "arduino-language-server_{tag}_Linux_64bit.tar.gz"
+ :checksum "{tag}-checksums.txt"}

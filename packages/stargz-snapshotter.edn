@@ -1,0 +1,8 @@
+;; SPDX-FileCopyrightText: 2021 Shunsuke Suzuki
+;; SPDX-FileCopyrightText: The breto Authors
+;; SPDX-License-Identifier: MIT
+
+{:source {:github "containerd/stargz-snapshotter"}
+ :asset "stargz-snapshotter-{tag}-linux-amd64.tar.gz"
+ :checksum "stargz-snapshotter-{tag}-linux-amd64.tar.gz.sha256sum"
+ :bins {"containerd-stargz-grpc" "containerd-stargz-grpc", "ctr-remote" "ctr-remote", "stargz-store" "stargz-store", "stargz-store-helper" "stargz-store-helper"}}

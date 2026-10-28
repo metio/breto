@@ -1,0 +1,7 @@
+;; SPDX-FileCopyrightText: 2021 Shunsuke Suzuki
+;; SPDX-FileCopyrightText: The breto Authors
+;; SPDX-License-Identifier: MIT
+
+{:source {:github "trailbaseio/trailbase"}
+ :asset "trailbase_{tag}_x86_64_linux.zip"
+ :bins {"trail" "trail"}}

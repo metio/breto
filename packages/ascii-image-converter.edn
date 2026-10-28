@@ -1,0 +1,8 @@
+;; SPDX-FileCopyrightText: 2021 Shunsuke Suzuki
+;; SPDX-FileCopyrightText: The breto Authors
+;; SPDX-License-Identifier: MIT
+
+{:source {:github "TheZoraiz/ascii-image-converter"}
+ :asset "ascii-image-converter_Linux_amd64_64bit.tar.gz"
+ :checksum "sha256_checksums.txt"
+ :bins {"ascii-image-converter" "ascii-image-converter_Linux_amd64_64bit/ascii-image-converter"}}

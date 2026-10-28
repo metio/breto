@@ -1,0 +1,9 @@
+;; SPDX-FileCopyrightText: 2021 Shunsuke Suzuki
+;; SPDX-FileCopyrightText: The breto Authors
+;; SPDX-License-Identifier: MIT
+
+{:source {:github "dominikh/go-tools"}
+ :tag-prefix ""
+ :asset "staticcheck_linux_amd64.tar.gz"
+ :checksum "{asset}.sha256"
+ :bins {"staticcheck" "staticcheck/staticcheck"}}

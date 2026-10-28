@@ -1,0 +1,8 @@
+;; SPDX-FileCopyrightText: 2021 Shunsuke Suzuki
+;; SPDX-FileCopyrightText: The breto Authors
+;; SPDX-License-Identifier: MIT
+
+{:source {:github "docker/compose"}
+ :asset "docker-compose-linux-x86_64"
+ :checksum "{asset}.sha256"
+ :bins {"docker-cli-plugin-docker-compose" "{asset}"}}

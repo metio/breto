@@ -1,0 +1,8 @@
+;; SPDX-FileCopyrightText: 2021 Shunsuke Suzuki
+;; SPDX-FileCopyrightText: The breto Authors
+;; SPDX-License-Identifier: MIT
+
+{:source {:github "gohugoio/hugo"}
+ :asset "hugo_extended_{version}_linux-amd64.tar.gz"
+ :checksum "hugo_{version}_checksums.txt"
+ :bins {"hugo" "hugo"}}

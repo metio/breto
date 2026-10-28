@@ -1,0 +1,7 @@
+;; SPDX-FileCopyrightText: 2021 Shunsuke Suzuki
+;; SPDX-FileCopyrightText: The breto Authors
+;; SPDX-License-Identifier: MIT
+
+{:source {:github "dimo414/bkt"}
+ :tag-prefix ""
+ :asset "bkt.v{tag}.x86_64-unknown-linux-musl.zip"}

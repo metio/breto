@@ -1,0 +1,8 @@
+;; SPDX-FileCopyrightText: 2021 Shunsuke Suzuki
+;; SPDX-FileCopyrightText: The breto Authors
+;; SPDX-License-Identifier: MIT
+
+{:source {:github "operator-framework/operator-registry"}
+ :asset "linux-amd64-opm"
+ :checksum "checksums.txt"
+ :bins {"opm" "{asset}"}}

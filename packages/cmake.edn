@@ -1,0 +1,7 @@
+;; SPDX-FileCopyrightText: 2021 Shunsuke Suzuki
+;; SPDX-FileCopyrightText: The breto Authors
+;; SPDX-License-Identifier: MIT
+
+{:source {:github "Kitware/CMake"}
+ :asset "cmake-{version}-linux-x86_64.tar.gz"
+ :bins {"ccmake" "cmake-{version}-linux-x86_64/bin/ccmake", "cmake" "cmake-{version}-linux-x86_64/bin/cmake", "cmake-gui" "cmake-{version}-linux-x86_64/bin/cmake-gui", "cpack" "cmake-{version}-linux-x86_64/bin/cpack", "ctest" "cmake-{version}-linux-x86_64/bin/ctest"}}

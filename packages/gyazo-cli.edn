@@ -1,0 +1,9 @@
+;; SPDX-FileCopyrightText: 2021 Shunsuke Suzuki
+;; SPDX-FileCopyrightText: The breto Authors
+;; SPDX-License-Identifier: MIT
+
+{:source {:github "tomohiro/gyazo-cli"}
+ :tag-prefix ""
+ :asset "gyazo-cli_{tag}_linux_amd64.zip"
+ :checksum "{tag}_SHA256SUMS"
+ :bins {"gyazo-cli" "gyazo-cli_{tag}_linux_amd64/gyazo-cli"}}

@@ -1,0 +1,7 @@
+;; SPDX-FileCopyrightText: 2021 Shunsuke Suzuki
+;; SPDX-FileCopyrightText: The breto Authors
+;; SPDX-License-Identifier: MIT
+
+{:source {:github "mercari/tfnotify"}
+ :asset "tfnotify_linux_amd64.tar.gz"
+ :checksum "tfnotify_{version}_checksums.txt"}

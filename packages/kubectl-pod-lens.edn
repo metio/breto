@@ -1,0 +1,8 @@
+;; SPDX-FileCopyrightText: 2021 Shunsuke Suzuki
+;; SPDX-FileCopyrightText: The breto Authors
+;; SPDX-License-Identifier: MIT
+
+{:source {:github "sunny0826/kubectl-pod-lens"}
+ :asset "pod-lens_linux_amd64.tar.gz"
+ :checksum "pod-lens_{version}_checksums.txt"
+ :bins {"kubectl-pod_lens" "pod-lens", "pod-lens" "pod-lens"}}

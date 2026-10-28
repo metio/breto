@@ -1,0 +1,8 @@
+;; SPDX-FileCopyrightText: 2021 Shunsuke Suzuki
+;; SPDX-FileCopyrightText: The breto Authors
+;; SPDX-License-Identifier: MIT
+
+{:source {:github "kubernetes-sigs/krew"}
+ :asset "krew-linux_amd64.tar.gz"
+ :checksum "{asset}.sha256"
+ :bins {"krew" "krew-linux_amd64"}}

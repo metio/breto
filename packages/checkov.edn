@@ -1,0 +1,8 @@
+;; SPDX-FileCopyrightText: 2021 Shunsuke Suzuki
+;; SPDX-FileCopyrightText: The breto Authors
+;; SPDX-License-Identifier: MIT
+
+{:source {:github "bridgecrewio/checkov"}
+ :tag-prefix ""
+ :asset "checkov_linux_X86_64.zip"
+ :bins {"checkov" "dist/checkov"}}

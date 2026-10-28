@@ -1,0 +1,8 @@
+;; SPDX-FileCopyrightText: 2021 Shunsuke Suzuki
+;; SPDX-FileCopyrightText: The breto Authors
+;; SPDX-License-Identifier: MIT
+
+{:source {:github "auth0/auth0-cli"}
+ :asset "auth0-cli_{version}_Linux_x86_64.tar.gz"
+ :checksum "checksums.txt"
+ :bins {"auth0" "auth0"}}

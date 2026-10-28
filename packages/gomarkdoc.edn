@@ -1,0 +1,8 @@
+;; SPDX-FileCopyrightText: 2021 Shunsuke Suzuki
+;; SPDX-FileCopyrightText: The breto Authors
+;; SPDX-License-Identifier: MIT
+
+{:source {:github "princjef/gomarkdoc"}
+ :asset "gomarkdoc_{version}_linux_amd64.tar.gz"
+ :checksum "gomarkdoc_{version}_checksums.txt"
+ :bins {"gomarkdoc" "gomarkdoc_{version}_linux_amd64/gomarkdoc"}}

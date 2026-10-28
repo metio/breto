@@ -1,0 +1,7 @@
+;; SPDX-FileCopyrightText: 2021 Shunsuke Suzuki
+;; SPDX-FileCopyrightText: The breto Authors
+;; SPDX-License-Identifier: MIT
+
+{:source {:github "fishi0x01/vsh"}
+ :asset "vsh_linux_amd64"
+ :checksum "SHA256SUM"}

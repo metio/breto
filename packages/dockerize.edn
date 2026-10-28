@@ -1,0 +1,6 @@
+;; SPDX-FileCopyrightText: 2021 Shunsuke Suzuki
+;; SPDX-FileCopyrightText: The breto Authors
+;; SPDX-License-Identifier: MIT
+
+{:source {:github "jwilder/dockerize"}
+ :asset "dockerize-linux-amd64-{tag}.tar.gz"}

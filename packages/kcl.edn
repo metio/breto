@@ -1,0 +1,7 @@
+;; SPDX-FileCopyrightText: 2021 Shunsuke Suzuki
+;; SPDX-FileCopyrightText: The breto Authors
+;; SPDX-License-Identifier: MIT
+
+{:source {:github "kcl-lang/kcl"}
+ :asset "kclvm-{tag}-linux-amd64.tar.gz"
+ :bins {"kcl-language-server" "kclvm/bin/kcl-language-server", "kclvm_cli" "kclvm/bin/kclvm_cli"}}

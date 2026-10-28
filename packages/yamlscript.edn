@@ -1,0 +1,8 @@
+;; SPDX-FileCopyrightText: 2021 Shunsuke Suzuki
+;; SPDX-FileCopyrightText: The breto Authors
+;; SPDX-License-Identifier: MIT
+
+{:source {:github "yaml/yamlscript"}
+ :tag-prefix ""
+ :asset "ys-{tag}-linux-x64.tar.xz"
+ :bins {"ys" "ys-{tag}-linux-x64/ys"}}

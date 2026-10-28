@@ -1,0 +1,8 @@
+;; SPDX-FileCopyrightText: 2021 Shunsuke Suzuki
+;; SPDX-FileCopyrightText: The breto Authors
+;; SPDX-License-Identifier: MIT
+
+{:source {:github "terramate-io/terramate"}
+ :asset "terramate_{version}_linux_x86_64.tar.gz"
+ :checksum "checksums.txt"
+ :bins {"terramate" "terramate", "terramate-ls" "terramate-ls"}}

@@ -1,0 +1,7 @@
+;; SPDX-FileCopyrightText: 2021 Shunsuke Suzuki
+;; SPDX-FileCopyrightText: The breto Authors
+;; SPDX-License-Identifier: MIT
+
+{:source {:github "golang-migrate/migrate"}
+ :asset "migrate.linux-amd64.tar.gz"
+ :checksum "sha256sum.txt"}

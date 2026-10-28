@@ -1,0 +1,7 @@
+;; SPDX-FileCopyrightText: 2021 Shunsuke Suzuki
+;; SPDX-FileCopyrightText: The breto Authors
+;; SPDX-License-Identifier: MIT
+
+{:source {:github "fujiwara/maprobe"}
+ :asset "maprobe_{version}_linux_amd64.tar.gz"
+ :checksum "checksums.txt"}

@@ -1,0 +1,8 @@
+;; SPDX-FileCopyrightText: 2021 Shunsuke Suzuki
+;; SPDX-FileCopyrightText: The breto Authors
+;; SPDX-License-Identifier: MIT
+
+{:source {:github "RyuyaIshibashi/aws-s3-siggy"}
+ :asset "siggy_Linux_x86_64.tar.gz"
+ :checksum "siggy_{version}_checksums.txt"
+ :bins {"siggy" "siggy"}}

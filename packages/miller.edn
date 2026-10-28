@@ -1,0 +1,8 @@
+;; SPDX-FileCopyrightText: 2021 Shunsuke Suzuki
+;; SPDX-FileCopyrightText: The breto Authors
+;; SPDX-License-Identifier: MIT
+
+{:source {:github "johnkerl/miller"}
+ :asset "miller-{version}-linux-amd64.tar.gz"
+ :checksum "miller-{version}-checksums.txt"
+ :bins {"mlr" "miller-{version}-linux-amd64/mlr"}}

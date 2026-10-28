@@ -1,0 +1,7 @@
+;; SPDX-FileCopyrightText: 2021 Shunsuke Suzuki
+;; SPDX-FileCopyrightText: The breto Authors
+;; SPDX-License-Identifier: MIT
+
+{:source {:github "slackhq/nebula"}
+ :asset "nebula-linux-amd64.tar.gz"
+ :bins {"nebula" "nebula", "nebula-cert" "nebula-cert"}}

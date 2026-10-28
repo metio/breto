@@ -1,0 +1,7 @@
+;; SPDX-FileCopyrightText: 2021 Shunsuke Suzuki
+;; SPDX-FileCopyrightText: The breto Authors
+;; SPDX-License-Identifier: MIT
+
+{:source {:github "breml/tfreveal"}
+ :asset "tfreveal_{version}_Linux_x86_64.tar.gz"
+ :checksum "tfreveal_{version}_checksums.txt"}

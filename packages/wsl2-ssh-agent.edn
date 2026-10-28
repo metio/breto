@@ -1,0 +1,7 @@
+;; SPDX-FileCopyrightText: 2021 Shunsuke Suzuki
+;; SPDX-FileCopyrightText: The breto Authors
+;; SPDX-License-Identifier: MIT
+
+{:source {:github "mame/wsl2-ssh-agent"}
+ :asset "wsl2-ssh-agent"
+ :checksum "checksums.txt"}

@@ -1,0 +1,6 @@
+;; SPDX-FileCopyrightText: 2021 Shunsuke Suzuki
+;; SPDX-FileCopyrightText: The breto Authors
+;; SPDX-License-Identifier: MIT
+
+{:source {:github "a8m/envsubst"}
+ :asset "envsubst-Linux-x86_64"}

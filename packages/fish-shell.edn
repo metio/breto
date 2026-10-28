@@ -1,0 +1,8 @@
+;; SPDX-FileCopyrightText: 2021 Shunsuke Suzuki
+;; SPDX-FileCopyrightText: The breto Authors
+;; SPDX-License-Identifier: MIT
+
+{:source {:github "fish-shell/fish-shell"}
+ :tag-prefix ""
+ :asset "fish-{tag}-linux-x86_64.tar.xz"
+ :bins {"fish" "fish"}}

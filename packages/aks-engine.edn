@@ -1,0 +1,7 @@
+;; SPDX-FileCopyrightText: 2021 Shunsuke Suzuki
+;; SPDX-FileCopyrightText: The breto Authors
+;; SPDX-License-Identifier: MIT
+
+{:source {:github "Azure/aks-engine"}
+ :asset "aks-engine-{tag}-linux-amd64.tar.gz"
+ :bins {"aks-engine" "aks-engine-{tag}-linux-amd64/aks-engine"}}

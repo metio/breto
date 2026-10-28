@@ -1,0 +1,6 @@
+;; SPDX-FileCopyrightText: 2021 Shunsuke Suzuki
+;; SPDX-FileCopyrightText: The breto Authors
+;; SPDX-License-Identifier: MIT
+
+{:source {:github "vishaltelangre/ff"}
+ :asset "find-files-{tag}-x86_64-unknown-linux-musl.tar.gz"}

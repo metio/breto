@@ -1,0 +1,7 @@
+;; SPDX-FileCopyrightText: 2021 Shunsuke Suzuki
+;; SPDX-FileCopyrightText: The breto Authors
+;; SPDX-License-Identifier: MIT
+
+{:source {:github "concourse/concourse"}
+ :asset "concourse-{version}-linux-amd64.tgz"
+ :bins {"concourse" "concourse/bin/concourse"}}

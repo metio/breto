@@ -1,0 +1,8 @@
+;; SPDX-FileCopyrightText: 2021 Shunsuke Suzuki
+;; SPDX-FileCopyrightText: The breto Authors
+;; SPDX-License-Identifier: MIT
+
+{:source {:github "rust-cross/cargo-zigbuild"}
+ :asset "cargo-zigbuild-x86_64-unknown-linux-gnu.tar.xz"
+ :checksum "{asset}.sha256"
+ :bins {"cargo-zigbuild" "cargo-zigbuild-x86_64-unknown-linux-gnu/cargo-zigbuild"}}

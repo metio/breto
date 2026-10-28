@@ -1,0 +1,7 @@
+;; SPDX-FileCopyrightText: 2021 Shunsuke Suzuki
+;; SPDX-FileCopyrightText: The breto Authors
+;; SPDX-License-Identifier: MIT
+
+{:source {:github "sachaos/viddy"}
+ :asset "viddy-{tag}-linux-x86_64.tar.gz"
+ :checksum "viddy-{tag}-linux-x86_64.sha256"}

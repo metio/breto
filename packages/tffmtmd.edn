@@ -1,0 +1,7 @@
+;; SPDX-FileCopyrightText: 2021 Shunsuke Suzuki
+;; SPDX-FileCopyrightText: The breto Authors
+;; SPDX-License-Identifier: MIT
+
+{:source {:github "fukubaka0825/tffmtmd"}
+ :asset "tffmtmd_{version}_linux_amd64.tar.gz"
+ :checksum "tffmtmd_{version}_checksums.txt"}

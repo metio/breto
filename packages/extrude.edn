@@ -1,0 +1,7 @@
+;; SPDX-FileCopyrightText: 2021 Shunsuke Suzuki
+;; SPDX-FileCopyrightText: The breto Authors
+;; SPDX-License-Identifier: MIT
+
+{:source {:github "liamg/extrude"}
+ :asset "extrude-linux-amd64"
+ :checksum "extrude_{version}_checksums.txt"}

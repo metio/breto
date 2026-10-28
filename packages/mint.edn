@@ -1,0 +1,8 @@
+;; SPDX-FileCopyrightText: 2021 Shunsuke Suzuki
+;; SPDX-FileCopyrightText: The breto Authors
+;; SPDX-License-Identifier: MIT
+
+{:source {:github "mintoolkit/mint"}
+ :tag-prefix ""
+ :asset "dist_linux.tar.gz"
+ :bins {"docker-slim" "dist_linux/docker-slim", "mint" "dist_linux/mint", "mint-sensor" "dist_linux/mint-sensor", "slim" "dist_linux/slim"}}

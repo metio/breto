@@ -1,0 +1,8 @@
+;; SPDX-FileCopyrightText: 2021 Shunsuke Suzuki
+;; SPDX-FileCopyrightText: The breto Authors
+;; SPDX-License-Identifier: MIT
+
+{:source {:github "Songmu/ecschedule"}
+ :asset "ecschedule_{tag}_linux_amd64.tar.gz"
+ :checksum "SHA256SUMS"
+ :bins {"ecschedule" "ecschedule_{tag}_linux_amd64/ecschedule"}}

@@ -1,0 +1,8 @@
+;; SPDX-FileCopyrightText: 2021 Shunsuke Suzuki
+;; SPDX-FileCopyrightText: The breto Authors
+;; SPDX-License-Identifier: MIT
+
+{:source {:github "metalbear-co/mirrord"}
+ :tag-prefix ""
+ :asset "mirrord_linux_x86_64.zip"
+ :checksum "{asset}.sha256"}

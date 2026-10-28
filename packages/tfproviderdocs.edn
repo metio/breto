@@ -1,0 +1,7 @@
+;; SPDX-FileCopyrightText: 2021 Shunsuke Suzuki
+;; SPDX-FileCopyrightText: The breto Authors
+;; SPDX-License-Identifier: MIT
+
+{:source {:github "bflad/tfproviderdocs"}
+ :asset "tfproviderdocs_{version}_linux_amd64.tar.gz"
+ :checksum "tfproviderdocs_{version}_checksums.txt"}

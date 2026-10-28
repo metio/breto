@@ -2,6 +2,7 @@
 ;; SPDX-License-Identifier: 0BSD
 
 {:source {:github "google/go-jsonnet"},
- :asset "go-jsonnet_Linux_x86_64.tar.gz",
+ :asset "go-jsonnet_{version}_linux_amd64.tar.gz",
  :checksum "checksums.txt",
- :bins {"jsonnet" "jsonnet"}}
+ :bins {"jsonnet" "jsonnet"},
+ :history [{:before "0.22.0" :asset "go-jsonnet_Linux_x86_64.tar.gz"}]}

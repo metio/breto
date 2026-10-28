@@ -1,0 +1,7 @@
+;; SPDX-FileCopyrightText: 2021 Shunsuke Suzuki
+;; SPDX-FileCopyrightText: The breto Authors
+;; SPDX-License-Identifier: MIT
+
+{:source {:github "aws/aws-sam-cli"}
+ :asset "aws-sam-cli-linux-x86_64.zip"
+ :bins {"sam" "dist/sam"}}

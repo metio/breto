@@ -1,0 +1,7 @@
+;; SPDX-FileCopyrightText: 2021 Shunsuke Suzuki
+;; SPDX-FileCopyrightText: The breto Authors
+;; SPDX-License-Identifier: MIT
+
+{:source {:github "projectdiscovery/pdtm"}
+ :asset "pdtm_{version}_linux_amd64.zip"
+ :checksum "pdtm_{version}_checksums.txt"}

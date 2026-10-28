@@ -1,0 +1,7 @@
+;; SPDX-FileCopyrightText: 2021 Shunsuke Suzuki
+;; SPDX-FileCopyrightText: The breto Authors
+;; SPDX-License-Identifier: MIT
+
+{:source {:github "projectdiscovery/proxify"}
+ :asset "proxify_{version}_linux_amd64.zip"
+ :checksum "proxify_{version}_checksums.txt"}

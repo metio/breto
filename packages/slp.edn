@@ -1,0 +1,7 @@
+;; SPDX-FileCopyrightText: 2021 Shunsuke Suzuki
+;; SPDX-FileCopyrightText: The breto Authors
+;; SPDX-License-Identifier: MIT
+
+{:source {:github "tkuchiki/slp"}
+ :asset "slp_linux_amd64.zip"
+ :checksum "slp_{tag}_checksums.txt"}

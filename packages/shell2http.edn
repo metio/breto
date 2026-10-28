@@ -1,0 +1,7 @@
+;; SPDX-FileCopyrightText: 2021 Shunsuke Suzuki
+;; SPDX-FileCopyrightText: The breto Authors
+;; SPDX-License-Identifier: MIT
+
+{:source {:github "msoap/shell2http"}
+ :asset "shell2http_{version}_linux_amd64.tar.gz"
+ :checksum "checksums.txt"}

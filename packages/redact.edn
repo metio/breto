@@ -1,0 +1,8 @@
+;; SPDX-FileCopyrightText: 2021 Shunsuke Suzuki
+;; SPDX-FileCopyrightText: The breto Authors
+;; SPDX-License-Identifier: MIT
+
+{:source {:github "julian7/redact"}
+ :asset "redact-linux-amd64-{version}.tgz"
+ :checksum "SHA256SUMS.redact-{version}"
+ :bins {"redact" "redact", "redact-ext-aws" "redact-ext-aws", "redact-ext-azure" "redact-ext-azure"}}

@@ -1,0 +1,8 @@
+;; SPDX-FileCopyrightText: 2021 Shunsuke Suzuki
+;; SPDX-FileCopyrightText: The breto Authors
+;; SPDX-License-Identifier: MIT
+
+{:source {:github "sigstore/rekor"}
+ :asset "rekor-cli-linux-amd64"
+ :checksum "rekor_checksums.txt"
+ :bins {"rekor-cli" "{asset}"}}

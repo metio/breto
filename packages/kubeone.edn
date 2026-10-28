@@ -1,0 +1,7 @@
+;; SPDX-FileCopyrightText: 2021 Shunsuke Suzuki
+;; SPDX-FileCopyrightText: The breto Authors
+;; SPDX-License-Identifier: MIT
+
+{:source {:github "kubermatic/kubeone"}
+ :asset "kubeone_{version}_linux_amd64.zip"
+ :checksum "kubeone_{version}_checksums.txt"}

@@ -1,0 +1,8 @@
+;; SPDX-FileCopyrightText: 2021 Shunsuke Suzuki
+;; SPDX-FileCopyrightText: The breto Authors
+;; SPDX-License-Identifier: MIT
+
+{:source {:github "Kampfkarren/selene"}
+ :tag-prefix ""
+ :asset "selene-light-{tag}-linux.zip"
+ :bins {"selene" "selene"}}

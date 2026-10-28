@@ -1,0 +1,8 @@
+;; SPDX-FileCopyrightText: 2021 Shunsuke Suzuki
+;; SPDX-FileCopyrightText: The breto Authors
+;; SPDX-License-Identifier: MIT
+
+{:source {:github "gittower/git-flow-next"}
+ :asset "git-flow-next-{tag}-linux-amd64.tar.gz"
+ :checksum "git-flow-next-{tag}-checksums.txt"
+ :bins {"git-flow" "git-flow"}}

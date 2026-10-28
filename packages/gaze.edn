@@ -1,0 +1,7 @@
+;; SPDX-FileCopyrightText: 2021 Shunsuke Suzuki
+;; SPDX-FileCopyrightText: The breto Authors
+;; SPDX-License-Identifier: MIT
+
+{:source {:github "wtetsu/gaze"}
+ :asset "gaze_linux_{tag}.zip"
+ :bins {"gaze" "gaze_linux_{tag}/gaze"}}

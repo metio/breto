@@ -1,0 +1,7 @@
+;; SPDX-FileCopyrightText: 2021 Shunsuke Suzuki
+;; SPDX-FileCopyrightText: The breto Authors
+;; SPDX-License-Identifier: MIT
+
+{:source {:github "hadolint/hadolint"}
+ :asset "hadolint-linux-x86_64"
+ :checksum "checksums.sha256"}

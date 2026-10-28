@@ -1,0 +1,7 @@
+;; SPDX-FileCopyrightText: 2021 Shunsuke Suzuki
+;; SPDX-FileCopyrightText: The breto Authors
+;; SPDX-License-Identifier: MIT
+
+{:source {:github "sacloud/usacloud"}
+ :asset "usacloud_linux-amd64.zip"
+ :checksum "usacloud_SHA256SUMS"}

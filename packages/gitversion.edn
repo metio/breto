@@ -1,0 +1,7 @@
+;; SPDX-FileCopyrightText: 2021 Shunsuke Suzuki
+;; SPDX-FileCopyrightText: The breto Authors
+;; SPDX-License-Identifier: MIT
+
+{:source {:github "GitTools/GitVersion"}
+ :tag-prefix ""
+ :asset "gitversion-linux-x64-{tag}.tar.gz"}

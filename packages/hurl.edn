@@ -1,0 +1,9 @@
+;; SPDX-FileCopyrightText: 2021 Shunsuke Suzuki
+;; SPDX-FileCopyrightText: The breto Authors
+;; SPDX-License-Identifier: MIT
+
+{:source {:github "Orange-OpenSource/hurl"}
+ :tag-prefix ""
+ :asset "hurl-{tag}-x86_64-unknown-linux-gnu.tar.gz"
+ :checksum "{asset}.sha256"
+ :bins {"hurl" "hurl-{tag}-x86_64-unknown-linux-gnu/bin/hurl", "hurlfmt" "hurl-{tag}-x86_64-unknown-linux-gnu/bin/hurlfmt"}}

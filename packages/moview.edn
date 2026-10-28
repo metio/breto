@@ -1,0 +1,7 @@
+;; SPDX-FileCopyrightText: 2021 Shunsuke Suzuki
+;; SPDX-FileCopyrightText: The breto Authors
+;; SPDX-License-Identifier: MIT
+
+{:source {:github "koki-develop/moview"}
+ :asset "moview_Linux_x86_64.tar.gz"
+ :checksum "moview_{version}_checksums.txt"}

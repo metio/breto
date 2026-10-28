@@ -1,0 +1,7 @@
+;; SPDX-FileCopyrightText: 2021 Shunsuke Suzuki
+;; SPDX-FileCopyrightText: The breto Authors
+;; SPDX-License-Identifier: MIT
+
+{:source {:github "suzuki-shunsuke/deny-self-approve"}
+ :asset "deny-self-approve_linux_amd64.tar.gz"
+ :checksum "deny-self-approve_{version}_checksums.txt"}

@@ -1,0 +1,7 @@
+;; SPDX-FileCopyrightText: 2021 Shunsuke Suzuki
+;; SPDX-FileCopyrightText: The breto Authors
+;; SPDX-License-Identifier: MIT
+
+{:source {:github "cea-hpc/sshproxy"}
+ :asset "sshproxy_{version}_Linux_x86_64.tar.gz"
+ :bins {"sshproxy" "sshproxy_{version}_Linux_x86_64/sshproxy", "sshproxy-dumpd" "sshproxy_{version}_Linux_x86_64/sshproxy-dumpd", "sshproxy-replay" "sshproxy_{version}_Linux_x86_64/sshproxy-replay", "sshproxyctl" "sshproxy_{version}_Linux_x86_64/sshproxyctl"}}

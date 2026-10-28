@@ -1,0 +1,7 @@
+;; SPDX-FileCopyrightText: 2021 Shunsuke Suzuki
+;; SPDX-FileCopyrightText: The breto Authors
+;; SPDX-License-Identifier: MIT
+
+{:source {:github "kreuzwerker/m1-terraform-provider-helper"}
+ :asset "m1-terraform-provider-helper_{version}_linux_amd64.tar.gz"
+ :checksum "checksums.txt"}

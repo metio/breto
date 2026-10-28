@@ -1,0 +1,7 @@
+;; SPDX-FileCopyrightText: 2021 Shunsuke Suzuki
+;; SPDX-FileCopyrightText: The breto Authors
+;; SPDX-License-Identifier: MIT
+
+{:source {:github "projectdiscovery/naabu"}
+ :asset "naabu_{version}_linux_amd64.zip"
+ :checksum "naabu-checksums.txt"}

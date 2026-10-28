@@ -1,0 +1,8 @@
+;; SPDX-FileCopyrightText: 2021 Shunsuke Suzuki
+;; SPDX-FileCopyrightText: The breto Authors
+;; SPDX-License-Identifier: MIT
+
+{:source {:github "Zxilly/go-size-analyzer"}
+ :asset "go-size-analyzer_{version}_linux_amd64.tar.gz"
+ :checksum "checksums.txt"
+ :bins {"gsa" "gsa"}}

@@ -1,0 +1,9 @@
+;; SPDX-FileCopyrightText: 2021 Shunsuke Suzuki
+;; SPDX-FileCopyrightText: The breto Authors
+;; SPDX-License-Identifier: MIT
+
+{:source {:github "astral-sh/ty"}
+ :tag-prefix ""
+ :asset "ty-x86_64-unknown-linux-musl.tar.gz"
+ :checksum "{asset}.sha256"
+ :bins {"ty" "ty-x86_64-unknown-linux-musl/ty"}}

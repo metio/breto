@@ -1,0 +1,7 @@
+;; SPDX-FileCopyrightText: 2021 Shunsuke Suzuki
+;; SPDX-FileCopyrightText: The breto Authors
+;; SPDX-License-Identifier: MIT
+
+{:source {:github "wasm-bindgen/wasm-pack"}
+ :asset "wasm-pack-{tag}-x86_64-unknown-linux-musl.tar.gz"
+ :bins {"wasm-pack" "wasm-pack-{tag}-x86_64-unknown-linux-musl/wasm-pack"}}

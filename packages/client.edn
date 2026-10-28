@@ -1,0 +1,9 @@
+;; SPDX-FileCopyrightText: 2021 Shunsuke Suzuki
+;; SPDX-FileCopyrightText: The breto Authors
+;; SPDX-License-Identifier: MIT
+
+{:source {:github "knative/client"}
+ :tag-prefix ""
+ :asset "kn-linux-amd64"
+ :checksum "checksums.txt"
+ :bins {"kn" "{asset}"}}

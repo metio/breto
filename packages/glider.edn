@@ -1,0 +1,8 @@
+;; SPDX-FileCopyrightText: 2021 Shunsuke Suzuki
+;; SPDX-FileCopyrightText: The breto Authors
+;; SPDX-License-Identifier: MIT
+
+{:source {:github "nadoo/glider"}
+ :asset "glider_{version}_linux_amd64.tar.gz"
+ :checksum "glider_{version}_checksums.txt"
+ :bins {"glider" "glider_{version}_linux_amd64/glider"}}

@@ -1,0 +1,7 @@
+;; SPDX-FileCopyrightText: 2021 Shunsuke Suzuki
+;; SPDX-FileCopyrightText: The breto Authors
+;; SPDX-License-Identifier: MIT
+
+{:source {:github "babarot/github-labeler"}
+ :asset "github-labeler_linux_x86_64.tar.gz"
+ :checksum "github-labeler_{version}_checksums.txt"}

@@ -1,0 +1,7 @@
+;; SPDX-FileCopyrightText: 2021 Shunsuke Suzuki
+;; SPDX-FileCopyrightText: The breto Authors
+;; SPDX-License-Identifier: MIT
+
+{:source {:github "kamadorueda/alejandra"}
+ :tag-prefix ""
+ :asset "alejandra-x86_64-unknown-linux-musl"}

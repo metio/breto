@@ -1,0 +1,7 @@
+;; SPDX-FileCopyrightText: 2021 Shunsuke Suzuki
+;; SPDX-FileCopyrightText: The breto Authors
+;; SPDX-License-Identifier: MIT
+
+{:source {:github "noborus/ov"}
+ :asset "ov_{version}_linux_amd64.zip"
+ :checksum "ov_{version}_checksums.txt"}

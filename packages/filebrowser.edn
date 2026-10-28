@@ -1,0 +1,7 @@
+;; SPDX-FileCopyrightText: 2021 Shunsuke Suzuki
+;; SPDX-FileCopyrightText: The breto Authors
+;; SPDX-License-Identifier: MIT
+
+{:source {:github "filebrowser/filebrowser"}
+ :asset "linux-amd64-filebrowser.tar.gz"
+ :checksum "filebrowser_{version}_checksums.txt"}

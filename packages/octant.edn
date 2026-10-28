@@ -1,0 +1,8 @@
+;; SPDX-FileCopyrightText: 2021 Shunsuke Suzuki
+;; SPDX-FileCopyrightText: The breto Authors
+;; SPDX-License-Identifier: MIT
+
+{:source {:github "vmware-archive/octant"}
+ :asset "octant_{version}_Linux-64bit.tar.gz"
+ :checksum "checksums.txt"
+ :bins {"octant" "octant_{version}_Linux-64bit/octant"}}

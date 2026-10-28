@@ -1,0 +1,7 @@
+;; SPDX-FileCopyrightText: 2021 Shunsuke Suzuki
+;; SPDX-FileCopyrightText: The breto Authors
+;; SPDX-License-Identifier: MIT
+
+{:source {:github "Lallassu/gorss"}
+ :asset "gorss_linux.tar.gz"
+ :bins {"gorss" "dist/gorss_linux"}}

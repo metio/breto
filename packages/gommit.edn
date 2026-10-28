@@ -1,0 +1,7 @@
+;; SPDX-FileCopyrightText: 2021 Shunsuke Suzuki
+;; SPDX-FileCopyrightText: The breto Authors
+;; SPDX-License-Identifier: MIT
+
+{:source {:github "antham/gommit"}
+ :asset "gommit_{version}_linux_amd64.tar.gz"
+ :checksum "gommit_{version}_checksums.txt"}

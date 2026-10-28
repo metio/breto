@@ -1,0 +1,7 @@
+;; SPDX-FileCopyrightText: 2021 Shunsuke Suzuki
+;; SPDX-FileCopyrightText: The breto Authors
+;; SPDX-License-Identifier: MIT
+
+{:source {:github "rlmcpherson/s3gof3r"}
+ :asset "gof3r_{version}_linux_amd64.tar.gz"
+ :bins {"gof3r" "gof3r_{version}_linux_amd64/gof3r"}}

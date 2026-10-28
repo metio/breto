@@ -1,0 +1,8 @@
+;; SPDX-FileCopyrightText: 2021 Shunsuke Suzuki
+;; SPDX-FileCopyrightText: The breto Authors
+;; SPDX-License-Identifier: MIT
+
+{:source {:github "fastly/terrctl"}
+ :tag-prefix ""
+ :asset "terrctl-linux_x86_64-{tag}.tar.gz"
+ :bins {"terrctl" "linux-x86_64/terrctl"}}

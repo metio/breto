@@ -1,0 +1,7 @@
+;; SPDX-FileCopyrightText: 2021 Shunsuke Suzuki
+;; SPDX-FileCopyrightText: The breto Authors
+;; SPDX-License-Identifier: MIT
+
+{:source {:github "sandreas/tone"}
+ :asset "tone-{version}-linux-musl-x64.tar.gz"
+ :bins {"tone" "tone-{version}-linux-musl-x64/tone"}}

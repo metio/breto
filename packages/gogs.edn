@@ -1,0 +1,8 @@
+;; SPDX-FileCopyrightText: 2021 Shunsuke Suzuki
+;; SPDX-FileCopyrightText: The breto Authors
+;; SPDX-License-Identifier: MIT
+
+{:source {:github "gogs/gogs"}
+ :asset "gogs_{tag}_linux_amd64.tar.gz"
+ :checksum "https://dl.gogs.io/{version}/checksum_sha256.txt"
+ :bins {"gogs" "gogs/gogs"}}

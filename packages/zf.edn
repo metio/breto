@@ -1,0 +1,8 @@
+;; SPDX-FileCopyrightText: 2021 Shunsuke Suzuki
+;; SPDX-FileCopyrightText: The breto Authors
+;; SPDX-License-Identifier: MIT
+
+{:source {:github "natecraddock/zf"}
+ :tag-prefix ""
+ :asset "zf-{tag}-x86_64-linux.tar.xz"
+ :bins {"zf" "zf-{tag}-x86_64-linux"}}

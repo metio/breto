@@ -1,0 +1,8 @@
+;; SPDX-FileCopyrightText: 2021 Shunsuke Suzuki
+;; SPDX-FileCopyrightText: The breto Authors
+;; SPDX-License-Identifier: MIT
+
+{:source {:github "awslabs/aidlc-workflows"}
+ :asset "aidlc-linux-x64"
+ :checksum "checksums.txt"
+ :bins {"aidlc" "{asset}"}}

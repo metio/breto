@@ -1,0 +1,8 @@
+;; SPDX-FileCopyrightText: 2021 Shunsuke Suzuki
+;; SPDX-FileCopyrightText: The breto Authors
+;; SPDX-License-Identifier: MIT
+
+{:source {:github "alibaba/open-code-review"}
+ :asset "opencodereview-linux-amd64"
+ :checksum "sha256sum.txt"
+ :bins {"ocr" "{asset}"}}

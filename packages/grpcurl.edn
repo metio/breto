@@ -1,0 +1,7 @@
+;; SPDX-FileCopyrightText: 2021 Shunsuke Suzuki
+;; SPDX-FileCopyrightText: The breto Authors
+;; SPDX-License-Identifier: MIT
+
+{:source {:github "fullstorydev/grpcurl"}
+ :asset "grpcurl_{version}_linux_x86_64.tar.gz"
+ :checksum "grpcurl_{version}_checksums.txt"}

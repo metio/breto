@@ -1,0 +1,7 @@
+;; SPDX-FileCopyrightText: 2021 Shunsuke Suzuki
+;; SPDX-FileCopyrightText: The breto Authors
+;; SPDX-License-Identifier: MIT
+
+{:source {:github "theurichde/go-aws-sso"}
+ :asset "go-aws-sso_{version}_linux_amd64.tar.gz"
+ :checksum "go-aws-sso_{version}_checksums.txt"}

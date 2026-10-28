@@ -1,0 +1,7 @@
+;; SPDX-FileCopyrightText: 2021 Shunsuke Suzuki
+;; SPDX-FileCopyrightText: The breto Authors
+;; SPDX-License-Identifier: MIT
+
+{:source {:github "getsops/sops"}
+ :asset "sops-{tag}.linux.amd64"
+ :checksum "sops-{tag}.checksums.txt"}

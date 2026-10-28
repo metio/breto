@@ -1,0 +1,7 @@
+;; SPDX-FileCopyrightText: 2021 Shunsuke Suzuki
+;; SPDX-FileCopyrightText: The breto Authors
+;; SPDX-License-Identifier: MIT
+
+{:source {:github "cubicdaiya/nginx-build"}
+ :asset "nginx-build-linux-amd64-{version}.tar.gz"
+ :checksum "nginx-build_{version}_checksums.txt"}

@@ -236,4 +236,4 @@ nix develop --command bb test
 
 ## License
 
-0BSD, REUSE-compliant.
+0BSD, REUSE-compliant. The definitions in `packages/` whose header names Shunsuke Suzuki were converted from the [aqua registry](https://github.com/aquaproj/aqua-registry) and are MIT-licensed.

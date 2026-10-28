@@ -1,0 +1,7 @@
+;; SPDX-FileCopyrightText: 2021 Shunsuke Suzuki
+;; SPDX-FileCopyrightText: The breto Authors
+;; SPDX-License-Identifier: MIT
+
+{:source {:github "wasmerio/wasmer"}
+ :asset "wasmer-linux-amd64.tar.gz"
+ :bins {"wasmer" "bin/wasmer", "wasmer-headless" "bin/wasmer-headless"}}

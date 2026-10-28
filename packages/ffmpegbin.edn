@@ -1,0 +1,8 @@
+;; SPDX-FileCopyrightText: 2021 Shunsuke Suzuki
+;; SPDX-FileCopyrightText: The breto Authors
+;; SPDX-License-Identifier: MIT
+
+{:source {:github "Tyrrrz/FFmpegBin"}
+ :tag-prefix ""
+ :asset "ffmpeg-linux-x64.zip"
+ :bins {"ffmpeg" "ffmpeg", "ffplay" "ffplay", "ffprobe" "ffprobe"}}

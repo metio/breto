@@ -1,0 +1,7 @@
+;; SPDX-FileCopyrightText: 2021 Shunsuke Suzuki
+;; SPDX-FileCopyrightText: The breto Authors
+;; SPDX-License-Identifier: MIT
+
+{:source {:github "babarot/iap_curl"}
+ :asset "iap_curl_linux_x86_64.tar.gz"
+ :checksum "iap_curl_{version}_checksums.txt"}

@@ -1,0 +1,8 @@
+;; SPDX-FileCopyrightText: 2021 Shunsuke Suzuki
+;; SPDX-FileCopyrightText: The breto Authors
+;; SPDX-License-Identifier: MIT
+
+{:source {:github "Future-Element/pinset"}
+ :asset "pinset-{tag}-linux-x86_64.zip"
+ :checksum "SHA256SUMS"
+ :bins {"pinset" "pinset", "pinset-shim" "pinset-shim"}}

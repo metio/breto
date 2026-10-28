@@ -1,0 +1,8 @@
+;; SPDX-FileCopyrightText: 2021 Shunsuke Suzuki
+;; SPDX-FileCopyrightText: The breto Authors
+;; SPDX-License-Identifier: MIT
+
+{:source {:github "namespacelabs/foundation"}
+ :asset "nsc_{version}_linux_amd64.tar.gz"
+ :checksum "checksums.txt"
+ :bins {"bazel-credential-nsc" "bazel-credential-nsc", "docker-credential-nsc" "docker-credential-nsc", "nsc" "nsc"}}

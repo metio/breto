@@ -1,0 +1,7 @@
+;; SPDX-FileCopyrightText: 2021 Shunsuke Suzuki
+;; SPDX-FileCopyrightText: The breto Authors
+;; SPDX-License-Identifier: MIT
+
+{:source {:github "libbpf/bpftool"}
+ :asset "bpftool-{tag}-amd64.tar.gz"
+ :checksum "bpftool-{tag}-amd64.tar.gz.sha256sum"}

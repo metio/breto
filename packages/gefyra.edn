@@ -1,0 +1,7 @@
+;; SPDX-FileCopyrightText: 2021 Shunsuke Suzuki
+;; SPDX-FileCopyrightText: The breto Authors
+;; SPDX-License-Identifier: MIT
+
+{:source {:github "gefyrahq/gefyra"}
+ :tag-prefix ""
+ :asset "gefyra-{tag}-linux-amd64.zip"}

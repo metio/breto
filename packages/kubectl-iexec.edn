@@ -1,0 +1,8 @@
+;; SPDX-FileCopyrightText: 2021 Shunsuke Suzuki
+;; SPDX-FileCopyrightText: The breto Authors
+;; SPDX-License-Identifier: MIT
+
+{:source {:github "gabeduke/kubectl-iexec"}
+ :tag-prefix ""
+ :asset "kubectl-iexec_{tag}_Linux_x86_64.tar.gz"
+ :checksum "checksums.txt"}

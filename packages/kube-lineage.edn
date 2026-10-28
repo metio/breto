@@ -1,0 +1,8 @@
+;; SPDX-FileCopyrightText: 2021 Shunsuke Suzuki
+;; SPDX-FileCopyrightText: The breto Authors
+;; SPDX-License-Identifier: MIT
+
+{:source {:github "tohjustin/kube-lineage"}
+ :asset "kube-lineage_linux_amd64.tar.gz"
+ :checksum "checksums.txt"
+ :bins {"kube-lineage" "kube-lineage", "kubectl-lineage" "kube-lineage"}}

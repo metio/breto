@@ -1,0 +1,7 @@
+;; SPDX-FileCopyrightText: 2021 Shunsuke Suzuki
+;; SPDX-FileCopyrightText: The breto Authors
+;; SPDX-License-Identifier: MIT
+
+{:source {:github "uw-labs/strongbox"}
+ :asset "strongbox_{version}_linux_amd64"
+ :checksum "strongbox_{version}_checksums.txt"}
