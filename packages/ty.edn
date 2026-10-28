@@ -2,7 +2,8 @@
 ;; SPDX-FileCopyrightText: The breto Authors
 ;; SPDX-License-Identifier: MIT
 
-{:source {:github "astral-sh/ty"}
+{:description "An extremely fast Python type checker and language server, written in Rust",
+ :source {:github "astral-sh/ty"}
  :tag-prefix ""
  :asset "ty-x86_64-unknown-linux-musl.tar.gz"
  :checksum "{asset}.sha256"

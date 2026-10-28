@@ -2,6 +2,7 @@
 ;; SPDX-FileCopyrightText: The breto Authors
 ;; SPDX-License-Identifier: MIT
 
-{:source {:github "mrjosh/helm-ls"}
+{:description "Language server for Helm",
+ :source {:github "mrjosh/helm-ls"}
  :asset "helm_ls_linux_amd64"
  :bins {"helm_ls" "{asset}"}}

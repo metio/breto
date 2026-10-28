@@ -2,6 +2,7 @@
 ;; SPDX-FileCopyrightText: The breto Authors
 ;; SPDX-License-Identifier: MIT
 
-{:source {:github "ktock/buildg"}
+{:description "Interactive debugger for Dockerfile, with support for IDEs (VS Code, Emacs, Neovim, etc.)",
+ :source {:github "ktock/buildg"}
  :asset "buildg-{tag}-linux-amd64.tar.gz"
  :checksum "SHA256SUMS"}

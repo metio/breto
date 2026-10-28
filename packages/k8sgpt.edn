@@ -2,6 +2,7 @@
 ;; SPDX-FileCopyrightText: The breto Authors
 ;; SPDX-License-Identifier: MIT
 
-{:source {:github "k8sgpt-ai/k8sgpt"}
+{:description "Giving Kubernetes Superpowers to everyone",
+ :source {:github "k8sgpt-ai/k8sgpt"}
  :asset "k8sgpt_Linux_x86_64.tar.gz"
  :checksum "checksums.txt"}

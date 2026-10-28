@@ -2,6 +2,7 @@
 ;; SPDX-FileCopyrightText: The breto Authors
 ;; SPDX-License-Identifier: MIT
 
-{:source {:github "gojuno/minimock"}
+{:description "Powerful mock generation tool for Go programming language",
+ :source {:github "gojuno/minimock"}
  :asset "minimock_{version}_linux_amd64.tar.gz"
  :checksum "checksums.txt"}

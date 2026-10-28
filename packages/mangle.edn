@@ -2,6 +2,7 @@
 ;; SPDX-FileCopyrightText: The breto Authors
 ;; SPDX-License-Identifier: MIT
 
-{:source {:github "optiv/Mangle"}
+{:description "Mangle is a tool that manipulates aspects of compiled executables (.exe or DLL) to avoid detection from EDRs",
+ :source {:github "optiv/Mangle"}
  :asset "Mangle_{version}_linux_amd64"
  :checksum "Mangle_checksums.txt"}

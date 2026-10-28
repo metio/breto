@@ -2,6 +2,7 @@
 ;; SPDX-FileCopyrightText: The breto Authors
 ;; SPDX-License-Identifier: MIT
 
-{:source {:github "magodo/pipeform"}
+{:description "Terraform runtime TUI",
+ :source {:github "magodo/pipeform"}
  :asset "pipeform_{version}_linux_amd64.zip"
  :checksum "pipeform_{version}_SHA256SUMS"}

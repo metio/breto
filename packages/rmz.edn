@@ -2,6 +2,7 @@
 ;; SPDX-FileCopyrightText: The breto Authors
 ;; SPDX-License-Identifier: MIT
 
-{:source {:github "SUPERCILEX/fuc"}
+{:description "Modern, performance focused unix commands",
+ :source {:github "SUPERCILEX/fuc"}
  :tag-prefix ""
  :asset "x86_64-unknown-linux-musl-rmz"}

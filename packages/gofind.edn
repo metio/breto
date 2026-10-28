@@ -2,6 +2,7 @@
 ;; SPDX-FileCopyrightText: The breto Authors
 ;; SPDX-License-Identifier: MIT
 
-{:source {:github "sheepla/gofind"}
+{:description "A command line pkg.go.dev searcher and `go get` helper",
+ :source {:github "sheepla/gofind"}
  :asset "gofind_{version}_Linux_x86_64.tar.gz"
  :checksum "checksums.txt"}

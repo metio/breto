@@ -2,6 +2,7 @@
 ;; SPDX-FileCopyrightText: The breto Authors
 ;; SPDX-License-Identifier: MIT
 
-{:source {:github "gruntwork-io/fetch"}
+{:description "Download files, folders, and release assets from a specific git commit, branch, or tag of public and private GitHub repos",
+ :source {:github "gruntwork-io/fetch"}
  :asset "fetch_linux_amd64"
  :checksum "SHA256SUMS"}

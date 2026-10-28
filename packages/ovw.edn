@@ -2,6 +2,7 @@
 ;; SPDX-FileCopyrightText: The breto Authors
 ;; SPDX-License-Identifier: MIT
 
-{:source {:github "roie/ovw"}
+{:description "A terminal overview for your local projects",
+ :source {:github "roie/ovw"}
  :asset "ovw_{version}_linux_amd64.tar.gz"
  :checksum "checksums.txt"}

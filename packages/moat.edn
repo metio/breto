@@ -2,6 +2,7 @@
 ;; SPDX-FileCopyrightText: The breto Authors
 ;; SPDX-License-Identifier: MIT
 
-{:source {:github "majorcontext/moat"}
+{:description "Run agents in containers with credential injection and full observability",
+ :source {:github "majorcontext/moat"}
  :asset "moat_{version}_linux_amd64.tar.gz"
  :checksum "checksums.txt"}

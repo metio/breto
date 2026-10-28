@@ -2,5 +2,6 @@
 ;; SPDX-FileCopyrightText: The breto Authors
 ;; SPDX-License-Identifier: MIT
 
-{:source {:github "samuel-lucas6/Kryptor"}
+{:description "A simple, modern, and secure encryption and signing tool that aims to be a better version of age and Minisign",
+ :source {:github "samuel-lucas6/Kryptor"}
  :asset "kryptor-linux-x64.zip"}

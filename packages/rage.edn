@@ -2,6 +2,7 @@
 ;; SPDX-FileCopyrightText: The breto Authors
 ;; SPDX-License-Identifier: MIT
 
-{:source {:github "str4d/rage"}
+{:description "A simple, secure and modern file encryption tool (and Rust library) with small explicit keys, no config options, and UNIX-style composability",
+ :source {:github "str4d/rage"}
  :asset "rage-{tag}-x86_64-linux.tar.gz"
  :bins {"rage" "rage/rage", "rage-keygen" "rage/rage-keygen", "rage-mount" "rage/rage-mount"}}

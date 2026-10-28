@@ -2,5 +2,6 @@
 ;; SPDX-FileCopyrightText: The breto Authors
 ;; SPDX-License-Identifier: MIT
 
-{:source {:github "rhysd/dotfiles"}
+{:description "dotfiles symbolic links management CLI",
+ :source {:github "rhysd/dotfiles"}
  :asset "dotfiles_linux_amd64.zip"}

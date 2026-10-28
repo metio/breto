@@ -2,7 +2,8 @@
 ;; SPDX-FileCopyrightText: The breto Authors
 ;; SPDX-License-Identifier: MIT
 
-{:source {:github "editorconfig/editorconfig-core-go"}
+{:description "EditorConfig Core written in Go",
+ :source {:github "editorconfig/editorconfig-core-go"}
  :asset "editorconfig-core-go_{version}_linux_amd64.tar.gz"
  :checksum "checksums.txt"
  :bins {"editorconfig" "editorconfig"}}

@@ -2,7 +2,8 @@
 ;; SPDX-FileCopyrightText: The breto Authors
 ;; SPDX-License-Identifier: MIT
 
-{:source {:github "btwld/fvm"}
+{:description "Flutter Version Management: A simple CLI to manage Flutter SDK versions",
+ :source {:github "btwld/fvm"}
  :tag-prefix ""
  :asset "fvm-{tag}-linux-x64.tar.gz"
  :bins {"fvm" "fvm/fvm"}}

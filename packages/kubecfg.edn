@@ -2,5 +2,6 @@
 ;; SPDX-FileCopyrightText: The breto Authors
 ;; SPDX-License-Identifier: MIT
 
-{:source {:github "kubecfg/kubecfg"}
+{:description "A tool for managing complex enterprise Kubernetes environments as code",
+ :source {:github "kubecfg/kubecfg"}
  :asset "kubecfg_Linux_X64"}

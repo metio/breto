@@ -2,6 +2,7 @@
 ;; SPDX-FileCopyrightText: The breto Authors
 ;; SPDX-License-Identifier: MIT
 
-{:source {:github "schollz/croc"}
+{:description "Easily and securely send things from one computer to another",
+ :source {:github "schollz/croc"}
  :asset "croc_{tag}_Linux-64bit.tar.gz"
  :checksum "croc_{tag}_checksums.txt"}

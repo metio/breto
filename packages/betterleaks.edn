@@ -2,6 +2,7 @@
 ;; SPDX-FileCopyrightText: The breto Authors
 ;; SPDX-License-Identifier: MIT
 
-{:source {:github "betterleaks/betterleaks"}
+{:description "A Better Secrets Scanner built for configurability and speed",
+ :source {:github "betterleaks/betterleaks"}
  :asset "betterleaks_{version}_linux_x64.tar.gz"
  :checksum "checksums.txt"}

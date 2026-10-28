@@ -2,6 +2,7 @@
 ;; SPDX-FileCopyrightText: The breto Authors
 ;; SPDX-License-Identifier: MIT
 
-{:source {:github "bflad/tfproviderlint"}
+{:description "Terraform Provider Lint Tool",
+ :source {:github "bflad/tfproviderlint"}
  :asset "tfproviderlint_{version}_linux_amd64.tar.gz"
  :checksum "tfproviderlint_{version}_checksums.txt"}

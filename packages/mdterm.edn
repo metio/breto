@@ -2,5 +2,6 @@
 ;; SPDX-FileCopyrightText: The breto Authors
 ;; SPDX-License-Identifier: MIT
 
-{:source {:github "bahdotsh/mdterm"}
+{:description "A terminal-based Markdown browser",
+ :source {:github "bahdotsh/mdterm"}
  :asset "mdterm-x86_64-unknown-linux-musl.tar.gz"}

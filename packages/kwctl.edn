@@ -2,6 +2,7 @@
 ;; SPDX-FileCopyrightText: The breto Authors
 ;; SPDX-License-Identifier: MIT
 
-{:source {:github "kubewarden/kwctl"}
+{:description "Go-to CLI tool for Kubewarden users",
+ :source {:github "kubewarden/kwctl"}
  :asset "kwctl-linux-x86_64.zip"
  :bins {"kwctl" "kwctl-linux-x86_64"}}

@@ -2,5 +2,6 @@
 ;; SPDX-FileCopyrightText: The breto Authors
 ;; SPDX-License-Identifier: MIT
 
-{:source {:github "streamdal/plumber"}
+{:description "A swiss army knife CLI tool for interacting with Kafka, RabbitMQ and other messaging systems",
+ :source {:github "streamdal/plumber"}
  :asset "plumber-linux"}

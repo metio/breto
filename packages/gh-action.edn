@@ -2,6 +2,7 @@
 ;; SPDX-FileCopyrightText: The breto Authors
 ;; SPDX-License-Identifier: MIT
 
-{:source {:github "DeNA/unity-meta-check"}
+{:description "Binary for GitHub Actions of DeNA/unity-meta-check",
+ :source {:github "DeNA/unity-meta-check"}
  :asset "gh-action-linux-amd64"
  :checksum "checksums.txt"}

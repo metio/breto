@@ -2,6 +2,7 @@
 ;; SPDX-FileCopyrightText: The breto Authors
 ;; SPDX-License-Identifier: MIT
 
-{:source {:github "securego/gosec"}
+{:description "Go security checker",
+ :source {:github "securego/gosec"}
  :asset "gosec_{version}_linux_amd64.tar.gz"
  :checksum "gosec_{version}_checksums.txt"}

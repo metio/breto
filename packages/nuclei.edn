@@ -2,6 +2,7 @@
 ;; SPDX-FileCopyrightText: The breto Authors
 ;; SPDX-License-Identifier: MIT
 
-{:source {:github "projectdiscovery/nuclei"}
+{:description "Fast and customizable vulnerability scanner based on simple YAML based DSL",
+ :source {:github "projectdiscovery/nuclei"}
  :asset "nuclei_{version}_linux_amd64.zip"
  :checksum "nuclei_{version}_checksums.txt"}

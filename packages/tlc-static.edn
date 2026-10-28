@@ -2,7 +2,8 @@
 ;; SPDX-FileCopyrightText: The breto Authors
 ;; SPDX-License-Identifier: MIT
 
-{:source {:github "yashikota/tlc-static"}
+{:description "Native, JVM-free TLA+ TLC. Fully static on Linux",
+ :source {:github "yashikota/tlc-static"}
  :asset "tlc-linux-amd64.tar.gz"
  :checksum "SHA256SUMS"
  :bins {"tlc" "tlc"}}

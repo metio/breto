@@ -2,6 +2,7 @@
 ;; SPDX-FileCopyrightText: The breto Authors
 ;; SPDX-License-Identifier: MIT
 
-{:source {:github "takaishi/awscost"}
+{:description "Print AWS costs to text or graph image",
+ :source {:github "takaishi/awscost"}
  :asset "awscost_Linux_x86_64.tar.gz"
  :checksum "checksums.txt"}

@@ -2,6 +2,7 @@
 ;; SPDX-FileCopyrightText: The breto Authors
 ;; SPDX-License-Identifier: MIT
 
-{:source {:github "barnybug/cli53"}
+{:description "Command line tool for Amazon Route 53",
+ :source {:github "barnybug/cli53"}
  :asset "cli53-linux-amd64"
  :checksum "cli53_{version}_checksums.txt"}

@@ -2,5 +2,6 @@
 ;; SPDX-FileCopyrightText: The breto Authors
 ;; SPDX-License-Identifier: MIT
 
-{:source {:github "berbicanes/apiark"}
+{:description "Privacy-first API platform built with Tauri v2. No login, no cloud, ~60 MB RAM. A lightweight Postman alternative",
+ :source {:github "berbicanes/apiark"}
  :asset "apiark-cli-linux-x86_64"}

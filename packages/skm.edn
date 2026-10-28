@@ -2,6 +2,7 @@
 ;; SPDX-FileCopyrightText: The breto Authors
 ;; SPDX-License-Identifier: MIT
 
-{:source {:github "TimothyYe/skm"}
+{:description "A simple and powerful SSH keys manager",
+ :source {:github "TimothyYe/skm"}
  :asset "skm_{version}_linux_amd64.tar.gz"
  :checksum "checksums.txt"}

@@ -2,5 +2,6 @@
 ;; SPDX-FileCopyrightText: The breto Authors
 ;; SPDX-License-Identifier: MIT
 
-{:source {:github "axllent/mailpit"}
+{:description "An email and SMTP testing tool with API for developers",
+ :source {:github "axllent/mailpit"}
  :asset "mailpit-linux-amd64.tar.gz"}

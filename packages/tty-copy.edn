@@ -2,6 +2,7 @@
 ;; SPDX-FileCopyrightText: The breto Authors
 ;; SPDX-License-Identifier: MIT
 
-{:source {:github "jirutka/tty-copy"}
+{:description "Copy content to system clipboard via TTY and terminal using ANSI OSC52 sequence",
+ :source {:github "jirutka/tty-copy"}
  :asset "tty-copy.x86_64-linux"
  :checksum "checksums.txt"}

@@ -2,6 +2,7 @@
 ;; SPDX-FileCopyrightText: The breto Authors
 ;; SPDX-License-Identifier: MIT
 
-{:source {:github "dagucloud/dagu"}
+{:description "Self-hosted workflow engine for scripts, cron jobs, containers, and ops automation. YAML workflows, retries, logs, approvals, and optional distributed workers",
+ :source {:github "dagucloud/dagu"}
  :asset "dagu_{version}_linux_amd64.tar.gz"
  :checksum "checksums.txt"}

@@ -2,7 +2,8 @@
 ;; SPDX-FileCopyrightText: The breto Authors
 ;; SPDX-License-Identifier: MIT
 
-{:source {:github "crazywhalecc/static-php-cli"}
+{:description "Build standalone PHP binaries on Linux, macOS, FreeBSD, Windows, with PHP project together, with popular extensions included",
+ :source {:github "crazywhalecc/static-php-cli"}
  :tag-prefix ""
  :asset "spc-linux-x86_64.tar.gz"
  :bins {"spc" "spc"}}

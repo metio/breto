@@ -2,6 +2,7 @@
 ;; SPDX-FileCopyrightText: The breto Authors
 ;; SPDX-License-Identifier: MIT
 
-{:source {:github "fujiwara/grpcp"}
+{:description "gRPC stream file transfer server/client",
+ :source {:github "fujiwara/grpcp"}
  :asset "grpcp_{version}_linux_amd64.tar.gz"
  :checksum "checksums.txt"}

@@ -2,6 +2,7 @@
 ;; SPDX-FileCopyrightText: The breto Authors
 ;; SPDX-License-Identifier: MIT
 
-{:source {:github "tailscale/tailcat"}
+{:description "like netcat, but over Tailscale's data plane, without Tailscale's control plane",
+ :source {:github "tailscale/tailcat"}
  :asset "tailcat_{version}_linux_amd64.tar.gz"
  :checksum "checksums.txt"}

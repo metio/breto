@@ -2,5 +2,6 @@
 ;; SPDX-FileCopyrightText: The breto Authors
 ;; SPDX-License-Identifier: MIT
 
-{:source {:github "containers/conmon"}
+{:description "An OCI container runtime monitor",
+ :source {:github "containers/conmon"}
  :asset "conmon.amd64"}

@@ -2,6 +2,7 @@
 ;; SPDX-FileCopyrightText: The breto Authors
 ;; SPDX-License-Identifier: MIT
 
-{:source {:github "pfnet-research/git-ghost"}
+{:description "Synchronize your working directory efficiently to a remote place without committing the changes",
+ :source {:github "pfnet-research/git-ghost"}
  :asset "git-ghost_{version}_linux_amd64.tar.gz"
  :checksum "git-ghost_{version}_checksums.txt"}

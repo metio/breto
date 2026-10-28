@@ -2,5 +2,6 @@
 ;; SPDX-FileCopyrightText: The breto Authors
 ;; SPDX-License-Identifier: MIT
 
-{:source {:github "laktak/zfind"}
+{:description "search for files (even inside tar/zip/7z/rar) using a SQL-WHERE filter",
+ :source {:github "laktak/zfind"}
  :asset "zfind-linux-amd64.tar.gz"}

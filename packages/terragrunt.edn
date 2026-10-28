@@ -2,7 +2,8 @@
 ;; SPDX-FileCopyrightText: The breto Authors
 ;; SPDX-License-Identifier: MIT
 
-{:source {:github "gruntwork-io/terragrunt"}
+{:description "Terragrunt is a flexible orchestration tool that allows Infrastructure as Code written in OpenTofu/Terraform to scale",
+ :source {:github "gruntwork-io/terragrunt"}
  :asset "terragrunt_linux_amd64.tar.gz"
  :checksum "SHA256SUMS"
  :bins {"terragrunt" "terragrunt_linux_amd64"}}

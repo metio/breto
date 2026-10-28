@@ -2,5 +2,6 @@
 ;; SPDX-FileCopyrightText: The breto Authors
 ;; SPDX-License-Identifier: MIT
 
-{:source {:github "ko1nksm/getoptions"}
+{:description "An elegant option/argument parser for shell scripts (full support for bash and all POSIX shells)",
+ :source {:github "ko1nksm/getoptions"}
  :asset "gengetoptions"}

@@ -2,6 +2,7 @@
 ;; SPDX-FileCopyrightText: The breto Authors
 ;; SPDX-License-Identifier: MIT
 
-{:source {:github "jesseduffield/lazygit"}
+{:description "simple terminal UI for git commands",
+ :source {:github "jesseduffield/lazygit"}
  :asset "lazygit_{version}_linux_x86_64.tar.gz"
  :checksum "checksums.txt"}

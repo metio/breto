@@ -2,6 +2,7 @@
 ;; SPDX-FileCopyrightText: The breto Authors
 ;; SPDX-License-Identifier: MIT
 
-{:source {:github "fujiwara/ecrm"}
+{:description "A command line tool for managing ECR repositories",
+ :source {:github "fujiwara/ecrm"}
  :asset "ecrm_{version}_linux_amd64.tar.gz"
  :checksum "checksums.txt"}

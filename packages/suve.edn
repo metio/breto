@@ -2,6 +2,7 @@
 ;; SPDX-FileCopyrightText: The breto Authors
 ;; SPDX-License-Identifier: MIT
 
-{:source {:github "mpyw/suve"}
+{:description "Git-like CLI/TUI/GUI for AWS Parameter Store / Secrets Manager, Google Cloud Secret Manager, and Azure Key Vault / App Configuration",
+ :source {:github "mpyw/suve"}
  :asset "suve-cli_{version}_linux_amd64.tar.gz"
  :checksum "checksums.txt"}

@@ -2,5 +2,6 @@
 ;; SPDX-FileCopyrightText: The breto Authors
 ;; SPDX-License-Identifier: MIT
 
-{:source {:github "kubernetes-sigs/controller-runtime"}
+{:description "Repo for the controller-runtime subproject of kubebuilder (sig-apimachinery)",
+ :source {:github "kubernetes-sigs/controller-runtime"}
  :asset "setup-envtest-linux-amd64"}

@@ -2,7 +2,8 @@
 ;; SPDX-FileCopyrightText: The breto Authors
 ;; SPDX-License-Identifier: MIT
 
-{:source {:github "version-fox/vfox"}
+{:description "A cross-platform and extendable version manager with support for Java, Node.js, Golang, Python, Flutter, .NET & more",
+ :source {:github "version-fox/vfox"}
  :asset "vfox_{version}_linux_x86_64.tar.gz"
  :checksum "checksums.txt"
  :bins {"vfox" "vfox_{version}_linux_x86_64/vfox"}}

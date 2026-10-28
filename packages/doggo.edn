@@ -2,6 +2,7 @@
 ;; SPDX-FileCopyrightText: The breto Authors
 ;; SPDX-License-Identifier: MIT
 
-{:source {:github "mr-karan/doggo"}
+{:description "Command-line DNS Client for Humans. Written in Golang",
+ :source {:github "mr-karan/doggo"}
  :asset "doggo-linux-x86_64.tar.gz"
  :checksum "doggo_{version}_checksums.txt"}

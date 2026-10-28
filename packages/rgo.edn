@@ -2,6 +2,7 @@
 ;; SPDX-FileCopyrightText: The breto Authors
 ;; SPDX-License-Identifier: MIT
 
-{:source {:github "suzuki-shunsuke/rgo"}
+{:description "rgo is a CLI to release a Homebrew-tap recipe, Scoop App Manifest, and a winget manifest built with GoReleaser",
+ :source {:github "suzuki-shunsuke/rgo"}
  :asset "rgo_linux_amd64.tar.gz"
  :checksum "rgo_{version}_checksums.txt"}

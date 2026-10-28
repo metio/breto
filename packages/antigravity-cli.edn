@@ -2,7 +2,8 @@
 ;; SPDX-FileCopyrightText: The breto Authors
 ;; SPDX-License-Identifier: MIT
 
-{:source {:github "google-antigravity/antigravity-cli"}
+{:description "Google Antigravity CLI companion",
+ :source {:github "google-antigravity/antigravity-cli"}
  :tag-prefix ""
  :asset "agy_cli_linux_x64.tar.gz"
  :bins {"agy" "antigravity"}}

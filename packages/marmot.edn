@@ -2,5 +2,6 @@
 ;; SPDX-FileCopyrightText: The breto Authors
 ;; SPDX-License-Identifier: MIT
 
-{:source {:github "maxpert/marmot"}
+{:description "A distributed SQLite server with MySQL wire compatible interface",
+ :source {:github "maxpert/marmot"}
  :asset "marmot-{tag}-linux-amd64-static.tar.gz"}

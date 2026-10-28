@@ -2,6 +2,7 @@
 ;; SPDX-FileCopyrightText: The breto Authors
 ;; SPDX-License-Identifier: MIT
 
-{:source {:github "Songmu/timeout"}
+{:description "Timeout invocation. Go porting of GNU timeout and able to use as Go package",
+ :source {:github "Songmu/timeout"}
  :asset "timeout_{tag}_linux_amd64.tar.gz"
  :bins {"go-timeout" "timeout_{tag}_linux_amd64/go-timeout"}}

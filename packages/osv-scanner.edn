@@ -2,6 +2,7 @@
 ;; SPDX-FileCopyrightText: The breto Authors
 ;; SPDX-License-Identifier: MIT
 
-{:source {:github "google/osv-scanner"}
+{:description "Vulnerability scanner written in Go which uses the data provided by https://osv.dev",
+ :source {:github "google/osv-scanner"}
  :asset "osv-scanner_linux_amd64"
  :checksum "osv-scanner_SHA256SUMS"}

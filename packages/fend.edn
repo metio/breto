@@ -2,5 +2,6 @@
 ;; SPDX-FileCopyrightText: The breto Authors
 ;; SPDX-License-Identifier: MIT
 
-{:source {:github "printfn/fend"}
+{:description "Arbitrary-precision unit-aware calculator",
+ :source {:github "printfn/fend"}
  :asset "fend-{version}-linux-x86_64-gnu.zip"}

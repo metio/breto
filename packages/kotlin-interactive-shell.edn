@@ -2,7 +2,8 @@
 ;; SPDX-FileCopyrightText: The breto Authors
 ;; SPDX-License-Identifier: MIT
 
-{:source {:github "Kotlin/kotlin-interactive-shell"}
+{:description "Kotlin Language Interactive Shell",
+ :source {:github "Kotlin/kotlin-interactive-shell"}
  :asset "ki-archive.zip"
  :checksum "checksums_sha256.txt"
  :bins {"ki" "ki/bin/ki.sh"}}

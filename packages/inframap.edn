@@ -2,6 +2,7 @@
 ;; SPDX-FileCopyrightText: The breto Authors
 ;; SPDX-License-Identifier: MIT
 
-{:source {:github "cycloidio/inframap"}
+{:description "Read your tfstate or HCL to generate a graph specific for each provider, showing only the resources that are most important/relevant",
+ :source {:github "cycloidio/inframap"}
  :asset "inframap-linux-amd64.tar.gz"
  :bins {"inframap" "inframap-linux-amd64"}}

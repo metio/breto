@@ -2,7 +2,8 @@
 ;; SPDX-FileCopyrightText: The breto Authors
 ;; SPDX-License-Identifier: MIT
 
-{:source {:github "trzsz/trzsz-go"}
+{:description "trzsz-go is the go version of trzsz, makes all terminals that support local shell to support trzsz ( trz / tsz )",
+ :source {:github "trzsz/trzsz-go"}
  :asset "trzsz_{version}_linux_x86_64.tar.gz"
  :checksum "trzsz_{version}_checksums.txt"
  :bins {"trz" "trzsz_{version}_linux_x86_64/trz", "trzsz" "trzsz_{version}_linux_x86_64/trzsz", "tsz" "trzsz_{version}_linux_x86_64/tsz"}}

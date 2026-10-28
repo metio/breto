@@ -2,7 +2,8 @@
 ;; SPDX-FileCopyrightText: The breto Authors
 ;; SPDX-License-Identifier: MIT
 
-{:source {:github "carthage-software/mago"}
+{:description "Mago is a toolchain for PHP that aims to provide a set of tools to help developers write better code",
+ :source {:github "carthage-software/mago"}
  :tag-prefix ""
  :asset "mago-{tag}-x86_64-unknown-linux-musl.tar.gz"
  :bins {"mago" "mago-{tag}-x86_64-unknown-linux-musl/mago"}}

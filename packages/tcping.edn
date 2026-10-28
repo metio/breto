@@ -2,5 +2,6 @@
 ;; SPDX-FileCopyrightText: The breto Authors
 ;; SPDX-License-Identifier: MIT
 
-{:source {:github "cloverstd/tcping"}
+{:description "ping over a tcp connection",
+ :source {:github "cloverstd/tcping"}
  :asset "tcping-linux-amd64-{tag}.tar.gz"}

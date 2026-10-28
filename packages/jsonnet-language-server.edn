@@ -2,6 +2,7 @@
 ;; SPDX-FileCopyrightText: The breto Authors
 ;; SPDX-License-Identifier: MIT
 
-{:source {:github "grafana/jsonnet-language-server"}
+{:description "A Language Server Protocol (LSP) server for Jsonnet (https://jsonnet.org)",
+ :source {:github "grafana/jsonnet-language-server"}
  :asset "jsonnet-language-server_{version}_linux_amd64"
  :checksum "jsonnet-language-server_{version}_checksums.txt"}

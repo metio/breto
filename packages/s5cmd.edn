@@ -2,6 +2,7 @@
 ;; SPDX-FileCopyrightText: The breto Authors
 ;; SPDX-License-Identifier: MIT
 
-{:source {:github "peak/s5cmd"}
+{:description "Parallel S3 and local filesystem execution tool",
+ :source {:github "peak/s5cmd"}
  :asset "s5cmd_{version}_Linux-64bit.tar.gz"
  :checksum "s5cmd_checksums.txt"}

@@ -2,6 +2,7 @@
 ;; SPDX-FileCopyrightText: The breto Authors
 ;; SPDX-License-Identifier: MIT
 
-{:source {:github "satococoa/wtp"}
+{:description "A powerful Git worktree CLI tool with automated setup, branch tracking, and smart navigation",
+ :source {:github "satococoa/wtp"}
  :asset "wtp_{version}_Linux_x86_64.tar.gz"
  :checksum "checksums.txt"}

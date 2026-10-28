@@ -2,6 +2,7 @@
 ;; SPDX-FileCopyrightText: The breto Authors
 ;; SPDX-License-Identifier: MIT
 
-{:source {:github "gopinath-langote/1build"}
+{:description "Frictionless way of managing project-specific commands",
+ :source {:github "gopinath-langote/1build"}
  :asset "1build_Linux_x86_64.tar.gz"
  :checksum "1build_{version}_checksums.txt"}

@@ -2,6 +2,7 @@
 ;; SPDX-FileCopyrightText: The breto Authors
 ;; SPDX-License-Identifier: MIT
 
-{:source {:github "high-moctane/nextword"}
+{:description "Predict next English words",
+ :source {:github "high-moctane/nextword"}
  :asset "nextword_{version}_linux_amd64.tar.gz"
  :checksum "nextword_{version}_checksums.txt"}

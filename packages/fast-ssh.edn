@@ -2,5 +2,6 @@
 ;; SPDX-FileCopyrightText: The breto Authors
 ;; SPDX-License-Identifier: MIT
 
-{:source {:github "Julien-R44/fast-ssh"}
+{:description "FastSSH is a TUI that allows you to quickly connect to your services by navigating through your SSH config",
+ :source {:github "Julien-R44/fast-ssh"}
  :asset "fast-ssh-{tag}-x86_64-unknown-linux-gnu.tar.gz"}

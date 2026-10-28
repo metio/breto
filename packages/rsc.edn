@@ -2,6 +2,7 @@
 ;; SPDX-FileCopyrightText: The breto Authors
 ;; SPDX-License-Identifier: MIT
 
-{:source {:github "making/rsc"}
+{:description "RSocket Client CLI (RSC) that aims to be a curl for RSocket",
+ :source {:github "making/rsc"}
  :tag-prefix ""
  :asset "rsc-x86_64-pc-linux"}

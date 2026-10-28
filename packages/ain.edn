@@ -2,7 +2,8 @@
 ;; SPDX-FileCopyrightText: The breto Authors
 ;; SPDX-License-Identifier: MIT
 
-{:source {:github "jonaslu/ain"}
+{:description "An HTTP API client for the terminal",
+ :source {:github "jonaslu/ain"}
  :asset "ain_{version}_linux_x86_64.tar.gz"
  :checksum "checksums.txt"
  :bins {"ain" "ain_{version}_linux_x86_64/ain"}}

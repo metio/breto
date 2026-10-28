@@ -2,6 +2,7 @@
 ;; SPDX-FileCopyrightText: The breto Authors
 ;; SPDX-License-Identifier: MIT
 
-{:source {:github "Darth-Tech/samwise-cli"}
+{:description "A CLI application to accompany on your terraform module journey and sharing your burden of module dependency updates, just as one brave Hobbit helped Frodo carry his :)",
+ :source {:github "Darth-Tech/samwise-cli"}
  :asset "samwise-cli_{version}_linux_amd64.tar.gz"
  :checksum "checksums.txt"}

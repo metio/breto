@@ -2,6 +2,7 @@
 ;; SPDX-FileCopyrightText: The breto Authors
 ;; SPDX-License-Identifier: MIT
 
-{:source {:github "vektra/mockery"}
+{:description "A mock code autogenerator for Go",
+ :source {:github "vektra/mockery"}
  :asset "mockery_{version}_Linux_x86_64.tar.gz"
  :checksum "checksum.txt"}

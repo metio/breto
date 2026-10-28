@@ -2,6 +2,7 @@
 ;; SPDX-FileCopyrightText: The breto Authors
 ;; SPDX-License-Identifier: MIT
 
-{:source {:github "sholdee/crd-schema-publisher"}
+{:description "Browsable CRD docs and IDE validation schemas, straight from your Kubernetes cluster",
+ :source {:github "sholdee/crd-schema-publisher"}
  :asset "crd-schema-publisher-linux-amd64"
  :checksum "checksums-sha256.txt"}

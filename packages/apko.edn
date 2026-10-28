@@ -2,7 +2,8 @@
 ;; SPDX-FileCopyrightText: The breto Authors
 ;; SPDX-License-Identifier: MIT
 
-{:source {:github "chainguard-dev/apko"}
+{:description "Build OCI images from APK packages directly without Dockerfile",
+ :source {:github "chainguard-dev/apko"}
  :asset "apko_{version}_linux_amd64.tar.gz"
  :checksum "checksums.txt"
  :bins {"apko" "apko_{version}_linux_amd64/apko"}}

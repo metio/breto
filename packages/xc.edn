@@ -2,6 +2,7 @@
 ;; SPDX-FileCopyrightText: The breto Authors
 ;; SPDX-License-Identifier: MIT
 
-{:source {:github "joerdav/xc"}
+{:description "Markdown defined task runner",
+ :source {:github "joerdav/xc"}
  :asset "xc_{version}_linux_amd64.tar.gz"
  :checksum "checksums.txt"}

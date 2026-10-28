@@ -2,7 +2,8 @@
 ;; SPDX-FileCopyrightText: The breto Authors
 ;; SPDX-License-Identifier: MIT
 
-{:source {:github "UpCloudLtd/upcloud-cli"}
+{:description "UpCloud command line client (upctl)",
+ :source {:github "UpCloudLtd/upcloud-cli"}
  :asset "upcloud-cli_{version}_linux_x86_64.tar.gz"
  :checksum "checksums.txt"
  :bins {"upctl" "upctl"}}

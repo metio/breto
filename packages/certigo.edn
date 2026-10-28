@@ -2,5 +2,6 @@
 ;; SPDX-FileCopyrightText: The breto Authors
 ;; SPDX-License-Identifier: MIT
 
-{:source {:github "square/certigo"}
+{:description "A utility to examine and validate certificates in a variety of formats",
+ :source {:github "square/certigo"}
  :asset "certigo-linux-amd64"}

@@ -2,6 +2,7 @@
 ;; SPDX-FileCopyrightText: The breto Authors
 ;; SPDX-License-Identifier: MIT
 
-{:source {:github "grafana/gcx"}
+{:description "A CLI for managing Grafana Cloud resources. Optimized for agentic usage",
+ :source {:github "grafana/gcx"}
  :asset "gcx_{version}_linux_amd64.tar.gz"
  :checksum "gcx_{version}_checksums.txt"}

@@ -2,6 +2,7 @@
 ;; SPDX-FileCopyrightText: The breto Authors
 ;; SPDX-License-Identifier: MIT
 
-{:source {:github "babarot/vtest"}
+{:description "Unix `test` command for Version comparison",
+ :source {:github "babarot/vtest"}
  :asset "vtest_linux_x86_64.tar.gz"
  :checksum "vtest_{version}_checksums.txt"}

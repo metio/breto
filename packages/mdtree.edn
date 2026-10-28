@@ -2,6 +2,7 @@
 ;; SPDX-FileCopyrightText: The breto Authors
 ;; SPDX-License-Identifier: MIT
 
-{:source {:github "caarlos0/mdtree"}
+{:description "Convert markdown lists into ASCII trees",
+ :source {:github "caarlos0/mdtree"}
  :asset "mdtree_{version}_linux_amd64.tar.gz"
  :checksum "mdtree_{version}_checksums.txt"}

@@ -2,6 +2,7 @@
 ;; SPDX-FileCopyrightText: The breto Authors
 ;; SPDX-License-Identifier: MIT
 
-{:source {:github "gotestyourself/gotestsum"}
+{:description "'go test' runner with output optimized for humans, JUnit XML for CI integration, and a summary of the test results",
+ :source {:github "gotestyourself/gotestsum"}
  :asset "gotestsum_{version}_linux_amd64.tar.gz"
  :checksum "gotestsum-{version}-checksums.txt"}

@@ -2,6 +2,7 @@
 ;; SPDX-FileCopyrightText: The breto Authors
 ;; SPDX-License-Identifier: MIT
 
-{:source {:github "getsentry/sentry-cli"}
+{:description "A command line utility to work with Sentry",
+ :source {:github "getsentry/sentry-cli"}
  :tag-prefix ""
  :asset "sentry-cli-Linux-x86_64"}

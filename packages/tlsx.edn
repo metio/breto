@@ -2,6 +2,7 @@
 ;; SPDX-FileCopyrightText: The breto Authors
 ;; SPDX-License-Identifier: MIT
 
-{:source {:github "projectdiscovery/tlsx"}
+{:description "Fast and configurable TLS grabber focused on TLS based data collection",
+ :source {:github "projectdiscovery/tlsx"}
  :asset "tlsx_{version}_linux_amd64.zip"
  :checksum "tlsx_{version}_checksums.txt"}

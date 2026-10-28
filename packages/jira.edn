@@ -2,5 +2,6 @@
 ;; SPDX-FileCopyrightText: The breto Authors
 ;; SPDX-License-Identifier: MIT
 
-{:source {:github "go-jira/jira"}
+{:description "simple jira command line client in Go",
+ :source {:github "go-jira/jira"}
  :asset "jira-linux-amd64"}

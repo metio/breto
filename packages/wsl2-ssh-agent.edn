@@ -2,6 +2,7 @@
 ;; SPDX-FileCopyrightText: The breto Authors
 ;; SPDX-License-Identifier: MIT
 
-{:source {:github "mame/wsl2-ssh-agent"}
+{:description "A bridge from WSL2 ssh client to Windows ssh-agent.exe service",
+ :source {:github "mame/wsl2-ssh-agent"}
  :asset "wsl2-ssh-agent"
  :checksum "checksums.txt"}

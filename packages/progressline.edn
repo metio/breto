@@ -2,6 +2,7 @@
 ;; SPDX-FileCopyrightText: The breto Authors
 ;; SPDX-License-Identifier: MIT
 
-{:source {:github "kattouf/ProgressLine"}
+{:description "Track commands progress in a compact one-line format",
+ :source {:github "kattouf/ProgressLine"}
  :tag-prefix ""
  :asset "progressline-{tag}-x86_64-unknown-linux-gnu.zip"}

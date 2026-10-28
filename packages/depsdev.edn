@@ -2,6 +2,7 @@
 ;; SPDX-FileCopyrightText: The breto Authors
 ;; SPDX-License-Identifier: MIT
 
-{:source {:github "edoardottt/depsdev"}
+{:description "CLI client (and Golang module) for deps.dev API. Free access to dependencies, licenses, advisories, and other critical health and security signals for open source package versions",
+ :source {:github "edoardottt/depsdev"}
  :asset "depsdev_{version}_linux_amd64.zip"
  :checksum "depsdev_{version}_checksums.txt"}

@@ -2,6 +2,7 @@
 ;; SPDX-FileCopyrightText: The breto Authors
 ;; SPDX-License-Identifier: MIT
 
-{:source {:github "rossmacarthur/sheldon"}
+{:description "Fast, configurable, shell plugin manager",
+ :source {:github "rossmacarthur/sheldon"}
  :tag-prefix ""
  :asset "sheldon-{tag}-x86_64-unknown-linux-musl.tar.gz"}

@@ -2,7 +2,8 @@
 ;; SPDX-FileCopyrightText: The breto Authors
 ;; SPDX-License-Identifier: MIT
 
-{:source {:github "Rigellute/spotify-tui"}
+{:description "Spotify for the terminal written in Rust",
+ :source {:github "Rigellute/spotify-tui"}
  :asset "spotify-tui-linux.tar.gz"
  :checksum "spotify-tui-linux.sha256"
  :bins {"spt" "spt"}}

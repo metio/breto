@@ -2,6 +2,7 @@
 ;; SPDX-FileCopyrightText: The breto Authors
 ;; SPDX-License-Identifier: MIT
 
-{:source {:github "yarnpkg/yarn"}
+{:description "The 1.x line is frozen - features and bugfixes now happen on https://github.com/yarnpkg/berry",
+ :source {:github "yarnpkg/yarn"}
  :asset "yarn-{tag}.tar.gz"
  :bins {"yarn" "yarn-{tag}/bin/yarn"}}

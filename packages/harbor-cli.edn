@@ -2,7 +2,8 @@
 ;; SPDX-FileCopyrightText: The breto Authors
 ;; SPDX-License-Identifier: MIT
 
-{:source {:github "goharbor/harbor-cli"}
+{:description "[Sandbox] Official Harbor CLI",
+ :source {:github "goharbor/harbor-cli"}
  :asset "harbor-cli_{version}_linux_amd64.tar.gz"
  :checksum "checksums.txt"
  :bins {"harbor" "harbor-cli"}}

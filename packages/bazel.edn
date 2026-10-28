@@ -2,7 +2,8 @@
 ;; SPDX-FileCopyrightText: The breto Authors
 ;; SPDX-License-Identifier: MIT
 
-{:source {:github "bazelbuild/bazel"}
+{:description "a fast, scalable, multi-language and extensible build system",
+ :source {:github "bazelbuild/bazel"}
  :tag-prefix ""
  :asset "bazel-{tag}-linux-x86_64"
  :checksum "{asset}.sha256"}

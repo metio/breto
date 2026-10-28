@@ -2,5 +2,6 @@
 ;; SPDX-FileCopyrightText: The breto Authors
 ;; SPDX-License-Identifier: MIT
 
-{:source {:github "krallin/tini"}
+{:description "A tiny but valid `init` for containers",
+ :source {:github "krallin/tini"}
  :asset "tini-static-amd64"}

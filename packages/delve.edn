@@ -2,7 +2,8 @@
 ;; SPDX-FileCopyrightText: The breto Authors
 ;; SPDX-License-Identifier: MIT
 
-{:source {:github "go-delve/delve"}
+{:description "Delve is a debugger for the Go programming language",
+ :source {:github "go-delve/delve"}
  :asset "dlv_{version}_linux_amd64.tar.gz"
  :checksum "checksums.txt"
  :bins {"dlv" "dlv"}}

@@ -2,6 +2,7 @@
 ;; SPDX-FileCopyrightText: The breto Authors
 ;; SPDX-License-Identifier: MIT
 
-{:source {:github "postfinance/topf"}
+{:description "Talos orchestrator by PostFinance",
+ :source {:github "postfinance/topf"}
  :asset "topf_linux_amd64.tar.gz"
  :checksum "topf_{version}_checksums.txt"}

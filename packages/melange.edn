@@ -2,7 +2,8 @@
 ;; SPDX-FileCopyrightText: The breto Authors
 ;; SPDX-License-Identifier: MIT
 
-{:source {:github "chainguard-dev/melange"}
+{:description "build APKs from source code",
+ :source {:github "chainguard-dev/melange"}
  :asset "melange_{version}_linux_amd64.tar.gz"
  :checksum "checksums.txt"
  :bins {"melange" "melange_{version}_linux_amd64/melange"}}

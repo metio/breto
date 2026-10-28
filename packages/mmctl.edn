@@ -2,5 +2,6 @@
 ;; SPDX-FileCopyrightText: The breto Authors
 ;; SPDX-License-Identifier: MIT
 
-{:source {:github "mattermost/mmctl"}
+{:description "A remote CLI tool for Mattermost",
+ :source {:github "mattermost/mmctl"}
  :asset "linux_amd64.tar"}

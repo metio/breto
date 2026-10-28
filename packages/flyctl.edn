@@ -2,7 +2,8 @@
 ;; SPDX-FileCopyrightText: The breto Authors
 ;; SPDX-License-Identifier: MIT
 
-{:source {:github "superfly/flyctl"}
+{:description "Command line tools for fly.io services",
+ :source {:github "superfly/flyctl"}
  :asset "flyctl_{version}_Linux_x86_64.tar.gz"
  :checksum "flyctl_{version}_checksums.txt"
  :bins {"fly" "flyctl", "flyctl" "flyctl"}}

@@ -2,6 +2,7 @@
 ;; SPDX-FileCopyrightText: The breto Authors
 ;; SPDX-License-Identifier: MIT
 
-{:source {:github "synfinatic/aws-sso-cli"}
+{:description "A powerful tool for using AWS Identity Center for the CLI and web console",
+ :source {:github "synfinatic/aws-sso-cli"}
  :asset "aws-sso-{version}-linux-amd64"
  :bins {"aws-sso" "{asset}"}}

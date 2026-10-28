@@ -2,7 +2,8 @@
 ;; SPDX-FileCopyrightText: The breto Authors
 ;; SPDX-License-Identifier: MIT
 
-{:source {:github "prometheus/prometheus"}
+{:description "The Prometheus monitoring system and time series database",
+ :source {:github "prometheus/prometheus"}
  :asset "prometheus-{version}.linux-amd64.tar.gz"
  :checksum "sha256sums.txt"
  :bins {"prometheus" "prometheus-{version}.linux-amd64/prometheus", "promtool" "prometheus-{version}.linux-amd64/promtool"}}

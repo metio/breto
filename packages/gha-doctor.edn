@@ -2,6 +2,7 @@
 ;; SPDX-FileCopyrightText: The breto Authors
 ;; SPDX-License-Identifier: MIT
 
-{:source {:github "linnea-bakshi/gha-doctor"}
+{:description "Diagnose GitHub Actions: flaky jobs, wasted minutes, slow steps, and anti-patterns",
+ :source {:github "linnea-bakshi/gha-doctor"}
  :asset "gha-doctor_{version}_linux_amd64.tar.gz"
  :checksum "checksums.txt"}

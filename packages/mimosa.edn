@@ -2,6 +2,7 @@
 ;; SPDX-FileCopyrightText: The breto Authors
 ;; SPDX-License-Identifier: MIT
 
-{:source {:github "hytromo/mimosa"}
+{:description "Zero-config docker image promotion",
+ :source {:github "hytromo/mimosa"}
  :asset "mimosa_{version}_linux_amd64.tar.gz"
  :checksum "mimosa_{version}_checksums.txt"}

@@ -2,6 +2,7 @@
 ;; SPDX-FileCopyrightText: The breto Authors
 ;; SPDX-License-Identifier: MIT
 
-{:source {:github "cloudfoundry/uaa-cli"}
+{:description "CLI for UAA written in Go",
+ :source {:github "cloudfoundry/uaa-cli"}
  :asset "uaa-linux-amd64-{version}"
  :bins {"uaa" "{asset}"}}

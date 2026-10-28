@@ -2,6 +2,7 @@
 ;; SPDX-FileCopyrightText: The breto Authors
 ;; SPDX-License-Identifier: MIT
 
-{:source {:github "carvel-dev/kapp"}
+{:description "kapp is a simple deployment tool focused on the concept of \"Kubernetes application\" — a set of resources with the same label",
+ :source {:github "carvel-dev/kapp"}
  :asset "kapp-linux-amd64"
  :checksum "checksums.txt"}

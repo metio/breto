@@ -2,7 +2,8 @@
 ;; SPDX-FileCopyrightText: The breto Authors
 ;; SPDX-License-Identifier: MIT
 
-{:source {:github "mackee/go-readability"}
+{:description "Extract readable content from web pages - Mozilla’s and Mizchi Readability ported to Go",
+ :source {:github "mackee/go-readability"}
  :asset "go-readability_{version}_linux_amd64.tar.gz"
  :checksum "checksums.txt"
  :bins {"readability" "readability"}}

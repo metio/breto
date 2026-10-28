@@ -2,6 +2,7 @@
 ;; SPDX-FileCopyrightText: The breto Authors
 ;; SPDX-License-Identifier: MIT
 
-{:source {:github "six-ddc/plow"}
+{:description "A high-performance HTTP benchmarking tool that includes a real-time web UI and terminal display",
+ :source {:github "six-ddc/plow"}
  :asset "plow_{version}_linux_amd64.tar.gz"
  :checksum "plow_{version}_checksums.txt"}

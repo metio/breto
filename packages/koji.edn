@@ -2,5 +2,6 @@
 ;; SPDX-FileCopyrightText: The breto Authors
 ;; SPDX-License-Identifier: MIT
 
-{:source {:github "cococonscious/koji"}
+{:description "An interactive CLI for creating conventional commits",
+ :source {:github "cococonscious/koji"}
  :asset "koji-x86_64-unknown-linux-gnu.tar.gz"}

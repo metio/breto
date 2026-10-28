@@ -2,5 +2,6 @@
 ;; SPDX-FileCopyrightText: The breto Authors
 ;; SPDX-License-Identifier: MIT
 
-{:source {:github "pipe-cd/pipecd"}
+{:description "The command line tool for PipeCD",
+ :source {:github "pipe-cd/pipecd"}
  :asset "pipectl_{tag}_linux_amd64"}

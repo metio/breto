@@ -2,7 +2,8 @@
 ;; SPDX-FileCopyrightText: The breto Authors
 ;; SPDX-License-Identifier: MIT
 
-{:source {:github "charmbracelet/crush"}
+{:description "The glamourous AI coding agent for your favourite terminal",
+ :source {:github "charmbracelet/crush"}
  :asset "crush_{version}_Linux_x86_64.tar.gz"
  :checksum "checksums.txt"
  :bins {"crush" "crush_{version}_Linux_x86_64/crush"}}

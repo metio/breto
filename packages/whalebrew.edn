@@ -2,6 +2,7 @@
 ;; SPDX-FileCopyrightText: The breto Authors
 ;; SPDX-License-Identifier: MIT
 
-{:source {:github "whalebrew/whalebrew"}
+{:description "Homebrew, but with Docker images",
+ :source {:github "whalebrew/whalebrew"}
  :tag-prefix ""
  :asset "whalebrew-Linux-x86_64"}

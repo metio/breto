@@ -2,6 +2,7 @@
 ;; SPDX-FileCopyrightText: The breto Authors
 ;; SPDX-License-Identifier: MIT
 
-{:source {:github "hasura/graphql-engine"}
+{:description "Hasura GraphQL Engine CLI",
+ :source {:github "hasura/graphql-engine"}
  :asset "cli-hasura-linux-amd64"
  :bins {"hasura" "{asset}"}}

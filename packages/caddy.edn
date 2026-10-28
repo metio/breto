@@ -2,6 +2,7 @@
 ;; SPDX-FileCopyrightText: The breto Authors
 ;; SPDX-License-Identifier: MIT
 
-{:source {:github "caddyserver/caddy"}
+{:description "Fast, multi-platform web server with automatic HTTPS",
+ :source {:github "caddyserver/caddy"}
  :asset "caddy_{version}_linux_amd64.tar.gz"
  :checksum "caddy_{version}_checksums.txt"}

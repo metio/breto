@@ -2,6 +2,7 @@
 ;; SPDX-FileCopyrightText: The breto Authors
 ;; SPDX-License-Identifier: MIT
 
-{:source {:github "chainloop-dev/chainloop"}
+{:description "SDLC evidence store and policy engine for your Software Supply Chain attestations, SBOMs, VEX, SARIF, QA reports, and more",
+ :source {:github "chainloop-dev/chainloop"}
  :asset "chainloop-linux-amd64"
  :checksum "checksums.txt"}

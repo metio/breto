@@ -2,6 +2,7 @@
 ;; SPDX-FileCopyrightText: The breto Authors
 ;; SPDX-License-Identifier: MIT
 
-{:source {:github "terraprovider/statebridge"}
+{:description "CLI tool for declarative opentofu state migrations",
+ :source {:github "terraprovider/statebridge"}
  :asset "statebridge_{version}_linux_amd64.tar.gz"
  :checksum "checksums.txt"}

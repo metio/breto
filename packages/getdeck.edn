@@ -2,7 +2,8 @@
 ;; SPDX-FileCopyrightText: The breto Authors
 ;; SPDX-License-Identifier: MIT
 
-{:source {:github "Getdeck/getdeck"}
+{:description "A CLI that creates reproducible Kubernetes environments for development and testing",
+ :source {:github "Getdeck/getdeck"}
  :tag-prefix ""
  :asset "deck-{tag}-linux-amd64.zip"
  :bins {"deck" "deck"}}

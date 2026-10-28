@@ -2,6 +2,7 @@
 ;; SPDX-FileCopyrightText: The breto Authors
 ;; SPDX-License-Identifier: MIT
 
-{:source {:github "sigstore/gitsign"}
+{:description "Keyless Git signing using Sigstore",
+ :source {:github "sigstore/gitsign"}
  :asset "gitsign_{version}_linux_amd64"
  :checksum "checksums.txt"}

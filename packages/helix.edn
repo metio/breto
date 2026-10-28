@@ -1,7 +1,8 @@
 ;; SPDX-FileCopyrightText: The breto Authors
 ;; SPDX-License-Identifier: 0BSD
 
-{:source {:github "helix-editor/helix"}
+{:description "A post-modern modal text editor",
+ :source {:github "helix-editor/helix"}
  :tag-prefix ""
  :asset "helix-{version}-x86_64-linux.tar.xz"
  :strip 1

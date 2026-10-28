@@ -2,5 +2,6 @@
 ;; SPDX-FileCopyrightText: The breto Authors
 ;; SPDX-License-Identifier: MIT
 
-{:source {:github "docker/cagent"}
+{:description "Agent Builder and Runtime by Docker Engineering",
+ :source {:github "docker/cagent"}
  :asset "cagent-linux-amd64"}

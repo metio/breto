@@ -2,6 +2,7 @@
 ;; SPDX-FileCopyrightText: The breto Authors
 ;; SPDX-License-Identifier: MIT
 
-{:source {:github "xeol-io/xeol"}
+{:description "A scanner for end-of-life (EOL) software and dependencies in container images, filesystems, and SBOMs",
+ :source {:github "xeol-io/xeol"}
  :asset "xeol_{version}_linux_amd64.tar.gz"
  :checksum "xeol_{version}_checksums.txt"}

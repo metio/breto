@@ -2,6 +2,7 @@
 ;; SPDX-FileCopyrightText: The breto Authors
 ;; SPDX-License-Identifier: MIT
 
-{:source {:github "andrewkroh/gvm"}
+{:description "Go Version Manager (written in Go for cross-platform usability)",
+ :source {:github "andrewkroh/gvm"}
  :asset "gvm-linux-amd64"
  :checksum "gvm_{version}_SHA256SUMS"}

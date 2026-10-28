@@ -2,7 +2,8 @@
 ;; SPDX-FileCopyrightText: The breto Authors
 ;; SPDX-License-Identifier: MIT
 
-{:source {:github "nats-io/natscli"}
+{:description "The NATS Command Line Interface",
+ :source {:github "nats-io/natscli"}
  :asset "nats-{version}-linux-amd64.zip"
  :checksum "SHA256SUMS"
  :bins {"nats" "nats-{version}-linux-amd64/nats"}}

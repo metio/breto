@@ -2,5 +2,6 @@
 ;; SPDX-FileCopyrightText: The breto Authors
 ;; SPDX-License-Identifier: MIT
 
-{:source {:github "alebeck/boring"}
+{:description "The `boring`  SSH tunnel manager",
+ :source {:github "alebeck/boring"}
  :asset "boring-{tag}-linux-amd64.tar.gz"}

@@ -2,5 +2,6 @@
 ;; SPDX-FileCopyrightText: The breto Authors
 ;; SPDX-License-Identifier: MIT
 
-{:source {:github "kubecost/kubectl-cost"}
+{:description "CLI for determining the cost of Kubernetes workloads",
+ :source {:github "kubecost/kubectl-cost"}
  :asset "kubectl-cost-linux-amd64.tar.gz"}

@@ -2,5 +2,6 @@
 ;; SPDX-FileCopyrightText: The breto Authors
 ;; SPDX-License-Identifier: MIT
 
-{:source {:github "gitui-org/gitui"}
+{:description "Blazing  fast terminal-ui for git written in rust",
+ :source {:github "gitui-org/gitui"}
  :asset "gitui-linux-x86_64.tar.gz"}

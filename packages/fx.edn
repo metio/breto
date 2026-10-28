@@ -2,6 +2,7 @@
 ;; SPDX-FileCopyrightText: The breto Authors
 ;; SPDX-License-Identifier: MIT
 
-{:source {:github "antonmedv/fx"}
+{:description "Command-line tool and terminal JSON viewer",
+ :source {:github "antonmedv/fx"}
  :tag-prefix ""
  :asset "fx_linux_amd64"}

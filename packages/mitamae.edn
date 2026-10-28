@@ -2,5 +2,6 @@
 ;; SPDX-FileCopyrightText: The breto Authors
 ;; SPDX-License-Identifier: MIT
 
-{:source {:github "itamae-kitchen/mitamae"}
+{:description "mitamae is a fast, simple, and single-binary configuration management tool with a DSL like Chef",
+ :source {:github "itamae-kitchen/mitamae"}
  :asset "mitamae-x86_64-linux"}

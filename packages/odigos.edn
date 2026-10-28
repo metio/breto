@@ -2,6 +2,7 @@
 ;; SPDX-FileCopyrightText: The breto Authors
 ;; SPDX-License-Identifier: MIT
 
-{:source {:github "odigos-io/odigos"}
+{:description "Distributed tracing without code changes.  Instantly monitor any application using OpenTelemetry and eBPF",
+ :source {:github "odigos-io/odigos"}
  :asset "cli_{version}_linux_amd64.tar.gz"
  :checksum "checksums.txt"}

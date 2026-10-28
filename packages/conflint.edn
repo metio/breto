@@ -2,6 +2,7 @@
 ;; SPDX-FileCopyrightText: The breto Authors
 ;; SPDX-License-Identifier: MIT
 
-{:source {:github "mumoshu/conflint"}
+{:description "Unified lint runners for various configuration files",
+ :source {:github "mumoshu/conflint"}
  :asset "conflint_{version}_linux_amd64.tar.gz"
  :checksum "conflint_{version}_checksums.txt"}

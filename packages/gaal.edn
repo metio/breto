@@ -2,6 +2,7 @@
 ;; SPDX-FileCopyrightText: The breto Authors
 ;; SPDX-License-Identifier: MIT
 
-{:source {:github "getgaal/gaal"}
+{:description "A single CLI to keep your local repositories, AI agent skills, and MCP server configurations in sync",
+ :source {:github "getgaal/gaal"}
  :asset "gaal-linux-amd64"
  :checksum "SHA256SUMS"}

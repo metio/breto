@@ -2,7 +2,8 @@
 ;; SPDX-FileCopyrightText: The breto Authors
 ;; SPDX-License-Identifier: MIT
 
-{:source {:github "awslabs/dynein"}
+{:description "DynamoDB CLI written in Rust",
+ :source {:github "awslabs/dynein"}
  :asset "dynein-linux.tar.gz"
  :checksum "{asset}.sha256"
  :bins {"dy" "dy"}}

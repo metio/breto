@@ -2,7 +2,8 @@
 ;; SPDX-FileCopyrightText: The breto Authors
 ;; SPDX-License-Identifier: MIT
 
-{:source {:github "kkdai/youtube"}
+{:description "Download Youtube Video in Golang",
+ :source {:github "kkdai/youtube"}
  :asset "youtubedr_{version}_linux_amd64.tar.gz"
  :checksum "youtubedr_{version}_checksums.txt"
  :bins {"youtubedr" "youtubedr"}}

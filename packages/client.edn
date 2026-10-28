@@ -2,7 +2,8 @@
 ;; SPDX-FileCopyrightText: The breto Authors
 ;; SPDX-License-Identifier: MIT
 
-{:source {:github "knative/client"}
+{:description "Knative developer experience, docs, reference Knative CLI implementation",
+ :source {:github "knative/client"}
  :tag-prefix ""
  :asset "kn-linux-amd64"
  :checksum "checksums.txt"

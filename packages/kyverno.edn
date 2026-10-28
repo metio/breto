@@ -1,7 +1,8 @@
 ;; SPDX-FileCopyrightText: The breto Authors
 ;; SPDX-License-Identifier: 0BSD
 
-{:source {:github "kyverno/kyverno"},
+{:description "Cloud Native Policy Management",
+ :source {:github "kyverno/kyverno"},
  :asset "kyverno-cli_{tag}_linux_x86_64.tar.gz",
  :checksum "checksums.txt",
  :signature {:bundle "{asset}.sigstore.json",

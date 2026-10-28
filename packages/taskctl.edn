@@ -2,7 +2,8 @@
 ;; SPDX-FileCopyrightText: The breto Authors
 ;; SPDX-License-Identifier: MIT
 
-{:source {:github "taskctl/taskctl"}
+{:description "Concurrent task runner, developer's routine tasks automation toolkit. Simple modern alternative to GNU Make",
+ :source {:github "taskctl/taskctl"}
  :tag-prefix ""
  :asset "taskctl_{tag}_linux_amd64.tar.gz"
  :checksum "checksums.txt"}

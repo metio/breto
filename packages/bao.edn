@@ -2,6 +2,7 @@
 ;; SPDX-FileCopyrightText: The breto Authors
 ;; SPDX-License-Identifier: MIT
 
-{:source {:github "openbao/openbao"}
+{:description "OpenBao exists to provide a software solution to manage, store, and distribute sensitive data including secrets, certificates, and keys",
+ :source {:github "openbao/openbao"}
  :asset "openbao_{version}_linux_amd64.tar.gz"
  :checksum "checksums.txt"}

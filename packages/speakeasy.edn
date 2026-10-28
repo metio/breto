@@ -2,6 +2,7 @@
 ;; SPDX-FileCopyrightText: The breto Authors
 ;; SPDX-License-Identifier: MIT
 
-{:source {:github "speakeasy-api/speakeasy"}
+{:description "Build APIs your users love  with Speakeasy.  Polished and type-safe SDKs.  Terraform providers and Contract Tests for your API. OpenAPI native",
+ :source {:github "speakeasy-api/speakeasy"}
  :asset "speakeasy_linux_amd64.zip"
  :checksum "checksums.txt"}

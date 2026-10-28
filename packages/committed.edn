@@ -2,5 +2,6 @@
 ;; SPDX-FileCopyrightText: The breto Authors
 ;; SPDX-License-Identifier: MIT
 
-{:source {:github "crate-ci/committed"}
+{:description "Nitpicking commit history since beabf39",
+ :source {:github "crate-ci/committed"}
  :asset "committed-{tag}-x86_64-unknown-linux-musl.tar.gz"}

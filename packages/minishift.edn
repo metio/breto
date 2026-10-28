@@ -2,7 +2,8 @@
 ;; SPDX-FileCopyrightText: The breto Authors
 ;; SPDX-License-Identifier: MIT
 
-{:source {:github "minishift/minishift"}
+{:description "Run OpenShift 3.x locally",
+ :source {:github "minishift/minishift"}
  :asset "minishift-{version}-linux-amd64.tgz"
  :checksum "{asset}.sha256"
  :bins {"minishift" "minishift-{version}-linux-amd64/minishift"}}

@@ -2,7 +2,8 @@
 ;; SPDX-FileCopyrightText: The breto Authors
 ;; SPDX-License-Identifier: MIT
 
-{:source {:github "dprint/dprint"}
+{:description "Pluggable and configurable code formatting platform written in Rust",
+ :source {:github "dprint/dprint"}
  :tag-prefix ""
  :asset "dprint-x86_64-unknown-linux-musl.zip"
  :checksum "SHASUMS256.txt"}

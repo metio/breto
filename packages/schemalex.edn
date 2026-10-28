@@ -2,6 +2,7 @@
 ;; SPDX-FileCopyrightText: The breto Authors
 ;; SPDX-License-Identifier: MIT
 
-{:source {:github "schemalex/schemalex"}
+{:description "Generate difference sql of two mysql schema",
+ :source {:github "schemalex/schemalex"}
  :asset "schemalex_linux_amd64.tar.gz"
  :bins {"schemadiff" "schemalex_linux_amd64/schemadiff", "schemalex" "schemalex_linux_amd64/schemalex", "schemalint" "schemalex_linux_amd64/schemalint"}}

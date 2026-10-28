@@ -2,5 +2,6 @@
 ;; SPDX-FileCopyrightText: The breto Authors
 ;; SPDX-License-Identifier: MIT
 
-{:source {:github "Azure/draft"}
+{:description "A day 0 tool for getting your app on k8s fast",
+ :source {:github "Azure/draft"}
  :asset "draft-linux-amd64"}

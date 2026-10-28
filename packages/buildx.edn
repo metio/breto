@@ -2,7 +2,8 @@
 ;; SPDX-FileCopyrightText: The breto Authors
 ;; SPDX-License-Identifier: MIT
 
-{:source {:github "docker/buildx"}
+{:description "Docker CLI plugin for extended build capabilities with BuildKit",
+ :source {:github "docker/buildx"}
  :asset "buildx-{tag}.linux-amd64"
  :checksum "checksums.txt"
  :bins {"docker-cli-plugin-docker-buildx" "{asset}"}}

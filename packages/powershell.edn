@@ -2,6 +2,7 @@
 ;; SPDX-FileCopyrightText: The breto Authors
 ;; SPDX-License-Identifier: MIT
 
-{:source {:github "PowerShell/PowerShell"}
+{:description "PowerShell for every system",
+ :source {:github "PowerShell/PowerShell"}
  :asset "powershell-{version}-linux-x64.tar.gz"
  :bins {"pwsh" "pwsh"}}

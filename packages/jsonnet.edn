@@ -2,6 +2,7 @@
 ;; SPDX-FileCopyrightText: The breto Authors
 ;; SPDX-License-Identifier: MIT
 
-{:source {:github "google/jsonnet"}
+{:description "Jsonnet - The data templating language",
+ :source {:github "google/jsonnet"}
  :asset "jsonnet-bin-{tag}-linux.tar.gz"
  :bins {"jsonnet" "jsonnet", "jsonnetfmt" "jsonnetfmt"}}

@@ -2,6 +2,7 @@
 ;; SPDX-FileCopyrightText: The breto Authors
 ;; SPDX-License-Identifier: MIT
 
-{:source {:github "tedilabs/ota"}
+{:description "k9s for Okta — a Go/Bubbletea TUI to inspect Okta admin resources",
+ :source {:github "tedilabs/ota"}
  :asset "ota_{version}_linux_amd64.tar.gz"
  :checksum "checksums.txt"}

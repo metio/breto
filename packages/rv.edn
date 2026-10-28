@@ -2,7 +2,8 @@
 ;; SPDX-FileCopyrightText: The breto Authors
 ;; SPDX-License-Identifier: MIT
 
-{:source {:github "spinel-coop/rv"}
+{:description "Next-gen very fast Ruby tooling",
+ :source {:github "spinel-coop/rv"}
  :asset "rv-x86_64-unknown-linux-gnu.tar.xz"
  :checksum "{asset}.sha256"
  :bins {"rv" "rv-x86_64-unknown-linux-gnu/rv"}}

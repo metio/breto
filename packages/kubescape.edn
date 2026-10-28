@@ -2,6 +2,7 @@
 ;; SPDX-FileCopyrightText: The breto Authors
 ;; SPDX-License-Identifier: MIT
 
-{:source {:github "kubescape/kubescape"}
+{:description "Kubescape is an open-source Kubernetes security platform for your IDE, CI/CD pipelines, and clusters. It includes risk analysis, security, compliance, and misconfiguration scanning, saving Kubernetes users and administrators precious time, effort, and resources",
+ :source {:github "kubescape/kubescape"}
  :asset "kubescape_{version}_linux_amd64.tar.gz"
  :checksum "checksums.sha256"}

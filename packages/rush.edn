@@ -2,5 +2,6 @@
 ;; SPDX-FileCopyrightText: The breto Authors
 ;; SPDX-License-Identifier: MIT
 
-{:source {:github "shenwei356/rush"}
+{:description "A cross-platform command-line tool for executing jobs in parallel",
+ :source {:github "shenwei356/rush"}
  :asset "rush_linux_amd64.tar.gz"}

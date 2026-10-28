@@ -2,5 +2,6 @@
 ;; SPDX-FileCopyrightText: The breto Authors
 ;; SPDX-License-Identifier: MIT
 
-{:source {:github "nicarl/somafm"}
+{:description "CLI application to listen to SomaFM stations",
+ :source {:github "nicarl/somafm"}
  :asset "somafm-{tag}-linux-amd64"}

@@ -2,7 +2,8 @@
 ;; SPDX-FileCopyrightText: The breto Authors
 ;; SPDX-License-Identifier: MIT
 
-{:source {:github "alexellis/k3sup"}
+{:description "bootstrap K3s over SSH in < 60s",
+ :source {:github "alexellis/k3sup"}
  :tag-prefix ""
  :asset "k3sup"
  :checksum "{asset}.sha256"}

@@ -2,6 +2,7 @@
 ;; SPDX-FileCopyrightText: The breto Authors
 ;; SPDX-License-Identifier: MIT
 
-{:source {:github "cpisciotta/xcbeautify"}
+{:description "A little beautifier tool for xcodebuild",
+ :source {:github "cpisciotta/xcbeautify"}
  :tag-prefix ""
  :asset "xcbeautify-{tag}-x86_64-unknown-linux-gnu.tar.xz"}

@@ -2,6 +2,7 @@
 ;; SPDX-FileCopyrightText: The breto Authors
 ;; SPDX-License-Identifier: MIT
 
-{:source {:github "AGWA/git-crypt"}
+{:description "Transparent file encryption in git",
+ :source {:github "AGWA/git-crypt"}
  :tag-prefix ""
  :asset "git-crypt-{tag}-linux-x86_64"}

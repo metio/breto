@@ -2,7 +2,8 @@
 ;; SPDX-FileCopyrightText: The breto Authors
 ;; SPDX-License-Identifier: MIT
 
-{:source {:github "argoproj/argo-rollouts"}
+{:description "Progressive Delivery for Kubernetes",
+ :source {:github "argoproj/argo-rollouts"}
  :asset "kubectl-argo-rollouts-linux-amd64"
  :checksum "argo-rollouts-checksums.txt"
  :bins {"kubectl-argo-rollouts" "{asset}"}}

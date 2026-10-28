@@ -2,6 +2,7 @@
 ;; SPDX-FileCopyrightText: The breto Authors
 ;; SPDX-License-Identifier: MIT
 
-{:source {:github "ebi-yade/ecresolve"}
+{:description "Resolves AWS ECR images with prioritized tag-based lookup",
+ :source {:github "ebi-yade/ecresolve"}
  :asset "ecresolve_{version}_linux_amd64.tar.gz"
  :checksum "ecresolve_{version}_checksums.txt"}

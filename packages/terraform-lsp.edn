@@ -2,6 +2,7 @@
 ;; SPDX-FileCopyrightText: The breto Authors
 ;; SPDX-License-Identifier: MIT
 
-{:source {:github "juliosueiras/terraform-lsp"}
+{:description "Language Server Protocol for Terraform",
+ :source {:github "juliosueiras/terraform-lsp"}
  :asset "terraform-lsp_{version}_linux_amd64.tar.gz"
  :checksum "terraform-lsp_{version}_checksums.txt"}

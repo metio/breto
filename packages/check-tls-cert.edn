@@ -2,6 +2,7 @@
 ;; SPDX-FileCopyrightText: The breto Authors
 ;; SPDX-License-Identifier: MIT
 
-{:source {:github "heartbeatsjp/check-tls-cert"}
+{:description "Check-tls-cert is a TLS certificate checker",
+ :source {:github "heartbeatsjp/check-tls-cert"}
  :asset "check-tls-cert-{version}-linux-amd64.tar.xz"
  :bins {"check-tls-cert" "check-tls-cert-{version}/check-tls-cert"}}

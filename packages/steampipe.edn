@@ -2,6 +2,7 @@
 ;; SPDX-FileCopyrightText: The breto Authors
 ;; SPDX-License-Identifier: MIT
 
-{:source {:github "turbot/steampipe"}
+{:description "Use SQL to instantly query your cloud services (AWS, Azure, GCP and more). Open source CLI. No DB required",
+ :source {:github "turbot/steampipe"}
  :asset "steampipe_linux_amd64.tar.gz"
  :checksum "checksums.txt"}

@@ -2,6 +2,7 @@
 ;; SPDX-FileCopyrightText: The breto Authors
 ;; SPDX-License-Identifier: MIT
 
-{:source {:github "Versent/saml2aws"}
+{:description "CLI tool which enables you to login and retrieve AWS temporary credentials using a SAML IDP",
+ :source {:github "Versent/saml2aws"}
  :asset "saml2aws_{version}_linux_amd64.tar.gz"
  :checksum "saml2aws_{version}_checksums.txt"}

@@ -2,7 +2,8 @@
 ;; SPDX-FileCopyrightText: The breto Authors
 ;; SPDX-License-Identifier: MIT
 
-{:source {:github "CyberAgent/reminder-lint"}
+{:description "Code remind tool for any languages and any config files",
+ :source {:github "CyberAgent/reminder-lint"}
  :tag-prefix ""
  :asset "reminder-lint-x86_64-unknown-linux-musl.tar.xz"
  :checksum "{asset}.sha256"

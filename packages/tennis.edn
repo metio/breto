@@ -2,6 +2,7 @@
 ;; SPDX-FileCopyrightText: The breto Authors
 ;; SPDX-License-Identifier: MIT
 
-{:source {:github "gurgeous/tennis"}
+{:description "stylish CSV tables in your terminal",
+ :source {:github "gurgeous/tennis"}
  :asset "tennis_{version}_linux_amd64.tar.gz"
  :bins {"tennis" "tennis_{version}_linux_amd64/tennis"}}

@@ -2,5 +2,6 @@
 ;; SPDX-FileCopyrightText: The breto Authors
 ;; SPDX-License-Identifier: MIT
 
-{:source {:github "wasmCloud/wasmCloud"}
+{:description "wasmCloud is an open source Cloud Native Computing Foundation (CNCF) project that enables teams to build, manage, and scale polyglot apps across any cloud, K8s, or edge",
+ :source {:github "wasmCloud/wasmCloud"}
  :asset "wash-x86_64-unknown-linux-musl"}

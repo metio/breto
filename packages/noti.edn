@@ -2,6 +2,7 @@
 ;; SPDX-FileCopyrightText: The breto Authors
 ;; SPDX-License-Identifier: MIT
 
-{:source {:github "variadico/noti"}
+{:description "Monitor a process and trigger a notification",
+ :source {:github "variadico/noti"}
  :tag-prefix ""
  :asset "noti{tag}.linux-amd64.tar.gz"}

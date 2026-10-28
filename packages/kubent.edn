@@ -1,7 +1,8 @@
 ;; SPDX-FileCopyrightText: The breto Authors
 ;; SPDX-License-Identifier: 0BSD
 
-{:source {:github "doitintl/kube-no-trouble"},
+{:description "Easily check your clusters for use of deprecated APIs",
+ :source {:github "doitintl/kube-no-trouble"},
  :asset "kubent-{version}-linux-amd64.tar.gz",
  :tag-prefix "",
  :history [{:before "0.7.4" :verify false}]}

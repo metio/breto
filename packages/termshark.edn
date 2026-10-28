@@ -2,7 +2,8 @@
 ;; SPDX-FileCopyrightText: The breto Authors
 ;; SPDX-License-Identifier: MIT
 
-{:source {:github "gcla/termshark"}
+{:description "A terminal UI for tshark, inspired by Wireshark",
+ :source {:github "gcla/termshark"}
  :asset "termshark_{version}_linux_x64.tar.gz"
  :checksum "checksums.txt"
  :bins {"termshark" "termshark_{version}_linux_x64/termshark"}}

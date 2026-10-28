@@ -2,6 +2,7 @@
 ;; SPDX-FileCopyrightText: The breto Authors
 ;; SPDX-License-Identifier: MIT
 
-{:source {:github "o2sh/onefetch"}
+{:description "Command-line Git information tool",
+ :source {:github "o2sh/onefetch"}
  :tag-prefix ""
  :asset "onefetch-linux.tar.gz"}

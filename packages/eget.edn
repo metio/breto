@@ -2,6 +2,7 @@
 ;; SPDX-FileCopyrightText: The breto Authors
 ;; SPDX-License-Identifier: MIT
 
-{:source {:github "zyedidia/eget"}
+{:description "Easily install prebuilt binaries from GitHub",
+ :source {:github "zyedidia/eget"}
  :asset "eget-{version}-linux_amd64.tar.gz"
  :bins {"eget" "eget-{version}-linux_amd64/eget"}}

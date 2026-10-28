@@ -2,6 +2,7 @@
 ;; SPDX-FileCopyrightText: The breto Authors
 ;; SPDX-License-Identifier: MIT
 
-{:source {:github "guumaster/hostctl"}
+{:description "Your dev tool to manage /etc/hosts like a pro",
+ :source {:github "guumaster/hostctl"}
  :asset "hostctl_{version}_linux_64-bit.tar.gz"
  :checksum "hostctl_{version}_checksums.txt"}

@@ -2,7 +2,8 @@
 ;; SPDX-FileCopyrightText: The breto Authors
 ;; SPDX-License-Identifier: MIT
 
-{:source {:github "airbytehq/abctl"}
+{:description "Airbyte's CLI for managing local Airbyte installations",
+ :source {:github "airbytehq/abctl"}
  :asset "abctl-{tag}-linux-amd64.tar.gz"
  :checksum "abctl_{version}_checksums.txt"
  :bins {"abctl" "abctl-{tag}-linux-amd64/abctl"}}

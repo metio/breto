@@ -2,6 +2,7 @@
 ;; SPDX-FileCopyrightText: The breto Authors
 ;; SPDX-License-Identifier: MIT
 
-{:source {:github "atomicdotdev/atomic"}
+{:description "A Semantic Change Graph (SCG) to track memory, intent, provenance, and change as a single unit of work",
+ :source {:github "atomicdotdev/atomic"}
  :asset "atomic-x86_64-unknown-linux-musl.tar.gz"
  :checksum "checksums-sha256.txt"}

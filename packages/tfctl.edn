@@ -2,6 +2,7 @@
 ;; SPDX-FileCopyrightText: The breto Authors
 ;; SPDX-License-Identifier: MIT
 
-{:source {:github "flux-iac/tofu-controller"}
+{:description "A GitOps OpenTofu and Terraform controller for Flux",
+ :source {:github "flux-iac/tofu-controller"}
  :asset "tfctl_Linux_amd64.tar.gz"
  :checksum "tofu-controller_{version}_checksums.txt"}

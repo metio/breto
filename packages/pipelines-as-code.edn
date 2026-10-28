@@ -2,7 +2,8 @@
 ;; SPDX-FileCopyrightText: The breto Authors
 ;; SPDX-License-Identifier: MIT
 
-{:source {:github "tektoncd/pipelines-as-code"}
+{:description "Pipelines-as-Code for Tekton",
+ :source {:github "tektoncd/pipelines-as-code"}
  :asset "tkn-pac_{version}_linux_x86_64.tar.gz"
  :checksum "checksums.txt"
  :bins {"tkn-pac" "tkn-pac"}}

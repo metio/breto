@@ -2,6 +2,7 @@
 ;; SPDX-FileCopyrightText: The breto Authors
 ;; SPDX-License-Identifier: MIT
 
-{:source {:github "nmstate/nmstate"}
+{:description "Nmstate is a library with an accompanying command line tool that manages host networking settings in a declarative manner",
+ :source {:github "nmstate/nmstate"}
  :asset "nmstatectl-linux-x64.zip"
  :bins {"nmstatectl" "nmstatectl"}}

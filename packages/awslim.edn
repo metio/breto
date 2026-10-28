@@ -2,6 +2,7 @@
 ;; SPDX-FileCopyrightText: The breto Authors
 ;; SPDX-License-Identifier: MIT
 
-{:source {:github "fujiwara/awslim"}
+{:description "A simplified alternative to the AWS CLI for limited use cases",
+ :source {:github "fujiwara/awslim"}
  :asset "awslim_{version}_linux_amd64.tar.gz"
  :checksum "checksums.txt"}

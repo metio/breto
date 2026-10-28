@@ -2,6 +2,7 @@
 ;; SPDX-FileCopyrightText: The breto Authors
 ;; SPDX-License-Identifier: MIT
 
-{:source {:github "goph/licensei"}
+{:description "Library and various tools for working with project licenses",
+ :source {:github "goph/licensei"}
  :asset "licensei_linux_amd64.tar.gz"
  :checksum "checksums.txt"}

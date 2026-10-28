@@ -2,6 +2,7 @@
 ;; SPDX-FileCopyrightText: The breto Authors
 ;; SPDX-License-Identifier: MIT
 
-{:source {:github "sl1pm4t/k2tf"}
+{:description "Kubernetes YAML to Terraform HCL converter",
+ :source {:github "sl1pm4t/k2tf"}
  :asset "k2tf_{version}_Linux_amd64.tar.gz"
  :checksum "checksums.txt"}

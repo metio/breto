@@ -2,5 +2,6 @@
 ;; SPDX-FileCopyrightText: The breto Authors
 ;; SPDX-License-Identifier: MIT
 
-{:source {:github "FiloSottile/mkcert"}
+{:description "A simple zero-config tool to make locally trusted development certificates with any names you'd like",
+ :source {:github "FiloSottile/mkcert"}
  :asset "mkcert-{tag}-linux-amd64"}

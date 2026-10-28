@@ -2,6 +2,7 @@
 ;; SPDX-FileCopyrightText: The breto Authors
 ;; SPDX-License-Identifier: MIT
 
-{:source {:github "swanysimon/mdlint"}
+{:description "Attempting to port markdownlint (and the markdownlint-cli2 interface) to Rust using mostly vibes",
+ :source {:github "swanysimon/mdlint"}
  :asset "mdlint-linux-x86_64-musl.tar.gz"
  :checksum "{asset}.sha256"}

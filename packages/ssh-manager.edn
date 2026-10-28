@@ -2,5 +2,6 @@
 ;; SPDX-FileCopyrightText: The breto Authors
 ;; SPDX-License-Identifier: MIT
 
-{:source {:github "omegion/ssh-manager"}
+{:description "SSH Key Manager for 1Password, Bitwarden and AWS S3",
+ :source {:github "omegion/ssh-manager"}
  :asset "ssh-manager-linux-amd64"}

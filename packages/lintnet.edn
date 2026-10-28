@@ -2,6 +2,7 @@
 ;; SPDX-FileCopyrightText: The breto Authors
 ;; SPDX-License-Identifier: MIT
 
-{:source {:github "lintnet/lintnet"}
+{:description "General Linter powered by Jsonnet",
+ :source {:github "lintnet/lintnet"}
  :asset "lintnet_linux_amd64.tar.gz"
  :checksum "lintnet_{version}_checksums.txt"}

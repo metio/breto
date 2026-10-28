@@ -2,7 +2,8 @@
 ;; SPDX-FileCopyrightText: The breto Authors
 ;; SPDX-License-Identifier: MIT
 
-{:source {:github "syntax-sh/lexicon-releases"}
+{:description "CLI that builds a shared, indexed cache of vendor library/API documentation for coding agents",
+ :source {:github "syntax-sh/lexicon-releases"}
  :asset "lexicon-x86_64-unknown-linux-gnu.tar.gz"
  :checksum "{asset}.sha256"
  :bins {"lexicon" "lexicon-x86_64-unknown-linux-gnu/lexicon"}}

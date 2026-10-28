@@ -2,7 +2,8 @@
 ;; SPDX-FileCopyrightText: The breto Authors
 ;; SPDX-License-Identifier: MIT
 
-{:source {:github "trinodb/trino"}
+{:description "Trino, the distributed SQL query engine for big data - Command Line Interface",
+ :source {:github "trinodb/trino"}
  :tag-prefix ""
  :asset "trino-cli-{tag}"
  :bins {"trino" "{asset}"}}

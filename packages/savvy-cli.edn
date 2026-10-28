@@ -2,7 +2,8 @@
 ;; SPDX-FileCopyrightText: The breto Authors
 ;; SPDX-License-Identifier: MIT
 
-{:source {:github "getsavvyinc/savvy-cli"}
+{:description "Create, share, and run runbooks from your terminal",
+ :source {:github "getsavvyinc/savvy-cli"}
  :tag-prefix ""
  :asset "savvy_linux_x86_64"
  :checksum "savvy_{tag}_checksums.txt"

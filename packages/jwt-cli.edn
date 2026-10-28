@@ -2,7 +2,8 @@
 ;; SPDX-FileCopyrightText: The breto Authors
 ;; SPDX-License-Identifier: MIT
 
-{:source {:github "mike-engel/jwt-cli"}
+{:description "A super fast CLI tool to decode and encode JWTs built in Rust",
+ :source {:github "mike-engel/jwt-cli"}
  :tag-prefix ""
  :asset "jwt-linux-musl.tar.gz"
  :checksum "jwt-linux-musl.sha256"

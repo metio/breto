@@ -2,5 +2,6 @@
 ;; SPDX-FileCopyrightText: The breto Authors
 ;; SPDX-License-Identifier: MIT
 
-{:source {:github "EnvCLI/EnvCLI"}
+{:description "Don't install Node, Go, ... locally - use containers you define within your project. If you have a new machine / other contributors you just have to install docker and envcli to get started",
+ :source {:github "EnvCLI/EnvCLI"}
  :asset "linux_amd64"}

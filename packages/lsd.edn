@@ -2,6 +2,7 @@
 ;; SPDX-FileCopyrightText: The breto Authors
 ;; SPDX-License-Identifier: MIT
 
-{:source {:github "lsd-rs/lsd"}
+{:description "The next gen ls command",
+ :source {:github "lsd-rs/lsd"}
  :asset "lsd-{tag}-x86_64-unknown-linux-musl.tar.gz"
  :bins {"lsd" "lsd-{tag}-x86_64-unknown-linux-musl/lsd"}}

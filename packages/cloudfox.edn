@@ -2,6 +2,7 @@
 ;; SPDX-FileCopyrightText: The breto Authors
 ;; SPDX-License-Identifier: MIT
 
-{:source {:github "BishopFox/cloudfox"}
+{:description "Automating situational awareness for cloud penetration tests",
+ :source {:github "BishopFox/cloudfox"}
  :asset "cloudfox-linux-amd64.zip"
  :bins {"cloudfox" "cloudfox/cloudfox"}}

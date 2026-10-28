@@ -2,6 +2,7 @@
 ;; SPDX-FileCopyrightText: The breto Authors
 ;; SPDX-License-Identifier: MIT
 
-{:source {:github "grafana/mimir"}
+{:description "Grafana Mimir provides horizontally scalable, highly available, multi-tenant, long-term storage for Prometheus",
+ :source {:github "grafana/mimir"}
  :tag-prefix ""
  :asset "mimir-linux-amd64"}

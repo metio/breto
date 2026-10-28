@@ -2,6 +2,7 @@
 ;; SPDX-FileCopyrightText: The breto Authors
 ;; SPDX-License-Identifier: MIT
 
-{:source {:github "goark/depm"}
+{:description "Visualize dependency packages and modules",
+ :source {:github "goark/depm"}
  :asset "depm_{version}_Linux_64bit.tar.gz"
  :checksum "depm_{version}_checksums.txt"}

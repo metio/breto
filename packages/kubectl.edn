@@ -1,7 +1,8 @@
 ;; SPDX-FileCopyrightText: The breto Authors
 ;; SPDX-License-Identifier: 0BSD
 
-{:source {:text "https://dl.k8s.io/release/stable.txt"}
+{:description "The Kubernetes command-line tool",
+ :source {:text "https://dl.k8s.io/release/stable.txt"}
  :asset "kubectl"
  :url "https://dl.k8s.io/release/{tag}/bin/linux/amd64/{asset}"
  :checksum "{asset}.sha256"}

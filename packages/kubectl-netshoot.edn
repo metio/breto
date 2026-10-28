@@ -1,6 +1,7 @@
 ;; SPDX-FileCopyrightText: The breto Authors
 ;; SPDX-License-Identifier: 0BSD
 
-{:source {:github "nilic/kubectl-netshoot"},
+{:description "kubectl plugin for spinning up netshoot container for network troubleshooting",
+ :source {:github "nilic/kubectl-netshoot"},
  :asset "kubectl-netshoot_{tag}_linux_amd64.tar.gz",
  :checksum "kubectl-netshoot_{tag}_sha256_checksums.txt"}

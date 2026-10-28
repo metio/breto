@@ -2,5 +2,6 @@
 ;; SPDX-FileCopyrightText: The breto Authors
 ;; SPDX-License-Identifier: MIT
 
-{:source {:github "duckdb/duckdb"}
+{:description "DuckDB is an analytical in-process SQL database management system",
+ :source {:github "duckdb/duckdb"}
  :asset "duckdb-cli-linux-amd64.tar.gz"}

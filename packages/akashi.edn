@@ -2,6 +2,7 @@
 ;; SPDX-FileCopyrightText: The breto Authors
 ;; SPDX-License-Identifier: MIT
 
-{:source {:github "drlau/akashi"}
+{:description "Validate \"terraform plan\" changes against a customizable ruleset",
+ :source {:github "drlau/akashi"}
  :asset "akashi_{version}_Linux_x86_64.tar.gz"
  :checksum "akashi_{version}_checksums.txt"}

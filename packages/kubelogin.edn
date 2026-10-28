@@ -1,7 +1,8 @@
 ;; SPDX-FileCopyrightText: The breto Authors
 ;; SPDX-License-Identifier: 0BSD
 
-{:source {:github "int128/kubelogin"},
+{:description "kubectl plugin for Kubernetes OpenID Connect authentication (kubectl oidc-login)",
+ :source {:github "int128/kubelogin"},
  :asset "kubelogin_linux_amd64.zip",
  :checksum "kubelogin_linux_amd64.zip.sha256",
  :bins {"kubectl-oidc_login" "kubelogin"}}

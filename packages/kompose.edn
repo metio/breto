@@ -2,6 +2,7 @@
 ;; SPDX-FileCopyrightText: The breto Authors
 ;; SPDX-License-Identifier: MIT
 
-{:source {:github "kubernetes/kompose"}
+{:description "Go from Docker Compose to Kubernetes",
+ :source {:github "kubernetes/kompose"}
  :asset "kompose-linux-amd64"
  :checksum "SHA256_SUM"}

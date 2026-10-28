@@ -2,5 +2,6 @@
 ;; SPDX-FileCopyrightText: The breto Authors
 ;; SPDX-License-Identifier: MIT
 
-{:source {:github "zk-org/zk"}
+{:description "A plain text note-taking assistant",
+ :source {:github "zk-org/zk"}
  :asset "zk-{tag}-linux-amd64.tar.gz"}

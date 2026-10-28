@@ -2,6 +2,7 @@
 ;; SPDX-FileCopyrightText: The breto Authors
 ;; SPDX-License-Identifier: MIT
 
-{:source {:github "F1bonacc1/process-compose"}
+{:description "Process Compose is a simple and flexible scheduler and orchestrator to manage non-containerized applications",
+ :source {:github "F1bonacc1/process-compose"}
  :asset "process-compose_linux_amd64.tar.gz"
  :checksum "process-compose_checksums.txt"}

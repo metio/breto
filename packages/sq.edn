@@ -2,6 +2,7 @@
 ;; SPDX-FileCopyrightText: The breto Authors
 ;; SPDX-License-Identifier: MIT
 
-{:source {:github "neilotoole/sq"}
+{:description "sq data wrangler",
+ :source {:github "neilotoole/sq"}
  :asset "sq-{version}-linux-amd64.tar.gz"
  :checksum "checksums.txt"}

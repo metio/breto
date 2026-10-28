@@ -2,5 +2,6 @@
 ;; SPDX-FileCopyrightText: The breto Authors
 ;; SPDX-License-Identifier: MIT
 
-{:source {:github "8051Enthusiast/biodiff"}
+{:description "Hex diff viewer using alignment algorithms from biology",
+ :source {:github "8051Enthusiast/biodiff"}
  :asset "biodiff-linux-{version}.zip"}

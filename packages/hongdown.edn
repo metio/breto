@@ -2,6 +2,7 @@
 ;; SPDX-FileCopyrightText: The breto Authors
 ;; SPDX-License-Identifier: MIT
 
-{:source {:github "dahlia/hongdown"}
+{:description "A Markdown formatter that enforces Hong Minhee's Markdown style conventions",
+ :source {:github "dahlia/hongdown"}
  :tag-prefix ""
  :asset "hongdown-{tag}-x86_64-unknown-linux-musl.tar.bz2"}

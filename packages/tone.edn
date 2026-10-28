@@ -2,6 +2,7 @@
 ;; SPDX-FileCopyrightText: The breto Authors
 ;; SPDX-License-Identifier: MIT
 
-{:source {:github "sandreas/tone"}
+{:description "tone is a cross platform audio tagger and metadata editor to dump and modify metadata for a wide variety of formats, including mp3, m4b, flac and more. It has no dependencies and can be downloaded as single binary for Windows, macOS, Linux and other common platforms",
+ :source {:github "sandreas/tone"}
  :asset "tone-{version}-linux-musl-x64.tar.gz"
  :bins {"tone" "tone-{version}-linux-musl-x64/tone"}}

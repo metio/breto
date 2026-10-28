@@ -2,7 +2,8 @@
 ;; SPDX-FileCopyrightText: The breto Authors
 ;; SPDX-License-Identifier: MIT
 
-{:source {:github "smtg-ai/claude-squad"}
+{:description "Manage multiple AI agents like Claude Code, Aider, Codex, and Amp. 10x your productivity",
+ :source {:github "smtg-ai/claude-squad"}
  :asset "claude-squad_{version}_linux_amd64.tar.gz"
  :checksum "checksums.txt"
  :bins {"claude-squad" "claude-squad", "cs" "claude-squad"}}

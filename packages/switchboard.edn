@@ -2,6 +2,7 @@
 ;; SPDX-FileCopyrightText: The breto Authors
 ;; SPDX-License-Identifier: MIT
 
-{:source {:github "Cian911/switchboard"}
+{:description "Automated file organisation and routing for all your machines. :open_file_folder:",
+ :source {:github "Cian911/switchboard"}
  :asset "switchboard_{version}_linux_amd64.tar.gz"
  :checksum "checksums.txt"}

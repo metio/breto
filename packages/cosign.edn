@@ -1,7 +1,8 @@
 ;; SPDX-FileCopyrightText: The breto Authors
 ;; SPDX-License-Identifier: 0BSD
 
-{:source {:github "sigstore/cosign"},
+{:description "Code signing and transparency for containers and binaries",
+ :source {:github "sigstore/cosign"},
  :asset "cosign-linux-amd64",
  :checksum "cosign_checksums.txt",
  :signature {:bundle "{asset}.sigstore.json",

@@ -2,6 +2,7 @@
 ;; SPDX-FileCopyrightText: The breto Authors
 ;; SPDX-License-Identifier: MIT
 
-{:source {:github "sethvargo/ratchet"}
+{:description "A tool for securing CI/CD workflows with version pinning",
+ :source {:github "sethvargo/ratchet"}
  :asset "ratchet_{version}_linux_amd64.tar.gz"
  :checksum "ratchet_{version}_SHA512SUMS"}

@@ -2,5 +2,6 @@
 ;; SPDX-FileCopyrightText: The breto Authors
 ;; SPDX-License-Identifier: MIT
 
-{:source {:github "a8m/envsubst"}
+{:description "Environment variables substitution for Go",
+ :source {:github "a8m/envsubst"}
  :asset "envsubst-Linux-x86_64"}

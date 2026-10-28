@@ -2,5 +2,6 @@
 ;; SPDX-FileCopyrightText: The breto Authors
 ;; SPDX-License-Identifier: MIT
 
-{:source {:github "pgplex/pgschema"}
+{:description "Terraform-style, declarative schema migration CLI for Postgres. Agent friendly",
+ :source {:github "pgplex/pgschema"}
  :asset "pgschema-{version}-linux-amd64"}

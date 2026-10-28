@@ -2,6 +2,7 @@
 ;; SPDX-FileCopyrightText: The breto Authors
 ;; SPDX-License-Identifier: MIT
 
-{:source {:github "kubermatic/kubeone"}
+{:description "Kubermatic KubeOne automate cluster operations on all your cloud, on-prem, edge, and IoT environments",
+ :source {:github "kubermatic/kubeone"}
  :asset "kubeone_{version}_linux_amd64.zip"
  :checksum "kubeone_{version}_checksums.txt"}

@@ -2,6 +2,7 @@
 ;; SPDX-FileCopyrightText: The breto Authors
 ;; SPDX-License-Identifier: MIT
 
-{:source {:github "derailed/popeye"}
+{:description "A Kubernetes cluster resource sanitizer",
+ :source {:github "derailed/popeye"}
  :asset "popeye_linux_amd64.tar.gz"
  :checksum "checksums.sha256"}

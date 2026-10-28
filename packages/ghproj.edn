@@ -2,6 +2,7 @@
 ;; SPDX-FileCopyrightText: The breto Authors
 ;; SPDX-License-Identifier: MIT
 
-{:source {:github "suzuki-shunsuke/ghproj"}
+{:description "Add GitHub Issues and Pull Requests to GitHub Projects",
+ :source {:github "suzuki-shunsuke/ghproj"}
  :asset "ghproj_linux_amd64.tar.gz"
  :checksum "ghproj_{version}_checksums.txt"}

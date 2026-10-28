@@ -2,5 +2,6 @@
 ;; SPDX-FileCopyrightText: The breto Authors
 ;; SPDX-License-Identifier: MIT
 
-{:source {:github "denoland/deno"}
+{:description "A modern runtime for JavaScript and TypeScript",
+ :source {:github "denoland/deno"}
  :asset "deno-x86_64-unknown-linux-gnu.zip"}

@@ -2,5 +2,6 @@
 ;; SPDX-FileCopyrightText: The breto Authors
 ;; SPDX-License-Identifier: MIT
 
-{:source {:github "google/google-java-format"}
+{:description "Reformats Java source code to comply with Google Java Style",
+ :source {:github "google/google-java-format"}
  :asset "google-java-format_linux-x86-64"}

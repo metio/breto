@@ -2,7 +2,8 @@
 ;; SPDX-FileCopyrightText: The breto Authors
 ;; SPDX-License-Identifier: MIT
 
-{:source {:github "okteto/okteto"}
+{:description "Develop your applications directly in your Kubernetes Cluster",
+ :source {:github "okteto/okteto"}
  :tag-prefix ""
  :asset "okteto-Linux-x86_64"
  :checksum "{asset}.sha256"}

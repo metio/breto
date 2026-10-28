@@ -2,6 +2,7 @@
 ;; SPDX-FileCopyrightText: The breto Authors
 ;; SPDX-License-Identifier: MIT
 
-{:source {:github "GoogleContainerTools/container-structure-test"}
+{:description "validate the structure of your container images",
+ :source {:github "GoogleContainerTools/container-structure-test"}
  :asset "container-structure-test-linux-amd64"
  :checksum "checksums.txt"}

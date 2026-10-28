@@ -2,6 +2,7 @@
 ;; SPDX-FileCopyrightText: The breto Authors
 ;; SPDX-License-Identifier: MIT
 
-{:source {:github "abice/go-enum"}
+{:description "An enum generator for go",
+ :source {:github "abice/go-enum"}
  :asset "go-enum_Linux_x86_64"
  :checksum "go-enum_checksums.txt"}

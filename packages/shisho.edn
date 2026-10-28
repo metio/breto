@@ -2,5 +2,6 @@
 ;; SPDX-FileCopyrightText: The breto Authors
 ;; SPDX-License-Identifier: MIT
 
-{:source {:github "flatt-security/shisho"}
+{:description "Lightweight static analyzer for several programming languages",
+ :source {:github "flatt-security/shisho"}
  :asset "build-x86_64-unknown-linux-gnu.zip"}

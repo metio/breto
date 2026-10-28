@@ -2,6 +2,7 @@
 ;; SPDX-FileCopyrightText: The breto Authors
 ;; SPDX-License-Identifier: MIT
 
-{:source {:github "suzuki-shunsuke/tfmv"}
+{:description "CLI to rename Terraform resources and modules and generate moved blocks",
+ :source {:github "suzuki-shunsuke/tfmv"}
  :asset "tfmv_linux_amd64.tar.gz"
  :checksum "tfmv_{version}_checksums.txt"}

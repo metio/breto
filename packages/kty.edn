@@ -2,5 +2,6 @@
 ;; SPDX-FileCopyrightText: The breto Authors
 ;; SPDX-License-Identifier: MIT
 
-{:source {:github "grampelberg/kty"}
+{:description "The terminal for Kubernetes",
+ :source {:github "grampelberg/kty"}
  :asset "kty-{version}-linux-amd64.tar.gz"}

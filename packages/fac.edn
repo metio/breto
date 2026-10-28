@@ -2,6 +2,7 @@
 ;; SPDX-FileCopyrightText: The breto Authors
 ;; SPDX-License-Identifier: MIT
 
-{:source {:github "mkchoi212/fac"}
+{:description "Easy-to-use CUI for fixing git conflicts",
+ :source {:github "mkchoi212/fac"}
  :asset "fac_{version}_linux_amd64.tar.gz"
  :checksum "fac_{version}_checksums.txt"}

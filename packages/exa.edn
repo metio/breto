@@ -2,6 +2,7 @@
 ;; SPDX-FileCopyrightText: The breto Authors
 ;; SPDX-License-Identifier: MIT
 
-{:source {:github "ogham/exa"}
+{:description "A modern replacement for ‘ls’",
+ :source {:github "ogham/exa"}
  :asset "exa-linux-x86_64-musl-{tag}.zip"
  :bins {"exa" "bin/exa"}}

@@ -2,6 +2,7 @@
 ;; SPDX-FileCopyrightText: The breto Authors
 ;; SPDX-License-Identifier: MIT
 
-{:source {:github "aquasecurity/chain-bench"}
+{:description "An open-source tool for auditing your software supply chain stack for security compliance based on a new CIS Software Supply Chain benchmark",
+ :source {:github "aquasecurity/chain-bench"}
  :asset "chain-bench_{version}_Linux-64bit.tar.gz"
  :checksum "checksums.txt"}

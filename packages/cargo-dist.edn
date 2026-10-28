@@ -2,7 +2,8 @@
 ;; SPDX-FileCopyrightText: The breto Authors
 ;; SPDX-License-Identifier: MIT
 
-{:source {:github "axodotdev/cargo-dist"}
+{:description "shippable application packaging",
+ :source {:github "axodotdev/cargo-dist"}
  :asset "dist-x86_64-unknown-linux-musl.tar.xz"
  :checksum "{asset}.sha256"
  :bins {"dist" "dist-x86_64-unknown-linux-musl/dist"}}

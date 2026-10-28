@@ -2,5 +2,6 @@
 ;; SPDX-FileCopyrightText: The breto Authors
 ;; SPDX-License-Identifier: MIT
 
-{:source {:github "sqshq/sampler"}
+{:description "Tool for shell commands execution, visualization and alerting. Configured with a simple YAML file",
+ :source {:github "sqshq/sampler"}
  :asset "sampler-{version}-linux-amd64"}

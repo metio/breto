@@ -2,7 +2,8 @@
 ;; SPDX-FileCopyrightText: The breto Authors
 ;; SPDX-License-Identifier: MIT
 
-{:source {:github "megaease/easeprobe"}
+{:description "A simple, standalone, and lightWeight tool that can do health/status checking, written in Go",
+ :source {:github "megaease/easeprobe"}
  :asset "easeprobe-{tag}-linux-amd64.tar.gz"
  :checksum "checksums.txt"
  :bins {"easeprobe" "bin/easeprobe"}}

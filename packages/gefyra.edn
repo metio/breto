@@ -2,6 +2,7 @@
 ;; SPDX-FileCopyrightText: The breto Authors
 ;; SPDX-License-Identifier: MIT
 
-{:source {:github "gefyrahq/gefyra"}
+{:description "Blazingly-fast :rocket:, rock-solid, local application development :arrow_right: with Kubernetes",
+ :source {:github "gefyrahq/gefyra"}
  :tag-prefix ""
  :asset "gefyra-{tag}-linux-amd64.zip"}

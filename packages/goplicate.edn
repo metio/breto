@@ -2,6 +2,7 @@
 ;; SPDX-FileCopyrightText: The breto Authors
 ;; SPDX-License-Identifier: MIT
 
-{:source {:github "ilaif/goplicate"}
+{:description "A CLI tool that helps define common code or configuration snippets once, and sync it to multiple projects",
+ :source {:github "ilaif/goplicate"}
  :asset "goplicate_{version}_Linux_x86_64.tar.gz"
  :checksum "checksums.txt"}

@@ -2,6 +2,7 @@
 ;; SPDX-FileCopyrightText: The breto Authors
 ;; SPDX-License-Identifier: MIT
 
-{:source {:github "mislav/hub"}
+{:description "A command-line tool that makes git easier to use with GitHub",
+ :source {:github "mislav/hub"}
  :asset "hub-linux-amd64-{version}.tgz"
  :bins {"hub" "hub-linux-amd64-{version}/bin/hub"}}

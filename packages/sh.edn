@@ -2,6 +2,7 @@
 ;; SPDX-FileCopyrightText: The breto Authors
 ;; SPDX-License-Identifier: MIT
 
-{:source {:github "mvdan/sh"}
+{:description "A shell parser, formatter, and interpreter with bash and zsh support; includes shfmt",
+ :source {:github "mvdan/sh"}
  :asset "shfmt_{tag}_linux_amd64"
  :bins {"shfmt" "{asset}"}}

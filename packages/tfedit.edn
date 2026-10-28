@@ -2,6 +2,7 @@
 ;; SPDX-FileCopyrightText: The breto Authors
 ;; SPDX-License-Identifier: MIT
 
-{:source {:github "minamijoyo/tfedit"}
+{:description "A refactoring tool for Terraform",
+ :source {:github "minamijoyo/tfedit"}
  :asset "tfedit_{version}_linux_amd64.tar.gz"
  :checksum "tfedit_{version}_checksums.txt"}

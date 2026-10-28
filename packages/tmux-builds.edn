@@ -2,6 +2,7 @@
 ;; SPDX-FileCopyrightText: The breto Authors
 ;; SPDX-License-Identifier: MIT
 
-{:source {:github "tmux/tmux-builds"}
+{:description "tmux builds",
+ :source {:github "tmux/tmux-builds"}
  :asset "tmux-{version}-linux-x86_64.tar.gz"
  :bins {"tmux" "tmux"}}

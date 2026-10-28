@@ -2,7 +2,8 @@
 ;; SPDX-FileCopyrightText: The breto Authors
 ;; SPDX-License-Identifier: MIT
 
-{:source {:github "mdsakalu/zmx-session-manager"}
+{:description "TUI session manager for zmx",
+ :source {:github "mdsakalu/zmx-session-manager"}
  :asset "zmx-session-manager_{version}_linux_amd64.tar.gz"
  :checksum "zmx-session-manager_{version}_checksums.txt"
  :bins {"zsm" "zsm"}}

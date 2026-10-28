@@ -2,6 +2,7 @@
 ;; SPDX-FileCopyrightText: The breto Authors
 ;; SPDX-License-Identifier: MIT
 
-{:source {:github "ko-build/ko"}
+{:description "Build and deploy Go applications on Kubernetes",
+ :source {:github "ko-build/ko"}
  :asset "ko_{version}_Linux_x86_64.tar.gz"
  :checksum "checksums.txt"}

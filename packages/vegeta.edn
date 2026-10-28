@@ -2,6 +2,7 @@
 ;; SPDX-FileCopyrightText: The breto Authors
 ;; SPDX-License-Identifier: MIT
 
-{:source {:github "tsenart/vegeta"}
+{:description "HTTP load testing tool and library. It's over 9000",
+ :source {:github "tsenart/vegeta"}
  :asset "vegeta_{version}_linux_amd64.tar.gz"
  :checksum "vegeta_{version}_checksums.txt"}

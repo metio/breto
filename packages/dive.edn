@@ -2,6 +2,7 @@
 ;; SPDX-FileCopyrightText: The breto Authors
 ;; SPDX-License-Identifier: MIT
 
-{:source {:github "wagoodman/dive"}
+{:description "A tool for exploring each layer in a docker image",
+ :source {:github "wagoodman/dive"}
  :asset "dive_{version}_linux_amd64.tar.gz"
  :checksum "dive_{version}_checksums.txt"}

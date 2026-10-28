@@ -2,6 +2,7 @@
 ;; SPDX-FileCopyrightText: The breto Authors
 ;; SPDX-License-Identifier: MIT
 
-{:source {:github "levibostian/decaf"}
+{:description "Calm & reliable automated deployments. No more coffee breaks to deploy your code",
+ :source {:github "levibostian/decaf"}
  :tag-prefix ""
  :asset "bin-x86_64-Linux"}

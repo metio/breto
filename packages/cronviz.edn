@@ -2,6 +2,7 @@
 ;; SPDX-FileCopyrightText: The breto Authors
 ;; SPDX-License-Identifier: MIT
 
-{:source {:github "winebarrel/cronplan"}
+{:description "Cron expression parser for Amazon EventBridge",
+ :source {:github "winebarrel/cronplan"}
  :asset "cronviz_{version}_linux_amd64.tar.gz"
  :checksum "checksums.txt"}

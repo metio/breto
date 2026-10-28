@@ -2,6 +2,7 @@
 ;; SPDX-FileCopyrightText: The breto Authors
 ;; SPDX-License-Identifier: MIT
 
-{:source {:github "ahmetb/kubectx"}
+{:description "Faster way to switch between clusters and namespaces in kubectl",
+ :source {:github "ahmetb/kubectx"}
  :asset "kubens_{tag}_linux_x86_64.tar.gz"
  :checksum "checksums.txt"}

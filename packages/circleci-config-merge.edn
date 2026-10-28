@@ -2,6 +2,7 @@
 ;; SPDX-FileCopyrightText: The breto Authors
 ;; SPDX-License-Identifier: MIT
 
-{:source {:github "suzuki-shunsuke/circleci-config-merge"}
+{:description "Generate .circleci/config.yml by merging multiple files",
+ :source {:github "suzuki-shunsuke/circleci-config-merge"}
  :asset "circleci-config-merge_{version}_linux_amd64.tar.gz"
  :checksum "circleci-config-merge_{version}_checksums.txt"}

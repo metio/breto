@@ -2,7 +2,8 @@
 ;; SPDX-FileCopyrightText: The breto Authors
 ;; SPDX-License-Identifier: MIT
 
-{:source {:github "DelineaXPM/dsv-cli"}
+{:description "Delinea DevOps Secrets Vault is a secret vault automation tool for the management of credentials for applications, databases, CI/CD tools, and services",
+ :source {:github "DelineaXPM/dsv-cli"}
  :asset "dsv-linux-x64"
  :checksum "checksums-sha256.txt"
  :bins {"dsv" "{asset}"}}

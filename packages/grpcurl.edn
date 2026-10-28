@@ -2,6 +2,7 @@
 ;; SPDX-FileCopyrightText: The breto Authors
 ;; SPDX-License-Identifier: MIT
 
-{:source {:github "fullstorydev/grpcurl"}
+{:description "Like cURL, but for gRPC: Command-line tool for interacting with gRPC servers",
+ :source {:github "fullstorydev/grpcurl"}
  :asset "grpcurl_{version}_linux_x86_64.tar.gz"
  :checksum "grpcurl_{version}_checksums.txt"}

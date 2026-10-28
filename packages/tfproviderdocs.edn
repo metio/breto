@@ -2,6 +2,7 @@
 ;; SPDX-FileCopyrightText: The breto Authors
 ;; SPDX-License-Identifier: MIT
 
-{:source {:github "bflad/tfproviderdocs"}
+{:description "Terraform Provider Documentation Tool",
+ :source {:github "bflad/tfproviderdocs"}
  :asset "tfproviderdocs_{version}_linux_amd64.tar.gz"
  :checksum "tfproviderdocs_{version}_checksums.txt"}

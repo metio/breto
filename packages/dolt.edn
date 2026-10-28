@@ -2,6 +2,7 @@
 ;; SPDX-FileCopyrightText: The breto Authors
 ;; SPDX-License-Identifier: MIT
 
-{:source {:github "dolthub/dolt"}
+{:description "Dolt – It's Git for Data",
+ :source {:github "dolthub/dolt"}
  :asset "dolt-linux-amd64.tar.gz"
  :bins {"dolt" "dolt-linux-amd64/bin/dolt"}}

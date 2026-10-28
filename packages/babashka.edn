@@ -1,7 +1,8 @@
 ;; SPDX-FileCopyrightText: The breto Authors
 ;; SPDX-License-Identifier: 0BSD
 
-{:source {:github "babashka/babashka"},
+{:description "Native, fast starting Clojure interpreter for scripting",
+ :source {:github "babashka/babashka"},
  :asset "babashka-{version}-linux-amd64-static.tar.gz",
  :checksum "babashka-{version}-linux-amd64-static.tar.gz.sha256",
  :bins {"bb" "bb"}}

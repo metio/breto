@@ -2,5 +2,6 @@
 ;; SPDX-FileCopyrightText: The breto Authors
 ;; SPDX-License-Identifier: MIT
 
-{:source {:github "moncho/dry"}
+{:description "dry - A Docker manager for the terminal @",
+ :source {:github "moncho/dry"}
  :asset "dry-linux-amd64"}

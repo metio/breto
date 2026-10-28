@@ -2,6 +2,7 @@
 ;; SPDX-FileCopyrightText: The breto Authors
 ;; SPDX-License-Identifier: MIT
 
-{:source {:github "suzuki-shunsuke/ghir"}
+{:description "ghir is a CLI making past GitHub Releases immutable",
+ :source {:github "suzuki-shunsuke/ghir"}
  :asset "ghir_linux_amd64.tar.gz"
  :checksum "ghir_checksums.txt"}

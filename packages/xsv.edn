@@ -2,6 +2,7 @@
 ;; SPDX-FileCopyrightText: The breto Authors
 ;; SPDX-License-Identifier: MIT
 
-{:source {:github "BurntSushi/xsv"}
+{:description "A fast CSV command line toolkit written in Rust",
+ :source {:github "BurntSushi/xsv"}
  :tag-prefix ""
  :asset "xsv-{tag}-x86_64-unknown-linux-musl.tar.gz"}

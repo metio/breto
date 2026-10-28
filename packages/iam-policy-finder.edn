@@ -2,6 +2,7 @@
 ;; SPDX-FileCopyrightText: The breto Authors
 ;; SPDX-License-Identifier: MIT
 
-{:source {:github "fujiwara/iam-policy-finder"}
+{:description "iam-policy-finder is finder of AWS IAM Policies",
+ :source {:github "fujiwara/iam-policy-finder"}
  :asset "iam-policy-finder_{version}_linux_amd64.tar.gz"
  :checksum "checksums.txt"}

@@ -1,6 +1,7 @@
 ;; SPDX-FileCopyrightText: The breto Authors
 ;; SPDX-License-Identifier: 0BSD
 
-{:source {:github "kubernetes-sigs/kind"}
+{:description "Kubernetes IN Docker - local clusters for testing Kubernetes",
+ :source {:github "kubernetes-sigs/kind"}
  :asset "kind-linux-amd64"
  :checksum "{asset}.sha256sum"}

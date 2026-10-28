@@ -2,6 +2,7 @@
 ;; SPDX-FileCopyrightText: The breto Authors
 ;; SPDX-License-Identifier: MIT
 
-{:source {:github "plumber-cd/terraform-backend-git"}
+{:description "Terraform HTTP Backend implementation that uses Git repository as storage",
+ :source {:github "plumber-cd/terraform-backend-git"}
  :asset "terraform-backend-git-linux-amd64"
  :checksum "SHA256SUMS"}

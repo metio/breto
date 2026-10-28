@@ -2,7 +2,8 @@
 ;; SPDX-FileCopyrightText: The breto Authors
 ;; SPDX-License-Identifier: MIT
 
-{:source {:github "charmbracelet/freeze"}
+{:description "Generate images of code and terminal output",
+ :source {:github "charmbracelet/freeze"}
  :asset "freeze_{version}_Linux_x86_64.tar.gz"
  :checksum "checksums.txt"
  :bins {"freeze" "freeze_{version}_Linux_x86_64/freeze"}}

@@ -2,7 +2,8 @@
 ;; SPDX-FileCopyrightText: The breto Authors
 ;; SPDX-License-Identifier: MIT
 
-{:source {:github "thanos-io/thanos"}
+{:description "Highly available Prometheus setup with long term storage capabilities. A CNCF Incubating project",
+ :source {:github "thanos-io/thanos"}
  :asset "thanos-{version}.linux-amd64.tar.gz"
  :checksum "sha256sums.txt"
  :bins {"thanos" "thanos-{version}.linux-amd64/thanos"}}

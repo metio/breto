@@ -2,6 +2,7 @@
 ;; SPDX-FileCopyrightText: The breto Authors
 ;; SPDX-License-Identifier: MIT
 
-{:source {:github "callumalpass/tasknotes-tui"}
+{:description "Terminal interface for managing markdown-based tasks",
+ :source {:github "callumalpass/tasknotes-tui"}
  :asset "tasknotes-tui-{tag}-linux-x86_64.tar.gz"
  :bins {"tasknotes-tui" "tasknotes-tui-{tag}-linux-x86_64/tasknotes-tui"}}

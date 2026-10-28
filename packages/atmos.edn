@@ -2,6 +2,7 @@
 ;; SPDX-FileCopyrightText: The breto Authors
 ;; SPDX-License-Identifier: MIT
 
-{:source {:github "cloudposse/atmos"}
+{:description "Workflow automation tool for DevOps. Keep configuration DRY with hierarchical imports of configurations, inheritance, and WAY more. Native support for Terraform and Helmfile",
+ :source {:github "cloudposse/atmos"}
  :asset "atmos_{version}_linux_amd64"
  :checksum "atmos_{version}_SHA256SUMS"}

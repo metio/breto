@@ -2,7 +2,8 @@
 ;; SPDX-FileCopyrightText: The breto Authors
 ;; SPDX-License-Identifier: MIT
 
-{:source {:github "ynqa/jnv"}
+{:description "Interactive JSON filter using jq",
+ :source {:github "ynqa/jnv"}
  :asset "jnv-x86_64-unknown-linux-musl.tar.xz"
  :checksum "{asset}.sha256"
  :bins {"jnv" "jnv-x86_64-unknown-linux-musl/jnv"}}

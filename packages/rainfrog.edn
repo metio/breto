@@ -2,6 +2,7 @@
 ;; SPDX-FileCopyrightText: The breto Authors
 ;; SPDX-License-Identifier: MIT
 
-{:source {:github "achristmascarl/rainfrog"}
+{:description "a database management tui for postgres",
+ :source {:github "achristmascarl/rainfrog"}
  :asset "rainfrog-{tag}-x86_64-unknown-linux-gnu.tar.gz"
  :checksum "rainfrog-{tag}-x86_64-unknown-linux-gnu.sha256"}

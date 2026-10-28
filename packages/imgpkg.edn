@@ -2,6 +2,7 @@
 ;; SPDX-FileCopyrightText: The breto Authors
 ;; SPDX-License-Identifier: MIT
 
-{:source {:github "carvel-dev/imgpkg"}
+{:description "Store application configuration files in Docker/OCI registries",
+ :source {:github "carvel-dev/imgpkg"}
  :asset "imgpkg-linux-amd64"
  :checksum "checksums.txt"}

@@ -2,6 +2,7 @@
 ;; SPDX-FileCopyrightText: The breto Authors
 ;; SPDX-License-Identifier: MIT
 
-{:source {:github "babarot/gist"}
+{:description "A simple gist editor for CLI",
+ :source {:github "babarot/gist"}
  :asset "gist_linux_x86_64.tar.gz"
  :checksum "gist_{version}_checksums.txt"}

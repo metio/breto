@@ -2,6 +2,7 @@
 ;; SPDX-FileCopyrightText: The breto Authors
 ;; SPDX-License-Identifier: MIT
 
-{:source {:github "goark/gnkf"}
+{:description "Network Kanji Filter by Golang",
+ :source {:github "goark/gnkf"}
  :asset "gnkf_{version}_Linux_64bit.tar.gz"
  :checksum "gnkf_{version}_checksums.txt"}

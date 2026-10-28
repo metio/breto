@@ -2,7 +2,8 @@
 ;; SPDX-FileCopyrightText: The breto Authors
 ;; SPDX-License-Identifier: MIT
 
-{:source {:github "jreleaser/jreleaser"}
+{:description "Release projects quickly and easily with JReleaser",
+ :source {:github "jreleaser/jreleaser"}
  :asset "jreleaser-standalone-{version}-linux-x86_64.zip"
  :checksum "checksums_sha256.txt"
  :bins {"java" "jreleaser-standalone-{version}-linux-x86_64/bin/java", "jreleaser" "jreleaser-standalone-{version}-linux-x86_64/bin/jreleaser", "keytool" "jreleaser-standalone-{version}-linux-x86_64/bin/keytool", "rmiregistry" "jreleaser-standalone-{version}-linux-x86_64/bin/rmiregistry"}}

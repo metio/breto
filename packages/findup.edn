@@ -2,5 +2,6 @@
 ;; SPDX-FileCopyrightText: The breto Authors
 ;; SPDX-License-Identifier: MIT
 
-{:source {:github "so-dang-cool/findup"}
+{:description "Find parent directories",
+ :source {:github "so-dang-cool/findup"}
  :asset "findup-x86_64-linux-gnu.tgz"}

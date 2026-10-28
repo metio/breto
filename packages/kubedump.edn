@@ -2,6 +2,7 @@
 ;; SPDX-FileCopyrightText: The breto Authors
 ;; SPDX-License-Identifier: MIT
 
-{:source {:github "sj14/kubedump"}
+{:description "Tool for dumping manifests from your Kubernetes clusters",
+ :source {:github "sj14/kubedump"}
  :asset "kubedump_{version}_linux_amd64"
  :checksum "checksums.txt"}

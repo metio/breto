@@ -2,7 +2,8 @@
 ;; SPDX-FileCopyrightText: The breto Authors
 ;; SPDX-License-Identifier: MIT
 
-{:source {:github "jubako/arx"}
+{:description "Store files and directory in an archive. Like tar, but faster and with direct random access",
+ :source {:github "jubako/arx"}
  :tag-prefix ""
  :asset "arx-{tag}-linux.tar.gz"
  :checksum "{asset}.sha256"

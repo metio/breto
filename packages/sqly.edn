@@ -2,6 +2,7 @@
 ;; SPDX-FileCopyrightText: The breto Authors
 ;; SPDX-License-Identifier: MIT
 
-{:source {:github "nao1215/sqly"}
+{:description "easily execute SQL against CSV/TSV/LTSV/JSON and Microsoft Excel with shell",
+ :source {:github "nao1215/sqly"}
  :asset "sqly_{version}_linux_amd64.tar.gz"
  :checksum "checksums.txt"}

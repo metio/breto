@@ -2,7 +2,8 @@
 ;; SPDX-FileCopyrightText: The breto Authors
 ;; SPDX-License-Identifier: MIT
 
-{:source {:github "charmbracelet/vhs"}
+{:description "Your CLI home video recorder",
+ :source {:github "charmbracelet/vhs"}
  :asset "vhs_{version}_Linux_x86_64.tar.gz"
  :checksum "checksums.txt"
  :bins {"vhs" "vhs_{version}_Linux_x86_64/vhs"}}

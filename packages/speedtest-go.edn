@@ -2,7 +2,8 @@
 ;; SPDX-FileCopyrightText: The breto Authors
 ;; SPDX-License-Identifier: MIT
 
-{:source {:github "showwin/speedtest-go"}
+{:description "CLI and Go API to Test Internet Speed using speedtest.net",
+ :source {:github "showwin/speedtest-go"}
  :asset "speedtest-go_{version}_Linux_x86_64.tar.gz"
  :checksum "checksums.txt"
  :bins {"speedtest" "speedtest-go"}}

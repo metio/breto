@@ -2,5 +2,6 @@
 ;; SPDX-FileCopyrightText: The breto Authors
 ;; SPDX-License-Identifier: MIT
 
-{:source {:github "timvisee/ffsend"}
+{:description "Easily and securely share files from the command line. A fully featured Firefox Send client",
+ :source {:github "timvisee/ffsend"}
  :asset "ffsend-{tag}-linux-x64-static"}

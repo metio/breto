@@ -2,6 +2,7 @@
 ;; SPDX-FileCopyrightText: The breto Authors
 ;; SPDX-License-Identifier: MIT
 
-{:source {:github "denizgursoy/gotouch"}
+{:description "Customizable Boilerplate Project Creator",
+ :source {:github "denizgursoy/gotouch"}
  :asset "gotouch_{version}_Linux_x86_64.tar.gz"
  :checksum "checksums.txt"}

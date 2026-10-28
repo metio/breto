@@ -2,7 +2,8 @@
 ;; SPDX-FileCopyrightText: The breto Authors
 ;; SPDX-License-Identifier: MIT
 
-{:source {:github "Genymobile/scrcpy"}
+{:description "Display and control your Android device",
+ :source {:github "Genymobile/scrcpy"}
  :asset "scrcpy-linux-x86_64-{tag}.tar.gz"
  :checksum "SHA256SUMS.txt"
  :bins {"scrcpy" "scrcpy-linux-x86_64-{tag}/scrcpy"}}

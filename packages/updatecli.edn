@@ -2,6 +2,7 @@
 ;; SPDX-FileCopyrightText: The breto Authors
 ;; SPDX-License-Identifier: MIT
 
-{:source {:github "updatecli/updatecli"}
+{:description "A Declarative Dependency Management tool",
+ :source {:github "updatecli/updatecli"}
  :asset "updatecli_Linux_x86_64.tar.gz"
  :checksum "checksums.txt"}

@@ -2,5 +2,6 @@
 ;; SPDX-FileCopyrightText: The breto Authors
 ;; SPDX-License-Identifier: MIT
 
-{:source {:github "self-actuated/actuated-cli"}
+{:description "CLI for actuated",
+ :source {:github "self-actuated/actuated-cli"}
  :asset "actuated-cli"}

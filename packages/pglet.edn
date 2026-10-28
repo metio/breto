@@ -2,6 +2,7 @@
 ;; SPDX-FileCopyrightText: The breto Authors
 ;; SPDX-License-Identifier: MIT
 
-{:source {:github "pglet/pglet"}
+{:description "Pglet - build internal web apps quickly in the language you already know",
+ :source {:github "pglet/pglet"}
  :asset "pglet-{version}-linux-amd64.tar.gz"
  :checksum "pglet_{version}_checksums.txt"}

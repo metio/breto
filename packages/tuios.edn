@@ -2,6 +2,7 @@
 ;; SPDX-FileCopyrightText: The breto Authors
 ;; SPDX-License-Identifier: MIT
 
-{:source {:github "Gaurav-Gosain/tuios"}
+{:description "Terminal UI OS (Terminal Multiplexer)",
+ :source {:github "Gaurav-Gosain/tuios"}
  :asset "tuios_{version}_Linux_x86_64.tar.gz"
  :checksum "checksums.txt"}

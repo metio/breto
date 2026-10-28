@@ -2,7 +2,8 @@
 ;; SPDX-FileCopyrightText: The breto Authors
 ;; SPDX-License-Identifier: MIT
 
-{:source {:github "harness/drone-cli"}
+{:description "Command Line Tools for Drone CI",
+ :source {:github "harness/drone-cli"}
  :asset "drone_linux_amd64.tar.gz"
  :checksum "drone_checksums.txt"
  :bins {"drone" "drone"}}

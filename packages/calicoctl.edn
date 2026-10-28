@@ -1,6 +1,7 @@
 ;; SPDX-FileCopyrightText: The breto Authors
 ;; SPDX-License-Identifier: 0BSD
 
-{:source {:github "projectcalico/calico"},
+{:description "CLI tool for Calico cloud native networking and network security",
+ :source {:github "projectcalico/calico"},
  :asset "calicoctl-linux-amd64",
  :checksum "SHA256SUMS"}

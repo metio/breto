@@ -2,5 +2,6 @@
 ;; SPDX-FileCopyrightText: The breto Authors
 ;; SPDX-License-Identifier: MIT
 
-{:source {:github "microsoft/component-detection"}
+{:description "Scans your project to determine what components you use",
+ :source {:github "microsoft/component-detection"}
  :asset "component-detection-linux-x64"}

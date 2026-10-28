@@ -2,6 +2,7 @@
 ;; SPDX-FileCopyrightText: The breto Authors
 ;; SPDX-License-Identifier: MIT
 
-{:source {:github "air-verse/air"}
+{:description "Live reload for Go apps",
+ :source {:github "air-verse/air"}
  :asset "air_{version}_linux_amd64.tar.gz"
  :checksum "air_{version}_checksums.txt"}

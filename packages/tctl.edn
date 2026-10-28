@@ -2,6 +2,7 @@
 ;; SPDX-FileCopyrightText: The breto Authors
 ;; SPDX-License-Identifier: MIT
 
-{:source {:github "temporalio/tctl"}
+{:description "Temporal CLI",
+ :source {:github "temporalio/tctl"}
  :asset "tctl_{version}_linux_amd64.tar.gz"
  :checksum "checksums.txt"}

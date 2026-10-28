@@ -2,7 +2,8 @@
 ;; SPDX-FileCopyrightText: The breto Authors
 ;; SPDX-License-Identifier: MIT
 
-{:source {:github "grafana/k6"}
+{:description "A modern load testing tool, using Go and JavaScript",
+ :source {:github "grafana/k6"}
  :asset "k6-{tag}-linux-amd64.tar.gz"
  :checksum "k6-{tag}-checksums.txt"
  :bins {"k6" "k6-{tag}-linux-amd64/k6"}}

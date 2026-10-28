@@ -2,6 +2,7 @@
 ;; SPDX-FileCopyrightText: The breto Authors
 ;; SPDX-License-Identifier: MIT
 
-{:source {:github "jackchuka/mdschema"}
+{:description "A declarative schema-based Markdown validator that helps maintain consistent documentation structure across projects",
+ :source {:github "jackchuka/mdschema"}
  :asset "mdschema_{version}_linux_amd64.tar.gz"
  :checksum "mdschema_{version}_checksums.txt"}

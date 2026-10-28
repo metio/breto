@@ -2,6 +2,7 @@
 ;; SPDX-FileCopyrightText: The breto Authors
 ;; SPDX-License-Identifier: MIT
 
-{:source {:github "bytecodealliance/wasm-tools"}
+{:description "CLI and Rust libraries for low-level manipulation of WebAssembly modules",
+ :source {:github "bytecodealliance/wasm-tools"}
  :asset "wasm-tools-{version}-x86_64-linux.tar.gz"
  :bins {"wasm-tools" "wasm-tools-{version}-x86_64-linux/wasm-tools"}}

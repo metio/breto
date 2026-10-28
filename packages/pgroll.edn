@@ -2,6 +2,7 @@
 ;; SPDX-FileCopyrightText: The breto Authors
 ;; SPDX-License-Identifier: MIT
 
-{:source {:github "xataio/pgroll"}
+{:description "PostgreSQL zero-downtime migrations made easy",
+ :source {:github "xataio/pgroll"}
  :asset "pgroll.linux.amd64"
  :checksum "pgroll_{version}_checksums.txt"}

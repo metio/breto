@@ -2,6 +2,7 @@
 ;; SPDX-FileCopyrightText: The breto Authors
 ;; SPDX-License-Identifier: MIT
 
-{:source {:github "erebe/wstunnel"}
+{:description "Tunnel all your traffic over Websocket or HTTP2 - Bypass firewalls/DPI",
+ :source {:github "erebe/wstunnel"}
  :asset "wstunnel_{version}_linux_amd64.tar.gz"
  :checksum "checksums.txt"}

@@ -2,5 +2,6 @@
 ;; SPDX-FileCopyrightText: The breto Authors
 ;; SPDX-License-Identifier: MIT
 
-{:source {:github "fujiwara/tncl"}
+{:description "tncl is a tiny \"nc -l\" implementation",
+ :source {:github "fujiwara/tncl"}
  :asset "tncl-x86_64-linux-musl"}

@@ -2,6 +2,7 @@
 ;; SPDX-FileCopyrightText: The breto Authors
 ;; SPDX-License-Identifier: MIT
 
-{:source {:github "suzuki-shunsuke/asciinema-trim"}
+{:description "Trim and change the playback speed of asciinema's session",
+ :source {:github "suzuki-shunsuke/asciinema-trim"}
  :asset "asciinema-trim_linux_amd64.tar.gz"
  :checksum "asciinema-trim_{version}_checksums.txt"}

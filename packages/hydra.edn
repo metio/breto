@@ -2,6 +2,7 @@
 ;; SPDX-FileCopyrightText: The breto Authors
 ;; SPDX-License-Identifier: MIT
 
-{:source {:github "ory/hydra"}
+{:description "OpenID Certified OpenID Connect and OAuth Provider written in Go - cloud native, security-first, open source API security for your infrastructure. SDKs for any language. Works with Hardware Security Modules. Compatible with MITREid",
+ :source {:github "ory/hydra"}
  :asset "hydra_{version}-linux_64bit.tar.gz"
  :checksum "checksums.txt"}

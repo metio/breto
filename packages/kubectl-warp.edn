@@ -2,6 +2,7 @@
 ;; SPDX-FileCopyrightText: The breto Authors
 ;; SPDX-License-Identifier: MIT
 
-{:source {:github "ernoaapa/kubectl-warp"}
+{:description "Kubernetes CLI plugin for syncing and executing local files in Pod on Kubernetes",
+ :source {:github "ernoaapa/kubectl-warp"}
  :asset "kubectl-warp_{version}_linux_amd64.tar.gz"
  :checksum "checksums.txt"}

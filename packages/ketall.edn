@@ -2,7 +2,8 @@
 ;; SPDX-FileCopyrightText: The breto Authors
 ;; SPDX-License-Identifier: MIT
 
-{:source {:github "corneliusweig/ketall"}
+{:description "Like `kubectl get all`, but get really all resources",
+ :source {:github "corneliusweig/ketall"}
  :asset "ketall-amd64-linux.tar.gz"
  :checksum "{asset}.sha256"
  :bins {"ketall" "ketall-amd64-linux", "kubectl-get_all" "ketall-amd64-linux"}}

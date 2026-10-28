@@ -2,7 +2,8 @@
 ;; SPDX-FileCopyrightText: The breto Authors
 ;; SPDX-License-Identifier: MIT
 
-{:source {:github "dhall-lang/dhall-haskell"}
+{:description "Maintainable configuration files",
+ :source {:github "dhall-lang/dhall-haskell"}
  :tag-prefix ""
  :asset "dhall-{tag}-x86_64-linux.tar.bz2"
  :bins {"dhall" "bin/dhall"}}

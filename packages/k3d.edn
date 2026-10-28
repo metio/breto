@@ -2,6 +2,7 @@
 ;; SPDX-FileCopyrightText: The breto Authors
 ;; SPDX-License-Identifier: MIT
 
-{:source {:github "k3d-io/k3d"}
+{:description "Little helper to run CNCF's k3s in Docker",
+ :source {:github "k3d-io/k3d"}
  :asset "k3d-linux-amd64"
  :checksum "checksums.txt"}

@@ -2,7 +2,8 @@
 ;; SPDX-FileCopyrightText: The breto Authors
 ;; SPDX-License-Identifier: MIT
 
-{:source {:github "allero-io/allero"}
+{:description "By scanning CI/CD misconfigurations, Allero helps reduce production issues, harden your security posture and shift-left CI/CD from DevOps to developers",
+ :source {:github "allero-io/allero"}
  :tag-prefix ""
  :asset "allero_{tag}_Linux_x86_64.zip"
  :checksum "checksums.txt"}

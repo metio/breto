@@ -2,6 +2,7 @@
 ;; SPDX-FileCopyrightText: The breto Authors
 ;; SPDX-License-Identifier: MIT
 
-{:source {:github "pulumi/kubespy"}
+{:description "Tools for observing Kubernetes resources in real time, powered by Pulumi",
+ :source {:github "pulumi/kubespy"}
  :asset "kubespy-{tag}-linux-amd64.tar.gz"
  :checksum "checksums.txt"}

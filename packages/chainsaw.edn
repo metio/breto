@@ -1,7 +1,8 @@
 ;; SPDX-FileCopyrightText: The breto Authors
 ;; SPDX-License-Identifier: 0BSD
 
-{:source {:github "kyverno/chainsaw"},
+{:description "Declarative K8s e2e testing",
+ :source {:github "kyverno/chainsaw"},
  :asset "chainsaw_linux_amd64.tar.gz",
  :checksum "checksums.txt",
  :signature {:bundle "{asset}.sigstore.json",

@@ -1,7 +1,8 @@
 ;; SPDX-FileCopyrightText: The breto Authors
 ;; SPDX-License-Identifier: 0BSD
 
-{:source {:github "str4d/age-plugin-yubikey"},
+{:description "YubiKey plugin for age",
+ :source {:github "str4d/age-plugin-yubikey"},
  :asset "age-plugin-yubikey-{tag}-x86_64-linux.tar.gz",
  :strip 1
  :skip ["0.5.1"]

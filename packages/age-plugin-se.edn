@@ -2,6 +2,7 @@
 ;; SPDX-FileCopyrightText: The breto Authors
 ;; SPDX-License-Identifier: MIT
 
-{:source {:github "remko/age-plugin-se"}
+{:description "Age plugin for Apple's Secure Enclave",
+ :source {:github "remko/age-plugin-se"}
  :asset "age-plugin-se-{tag}-x86_64-linux.tgz"
  :bins {"age-plugin-se" "age-plugin-se-{tag}-x86_64-linux/usr/bin/age-plugin-se"}}

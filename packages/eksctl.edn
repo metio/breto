@@ -2,6 +2,7 @@
 ;; SPDX-FileCopyrightText: The breto Authors
 ;; SPDX-License-Identifier: MIT
 
-{:source {:github "eksctl-io/eksctl"}
+{:description "The official CLI for Amazon EKS",
+ :source {:github "eksctl-io/eksctl"}
  :asset "eksctl_Linux_amd64.tar.gz"
  :checksum "eksctl_checksums.txt"}

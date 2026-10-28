@@ -2,5 +2,6 @@
 ;; SPDX-FileCopyrightText: The breto Authors
 ;; SPDX-License-Identifier: MIT
 
-{:source {:github "gardener/docforge"}
+{:description "Scalable build tool for distributed documentation sources",
+ :source {:github "gardener/docforge"}
  :asset "docforge-linux-amd64"}

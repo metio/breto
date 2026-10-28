@@ -2,6 +2,7 @@
 ;; SPDX-FileCopyrightText: The breto Authors
 ;; SPDX-License-Identifier: MIT
 
-{:source {:github "restechnica/semverbot"}
+{:description "A CLI which automates semver versioning",
+ :source {:github "restechnica/semverbot"}
  :asset "sbot-linux-amd64"
  :bins {"sbot" "{asset}"}}

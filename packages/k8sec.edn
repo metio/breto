@@ -2,6 +2,7 @@
 ;; SPDX-FileCopyrightText: The breto Authors
 ;; SPDX-License-Identifier: MIT
 
-{:source {:github "dtan4/k8sec"}
+{:description "CLI tool to manage Kubernetes Secrets easily",
+ :source {:github "dtan4/k8sec"}
  :asset "k8sec_linux_amd64.tar.gz"
  :checksum "checksums.txt"}

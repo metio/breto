@@ -2,6 +2,7 @@
 ;; SPDX-FileCopyrightText: The breto Authors
 ;; SPDX-License-Identifier: MIT
 
-{:source {:github "awslabs/ssosync"}
+{:description "Populate AWS SSO directly with your G Suite users and groups using either a CLI or AWS Lambda",
+ :source {:github "awslabs/ssosync"}
  :asset "ssosync_Linux_x86_64.tar.gz"
  :checksum "ssosync_checksums.txt"}

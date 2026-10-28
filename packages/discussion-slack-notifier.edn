@@ -2,6 +2,7 @@
 ;; SPDX-FileCopyrightText: The breto Authors
 ;; SPDX-License-Identifier: MIT
 
-{:source {:github "suzuki-shunsuke/discussion-slack-notifier"}
+{:description "Notify GitHub Discussions events to Slack with GitHub Actions",
+ :source {:github "suzuki-shunsuke/discussion-slack-notifier"}
  :asset "discussion-slack-notifier_linux_amd64.tar.gz"
  :checksum "discussion-slack-notifier_{version}_checksums.txt"}

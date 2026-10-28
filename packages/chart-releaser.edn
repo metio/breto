@@ -2,7 +2,8 @@
 ;; SPDX-FileCopyrightText: The breto Authors
 ;; SPDX-License-Identifier: MIT
 
-{:source {:github "helm/chart-releaser"}
+{:description "Hosting Helm Charts via GitHub Pages and Releases",
+ :source {:github "helm/chart-releaser"}
  :asset "chart-releaser_{version}_linux_amd64.tar.gz"
  :checksum "checksums.txt"
  :bins {"cr" "cr"}}

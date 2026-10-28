@@ -2,6 +2,7 @@
 ;; SPDX-FileCopyrightText: The breto Authors
 ;; SPDX-License-Identifier: MIT
 
-{:source {:github "babarot/stein"}
+{:description "A linter for config files with a customizable rule set",
+ :source {:github "babarot/stein"}
  :asset "stein_linux_x86_64.tar.gz"
  :checksum "stein_{version}_checksums.txt"}

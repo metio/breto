@@ -2,5 +2,6 @@
 ;; SPDX-FileCopyrightText: The breto Authors
 ;; SPDX-License-Identifier: MIT
 
-{:source {:github "codesenberg/bombardier"}
+{:description "Fast cross-platform HTTP benchmarking tool written in Go",
+ :source {:github "codesenberg/bombardier"}
  :asset "bombardier-linux-amd64"}

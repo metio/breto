@@ -2,7 +2,8 @@
 ;; SPDX-FileCopyrightText: The breto Authors
 ;; SPDX-License-Identifier: MIT
 
-{:source {:github "bcicen/slackcat"}
+{:description "CLI utility to post files and command output to slack",
+ :source {:github "bcicen/slackcat"}
  :tag-prefix ""
  :asset "slackcat-{tag}-linux-amd64"
  :checksum "sha256sums.txt"}

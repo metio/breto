@@ -2,5 +2,6 @@
 ;; SPDX-FileCopyrightText: The breto Authors
 ;; SPDX-License-Identifier: MIT
 
-{:source {:github "vercel-labs/agent-browser"}
+{:description "Browser automation CLI for AI agents",
+ :source {:github "vercel-labs/agent-browser"}
  :asset "agent-browser-linux-musl-x64"}

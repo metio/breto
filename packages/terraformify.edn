@@ -2,7 +2,8 @@
 ;; SPDX-FileCopyrightText: The breto Authors
 ;; SPDX-License-Identifier: MIT
 
-{:source {:github "hrmsk66/terraformify"}
+{:description "An experimental CLI that generates Terraform files for managing existing Fastly services",
+ :source {:github "hrmsk66/terraformify"}
  :asset "terraformify_linux_amd64.zip"
  :checksum "checksums.txt"
  :bins {"terraformify" "terraformify_linux_amd64/terraformify"}}

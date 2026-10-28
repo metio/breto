@@ -2,6 +2,7 @@
 ;; SPDX-FileCopyrightText: The breto Authors
 ;; SPDX-License-Identifier: MIT
 
-{:source {:github "rootless-containers/slirp4netns"}
+{:description "User-mode networking for unprivileged network namespaces",
+ :source {:github "rootless-containers/slirp4netns"}
  :asset "slirp4netns-x86_64"
  :checksum "SHA256SUMS"}

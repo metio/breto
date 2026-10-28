@@ -2,6 +2,7 @@
 ;; SPDX-FileCopyrightText: The breto Authors
 ;; SPDX-License-Identifier: MIT
 
-{:source {:github "aws/amazon-ec2-instance-selector"}
+{:description "A CLI tool and go library which recommends instance types based on resource criteria like vcpus and memory",
+ :source {:github "aws/amazon-ec2-instance-selector"}
  :asset "ec2-instance-selector-linux-amd64.tar.gz"
  :bins {"ec2-instance-selector" "ec2-instance-selector"}}

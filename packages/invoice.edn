@@ -2,6 +2,7 @@
 ;; SPDX-FileCopyrightText: The breto Authors
 ;; SPDX-License-Identifier: MIT
 
-{:source {:github "maaslalani/invoice"}
+{:description "Command line invoice generator",
+ :source {:github "maaslalani/invoice"}
  :asset "invoice_{version}_linux_amd64.tar.gz"
  :checksum "invoice_{version}_checksums.txt"}

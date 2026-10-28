@@ -2,6 +2,7 @@
 ;; SPDX-FileCopyrightText: The breto Authors
 ;; SPDX-License-Identifier: MIT
 
-{:source {:github "asciidoctor/asciidoctor-reveal.js"}
+{:description "A reveal.js converter for Asciidoctor and Asciidoctor.js. Write your slides in AsciiDoc",
+ :source {:github "asciidoctor/asciidoctor-reveal.js"}
  :asset "asciidoctor-revealjs-linux"
  :bins {"asciidoctor-revealjs" "{asset}"}}

@@ -2,7 +2,8 @@
 ;; SPDX-FileCopyrightText: The breto Authors
 ;; SPDX-License-Identifier: MIT
 
-{:source {:github "fwdcloudsec/granted"}
+{:description "The easiest way to access your cloud",
+ :source {:github "fwdcloudsec/granted"}
  :asset "granted_{version}_linux_x86_64.tar.gz"
  :checksum "checksums.txt"
  :bins {"assume" "assume", "assumego" "assumego", "granted" "granted"}}

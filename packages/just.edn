@@ -2,6 +2,7 @@
 ;; SPDX-FileCopyrightText: The breto Authors
 ;; SPDX-License-Identifier: MIT
 
-{:source {:github "casey/just"}
+{:description "Just a command runner",
+ :source {:github "casey/just"}
  :tag-prefix ""
  :asset "just-{tag}-x86_64-unknown-linux-musl.tar.gz"}

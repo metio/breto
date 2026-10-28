@@ -2,5 +2,6 @@
 ;; SPDX-FileCopyrightText: The breto Authors
 ;; SPDX-License-Identifier: MIT
 
-{:source {:github "JohnnyMorganz/StyLua"}
+{:description "A Lua code formatter",
+ :source {:github "JohnnyMorganz/StyLua"}
  :asset "stylua-linux-x86_64-musl.zip"}

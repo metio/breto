@@ -2,5 +2,6 @@
 ;; SPDX-FileCopyrightText: The breto Authors
 ;; SPDX-License-Identifier: MIT
 
-{:source {:github "Automattic/harper"}
+{:description "The Grammar Checker for Developers",
+ :source {:github "Automattic/harper"}
  :asset "harper-ls-x86_64-unknown-linux-gnu.tar.gz"}

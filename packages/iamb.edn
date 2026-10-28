@@ -1,7 +1,8 @@
 ;; SPDX-FileCopyrightText: The breto Authors
 ;; SPDX-License-Identifier: 0BSD
 
-{:source {:github "ulyssa/iamb"}
+{:description "A Matrix client for Vim addicts.",
+ :source {:github "ulyssa/iamb"}
  :asset "iamb-{version}-x86_64-unknown-linux-musl.tar.gz"
  :strip 1
  :history [{:before "0.0.13" :asset "iamb-x86_64-unknown-linux-musl-binary.zip" :strip 0}

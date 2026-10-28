@@ -1,7 +1,8 @@
 ;; SPDX-FileCopyrightText: The breto Authors
 ;; SPDX-License-Identifier: 0BSD
 
-{:source {:json "https://data.services.jetbrains.com/products/releases?code=IIU&latest=true&type=release"
+{:description "IntelliJ IDEA, the JetBrains IDE for Java and Kotlin",
+ :source {:json "https://data.services.jetbrains.com/products/releases?code=IIU&latest=true&type=release"
           :version [:IIU 0 :version]}
  :tag-prefix ""
  :asset "idea-{version}.tar.gz"

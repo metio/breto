@@ -2,6 +2,7 @@
 ;; SPDX-FileCopyrightText: The breto Authors
 ;; SPDX-License-Identifier: MIT
 
-{:source {:github "entireio/git-sync"}
+{:description "Mirror git refs from a source remote to a target remote without a local checkout. Packfiles stream directly over Smart HTTP and an in-memory object store",
+ :source {:github "entireio/git-sync"}
  :asset "git-sync_{version}_linux_amd64.tar.gz"
  :checksum "checksums.txt"}

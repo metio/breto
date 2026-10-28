@@ -2,7 +2,8 @@
 ;; SPDX-FileCopyrightText: The breto Authors
 ;; SPDX-License-Identifier: MIT
 
-{:source {:github "quarto-dev/quarto-cli"}
+{:description "Open-source scientific and technical publishing system built on Pandoc",
+ :source {:github "quarto-dev/quarto-cli"}
  :asset "quarto-{version}-linux-amd64.tar.gz"
  :checksum "quarto-{version}-checksums.txt"
  :bins {"quarto" "quarto-{version}/bin/quarto"}}

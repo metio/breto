@@ -2,6 +2,7 @@
 ;; SPDX-FileCopyrightText: The breto Authors
 ;; SPDX-License-Identifier: MIT
 
-{:source {:github "clog-tool/clog-cli"}
+{:description "Generate beautiful changelogs from your Git commit history",
+ :source {:github "clog-tool/clog-cli"}
  :asset "clog-{tag}-x86_64-unknown-linux-musl.tar.gz"
  :bins {"clog" "clog"}}

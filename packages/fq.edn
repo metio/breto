@@ -2,6 +2,7 @@
 ;; SPDX-FileCopyrightText: The breto Authors
 ;; SPDX-License-Identifier: MIT
 
-{:source {:github "wader/fq"}
+{:description "jq for binary formats - tool, language and decoders for working with binary and text formats",
+ :source {:github "wader/fq"}
  :asset "fq_{version}_linux_amd64.tar.gz"
  :checksum "checksums.txt"}

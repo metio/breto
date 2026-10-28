@@ -2,6 +2,7 @@
 ;; SPDX-FileCopyrightText: The breto Authors
 ;; SPDX-License-Identifier: MIT
 
-{:source {:github "Phantas0s/devdash"}
+{:description "Highly Configurable Terminal Dashboard for Developers and Creators",
+ :source {:github "Phantas0s/devdash"}
  :asset "devdash_{version}_Linux_x86_64.tar.gz"
  :checksum "checksums.txt"}

@@ -2,5 +2,6 @@
 ;; SPDX-FileCopyrightText: The breto Authors
 ;; SPDX-License-Identifier: MIT
 
-{:source {:github "hatoo/oha"}
+{:description "Ohayou(おはよう), HTTP load generator, inspired by rakyll/hey with tui animation",
+ :source {:github "hatoo/oha"}
  :asset "oha-linux-amd64"}

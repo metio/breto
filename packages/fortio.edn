@@ -2,6 +2,7 @@
 ;; SPDX-FileCopyrightText: The breto Authors
 ;; SPDX-License-Identifier: MIT
 
-{:source {:github "fortio/fortio"}
+{:description "Fortio load testing library, command line tool, advanced echo server and web UI in go (golang). Allows to specify a set query-per-second load and record latency histograms and other useful stats",
+ :source {:github "fortio/fortio"}
  :asset "fortio-linux_amd64-{version}.tgz"
  :bins {"fortio" "usr/bin/fortio"}}

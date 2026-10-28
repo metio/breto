@@ -2,6 +2,7 @@
 ;; SPDX-FileCopyrightText: The breto Authors
 ;; SPDX-License-Identifier: MIT
 
-{:source {:github "env0/terratag"}
+{:description "Terratag is a CLI tool that enables users of Terraform to automatically create and maintain tags across their entire set of AWS, Azure, and GCP resources",
+ :source {:github "env0/terratag"}
  :asset "terratag_{version}_linux_amd64.tar.gz"
  :checksum "terratag_{version}_checksums.txt"}

@@ -2,6 +2,7 @@
 ;; SPDX-FileCopyrightText: The breto Authors
 ;; SPDX-License-Identifier: MIT
 
-{:source {:github "pranshuparmar/witr"}
+{:description "Why is this running",
+ :source {:github "pranshuparmar/witr"}
  :asset "witr-linux-amd64"
  :checksum "SHA256SUMS"}

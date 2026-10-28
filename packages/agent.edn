@@ -2,6 +2,7 @@
 ;; SPDX-FileCopyrightText: The breto Authors
 ;; SPDX-License-Identifier: MIT
 
-{:source {:github "buildkite/agent"}
+{:description "The Buildkite Agent is an open-source toolkit written in Golang for securely running build jobs on any device or network",
+ :source {:github "buildkite/agent"}
  :asset "buildkite-agent-linux-amd64-{version}.tar.gz"
  :bins {"buildkite-agent" "buildkite-agent"}}

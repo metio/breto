@@ -2,5 +2,6 @@
 ;; SPDX-FileCopyrightText: The breto Authors
 ;; SPDX-License-Identifier: MIT
 
-{:source {:github "jdx/fnox"}
+{:description "encrypted/remote secret manager",
+ :source {:github "jdx/fnox"}
  :asset "fnox-x86_64-unknown-linux-musl.tar.gz"}

@@ -2,6 +2,7 @@
 ;; SPDX-FileCopyrightText: The breto Authors
 ;; SPDX-License-Identifier: MIT
 
-{:source {:github "earendil-works/pi"}
+{:description "Interactive coding agent CLI",
+ :source {:github "earendil-works/pi"}
  :asset "pi-linux-x64.tar.gz"
  :bins {"pi" "pi/pi"}}

@@ -2,5 +2,6 @@
 ;; SPDX-FileCopyrightText: The breto Authors
 ;; SPDX-License-Identifier: MIT
 
-{:source {:github "liamg/pax"}
+{:description "CLI tool for PKCS7 padding oracle attacks",
+ :source {:github "liamg/pax"}
  :asset "pax-linux-amd64"}

@@ -2,6 +2,7 @@
 ;; SPDX-FileCopyrightText: The breto Authors
 ;; SPDX-License-Identifier: MIT
 
-{:source {:github "itchyny/bed"}
+{:description "Binary editor written in Go",
+ :source {:github "itchyny/bed"}
  :asset "bed_{tag}_linux_amd64.tar.gz"
  :bins {"bed" "bed_{tag}_linux_amd64/bed"}}

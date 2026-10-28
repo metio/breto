@@ -2,7 +2,8 @@
 ;; SPDX-FileCopyrightText: The breto Authors
 ;; SPDX-License-Identifier: MIT
 
-{:source {:github "operator-framework/operator-registry"}
+{:description "Operator Registry runs in a Kubernetes or OpenShift cluster to provide operator catalog data to Operator Lifecycle Manager",
+ :source {:github "operator-framework/operator-registry"}
  :asset "linux-amd64-opm"
  :checksum "checksums.txt"
  :bins {"opm" "{asset}"}}

@@ -2,5 +2,6 @@
 ;; SPDX-FileCopyrightText: The breto Authors
 ;; SPDX-License-Identifier: MIT
 
-{:source {:github "so-dang-cool/fib"}
+{:description "A Fibonacci CLI",
+ :source {:github "so-dang-cool/fib"}
  :asset "fib-x86_64-linux.tgz"}

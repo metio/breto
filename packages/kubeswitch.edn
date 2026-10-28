@@ -2,7 +2,8 @@
 ;; SPDX-FileCopyrightText: The breto Authors
 ;; SPDX-License-Identifier: MIT
 
-{:source {:github "danielfoehrKn/kubeswitch"}
+{:description "The kubectx  for operators",
+ :source {:github "danielfoehrKn/kubeswitch"}
  :tag-prefix ""
  :asset "switcher_linux_amd64"
  :bins {"switcher" "{asset}"}}

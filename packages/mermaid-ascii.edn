@@ -2,7 +2,8 @@
 ;; SPDX-FileCopyrightText: The breto Authors
 ;; SPDX-License-Identifier: MIT
 
-{:source {:github "AlexanderGrooff/mermaid-ascii"}
+{:description "Render Mermaid graphs inside your terminal",
+ :source {:github "AlexanderGrooff/mermaid-ascii"}
  :tag-prefix ""
  :asset "mermaid-ascii_Linux_x86_64.tar.gz"
  :checksum "mermaid-ascii_{tag}_checksums.txt"}

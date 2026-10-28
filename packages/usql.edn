@@ -2,5 +2,6 @@
 ;; SPDX-FileCopyrightText: The breto Authors
 ;; SPDX-License-Identifier: MIT
 
-{:source {:github "xo/usql"}
+{:description "Universal command-line interface for SQL databases",
+ :source {:github "xo/usql"}
  :asset "usql-{version}-linux-amd64.tar.bz2"}

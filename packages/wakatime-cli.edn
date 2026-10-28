@@ -2,7 +2,8 @@
 ;; SPDX-FileCopyrightText: The breto Authors
 ;; SPDX-License-Identifier: MIT
 
-{:source {:github "wakatime/wakatime-cli"}
+{:description "Command line interface used by all WakaTime text editor plugins",
+ :source {:github "wakatime/wakatime-cli"}
  :asset "wakatime-cli-linux-amd64.zip"
  :checksum "checksums_sha256.txt"
  :bins {"wakatime-cli" "wakatime-cli-linux-amd64"}}

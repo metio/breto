@@ -2,7 +2,8 @@
 ;; SPDX-FileCopyrightText: The breto Authors
 ;; SPDX-License-Identifier: MIT
 
-{:source {:github "sirrend/terrap-cli"}
+{:description "Terrap - a powerful CLI tool that scans your infrastructure and identifies any required changes",
+ :source {:github "sirrend/terrap-cli"}
  :asset "terrap-cli_{version}_linux_amd64.tar.gz"
  :checksum "checksums.txt"
  :bins {"terrap" "terrap"}}

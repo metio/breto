@@ -2,7 +2,8 @@
 ;; SPDX-FileCopyrightText: The breto Authors
 ;; SPDX-License-Identifier: MIT
 
-{:source {:github "openziti/zrok"}
+{:description "Geo-scale, next-generation peer-to-peer sharing platform built on top of OpenZiti",
+ :source {:github "openziti/zrok"}
  :asset "zrok_{version}_linux_amd64.tar.gz"
  :checksum "checksums.sha256.txt"
  :bins {"zrok2" "zrok2"}}

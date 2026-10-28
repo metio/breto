@@ -2,6 +2,7 @@
 ;; SPDX-FileCopyrightText: The breto Authors
 ;; SPDX-License-Identifier: MIT
 
-{:source {:github "emirozer/kubectl-doctor"}
+{:description "kubectl cluster triage plugin for k8s - (brew doctor equivalent)",
+ :source {:github "emirozer/kubectl-doctor"}
  :tag-prefix ""
  :asset "kubectl-doctor_linux_amd64"}

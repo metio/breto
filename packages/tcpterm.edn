@@ -2,5 +2,6 @@
 ;; SPDX-FileCopyrightText: The breto Authors
 ;; SPDX-License-Identifier: MIT
 
-{:source {:github "sachaos/tcpterm"}
+{:description "tcpterm is a packet visualizer in TUI",
+ :source {:github "sachaos/tcpterm"}
  :asset "tcpterm_linux_amd64"}

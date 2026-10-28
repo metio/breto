@@ -2,6 +2,7 @@
 ;; SPDX-FileCopyrightText: The breto Authors
 ;; SPDX-License-Identifier: MIT
 
-{:source {:github "busser/tfautomv"}
+{:description "Generate Terraform moved blocks automatically for painless refactoring",
+ :source {:github "busser/tfautomv"}
  :asset "tfautomv_{version}_linux_amd64.tar.gz"
  :checksum "checksums.txt"}

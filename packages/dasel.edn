@@ -2,5 +2,6 @@
 ;; SPDX-FileCopyrightText: The breto Authors
 ;; SPDX-License-Identifier: MIT
 
-{:source {:github "TomWright/dasel"}
+{:description "Select, put and delete data from JSON, TOML, YAML, XML and CSV files with a single tool. Supports conversion between formats and can be used as a Go package",
+ :source {:github "TomWright/dasel"}
  :asset "dasel_linux_amd64"}

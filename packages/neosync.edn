@@ -2,6 +2,7 @@
 ;; SPDX-FileCopyrightText: The breto Authors
 ;; SPDX-License-Identifier: MIT
 
-{:source {:github "nucleuscloud/neosync"}
+{:description "Open source data anonymization and synthetic data orchestration for developers. Create high fidelity synthetic data and sync it across your environments",
+ :source {:github "nucleuscloud/neosync"}
  :asset "neosync_{version}_linux_amd64.tar.gz"
  :checksum "neosync_{version}_SHA256SUMS"}

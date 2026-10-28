@@ -2,6 +2,7 @@
 ;; SPDX-FileCopyrightText: The breto Authors
 ;; SPDX-License-Identifier: MIT
 
-{:source {:github "benbjohnson/litestream"}
+{:description "Streaming replication for SQLite",
+ :source {:github "benbjohnson/litestream"}
  :asset "litestream-{version}-linux-x86_64.tar.gz"
  :checksum "checksums.txt"}

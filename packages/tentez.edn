@@ -2,5 +2,6 @@
 ;; SPDX-FileCopyrightText: The breto Authors
 ;; SPDX-License-Identifier: MIT
 
-{:source {:github "FeLvi-zzz/tentez"}
+{:description "Tentez helps you switching traffic",
+ :source {:github "FeLvi-zzz/tentez"}
  :asset "tentez-linux-amd64"}

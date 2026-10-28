@@ -2,7 +2,8 @@
 ;; SPDX-FileCopyrightText: The breto Authors
 ;; SPDX-License-Identifier: MIT
 
-{:source {:github "dandavison/delta"}
+{:description "A syntax-highlighting pager for git, diff, grep, and blame output",
+ :source {:github "dandavison/delta"}
  :tag-prefix ""
  :asset "delta-{tag}-x86_64-unknown-linux-musl.tar.gz"
  :bins {"delta" "delta-{tag}-x86_64-unknown-linux-musl/delta"}}

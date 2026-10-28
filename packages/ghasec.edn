@@ -2,6 +2,7 @@
 ;; SPDX-FileCopyrightText: The breto Authors
 ;; SPDX-License-Identifier: MIT
 
-{:source {:github "koki-develop/ghasec"}
+{:description "Catch security risks in your GitHub Actions workflows",
+ :source {:github "koki-develop/ghasec"}
  :asset "ghasec_Linux_x86_64.tar.gz"
  :checksum "ghasec_{version}_checksums.txt"}

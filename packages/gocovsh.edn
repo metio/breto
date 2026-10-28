@@ -2,6 +2,7 @@
 ;; SPDX-FileCopyrightText: The breto Authors
 ;; SPDX-License-Identifier: MIT
 
-{:source {:github "orlangure/gocovsh"}
+{:description "Go Coverage in your terminal: a tool for exploring Go Coverage reports from the command line",
+ :source {:github "orlangure/gocovsh"}
  :asset "gocovsh_{version}_linux_amd64.tar.gz"
  :checksum "checksums.txt"}

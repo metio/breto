@@ -2,6 +2,7 @@
 ;; SPDX-FileCopyrightText: The breto Authors
 ;; SPDX-License-Identifier: MIT
 
-{:source {:github "GoogleCloudPlatform/berglas"}
+{:description "A tool for managing secrets on Google Cloud",
+ :source {:github "GoogleCloudPlatform/berglas"}
  :asset "berglas_{version}_linux_amd64.tar.gz"
  :checksum "berglas_{version}_SHA512SUMS"}

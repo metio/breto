@@ -2,6 +2,7 @@
 ;; SPDX-FileCopyrightText: The breto Authors
 ;; SPDX-License-Identifier: MIT
 
-{:source {:github "MaybeJustJames/zephyr"}
+{:description "Tree shaking breeze for PureScript CoreFn AST",
+ :source {:github "MaybeJustJames/zephyr"}
  :asset "Linux.tar.gz"
  :bins {"zephyr" "zephyr/zephyr"}}

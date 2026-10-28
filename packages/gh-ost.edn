@@ -2,5 +2,6 @@
 ;; SPDX-FileCopyrightText: The breto Authors
 ;; SPDX-License-Identifier: MIT
 
-{:source {:github "github/gh-ost"}
+{:description "GitHub's Online Schema-migration Tool for MySQL",
+ :source {:github "github/gh-ost"}
  :asset "gh-ost-linux-amd64.tar.gz"}

@@ -2,7 +2,8 @@
 ;; SPDX-FileCopyrightText: The breto Authors
 ;; SPDX-License-Identifier: MIT
 
-{:source {:github "stripe/stripe-cli"}
+{:description "A command-line tool for Stripe",
+ :source {:github "stripe/stripe-cli"}
  :asset "stripe_{version}_linux_x86_64.tar.gz"
  :checksum "stripe-linux-checksums.txt"
  :bins {"stripe" "stripe"}}

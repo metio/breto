@@ -2,6 +2,7 @@
 ;; SPDX-FileCopyrightText: The breto Authors
 ;; SPDX-License-Identifier: MIT
 
-{:source {:github "maaslalani/slides"}
+{:description "Terminal based presentation tool",
+ :source {:github "maaslalani/slides"}
  :asset "slides_{version}_linux_amd64.tar.gz"
  :checksum "slides_{version}_checksums.txt"}

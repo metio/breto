@@ -2,6 +2,7 @@
 ;; SPDX-FileCopyrightText: The breto Authors
 ;; SPDX-License-Identifier: MIT
 
-{:source {:github "kkinnear/zprint"}
+{:description "Beautifully format Clojure and Clojurescript source code and s-expressions",
+ :source {:github "kkinnear/zprint"}
  :tag-prefix ""
  :asset "zprintl-{tag}"}

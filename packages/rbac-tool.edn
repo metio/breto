@@ -2,6 +2,7 @@
 ;; SPDX-FileCopyrightText: The breto Authors
 ;; SPDX-License-Identifier: MIT
 
-{:source {:github "alcideio/rbac-tool"}
+{:description "Rapid7 | insightCloudSec | Kubernetes RBAC Power Toys - Visualize, Analyze, Generate & Query",
+ :source {:github "alcideio/rbac-tool"}
  :asset "rbac-tool_{tag}_linux_amd64.tar.gz"
  :checksum "rbac-tool_checksums.txt"}

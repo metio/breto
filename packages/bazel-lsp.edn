@@ -2,5 +2,6 @@
 ;; SPDX-FileCopyrightText: The breto Authors
 ;; SPDX-License-Identifier: MIT
 
-{:source {:github "cameron-martin/bazel-lsp"}
+{:description "A language server implementation for Bazel",
+ :source {:github "cameron-martin/bazel-lsp"}
  :asset "bazel-lsp-{version}-linux-amd64"}

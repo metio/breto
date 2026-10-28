@@ -2,7 +2,8 @@
 ;; SPDX-FileCopyrightText: The breto Authors
 ;; SPDX-License-Identifier: MIT
 
-{:source {:github "justmiles/go-markdown2confluence"}
+{:description "Push markdown files to Confluence Cloud",
+ :source {:github "justmiles/go-markdown2confluence"}
  :asset "go-markdown2confluence_{version}_linux_x86_64.tar.gz"
  :checksum "checksums.txt"
  :bins {"markdown2confluence" "markdown2confluence"}}

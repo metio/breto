@@ -2,5 +2,6 @@
 ;; SPDX-FileCopyrightText: The breto Authors
 ;; SPDX-License-Identifier: MIT
 
-{:source {:github "googleapis/api-linter"}
+{:description "A linter for APIs defined in protocol buffers",
+ :source {:github "googleapis/api-linter"}
  :asset "api-linter-{version}-linux-amd64.tar.gz"}

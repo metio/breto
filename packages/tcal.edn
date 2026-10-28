@@ -1,7 +1,8 @@
 ;; SPDX-FileCopyrightText: The breto Authors
 ;; SPDX-License-Identifier: 0BSD
 
-{:source {:github "pimalaya/tcal"}
+{:description "Edit and merge iCalendars as ergonomic TOML.",
+ :source {:github "pimalaya/tcal"}
  :asset "tcal.x86_64-linux.tgz",
  :man ["share/man/*.1.gz"],
  :completions {:bash "share/completions/tcal.bash",

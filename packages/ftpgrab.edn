@@ -2,5 +2,6 @@
 ;; SPDX-FileCopyrightText: The breto Authors
 ;; SPDX-License-Identifier: MIT
 
-{:source {:github "crazy-max/ftpgrab"}
+{:description "Grab your files periodically from a remote FTP or SFTP server easily",
+ :source {:github "crazy-max/ftpgrab"}
  :asset "ftpgrab_{version}_linux_amd64.tar.gz"}

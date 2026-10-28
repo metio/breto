@@ -2,6 +2,7 @@
 ;; SPDX-FileCopyrightText: The breto Authors
 ;; SPDX-License-Identifier: MIT
 
-{:source {:github "jreisinger/checkip"}
+{:description "Get (security) info about IP addresses",
+ :source {:github "jreisinger/checkip"}
  :asset "checkip_{version}_linux_amd64.tar.gz"
  :checksum "checksums.txt"}

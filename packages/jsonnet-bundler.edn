@@ -1,7 +1,8 @@
 ;; SPDX-FileCopyrightText: The breto Authors
 ;; SPDX-License-Identifier: 0BSD
 
-{:source {:github "jsonnet-bundler/jsonnet-bundler"},
+{:description "A jsonnet package manager",
+ :source {:github "jsonnet-bundler/jsonnet-bundler"},
  :asset "jb-linux-amd64",
  :bins {"jb" "{asset}"},
  :history [{:before "0.6.1" :verify false}]}

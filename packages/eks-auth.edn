@@ -2,5 +2,6 @@
 ;; SPDX-FileCopyrightText: The breto Authors
 ;; SPDX-License-Identifier: MIT
 
-{:source {:github "jscaltreto/eks-auth"}
+{:description "Standalone program to fetch authentication tokens for AWS EKS Clusters",
+ :source {:github "jscaltreto/eks-auth"}
  :asset "eks-auth-{tag}-linux-amd64.tar.gz"}

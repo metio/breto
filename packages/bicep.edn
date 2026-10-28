@@ -2,5 +2,6 @@
 ;; SPDX-FileCopyrightText: The breto Authors
 ;; SPDX-License-Identifier: MIT
 
-{:source {:github "Azure/bicep"}
+{:description "Bicep is a declarative language for describing and deploying Azure resources",
+ :source {:github "Azure/bicep"}
  :asset "bicep-linux-musl-x64"}

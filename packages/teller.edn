@@ -2,6 +2,7 @@
 ;; SPDX-FileCopyrightText: The breto Authors
 ;; SPDX-License-Identifier: MIT
 
-{:source {:github "tellerops/teller"}
+{:description "Cloud native secrets management for developers - never leave your command line for secrets",
+ :source {:github "tellerops/teller"}
  :asset "teller-x86_64-linux.tar.xz"
  :bins {"teller" "teller-x86_64-linux/teller"}}

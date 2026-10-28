@@ -2,5 +2,6 @@
 ;; SPDX-FileCopyrightText: The breto Authors
 ;; SPDX-License-Identifier: MIT
 
-{:source {:github "gruntwork-io/boilerplate"}
+{:description "A tool for generating files and folders ("boilerplate") from a set of templates",
+ :source {:github "gruntwork-io/boilerplate"}
  :asset "boilerplate_linux_amd64"}

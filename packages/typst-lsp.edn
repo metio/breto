@@ -2,5 +2,6 @@
 ;; SPDX-FileCopyrightText: The breto Authors
 ;; SPDX-License-Identifier: MIT
 
-{:source {:github "nvarner/typst-lsp"}
+{:description "A brand-new language server for Typst, plus a VS Code extension",
+ :source {:github "nvarner/typst-lsp"}
  :asset "typst-lsp-x86_64-unknown-linux-gnu"}

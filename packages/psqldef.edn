@@ -2,5 +2,6 @@
 ;; SPDX-FileCopyrightText: The breto Authors
 ;; SPDX-License-Identifier: MIT
 
-{:source {:github "sqldef/sqldef"}
+{:description "Idempotent schema management for PostgreSQL",
+ :source {:github "sqldef/sqldef"}
  :asset "psqldef_linux_amd64.tar.gz"}

@@ -2,6 +2,7 @@
 ;; SPDX-FileCopyrightText: The breto Authors
 ;; SPDX-License-Identifier: MIT
 
-{:source {:github "chenjiandongx/kubectl-images"}
+{:description "Show container images used in the cluster",
+ :source {:github "chenjiandongx/kubectl-images"}
  :asset "kubectl-images_linux_amd64.tar.gz"
  :checksum "kubectl-images_{version}_checksums.txt"}

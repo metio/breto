@@ -2,5 +2,6 @@
 ;; SPDX-FileCopyrightText: The breto Authors
 ;; SPDX-License-Identifier: MIT
 
-{:source {:github "dmtrKovalenko/blendr"}
+{:description "The hacker's BLE (bluetooth low energy) browser terminal app",
+ :source {:github "dmtrKovalenko/blendr"}
  :asset "blendr-x86_64-unknown-linux-musl.tar.gz"}

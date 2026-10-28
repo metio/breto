@@ -2,6 +2,7 @@
 ;; SPDX-FileCopyrightText: The breto Authors
 ;; SPDX-License-Identifier: MIT
 
-{:source {:github "tak848/ccgate"}
+{:description "LLM-powered PermissionRequest hook for Claude Code",
+ :source {:github "tak848/ccgate"}
  :asset "ccgate-linux-amd64.tar.gz"
  :checksum "checksums.txt"}

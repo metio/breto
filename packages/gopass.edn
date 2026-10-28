@@ -1,5 +1,6 @@
 ;; SPDX-FileCopyrightText: The breto Authors
 ;; SPDX-License-Identifier: 0BSD
 
-{:source {:github "gopasspw/gopass"},
+{:description "The slightly more awesome standard unix password manager for teams",
+ :source {:github "gopasspw/gopass"},
  :asset "gopass-{version}-linux-amd64.tar.gz"}

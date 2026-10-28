@@ -2,6 +2,7 @@
 ;; SPDX-FileCopyrightText: The breto Authors
 ;; SPDX-License-Identifier: MIT
 
-{:source {:github "knadh/listmonk"}
+{:description "High performance, self-hosted, newsletter and mailing list manager with a modern dashboard. Single binary app",
+ :source {:github "knadh/listmonk"}
  :asset "listmonk_{version}_linux_amd64.tar.gz"
  :checksum "listmonk_{version}_checksums.txt"}

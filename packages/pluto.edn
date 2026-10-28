@@ -2,6 +2,7 @@
 ;; SPDX-FileCopyrightText: The breto Authors
 ;; SPDX-License-Identifier: MIT
 
-{:source {:github "FairwindsOps/pluto"}
+{:description "A cli tool to help discover deprecated apiVersions in Kubernetes",
+ :source {:github "FairwindsOps/pluto"}
  :asset "pluto_{version}_linux_amd64.tar.gz"
  :checksum "checksums.txt"}

@@ -2,5 +2,6 @@
 ;; SPDX-FileCopyrightText: The breto Authors
 ;; SPDX-License-Identifier: MIT
 
-{:source {:github "hirosassa/ksnotify"}
+{:description "A CLI command to parse kubectl diff result and notify it to GitLab/GitHub",
+ :source {:github "hirosassa/ksnotify"}
  :asset "ksnotify-x86_64-linux.tar.gz"}

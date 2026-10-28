@@ -2,6 +2,7 @@
 ;; SPDX-FileCopyrightText: The breto Authors
 ;; SPDX-License-Identifier: MIT
 
-{:source {:github "oligot/go-mod-upgrade"}
+{:description "Update outdated Go dependencies interactively",
+ :source {:github "oligot/go-mod-upgrade"}
  :asset "go-mod-upgrade_linux_amd64.tar.gz"
  :checksum "checksums.txt"}

@@ -2,6 +2,7 @@
 ;; SPDX-FileCopyrightText: The breto Authors
 ;; SPDX-License-Identifier: MIT
 
-{:source {:github "takumin/gyaml"}
+{:description "Golang YAML Tool",
+ :source {:github "takumin/gyaml"}
  :asset "gyaml_linux_amd64.tar.gz"
  :checksum "gyaml_sha256sums.txt"}

@@ -2,6 +2,7 @@
 ;; SPDX-FileCopyrightText: The breto Authors
 ;; SPDX-License-Identifier: MIT
 
-{:source {:github "instrumenta/kubeval"}
+{:description "Validate your Kubernetes configuration files, supports multiple Kubernetes versions",
+ :source {:github "instrumenta/kubeval"}
  :asset "kubeval-linux-amd64.tar.gz"
  :checksum "checksums.txt"}

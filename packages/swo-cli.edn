@@ -2,7 +2,8 @@
 ;; SPDX-FileCopyrightText: The breto Authors
 ;; SPDX-License-Identifier: MIT
 
-{:source {:github "solarwinds/swo-cli"}
+{:description "SolarWinds Observability Command-Line Interface",
+ :source {:github "solarwinds/swo-cli"}
  :asset "swo-cli_linux_amd64.zip"
  :checksum "swo-cli_checksums.txt"
  :bins {"swo" "swo"}}

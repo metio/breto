@@ -2,6 +2,7 @@
 ;; SPDX-FileCopyrightText: The breto Authors
 ;; SPDX-License-Identifier: MIT
 
-{:source {:github "tailwindlabs/tailwindcss"}
+{:description "A utility-first CSS framework for rapid UI development",
+ :source {:github "tailwindlabs/tailwindcss"}
  :asset "tailwindcss-linux-x64-musl"
  :checksum "sha256sums.txt"}

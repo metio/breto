@@ -2,6 +2,7 @@
 ;; SPDX-FileCopyrightText: The breto Authors
 ;; SPDX-License-Identifier: MIT
 
-{:source {:github "psf/black"}
+{:description "The uncompromising Python code formatter",
+ :source {:github "psf/black"}
  :tag-prefix ""
  :asset "black_linux"}

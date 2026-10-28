@@ -2,7 +2,8 @@
 ;; SPDX-FileCopyrightText: The breto Authors
 ;; SPDX-License-Identifier: MIT
 
-{:source {:github "knative/func"}
+{:description "Knative Functions client API and CLI",
+ :source {:github "knative/func"}
  :tag-prefix ""
  :asset "func_linux_amd64"
  :checksum "checksums.txt"}

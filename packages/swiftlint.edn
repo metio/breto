@@ -2,6 +2,7 @@
 ;; SPDX-FileCopyrightText: The breto Authors
 ;; SPDX-License-Identifier: MIT
 
-{:source {:github "realm/SwiftLint"}
+{:description "A tool to enforce Swift style and conventions",
+ :source {:github "realm/SwiftLint"}
  :tag-prefix ""
  :asset "swiftlint_linux_amd64.zip"}

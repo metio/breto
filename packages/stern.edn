@@ -2,6 +2,7 @@
 ;; SPDX-FileCopyrightText: The breto Authors
 ;; SPDX-License-Identifier: MIT
 
-{:source {:github "stern/stern"}
+{:description "⎈ Multi pod and container log tailing for Kubernetes -- Friendly fork of https://github.com/wercker/stern",
+ :source {:github "stern/stern"}
  :asset "stern_{version}_linux_amd64.tar.gz"
  :checksum "checksums.txt"}

@@ -2,7 +2,8 @@
 ;; SPDX-FileCopyrightText: The breto Authors
 ;; SPDX-License-Identifier: MIT
 
-{:source {:github "wtfutil/wtf"}
+{:description "The personal information dashboard for your terminal",
+ :source {:github "wtfutil/wtf"}
  :asset "wtf_{version}_linux_amd64.tar.gz"
  :checksum "wtf_{version}_checksums.txt"
  :bins {"wtfutil" "wtfutil"}}

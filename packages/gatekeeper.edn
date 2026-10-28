@@ -2,7 +2,8 @@
 ;; SPDX-FileCopyrightText: The breto Authors
 ;; SPDX-License-Identifier: MIT
 
-{:source {:github "open-policy-agent/gatekeeper"}
+{:description "Gatekeeper - Policy Controller for Kubernetes",
+ :source {:github "open-policy-agent/gatekeeper"}
  :asset "gator-{tag}-linux-amd64.tar.gz"
  :checksum "sha256sums.txt"
  :bins {"gator" "gator"}}

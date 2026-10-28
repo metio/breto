@@ -2,6 +2,7 @@
 ;; SPDX-FileCopyrightText: The breto Authors
 ;; SPDX-License-Identifier: MIT
 
-{:source {:github "utkuozdemir/pv-migrate"}
+{:description "CLI tool to easily migrate Kubernetes persistent volumes",
+ :source {:github "utkuozdemir/pv-migrate"}
  :asset "pv-migrate_{tag}_linux_x86_64.tar.gz"
  :checksum "checksums.txt"}

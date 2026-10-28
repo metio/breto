@@ -2,6 +2,7 @@
 ;; SPDX-FileCopyrightText: The breto Authors
 ;; SPDX-License-Identifier: MIT
 
-{:source {:github "suzuki-shunsuke/nllint"}
+{:description "Linter to check newlines at the end of files",
+ :source {:github "suzuki-shunsuke/nllint"}
  :asset "nllint_linux_amd64.tar.gz"
  :checksum "nllint_{version}_checksums.txt"}

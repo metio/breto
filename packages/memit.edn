@@ -2,6 +2,7 @@
 ;; SPDX-FileCopyrightText: The breto Authors
 ;; SPDX-License-Identifier: MIT
 
-{:source {:github "liamg/memit"}
+{:description "Run binaries straight from memory in Linux",
+ :source {:github "liamg/memit"}
  :asset "memit-linux-amd64"
  :checksum "memit_{version}_checksums.txt"}

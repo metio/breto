@@ -2,6 +2,7 @@
 ;; SPDX-FileCopyrightText: The breto Authors
 ;; SPDX-License-Identifier: MIT
 
-{:source {:github "homeport/havener"}
+{:description "/ˈheɪvənə/ - Think of it as a swiss army knife for Kubernetes tasks",
+ :source {:github "homeport/havener"}
  :asset "havener_{version}_linux_amd64.tar.gz"
  :checksum "checksums.txt"}

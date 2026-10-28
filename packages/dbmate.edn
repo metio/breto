@@ -2,5 +2,6 @@
 ;; SPDX-FileCopyrightText: The breto Authors
 ;; SPDX-License-Identifier: MIT
 
-{:source {:github "amacneil/dbmate"}
+{:description "A lightweight, framework-agnostic database migration tool",
+ :source {:github "amacneil/dbmate"}
  :asset "dbmate-linux-amd64"}

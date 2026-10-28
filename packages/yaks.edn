@@ -2,5 +2,6 @@
 ;; SPDX-FileCopyrightText: The breto Authors
 ;; SPDX-License-Identifier: MIT
 
-{:source {:github "citrusframework/yaks"}
+{:description "YAKS is a platform to enable Cloud Native BDD testing on Kubernetes",
+ :source {:github "citrusframework/yaks"}
  :asset "yaks-{version}-linux-64bit.tar.gz"}

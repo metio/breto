@@ -2,5 +2,6 @@
 ;; SPDX-FileCopyrightText: The breto Authors
 ;; SPDX-License-Identifier: MIT
 
-{:source {:github "asciinema/agg"}
+{:description "asciinema gif generator",
+ :source {:github "asciinema/agg"}
  :asset "agg-x86_64-unknown-linux-musl"}

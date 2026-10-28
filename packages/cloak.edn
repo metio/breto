@@ -2,5 +2,6 @@
 ;; SPDX-FileCopyrightText: The breto Authors
 ;; SPDX-License-Identifier: MIT
 
-{:source {:github "purton-tech/cloak"}
+{:description "Secrets automation for developers",
+ :source {:github "purton-tech/cloak"}
  :asset "cloak-linux"}

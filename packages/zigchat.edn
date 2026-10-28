@@ -2,5 +2,6 @@
 ;; SPDX-FileCopyrightText: The breto Authors
 ;; SPDX-License-Identifier: MIT
 
-{:source {:github "ryoppippi/zigchat"}
+{:description "Command that sends a prompt to OpenAI and returns a reply",
+ :source {:github "ryoppippi/zigchat"}
  :asset "zigchat-x86_64-linux.tar.gz"}

@@ -2,6 +2,7 @@
 ;; SPDX-FileCopyrightText: The breto Authors
 ;; SPDX-License-Identifier: MIT
 
-{:source {:github "hirose31/s3surfer"}
+{:description "s3surfer is CLI tool for browsing S3 bucket and download objects interactively",
+ :source {:github "hirose31/s3surfer"}
  :asset "s3surfer_{tag}_linux_amd64.tar.gz"
  :bins {"s3surfer" "s3surfer_{tag}_linux_amd64/s3surfer"}}

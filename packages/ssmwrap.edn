@@ -2,6 +2,7 @@
 ;; SPDX-FileCopyrightText: The breto Authors
 ;; SPDX-License-Identifier: MIT
 
-{:source {:github "handlename/ssmwrap"}
+{:description "Exec command with environment variables loaded from AWS SSM",
+ :source {:github "handlename/ssmwrap"}
  :asset "ssmwrap_{version}_linux_amd64.tar.gz"
  :checksum "ssmwrap_{version}_checksums.txt"}

@@ -2,7 +2,8 @@
 ;; SPDX-FileCopyrightText: The breto Authors
 ;; SPDX-License-Identifier: MIT
 
-{:source {:github "rclone/rclone"}
+{:description "\"rsync for cloud storage\" - Google Drive, S3, Dropbox, Backblaze B2, One Drive, Swift, Hubic, Wasabi, Google Cloud Storage, Yandex Files",
+ :source {:github "rclone/rclone"}
  :asset "rclone-{tag}-linux-amd64.zip"
  :checksum "SHA256SUMS"
  :bins {"rclone" "rclone-{tag}-linux-amd64/rclone"}}

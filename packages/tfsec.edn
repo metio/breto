@@ -2,6 +2,7 @@
 ;; SPDX-FileCopyrightText: The breto Authors
 ;; SPDX-License-Identifier: MIT
 
-{:source {:github "aquasecurity/tfsec"}
+{:description "Security scanner for your Terraform code",
+ :source {:github "aquasecurity/tfsec"}
  :asset "tfsec_{version}_linux_amd64.tar.gz"
  :checksum "tfsec_{version}_checksums.txt"}

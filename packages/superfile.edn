@@ -2,7 +2,8 @@
 ;; SPDX-FileCopyrightText: The breto Authors
 ;; SPDX-License-Identifier: MIT
 
-{:source {:github "yorukot/superfile"}
+{:description "Pretty fancy and modern terminal file manager",
+ :source {:github "yorukot/superfile"}
  :asset "superfile-linux-{tag}-amd64.tar.gz"
  :checksum "superfile-{tag}-checksums.txt"
  :bins {"spf" "dist/superfile-linux-{tag}-amd64/spf"}}

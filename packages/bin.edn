@@ -2,6 +2,7 @@
 ;; SPDX-FileCopyrightText: The breto Authors
 ;; SPDX-License-Identifier: MIT
 
-{:source {:github "marcosnils/bin"}
+{:description "Effortless binary manager",
+ :source {:github "marcosnils/bin"}
  :asset "bin_{version}_linux_amd64"
  :checksum "checksums.txt"}

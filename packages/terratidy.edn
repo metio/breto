@@ -2,6 +2,7 @@
 ;; SPDX-FileCopyrightText: The breto Authors
 ;; SPDX-License-Identifier: MIT
 
-{:source {:github "santosr2/TerraTidy"}
+{:description "A comprehensive quality platform for Terraform and Terragrunt",
+ :source {:github "santosr2/TerraTidy"}
  :asset "terratidy-{version}-linux-amd64.tar.gz"
  :checksum "checksums.txt"}

@@ -2,5 +2,6 @@
 ;; SPDX-FileCopyrightText: The breto Authors
 ;; SPDX-License-Identifier: MIT
 
-{:source {:github "herdrdev/herdr"}
+{:description "the runtime your coding agents live on",
+ :source {:github "herdrdev/herdr"}
  :asset "herdr-linux-x86_64"}

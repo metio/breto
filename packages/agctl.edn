@@ -2,6 +2,7 @@
 ;; SPDX-FileCopyrightText: The breto Authors
 ;; SPDX-License-Identifier: MIT
 
-{:source {:github "agentgateway/agentgateway"}
+{:description "Next Generation Agentic Proxy for AI Agents and MCP servers",
+ :source {:github "agentgateway/agentgateway"}
  :asset "agctl-linux-amd64"
  :checksum "{asset}.sha256"}

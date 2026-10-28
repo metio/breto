@@ -2,6 +2,7 @@
 ;; SPDX-FileCopyrightText: The breto Authors
 ;; SPDX-License-Identifier: MIT
 
-{:source {:github "abhinav/doc2go"}
+{:description "Your Go project's documentation, to-go",
+ :source {:github "abhinav/doc2go"}
  :asset "doc2go-linux-amd64.tar.gz"
  :checksum "checksums.txt"}

@@ -2,7 +2,8 @@
 ;; SPDX-FileCopyrightText: The breto Authors
 ;; SPDX-License-Identifier: MIT
 
-{:source {:github "clok/sm"}
+{:description "AWS Secrets Manager CLI Tool",
+ :source {:github "clok/sm"}
  :asset "sm_{version}_linux_amd64.tar.gz"
  :checksum "checksums.txt"
  :bins {"sm" "sm_{version}_linux_amd64/sm"}}

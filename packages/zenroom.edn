@@ -2,6 +2,7 @@
 ;; SPDX-FileCopyrightText: The breto Authors
 ;; SPDX-License-Identifier: MIT
 
-{:source {:github "dyne/zenroom"}
+{:description "Embedded no-code VM executing human-like language to manipulate data and process cryptographic operations",
+ :source {:github "dyne/zenroom"}
  :asset "zenroom-linux.zip"
  :bins {"zencode-exec" "zenroom-x86_64-linux/zencode-exec", "zenroom" "zenroom-x86_64-linux/zenroom"}}

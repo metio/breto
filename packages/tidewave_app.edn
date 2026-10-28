@@ -2,6 +2,7 @@
 ;; SPDX-FileCopyrightText: The breto Authors
 ;; SPDX-License-Identifier: MIT
 
-{:source {:github "tidewave-ai/tidewave_app"}
+{:description "Tidewave is the coding agent for full-stack web app development",
+ :source {:github "tidewave-ai/tidewave_app"}
  :asset "tidewave-cli-x86_64-unknown-linux-musl"
  :bins {"tidewave" "{asset}"}}

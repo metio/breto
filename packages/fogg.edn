@@ -2,6 +2,7 @@
 ;; SPDX-FileCopyrightText: The breto Authors
 ;; SPDX-License-Identifier: MIT
 
-{:source {:github "chanzuckerberg/fogg"}
+{:description "Manage Infrastructure as Code with less pain",
+ :source {:github "chanzuckerberg/fogg"}
  :asset "fogg_{version}_linux_amd64.tar.gz"
  :checksum "fogg_{version}_checksums.txt"}

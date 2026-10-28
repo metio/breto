@@ -2,6 +2,7 @@
 ;; SPDX-FileCopyrightText: The breto Authors
 ;; SPDX-License-Identifier: MIT
 
-{:source {:github "devops-works/egress-auditor"}
+{:description "Audit your egress connections and finally populate this OUTPUT chain",
+ :source {:github "devops-works/egress-auditor"}
  :asset "egress-auditor_linux_amd64"
  :checksum "checksums.txt"}

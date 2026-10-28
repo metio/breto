@@ -2,7 +2,8 @@
 ;; SPDX-FileCopyrightText: The breto Authors
 ;; SPDX-License-Identifier: MIT
 
-{:source {:github "bridgecrewio/yor"}
+{:description "Extensible auto-tagger for your IaC files. The ultimate way to link entities in the cloud back to the codified resource which created it",
+ :source {:github "bridgecrewio/yor"}
  :tag-prefix ""
  :asset "yor_{tag}_linux_amd64.tar.gz"
  :checksum "yor_{tag}_checksums.txt"}

@@ -2,5 +2,6 @@
 ;; SPDX-FileCopyrightText: The breto Authors
 ;; SPDX-License-Identifier: MIT
 
-{:source {:github "jstemmer/go-junit-report"}
+{:description "Convert Go test output to JUnit XML",
+ :source {:github "jstemmer/go-junit-report"}
  :asset "go-junit-report-{tag}-linux-amd64.tar.gz"}

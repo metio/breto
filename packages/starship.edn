@@ -1,6 +1,7 @@
 ;; SPDX-FileCopyrightText: The breto Authors
 ;; SPDX-License-Identifier: 0BSD
 
-{:source {:github "starship/starship"},
+{:description "The minimal, blazing-fast, and infinitely customizable prompt for any shell",
+ :source {:github "starship/starship"},
  :asset "starship-x86_64-unknown-linux-gnu.tar.gz",
  :checksum "starship-x86_64-unknown-linux-gnu.tar.gz.sha256"}

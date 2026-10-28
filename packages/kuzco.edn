@@ -2,7 +2,8 @@
 ;; SPDX-FileCopyrightText: The breto Authors
 ;; SPDX-License-Identifier: MIT
 
-{:source {:github "RoseSecurity/Kuzco"}
+{:description "Kuzco reviews your Terraform resources, compares them to the provider schema to detect unused parameters, and uses AI to suggest improvements",
+ :source {:github "RoseSecurity/Kuzco"}
  :asset "Kuzco_Linux_x86_64.tar.gz"
  :checksum "Kuzco_{version}_checksums.txt"
  :bins {"kuzco" "Kuzco"}}

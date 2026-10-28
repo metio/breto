@@ -2,5 +2,6 @@
 ;; SPDX-FileCopyrightText: The breto Authors
 ;; SPDX-License-Identifier: MIT
 
-{:source {:github "reteps/dockerfmt"}
+{:description "Dockerfile format and parser. a modern dockfmt",
+ :source {:github "reteps/dockerfmt"}
  :asset "dockerfmt-{tag}-linux-amd64.tar.gz"}

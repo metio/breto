@@ -2,7 +2,8 @@
 ;; SPDX-FileCopyrightText: The breto Authors
 ;; SPDX-License-Identifier: MIT
 
-{:source {:github "kcp-dev/kcp"}
+{:description "kcp is a Kubernetes-like control plane for workloads on many clusters",
+ :source {:github "kcp-dev/kcp"}
  :asset "kcp_{version}_linux_amd64.tar.gz"
  :checksum "kcp_{version}_checksums.txt"
  :bins {"kcp" "bin/kcp"}}

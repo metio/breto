@@ -2,5 +2,6 @@
 ;; SPDX-FileCopyrightText: The breto Authors
 ;; SPDX-License-Identifier: MIT
 
-{:source {:github "tomnomnom/gron"}
+{:description "Make JSON greppable",
+ :source {:github "tomnomnom/gron"}
  :asset "gron-linux-amd64-{version}.tgz"}

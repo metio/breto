@@ -2,6 +2,7 @@
 ;; SPDX-FileCopyrightText: The breto Authors
 ;; SPDX-License-Identifier: MIT
 
-{:source {:github "databricks/click"}
+{:description "The \"Command Line Interactive Controller for Kubernetes\"",
+ :source {:github "databricks/click"}
  :asset "click-{tag}-x86_64-unknown-linux-musl.tar.gz"
  :bins {"click" "click-{tag}-x86_64-unknown-linux-musl/click"}}

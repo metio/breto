@@ -1,7 +1,8 @@
 ;; SPDX-FileCopyrightText: The breto Authors
 ;; SPDX-License-Identifier: 0BSD
 
-{:source {:github "metio/stageset-controller"},
+{:description "Flux-compatible Kubernetes controller for ordered, gated, multi-stage deployments",
+ :source {:github "metio/stageset-controller"},
  :asset "stagesetctl_{version}_linux_amd64.tar.gz",
  :tag-prefix "",
  :checksum "stageset-controller_{version}_SHA256SUMS",

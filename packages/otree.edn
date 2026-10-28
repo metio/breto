@@ -2,5 +2,6 @@
 ;; SPDX-FileCopyrightText: The breto Authors
 ;; SPDX-License-Identifier: MIT
 
-{:source {:github "fioncat/otree"}
+{:description "A command line tool to view objects (JSON/YAML/TOML) in TUI tree widget",
+ :source {:github "fioncat/otree"}
  :asset "otree-x86_64-unknown-linux-musl.tar.gz"}

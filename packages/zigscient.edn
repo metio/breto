@@ -2,7 +2,8 @@
 ;; SPDX-FileCopyrightText: The breto Authors
 ;; SPDX-License-Identifier: MIT
 
-{:source {:github "llogick/zigscient"}
+{:description "A Zig Language Server",
+ :source {:github "llogick/zigscient"}
  :tag-prefix ""
  :asset "zigscient-x86_64-linux.zip"
  :bins {"zls" "zigscient-x86_64-linux"}}

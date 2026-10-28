@@ -2,7 +2,8 @@
 ;; SPDX-FileCopyrightText: The breto Authors
 ;; SPDX-License-Identifier: MIT
 
-{:source {:github "legal90/awscurl"}
+{:description "cURL with AWS request signing",
+ :source {:github "legal90/awscurl"}
  :tag-prefix ""
  :asset "awscurl_{tag}_linux_amd64.zip"
  :checksum "checksums.txt"}

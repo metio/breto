@@ -2,6 +2,7 @@
 ;; SPDX-FileCopyrightText: The breto Authors
 ;; SPDX-License-Identifier: MIT
 
-{:source {:github "visioncortex/vtracer"}
+{:description "Raster to Vector Graphics Converter",
+ :source {:github "visioncortex/vtracer"}
  :tag-prefix ""
  :asset "vtracer-x86_64-unknown-linux-musl.tar.gz"}

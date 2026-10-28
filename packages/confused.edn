@@ -2,6 +2,7 @@
 ;; SPDX-FileCopyrightText: The breto Authors
 ;; SPDX-License-Identifier: MIT
 
-{:source {:github "visma-prodsec/confused"}
+{:description "Tool to check for dependency confusion vulnerabilities in multiple package management systems",
+ :source {:github "visma-prodsec/confused"}
  :asset "confused_{version}_linux_amd64.tar.gz"
  :checksum "confused_{version}_checksums.txt"}

@@ -2,5 +2,6 @@
 ;; SPDX-FileCopyrightText: The breto Authors
 ;; SPDX-License-Identifier: MIT
 
-{:source {:github "jiro4989/relma"}
+{:description "GitHub Releases Management cli",
+ :source {:github "jiro4989/relma"}
  :asset "relma-linux-amd64.tar.gz"}

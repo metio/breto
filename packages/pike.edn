@@ -2,6 +2,7 @@
 ;; SPDX-FileCopyrightText: The breto Authors
 ;; SPDX-License-Identifier: MIT
 
-{:source {:github "jamesWoolfenden/pike"}
+{:description "Pike is a tool for determining the permissions or policy required for IAC code",
+ :source {:github "jamesWoolfenden/pike"}
  :asset "pike_{version}_linux_amd64.tar.gz"
  :checksum "pike_{version}_checksums.txt"}

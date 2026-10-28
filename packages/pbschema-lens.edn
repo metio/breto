@@ -2,6 +2,7 @@
 ;; SPDX-FileCopyrightText: The breto Authors
 ;; SPDX-License-Identifier: MIT
 
-{:source {:github "ymmt2005/pbschema-lens"}
+{:description "HTML site generator for protobuf schema",
+ :source {:github "ymmt2005/pbschema-lens"}
  :asset "pbschema-lens_linux_amd64.tar.gz"
  :checksum "checksums.txt"}

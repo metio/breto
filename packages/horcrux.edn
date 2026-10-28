@@ -2,6 +2,7 @@
 ;; SPDX-FileCopyrightText: The breto Authors
 ;; SPDX-License-Identifier: MIT
 
-{:source {:github "jesseduffield/horcrux"}
+{:description "Split your file into encrypted fragments so that you don't need to remember a passcode",
+ :source {:github "jesseduffield/horcrux"}
  :asset "horcrux_{version}_Linux_x86_64.tar.gz"
  :checksum "horcrux_{version}_checksums.txt"}

@@ -2,6 +2,7 @@
 ;; SPDX-FileCopyrightText: The breto Authors
 ;; SPDX-License-Identifier: MIT
 
-{:source {:github "xremap/xremap"}
+{:description "Key remapper for X11 and Wayland (for KDE-Plasma Wayland)",
+ :source {:github "xremap/xremap"}
  :asset "xremap-linux-x86_64-kde.zip"
  :bins {"xremap" "xremap"}}

@@ -2,7 +2,8 @@
 ;; SPDX-FileCopyrightText: The breto Authors
 ;; SPDX-License-Identifier: MIT
 
-{:source {:github "golangci/golangci-lint"}
+{:description "Fast linters runner for Go",
+ :source {:github "golangci/golangci-lint"}
  :asset "golangci-lint-{version}-linux-amd64.tar.gz"
  :checksum "golangci-lint-{version}-checksums.txt"
  :bins {"golangci-lint" "golangci-lint-{version}-linux-amd64/golangci-lint"}}

@@ -2,6 +2,7 @@
 ;; SPDX-FileCopyrightText: The breto Authors
 ;; SPDX-License-Identifier: MIT
 
-{:source {:github "awslabs/yesiscan"}
+{:description "Automatic license scanning and reports",
+ :source {:github "awslabs/yesiscan"}
  :asset "yesiscan_{version}_linux_amd64"
  :checksum "checksums.txt"}

@@ -2,5 +2,6 @@
 ;; SPDX-FileCopyrightText: The breto Authors
 ;; SPDX-License-Identifier: MIT
 
-{:source {:github "kubevirt/kubevirt"}
+{:description "Kubernetes Virtualization API and runtime in order to define and manage virtual machines",
+ :source {:github "kubevirt/kubevirt"}
  :asset "virtctl-{tag}-linux-amd64"}

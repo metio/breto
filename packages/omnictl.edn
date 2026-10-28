@@ -2,6 +2,7 @@
 ;; SPDX-FileCopyrightText: The breto Authors
 ;; SPDX-License-Identifier: MIT
 
-{:source {:github "siderolabs/omni"}
+{:description "SaaS-simple deployment of Kubernetes - on your own hardware",
+ :source {:github "siderolabs/omni"}
  :asset "omnictl-linux-amd64"
  :checksum "sha256sum.txt"}

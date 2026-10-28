@@ -2,6 +2,7 @@
 ;; SPDX-FileCopyrightText: The breto Authors
 ;; SPDX-License-Identifier: MIT
 
-{:source {:github "containers/fuse-overlayfs"}
+{:description "FUSE implementation for overlayfs",
+ :source {:github "containers/fuse-overlayfs"}
  :asset "fuse-overlayfs-x86_64"
  :checksum "SHA256SUMS"}

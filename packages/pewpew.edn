@@ -2,6 +2,7 @@
 ;; SPDX-FileCopyrightText: The breto Authors
 ;; SPDX-License-Identifier: MIT
 
-{:source {:github "bengadbois/pewpew"}
+{:description "Flexible HTTP command line stress tester for websites and web services",
+ :source {:github "bengadbois/pewpew"}
  :asset "pewpew_{version}_linux_amd64.tar.gz"
  :checksum "checksums.txt"}

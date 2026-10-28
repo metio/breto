@@ -2,5 +2,6 @@
 ;; SPDX-FileCopyrightText: The breto Authors
 ;; SPDX-License-Identifier: MIT
 
-{:source {:github "eficode/wait-for"}
+{:description "./wait-for is a script to wait for another service to become available",
+ :source {:github "eficode/wait-for"}
  :asset "wait-for"}

@@ -2,6 +2,7 @@
 ;; SPDX-FileCopyrightText: The breto Authors
 ;; SPDX-License-Identifier: MIT
 
-{:source {:github "mfridman/tparse"}
+{:description "CLI tool for summarizing go test output. Pipe friendly. CI/CD friendly",
+ :source {:github "mfridman/tparse"}
  :asset "tparse_linux_x86_64"
  :checksum "checksums.txt"}

@@ -2,5 +2,6 @@
 ;; SPDX-FileCopyrightText: The breto Authors
 ;; SPDX-License-Identifier: MIT
 
-{:source {:github "walles/moor"}
+{:description "Moor is a pager. It's designed to just do the right thing without any configuration",
+ :source {:github "walles/moor"}
  :asset "moor-{tag}-linux-amd64"}

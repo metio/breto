@@ -2,6 +2,7 @@
 ;; SPDX-FileCopyrightText: The breto Authors
 ;; SPDX-License-Identifier: MIT
 
-{:source {:github "Canop/dysk"}
+{:description "A linux utility to get information on filesystems, like df but better",
+ :source {:github "Canop/dysk"}
  :asset "dysk_{version}.zip"
  :bins {"dysk" "build/x86_64-unknown-linux-musl/dysk"}}

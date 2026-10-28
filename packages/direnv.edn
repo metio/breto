@@ -2,5 +2,6 @@
 ;; SPDX-FileCopyrightText: The breto Authors
 ;; SPDX-License-Identifier: MIT
 
-{:source {:github "direnv/direnv"}
+{:description "unclutter your .profile",
+ :source {:github "direnv/direnv"}
  :asset "direnv.linux-amd64"}

@@ -2,7 +2,8 @@
 ;; SPDX-FileCopyrightText: The breto Authors
 ;; SPDX-License-Identifier: MIT
 
-{:source {:github "che-incubator/chectl"}
+{:description "CLI to manage Eclipse Che server and workspaces",
+ :source {:github "che-incubator/chectl"}
  :tag-prefix ""
  :asset "chectl-linux-x64.tar.gz"
  :bins {"chectl" "chectl/bin/chectl"}}

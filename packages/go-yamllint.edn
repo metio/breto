@@ -2,7 +2,8 @@
 ;; SPDX-FileCopyrightText: The breto Authors
 ;; SPDX-License-Identifier: MIT
 
-{:source {:github "wasilibs/go-yamllint"}
+{:description "A distribution of yamllint that can be used with go run",
+ :source {:github "wasilibs/go-yamllint"}
  :asset "go-yamllint_{version}_linux_amd64.tar.gz"
  :checksum "checksums.txt"
  :bins {"yamllint" "yamllint"}}

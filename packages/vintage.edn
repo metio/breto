@@ -2,5 +2,6 @@
 ;; SPDX-FileCopyrightText: The breto Authors
 ;; SPDX-License-Identifier: MIT
 
-{:source {:github "ysugimoto/vintage"}
+{:description "VCL Transpiler for Edge Runtime",
+ :source {:github "ysugimoto/vintage"}
  :asset "vintage-linux-amd64.tar.gz"}

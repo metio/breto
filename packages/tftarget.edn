@@ -2,6 +2,7 @@
 ;; SPDX-FileCopyrightText: The breto Authors
 ;; SPDX-License-Identifier: MIT
 
-{:source {:github "future-architect/tftarget"}
+{:description "tftarget is a CLI tool for Terraform ( plan | apply | destroy ) with target option. You can interactivity select resource to ( plan | apply | destroy )  with target option",
+ :source {:github "future-architect/tftarget"}
  :asset "tftarget_{version}_linux_amd64.tar.gz"
  :checksum "checksums.txt"}

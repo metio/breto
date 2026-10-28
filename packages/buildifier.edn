@@ -2,5 +2,6 @@
 ;; SPDX-FileCopyrightText: The breto Authors
 ;; SPDX-License-Identifier: MIT
 
-{:source {:github "bazel-contrib/buildtools"}
+{:description "Format BUILD, BUILD.bazel and BUCK files in a standard way",
+ :source {:github "bazel-contrib/buildtools"}
  :asset "buildifier-linux-amd64"}

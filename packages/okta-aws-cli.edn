@@ -2,6 +2,7 @@
 ;; SPDX-FileCopyrightText: The breto Authors
 ;; SPDX-License-Identifier: MIT
 
-{:source {:github "okta/okta-aws-cli"}
+{:description "A CLI for having Okta as the IdP for AWS CLI operations",
+ :source {:github "okta/okta-aws-cli"}
  :asset "okta-aws-cli_{version}_linux_amd64.tar.gz"
  :checksum "checksums.txt"}

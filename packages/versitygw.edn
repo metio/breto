@@ -2,7 +2,8 @@
 ;; SPDX-FileCopyrightText: The breto Authors
 ;; SPDX-License-Identifier: MIT
 
-{:source {:github "versity/versitygw"}
+{:description "A simple to deploy but feature rich S3 object storage server for your filesystem",
+ :source {:github "versity/versitygw"}
  :asset "versitygw_{tag}_Linux_x86_64.tar.gz"
  :checksum "checksums.txt"
  :bins {"versitygw" "versitygw_{tag}_Linux_x86_64/versitygw"}}

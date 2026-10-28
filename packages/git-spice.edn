@@ -2,6 +2,7 @@
 ;; SPDX-FileCopyrightText: The breto Authors
 ;; SPDX-License-Identifier: MIT
 
-{:source {:github "abhinav/git-spice"}
+{:description "Manage stacked Git branches",
+ :source {:github "abhinav/git-spice"}
  :asset "git-spice.Linux-x86_64.tar.gz"
  :checksum "checksums.txt"}

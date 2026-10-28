@@ -2,6 +2,7 @@
 ;; SPDX-FileCopyrightText: The breto Authors
 ;; SPDX-License-Identifier: MIT
 
-{:source {:github "pacedotdev/oto"}
+{:description "Go driven rpc code generation tool for right now",
+ :source {:github "pacedotdev/oto"}
  :asset "oto_linux_amd64.tar.gz"
  :checksum "checksums.txt"}

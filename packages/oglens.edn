@@ -2,6 +2,7 @@
 ;; SPDX-FileCopyrightText: The breto Authors
 ;; SPDX-License-Identifier: MIT
 
-{:source {:github "uzimaru0000/oglens"}
+{:description "Tools for viewing OGP",
+ :source {:github "uzimaru0000/oglens"}
  :asset "og-x86_64-unknown-linux-gnu.zip"
  :bins {"og" "og-x86_64-unknown-linux-gnu/og"}}

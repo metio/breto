@@ -2,5 +2,6 @@
 ;; SPDX-FileCopyrightText: The breto Authors
 ;; SPDX-License-Identifier: MIT
 
-{:source {:github "c1982/bomberman"}
+{:description "SMTP Performance and Load Test Tool",
+ :source {:github "c1982/bomberman"}
  :asset "bomberman_linux_amd64"}

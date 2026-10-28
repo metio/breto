@@ -2,6 +2,7 @@
 ;; SPDX-FileCopyrightText: The breto Authors
 ;; SPDX-License-Identifier: MIT
 
-{:source {:github "mumoshu/variant"}
+{:description "Wrap up your bash scripts into a modern CLI today. Graduate to a full-blown golang app tomorrow",
+ :source {:github "mumoshu/variant"}
  :asset "variant_{version}_linux_amd64.tar.gz"
  :checksum "variant_{version}_checksums.txt"}

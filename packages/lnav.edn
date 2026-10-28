@@ -2,6 +2,7 @@
 ;; SPDX-FileCopyrightText: The breto Authors
 ;; SPDX-License-Identifier: MIT
 
-{:source {:github "tstack/lnav"}
+{:description "Log file navigator",
+ :source {:github "tstack/lnav"}
  :asset "lnav-{version}-linux-musl-x86_64.zip"
  :bins {"lnav" "lnav-{version}/lnav"}}

@@ -2,6 +2,7 @@
 ;; SPDX-FileCopyrightText: The breto Authors
 ;; SPDX-License-Identifier: MIT
 
-{:source {:github "fujiwara/stretcher"}
+{:description "Deployment tool with consul/serf event notification",
+ :source {:github "fujiwara/stretcher"}
  :asset "stretcher-{tag}-linux-amd64.zip"
  :bins {"stretcher" "stretcher-{tag}-linux-amd64"}}

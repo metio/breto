@@ -2,6 +2,7 @@
 ;; SPDX-FileCopyrightText: The breto Authors
 ;; SPDX-License-Identifier: MIT
 
-{:source {:github "git-chglog/git-chglog"}
+{:description "CHANGELOG generator implemented in Go (Golang)",
+ :source {:github "git-chglog/git-chglog"}
  :asset "git-chglog_{version}_linux_amd64.tar.gz"
  :checksum "checksums.txt"}

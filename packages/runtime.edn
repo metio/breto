@@ -2,7 +2,8 @@
 ;; SPDX-FileCopyrightText: The breto Authors
 ;; SPDX-License-Identifier: MIT
 
-{:source {:github "acorn-io/runtime"}
+{:description "A simple application deployment framework for Kubernetes",
+ :source {:github "acorn-io/runtime"}
  :asset "acorn-{tag}-linux-amd64.tar.gz"
  :checksum "checksums.txt"
  :bins {"acorn" "acorn"}}

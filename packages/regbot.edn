@@ -2,5 +2,6 @@
 ;; SPDX-FileCopyrightText: The breto Authors
 ;; SPDX-License-Identifier: MIT
 
-{:source {:github "regclient/regclient"}
+{:description "A scripting tool on top of the regclient (Docker and OCI Registry Client) API",
+ :source {:github "regclient/regclient"}
  :asset "regbot-linux-amd64"}

@@ -2,7 +2,8 @@
 ;; SPDX-FileCopyrightText: The breto Authors
 ;; SPDX-License-Identifier: MIT
 
-{:source {:github "floci-io/floci-cli"}
+{:description "Official command-line interface for Floci",
+ :source {:github "floci-io/floci-cli"}
  :tag-prefix ""
  :asset "floci-linux-amd64"
  :checksum "sha256sums.txt"

@@ -1,4 +1,5 @@
 ;; SPDX-FileCopyrightText: The breto Authors
 ;; SPDX-License-Identifier: 0BSD
 
-{:source {:github "kubernetes-sigs/kwok"}, :asset "kwokctl-linux-amd64"}
+{:description "Kubernetes WithOut Kubelet -  Simulates thousands of Nodes and Clusters",
+ :source {:github "kubernetes-sigs/kwok"}, :asset "kwokctl-linux-amd64"}

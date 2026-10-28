@@ -2,6 +2,7 @@
 ;; SPDX-FileCopyrightText: The breto Authors
 ;; SPDX-License-Identifier: MIT
 
-{:source {:github "becheran/roumon"}
+{:description "Universal goroutine monitor using pprof and termui",
+ :source {:github "becheran/roumon"}
  :asset "roumon_{version}_linux_amd64.tar.gz"
  :checksum "roumon_{version}_checksums.txt"}

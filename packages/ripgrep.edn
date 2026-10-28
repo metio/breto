@@ -2,7 +2,8 @@
 ;; SPDX-FileCopyrightText: The breto Authors
 ;; SPDX-License-Identifier: MIT
 
-{:source {:github "BurntSushi/ripgrep"}
+{:description "ripgrep recursively searches directories for a regex pattern while respecting your gitignore",
+ :source {:github "BurntSushi/ripgrep"}
  :tag-prefix ""
  :asset "ripgrep-{tag}-x86_64-unknown-linux-musl.tar.gz"
  :checksum "{asset}.sha256"

@@ -2,6 +2,7 @@
 ;; SPDX-FileCopyrightText: The breto Authors
 ;; SPDX-License-Identifier: MIT
 
-{:source {:github "projectdiscovery/subfinder"}
+{:description "Subfinder is a subdomain discovery tool that discovers valid subdomains for websites. Designed as a passive framework to be useful for bug bounties and safe for penetration testing",
+ :source {:github "projectdiscovery/subfinder"}
  :asset "subfinder_{version}_linux_amd64.zip"
  :checksum "subfinder_{version}_checksums.txt"}

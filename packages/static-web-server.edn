@@ -2,7 +2,8 @@
 ;; SPDX-FileCopyrightText: The breto Authors
 ;; SPDX-License-Identifier: MIT
 
-{:source {:github "static-web-server/static-web-server"}
+{:description "A cross-platform, high-performance and asynchronous web server for static files-serving",
+ :source {:github "static-web-server/static-web-server"}
  :asset "static-web-server-{tag}-x86_64-unknown-linux-musl.tar.gz"
  :checksum "static-web-server-{tag}-SHA256SUM"
  :bins {"static-web-server" "static-web-server-{tag}-x86_64-unknown-linux-musl/static-web-server"}}

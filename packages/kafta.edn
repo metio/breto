@@ -2,6 +2,7 @@
 ;; SPDX-FileCopyrightText: The breto Authors
 ;; SPDX-License-Identifier: MIT
 
-{:source {:github "electric-saw/kafta"}
+{:description "Kafta is a command line for managing Kafka clusters",
+ :source {:github "electric-saw/kafta"}
  :asset "kafta_Linux_x86_64.tar.gz"
  :checksum "checksums.txt"}

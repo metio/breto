@@ -2,6 +2,7 @@
 ;; SPDX-FileCopyrightText: The breto Authors
 ;; SPDX-License-Identifier: MIT
 
-{:source {:github "fabpot/local-php-security-checker"}
+{:description "PHP security vulnerabilities checker",
+ :source {:github "fabpot/local-php-security-checker"}
  :asset "local-php-security-checker_linux_amd64"
  :checksum "checksums.txt"}

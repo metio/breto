@@ -2,6 +2,7 @@
 ;; SPDX-FileCopyrightText: The breto Authors
 ;; SPDX-License-Identifier: MIT
 
-{:source {:github "helmfile/helmfile"}
+{:description "Declaratively deploy your Kubernetes manifests, Kustomize configs, and Charts as Helm releases. Generate all-in-one manifests for use with ArgoCD",
+ :source {:github "helmfile/helmfile"}
  :asset "helmfile_{version}_linux_amd64.tar.gz"
  :checksum "helmfile_{version}_checksums.txt"}

@@ -2,7 +2,8 @@
 ;; SPDX-FileCopyrightText: The breto Authors
 ;; SPDX-License-Identifier: MIT
 
-{:source {:github "yassinebridi/serpl"}
+{:description "A simple terminal UI for search and replace, ala VS Code",
+ :source {:github "yassinebridi/serpl"}
  :tag-prefix ""
  :asset "serpl-{tag}-linux-x86_64.tar.gz"
  :checksum "serpl-{tag}-linux-x86_64.sha256"}

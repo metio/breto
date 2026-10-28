@@ -2,7 +2,8 @@
 ;; SPDX-FileCopyrightText: The breto Authors
 ;; SPDX-License-Identifier: MIT
 
-{:source {:github "sass/dart-sass"}
+{:description "The reference implementation of Sass, written in Dart",
+ :source {:github "sass/dart-sass"}
  :tag-prefix ""
  :asset "dart-sass-{tag}-linux-x64-musl.tar.gz"
  :bins {"sass" "dart-sass/sass"}}

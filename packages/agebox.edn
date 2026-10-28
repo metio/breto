@@ -2,6 +2,7 @@
 ;; SPDX-FileCopyrightText: The breto Authors
 ;; SPDX-License-Identifier: MIT
 
-{:source {:github "slok/agebox"}
+{:description "Age based repository file encryption gitops tool",
+ :source {:github "slok/agebox"}
  :asset "agebox-linux-amd64"
  :checksum "checksums.txt"}

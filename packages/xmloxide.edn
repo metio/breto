@@ -2,7 +2,8 @@
 ;; SPDX-FileCopyrightText: The breto Authors
 ;; SPDX-License-Identifier: MIT
 
-{:source {:github "jonwiggins/xmloxide"}
+{:description "A pure Rust reimplementation of libxml2",
+ :source {:github "jonwiggins/xmloxide"}
  :asset "xmllint_linux-x86-64"
  :checksum "SHA256SUMS"
  :bins {"xmllint" "{asset}"}}

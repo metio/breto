@@ -2,7 +2,8 @@
 ;; SPDX-FileCopyrightText: The breto Authors
 ;; SPDX-License-Identifier: MIT
 
-{:source {:github "bjesus/pipet"}
+{:description "a swiss-army tool for scraping and extracting data from online assets, made for hackers",
+ :source {:github "bjesus/pipet"}
  :tag-prefix ""
  :asset "pipet-linux-amd64.tar.gz"
  :bins {"pipet" "pipet-linux-amd64"}}

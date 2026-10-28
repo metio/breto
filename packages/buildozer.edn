@@ -2,5 +2,6 @@
 ;; SPDX-FileCopyrightText: The breto Authors
 ;; SPDX-License-Identifier: MIT
 
-{:source {:github "bazel-contrib/buildtools"}
+{:description "Buildozer is a command line tool to rewrite multiple Bazel BUILD files using standard commands",
+ :source {:github "bazel-contrib/buildtools"}
  :asset "buildozer-linux-amd64"}

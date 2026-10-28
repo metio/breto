@@ -2,6 +2,7 @@
 ;; SPDX-FileCopyrightText: The breto Authors
 ;; SPDX-License-Identifier: MIT
 
-{:source {:github "x-motemen/gobump"}
+{:description "Bumps up Go program version",
+ :source {:github "x-motemen/gobump"}
  :asset "gobump_{tag}_linux_amd64.tar.gz"
  :bins {"gobump" "gobump_{tag}_linux_amd64/gobump"}}

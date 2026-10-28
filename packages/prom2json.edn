@@ -2,7 +2,8 @@
 ;; SPDX-FileCopyrightText: The breto Authors
 ;; SPDX-License-Identifier: MIT
 
-{:source {:github "prometheus/prom2json"}
+{:description "A tool to scrape a Prometheus client and dump the result as JSON",
+ :source {:github "prometheus/prom2json"}
  :asset "prom2json-{version}.linux-amd64.tar.gz"
  :checksum "sha256sums.txt"
  :bins {"prom2json" "prom2json-{version}.linux-amd64/prom2json"}}

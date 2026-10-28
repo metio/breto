@@ -2,6 +2,7 @@
 ;; SPDX-FileCopyrightText: The breto Authors
 ;; SPDX-License-Identifier: MIT
 
-{:source {:github "kcl-lang/kcl"}
+{:description "KCL Programming Language (CNCF Sandbox Project). https://kcl-lang.io",
+ :source {:github "kcl-lang/kcl"}
  :asset "kclvm-{tag}-linux-amd64.tar.gz"
  :bins {"kcl-language-server" "kclvm/bin/kcl-language-server", "kclvm_cli" "kclvm/bin/kclvm_cli"}}

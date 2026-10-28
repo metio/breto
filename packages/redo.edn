@@ -2,6 +2,7 @@
 ;; SPDX-FileCopyrightText: The breto Authors
 ;; SPDX-License-Identifier: MIT
 
-{:source {:github "barthr/redo"}
+{:description "Redo is the ultimate tool to create reusable functions from your history in an interactive way",
+ :source {:github "barthr/redo"}
  :asset "redo_{version}_Linux_x86_64.tar.gz"
  :checksum "checksums.txt"}

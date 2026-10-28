@@ -2,6 +2,7 @@
 ;; SPDX-FileCopyrightText: The breto Authors
 ;; SPDX-License-Identifier: MIT
 
-{:source {:github "kubernetes-retired/kubefed"}
+{:description "kubefedctl controls a Kubernetes Cluster Federation",
+ :source {:github "kubernetes-retired/kubefed"}
  :asset "kubefedctl-{version}-linux-amd64.tgz"
  :bins {"kubefedctl" "kubefedctl"}}

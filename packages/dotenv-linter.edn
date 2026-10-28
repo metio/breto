@@ -2,5 +2,6 @@
 ;; SPDX-FileCopyrightText: The breto Authors
 ;; SPDX-License-Identifier: MIT
 
-{:source {:github "dotenv-linter/dotenv-linter"}
+{:description "Lightning-fast linter for .env files. Written in Rust",
+ :source {:github "dotenv-linter/dotenv-linter"}
  :asset "dotenv-linter-linux-x86_64.tar.gz"}

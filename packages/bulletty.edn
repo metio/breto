@@ -2,7 +2,8 @@
 ;; SPDX-FileCopyrightText: The breto Authors
 ;; SPDX-License-Identifier: MIT
 
-{:source {:github "CrociDB/bulletty"}
+{:description "bulletty is a pretty feed reader for the terminal that stores the articles as Markdown",
+ :source {:github "CrociDB/bulletty"}
  :asset "bulletty-x86_64-unknown-linux-musl.tar.xz"
  :checksum "{asset}.sha256"
  :bins {"bulletty" "bulletty-x86_64-unknown-linux-musl/bulletty"}}

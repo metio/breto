@@ -2,6 +2,7 @@
 ;; SPDX-FileCopyrightText: The breto Authors
 ;; SPDX-License-Identifier: MIT
 
-{:source {:github "DeNA/unity-meta-check"}
+{:description "Autofix for meta files problems. It need a result of unity-meta-check via stdin.",
+ :source {:github "DeNA/unity-meta-check"}
  :asset "unity-meta-autofix-linux-amd64"
  :checksum "checksums.txt"}

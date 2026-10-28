@@ -2,7 +2,8 @@
 ;; SPDX-FileCopyrightText: The breto Authors
 ;; SPDX-License-Identifier: MIT
 
-{:source {:github "Shopify/toxiproxy"}
+{:description "A TCP proxy to simulate network and system conditions for chaos and resiliency testing",
+ :source {:github "Shopify/toxiproxy"}
  :asset "toxiproxy_{version}_linux_amd64.tar.gz"
  :checksum "checksums.txt"
  :bins {"toxiproxy-cli" "toxiproxy-cli", "toxiproxy-server" "toxiproxy-server"}}

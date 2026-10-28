@@ -2,7 +2,8 @@
 ;; SPDX-FileCopyrightText: The breto Authors
 ;; SPDX-License-Identifier: MIT
 
-{:source {:github "GoodwayGroup/gwvault"}
+{:description "ansible-vault CLI reimplemented in go",
+ :source {:github "GoodwayGroup/gwvault"}
  :asset "gwvault_{version}_linux_amd64.tar.gz"
  :checksum "checksums.txt"
  :bins {"gwvault" "gwvault_{version}_linux_amd64/gwvault"}}

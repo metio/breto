@@ -2,6 +2,7 @@
 ;; SPDX-FileCopyrightText: The breto Authors
 ;; SPDX-License-Identifier: MIT
 
-{:source {:github "charmbracelet/charm"}
+{:description "The Charm Tool and Library",
+ :source {:github "charmbracelet/charm"}
  :asset "charm_{version}_Linux_x86_64.tar.gz"
  :checksum "checksums.txt"}

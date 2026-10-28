@@ -2,7 +2,8 @@
 ;; SPDX-FileCopyrightText: The breto Authors
 ;; SPDX-License-Identifier: MIT
 
-{:source {:github "kayac/go-katsubushi"}
+{:description "ID generator server",
+ :source {:github "kayac/go-katsubushi"}
  :asset "go-katsubushi_{tag}_linux_amd64.tar.gz"
  :checksum "checksums.txt"
  :bins {"katsubushi" "katsubushi"}}

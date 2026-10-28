@@ -2,5 +2,6 @@
 ;; SPDX-FileCopyrightText: The breto Authors
 ;; SPDX-License-Identifier: MIT
 
-{:source {:github "windvalley/gossh"}
+{:description "A high-performance and high-concurrency ssh tool written in Go. It is 10 times faster than Ansible. If you need much more performance and better ease of use, you will love it",
+ :source {:github "windvalley/gossh"}
  :asset "gossh-{tag}-linux-amd64"}

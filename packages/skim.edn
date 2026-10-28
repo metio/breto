@@ -1,0 +1,10 @@
+;; SPDX-FileCopyrightText: The breto Authors
+;; SPDX-License-Identifier: 0BSD
+
+{:description "Fuzzy Finder in rust",
+ :source {:github "skim-rs/skim"},
+ :asset "skim-x86_64-unknown-linux-musl.tar.xz",
+ :checksum "{asset}.sha256",
+ :strip 1,
+ :bins {"sk" "sk"},
+ :man ["man/man1/*.1"]}

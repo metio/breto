@@ -2,6 +2,7 @@
 ;; SPDX-FileCopyrightText: The breto Authors
 ;; SPDX-License-Identifier: MIT
 
-{:source {:github "everstake/bip39"}
+{:description "CLI for generation and verification of mnemonics in BIP39 standard with hash in Argon2id",
+ :source {:github "everstake/bip39"}
  :asset "bip39_{version}_linux_amd64.tar.gz"
  :checksum "bip39_{version}_checksums.txt"}

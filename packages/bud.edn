@@ -2,7 +2,8 @@
 ;; SPDX-FileCopyrightText: The breto Authors
 ;; SPDX-License-Identifier: MIT
 
-{:source {:github "livebud/bud"}
+{:description "The Full-Stack Web Framework for Go",
+ :source {:github "livebud/bud"}
  :asset "bud_{tag}_linux_amd64.tar.gz"
  :checksum "checksums.txt"
  :bins {"bud" "bud_{tag}_linux_amd64/bud"}}

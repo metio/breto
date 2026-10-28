@@ -2,6 +2,7 @@
 ;; SPDX-FileCopyrightText: The breto Authors
 ;; SPDX-License-Identifier: MIT
 
-{:source {:github "projectdiscovery/httpx"}
+{:description "httpx is a fast and multi-purpose HTTP toolkit allows to run multiple probers using retryablehttp library, it is designed to maintain the result reliability with increased threads",
+ :source {:github "projectdiscovery/httpx"}
  :asset "httpx_{version}_linux_amd64.zip"
  :checksum "httpx_{version}_checksums.txt"}

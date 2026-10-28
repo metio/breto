@@ -2,6 +2,7 @@
 ;; SPDX-FileCopyrightText: The breto Authors
 ;; SPDX-License-Identifier: MIT
 
-{:source {:github "turbot/tailpipe"}
+{:description "select * from logs! Tailpipe is an open source SIEM for instant log insights, powered by DuckDB. Analyze millions of events in seconds, right from your terminal",
+ :source {:github "turbot/tailpipe"}
  :asset "tailpipe.linux.amd64.tar.gz"
  :checksum "checksums.txt"}

@@ -2,7 +2,8 @@
 ;; SPDX-FileCopyrightText: The breto Authors
 ;; SPDX-License-Identifier: MIT
 
-{:source {:github "livesense-inc/go-simple-http-redirector"}
+{:description "Redirect HTTP requests to specific URI",
+ :source {:github "livesense-inc/go-simple-http-redirector"}
  :asset "redirector-linux-amd64.zip"
  :checksum "redirector_{version}_checksums.txt"
  :bins {"redirector" "redirector"}}

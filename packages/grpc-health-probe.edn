@@ -2,7 +2,8 @@
 ;; SPDX-FileCopyrightText: The breto Authors
 ;; SPDX-License-Identifier: MIT
 
-{:source {:github "grpc-ecosystem/grpc-health-probe"}
+{:description "A command-line tool to perform health-checks for gRPC applications in Kubernetes and elsewhere",
+ :source {:github "grpc-ecosystem/grpc-health-probe"}
  :asset "grpc_health_probe-linux-amd64"
  :checksum "checksums.txt"
  :bins {"grpc_health_probe" "{asset}"}}

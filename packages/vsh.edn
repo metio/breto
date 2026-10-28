@@ -2,6 +2,7 @@
 ;; SPDX-FileCopyrightText: The breto Authors
 ;; SPDX-License-Identifier: MIT
 
-{:source {:github "fishi0x01/vsh"}
+{:description "vsh - HashiCorp Vault interactive shell and cli tool",
+ :source {:github "fishi0x01/vsh"}
  :asset "vsh_linux_amd64"
  :checksum "SHA256SUM"}

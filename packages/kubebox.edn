@@ -2,5 +2,6 @@
 ;; SPDX-FileCopyrightText: The breto Authors
 ;; SPDX-License-Identifier: MIT
 
-{:source {:github "astefanutti/kubebox"}
+{:description "Terminal and Web console for Kubernetes",
+ :source {:github "astefanutti/kubebox"}
  :asset "kubebox-linux"}

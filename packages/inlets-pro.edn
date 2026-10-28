@@ -2,7 +2,8 @@
 ;; SPDX-FileCopyrightText: The breto Authors
 ;; SPDX-License-Identifier: MIT
 
-{:source {:github "inlets/inlets-pro"}
+{:description "Secure HTTP and TCP tunnels that just work",
+ :source {:github "inlets/inlets-pro"}
  :tag-prefix ""
  :asset "inlets-pro"
  :checksum "{asset}.sha256"}

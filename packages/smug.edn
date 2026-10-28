@@ -2,6 +2,7 @@
 ;; SPDX-FileCopyrightText: The breto Authors
 ;; SPDX-License-Identifier: MIT
 
-{:source {:github "ivaaaan/smug"}
+{:description "Session manager and task runner for tmux. Start your development environment within one command",
+ :source {:github "ivaaaan/smug"}
  :asset "smug_{version}_Linux_x86_64.tar.gz"
  :checksum "checksums.txt"}

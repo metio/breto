@@ -2,6 +2,7 @@
 ;; SPDX-FileCopyrightText: The breto Authors
 ;; SPDX-License-Identifier: MIT
 
-{:source {:github "editorconfig-checker/editorconfig-checker"}
+{:description "A tool to verify that your files are in harmony with your .editorconfig",
+ :source {:github "editorconfig-checker/editorconfig-checker"}
  :asset "editorconfig-checker-linux-amd64.tar.gz"
  :checksum "checksums.txt"}

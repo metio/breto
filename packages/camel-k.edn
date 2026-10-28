@@ -2,6 +2,7 @@
 ;; SPDX-FileCopyrightText: The breto Authors
 ;; SPDX-License-Identifier: MIT
 
-{:source {:github "apache/camel-k"}
+{:description "Apache Camel K is a lightweight integration platform, born on Kubernetes, with serverless superpowers",
+ :source {:github "apache/camel-k"}
  :asset "camel-k-client-{version}-linux-amd64.tar.gz"
  :bins {"kamel" "kamel"}}

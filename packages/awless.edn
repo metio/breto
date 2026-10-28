@@ -2,5 +2,6 @@
 ;; SPDX-FileCopyrightText: The breto Authors
 ;; SPDX-License-Identifier: MIT
 
-{:source {:github "wallix/awless"}
+{:description "A Mighty CLI for AWS",
+ :source {:github "wallix/awless"}
  :asset "awless-linux-amd64.tar.gz"}

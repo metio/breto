@@ -2,6 +2,7 @@
 ;; SPDX-FileCopyrightText: The breto Authors
 ;; SPDX-License-Identifier: MIT
 
-{:source {:github "pnpm/pnpm"}
+{:description "Fast, disk space efficient package manager",
+ :source {:github "pnpm/pnpm"}
  :asset "pnpm-linux-x64-musl.tar.gz"
  :bins {"pn" "pnpm", "pnpm" "pnpm", "pnpx" "pnpm", "pnx" "pnpm"}}

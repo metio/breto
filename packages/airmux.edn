@@ -1,6 +1,7 @@
 ;; SPDX-FileCopyrightText: The breto Authors
 ;; SPDX-License-Identifier: 0BSD
 
-{:source {:github "dermoumi/airmux"},
+{:description "Just another tmux session manager written in rust.",
+ :source {:github "dermoumi/airmux"},
  :asset "airmux-x86_64-unknown-linux-gnu"
  :history [{:before "0.2.4" :verify false}]}

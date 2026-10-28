@@ -2,6 +2,7 @@
 ;; SPDX-FileCopyrightText: The breto Authors
 ;; SPDX-License-Identifier: MIT
 
-{:source {:github "k1LoW/octocov"}
+{:description "octocov is a toolkit for collecting code metrics (code coverage, code to test ratio, test execution time and your own custom metrics)",
+ :source {:github "k1LoW/octocov"}
  :asset "octocov_{tag}_linux_amd64.tar.gz"
  :checksum "checksums-linux.txt"}

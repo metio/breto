@@ -2,5 +2,6 @@
 ;; SPDX-FileCopyrightText: The breto Authors
 ;; SPDX-License-Identifier: MIT
 
-{:source {:github "mrjackwills/oxker"}
+{:description "A simple tui to view & control docker containers",
+ :source {:github "mrjackwills/oxker"}
  :asset "oxker_linux_x86_64.tar.gz"}

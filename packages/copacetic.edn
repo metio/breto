@@ -2,7 +2,8 @@
 ;; SPDX-FileCopyrightText: The breto Authors
 ;; SPDX-License-Identifier: MIT
 
-{:source {:github "project-copacetic/copacetic"}
+{:description "CLI tool for directly patching container images using reports from vulnerability scanners",
+ :source {:github "project-copacetic/copacetic"}
  :asset "copa_{version}_linux_amd64.tar.gz"
  :checksum "copacetic_checksums.txt"
  :bins {"copa" "copa"}}

@@ -2,5 +2,6 @@
 ;; SPDX-FileCopyrightText: The breto Authors
 ;; SPDX-License-Identifier: MIT
 
-{:source {:github "cloud-hypervisor/cloud-hypervisor"}
+{:description "Remotely control a cloud-hypervisor VMM",
+ :source {:github "cloud-hypervisor/cloud-hypervisor"}
  :asset "ch-remote-static"}

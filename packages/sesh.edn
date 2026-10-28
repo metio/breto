@@ -2,6 +2,7 @@
 ;; SPDX-FileCopyrightText: The breto Authors
 ;; SPDX-License-Identifier: MIT
 
-{:source {:github "joshmedeski/sesh"}
+{:description "Smart session manager for the terminal",
+ :source {:github "joshmedeski/sesh"}
  :asset "sesh_Linux_x86_64.tar.gz"
  :checksum "sesh_{version}_checksums.txt"}

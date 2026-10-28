@@ -2,7 +2,8 @@
 ;; SPDX-FileCopyrightText: The breto Authors
 ;; SPDX-License-Identifier: MIT
 
-{:source {:github "alexellis/arkade"}
+{:description "Open Source Marketplace For Developer Tools",
+ :source {:github "alexellis/arkade"}
  :tag-prefix ""
  :asset "arkade"
  :checksum "{asset}.sha256"

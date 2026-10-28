@@ -2,6 +2,7 @@
 ;; SPDX-FileCopyrightText: The breto Authors
 ;; SPDX-License-Identifier: MIT
 
-{:source {:github "suzuki-shunsuke/ghomfc"}
+{:description "GitHub Organization Members' Followers Counter",
+ :source {:github "suzuki-shunsuke/ghomfc"}
  :asset "ghomfc_linux_amd64.tar.gz"
  :checksum "ghomfc_{version}_checksums.txt"}

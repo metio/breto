@@ -2,6 +2,7 @@
 ;; SPDX-FileCopyrightText: The breto Authors
 ;; SPDX-License-Identifier: MIT
 
-{:source {:github "Lallassu/gorss"}
+{:description "Go Terminal Feed Reader",
+ :source {:github "Lallassu/gorss"}
  :asset "gorss_linux.tar.gz"
  :bins {"gorss" "dist/gorss_linux"}}

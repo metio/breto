@@ -2,6 +2,7 @@
 ;; SPDX-FileCopyrightText: The breto Authors
 ;; SPDX-License-Identifier: MIT
 
-{:source {:github "k1LoW/oldstable"}
+{:description "Check if version of go directive in go.mod is oldstable",
+ :source {:github "k1LoW/oldstable"}
  :asset "oldstable_{tag}_linux_amd64.tar.gz"
  :checksum "checksums.txt"}

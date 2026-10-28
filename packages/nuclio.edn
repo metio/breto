@@ -2,6 +2,7 @@
 ;; SPDX-FileCopyrightText: The breto Authors
 ;; SPDX-License-Identifier: MIT
 
-{:source {:github "nuclio/nuclio"}
+{:description "High-Performance Serverless event and data processing platform",
+ :source {:github "nuclio/nuclio"}
  :tag-prefix ""
  :asset "nuctl-{tag}-linux-amd64"}

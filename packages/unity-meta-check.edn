@@ -2,6 +2,7 @@
 ;; SPDX-FileCopyrightText: The breto Authors
 ;; SPDX-License-Identifier: MIT
 
-{:source {:github "DeNA/unity-meta-check"}
+{:description "Checker for missing/dangling meta files. The result print to stdout.",
+ :source {:github "DeNA/unity-meta-check"}
  :asset "unity-meta-check-linux-amd64"
  :checksum "checksums.txt"}

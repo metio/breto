@@ -2,5 +2,6 @@
 ;; SPDX-FileCopyrightText: The breto Authors
 ;; SPDX-License-Identifier: MIT
 
-{:source {:github "xo/dbtpl"}
+{:description "Command line tool to generate idiomatic Go code for SQL databases supporting PostgreSQL, MySQL, SQLite, Oracle, and Microsoft SQL Server",
+ :source {:github "xo/dbtpl"}
  :asset "xo-{version}-linux-amd64.tar.bz2"}

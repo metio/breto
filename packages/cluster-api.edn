@@ -2,6 +2,7 @@
 ;; SPDX-FileCopyrightText: The breto Authors
 ;; SPDX-License-Identifier: MIT
 
-{:source {:github "kubernetes-sigs/cluster-api"}
+{:description "Home for Cluster API, a subproject of sig-cluster-lifecycle",
+ :source {:github "kubernetes-sigs/cluster-api"}
  :asset "clusterctl-linux-amd64"
  :bins {"clusterctl" "{asset}"}}

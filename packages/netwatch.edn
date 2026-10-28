@@ -2,6 +2,7 @@
 ;; SPDX-FileCopyrightText: The breto Authors
 ;; SPDX-License-Identifier: MIT
 
-{:source {:github "matthart1983/netwatch"}
+{:description "Real-time network diagnostics in your terminal. One command, zero config, instant visibility",
+ :source {:github "matthart1983/netwatch"}
  :asset "netwatch-linux-x86_64-static.tar.gz"
  :bins {"netwatch" "netwatch-linux-x86_64-static"}}

@@ -2,7 +2,8 @@
 ;; SPDX-FileCopyrightText: The breto Authors
 ;; SPDX-License-Identifier: MIT
 
-{:source {:github "Mic92/nixfmt-rs"}
+{:description "Rust reimplementation of nixfmt with byte-identical output",
+ :source {:github "Mic92/nixfmt-rs"}
  :tag-prefix ""
  :asset "nixfmt-x86_64-linux"
  :checksum "SHA256SUMS"

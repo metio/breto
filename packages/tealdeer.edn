@@ -2,7 +2,8 @@
 ;; SPDX-FileCopyrightText: The breto Authors
 ;; SPDX-License-Identifier: MIT
 
-{:source {:github "tealdeer-rs/tealdeer"}
+{:description "A very fast implementation of tldr in Rust",
+ :source {:github "tealdeer-rs/tealdeer"}
  :asset "tealdeer-linux-x86_64-musl"
  :checksum "{asset}.sha256"
  :bins {"tldr" "{asset}"}}

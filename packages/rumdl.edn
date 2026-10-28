@@ -2,6 +2,7 @@
 ;; SPDX-FileCopyrightText: The breto Authors
 ;; SPDX-License-Identifier: MIT
 
-{:source {:github "rvben/rumdl"}
+{:description "A Markdown Linter written in Rust",
+ :source {:github "rvben/rumdl"}
  :asset "rumdl-{tag}-x86_64-unknown-linux-musl.tar.gz"
  :checksum "{asset}.sha256"}

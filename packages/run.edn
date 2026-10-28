@@ -2,6 +2,7 @@
 ;; SPDX-FileCopyrightText: The breto Authors
 ;; SPDX-License-Identifier: MIT
 
-{:source {:github "TekWizely/run"}
+{:description "Task runner that helps you easily manage and invoke small scripts and wrappers",
+ :source {:github "TekWizely/run"}
  :asset "run_{version}_linux_amd64.tar.gz"
  :checksum "checksums.txt"}

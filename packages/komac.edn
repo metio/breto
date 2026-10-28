@@ -2,6 +2,7 @@
 ;; SPDX-FileCopyrightText: The breto Authors
 ;; SPDX-License-Identifier: MIT
 
-{:source {:github "russellbanks/Komac"}
+{:description "The Community Manifest Creator for WinGet",
+ :source {:github "russellbanks/Komac"}
  :asset "komac-{version}-x86_64-unknown-linux-gnu.tar.gz"
  :checksum "SHA256SUMS"}

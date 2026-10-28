@@ -2,6 +2,7 @@
 ;; SPDX-FileCopyrightText: The breto Authors
 ;; SPDX-License-Identifier: MIT
 
-{:source {:github "hashicorp/go-getter"}
+{:description "Package for downloading things from a string URL using a variety of protocols",
+ :source {:github "hashicorp/go-getter"}
  :asset "go-getter_{version}_linux_amd64.zip"
  :checksum "go-getter_{version}_SHA256SUMS"}

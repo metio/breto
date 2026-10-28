@@ -2,6 +2,7 @@
 ;; SPDX-FileCopyrightText: The breto Authors
 ;; SPDX-License-Identifier: MIT
 
-{:source {:github "abs-lang/abs"}
+{:description "Home of the ABS programming language: the joy of shell scripting",
+ :source {:github "abs-lang/abs"}
  :tag-prefix ""
  :asset "abs-linux-amd64"}

@@ -2,7 +2,8 @@
 ;; SPDX-FileCopyrightText: The breto Authors
 ;; SPDX-License-Identifier: MIT
 
-{:source {:github "localstack/localstack-cli"}
+{:description "The LocalStack CLI packaged using pyinstaller",
+ :source {:github "localstack/localstack-cli"}
  :asset "localstack-cli-{version}-linux-amd64-onefile.tar.gz"
  :checksum "localstack-cli-{version}-checksums.txt"
  :bins {"localstack" "localstack"}}

@@ -2,5 +2,6 @@
 ;; SPDX-FileCopyrightText: The breto Authors
 ;; SPDX-License-Identifier: MIT
 
-{:source {:github "volta-cli/volta"}
+{:description "Volta: JS Toolchains as Code",
+ :source {:github "volta-cli/volta"}
  :asset "volta-{version}-linux.tar.gz"}

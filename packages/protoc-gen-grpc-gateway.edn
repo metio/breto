@@ -2,6 +2,7 @@
 ;; SPDX-FileCopyrightText: The breto Authors
 ;; SPDX-License-Identifier: MIT
 
-{:source {:github "grpc-ecosystem/grpc-gateway"}
+{:description "Generate golang code to reverse proxy Protocol Buffer definitions to RESTful HTTP/1",
+ :source {:github "grpc-ecosystem/grpc-gateway"}
  :asset "protoc-gen-grpc-gateway-{tag}-linux-x86_64"
  :checksum "grpc-gateway_{version}_checksums.txt"}

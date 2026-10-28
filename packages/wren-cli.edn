@@ -2,7 +2,8 @@
 ;; SPDX-FileCopyrightText: The breto Authors
 ;; SPDX-License-Identifier: MIT
 
-{:source {:github "wren-lang/wren-cli"}
+{:description "A command line tool for the Wren programming language",
+ :source {:github "wren-lang/wren-cli"}
  :tag-prefix ""
  :asset "wren-cli-linux-{tag}.zip"
  :bins {"wren_cli" "wren-cli-linux-{tag}/wren_cli"}}

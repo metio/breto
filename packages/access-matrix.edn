@@ -2,7 +2,8 @@
 ;; SPDX-FileCopyrightText: The breto Authors
 ;; SPDX-License-Identifier: MIT
 
-{:source {:github "corneliusweig/rakkess"}
+{:description "Review Access - kubectl plugin to show an access matrix for k8s server resources",
+ :source {:github "corneliusweig/rakkess"}
  :asset "access-matrix-amd64-linux.tar.gz"
  :checksum "{asset}.sha256"
  :bins {"kubectl-access_matrix" "access-matrix-amd64-linux"}}

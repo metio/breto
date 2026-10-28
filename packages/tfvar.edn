@@ -2,6 +2,7 @@
 ;; SPDX-FileCopyrightText: The breto Authors
 ;; SPDX-License-Identifier: MIT
 
-{:source {:github "shihanng/tfvar"}
+{:description "Terraform's variable definitions template generator",
+ :source {:github "shihanng/tfvar"}
  :asset "tfvar_linux_amd64.tar.gz"
  :checksum "tfvar_checksums.txt"}

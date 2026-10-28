@@ -2,6 +2,7 @@
 ;; SPDX-FileCopyrightText: The breto Authors
 ;; SPDX-License-Identifier: MIT
 
-{:source {:github "anordal/shellharden"}
+{:description "The corrective bash syntax highlighter",
+ :source {:github "anordal/shellharden"}
  :asset "shellharden-x86_64-unknown-linux-musl.tar.gz"
  :checksum "shellharden-x86_64-unknown-linux-musl.sha512"}

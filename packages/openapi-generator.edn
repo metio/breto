@@ -2,5 +2,6 @@
 ;; SPDX-FileCopyrightText: The breto Authors
 ;; SPDX-License-Identifier: MIT
 
-{:source {:github "OpenAPITools/openapi-generator"}
+{:description "OpenAPI Generator allows generation of API client libraries (SDK generation), server stubs, documentation and configuration automatically given an OpenAPI Spec (v2, v3)",
+ :source {:github "OpenAPITools/openapi-generator"}
  :asset "openapi-generator-cli-{version}.jar"}

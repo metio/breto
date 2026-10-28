@@ -2,7 +2,8 @@
 ;; SPDX-FileCopyrightText: The breto Authors
 ;; SPDX-License-Identifier: MIT
 
-{:source {:github "pulumi/pulumi"}
+{:description "Pulumi - Infrastructure as Code in any programming language",
+ :source {:github "pulumi/pulumi"}
  :asset "pulumi-{tag}-linux-x64.tar.gz"
  :checksum "SHA512SUMS"
  :bins {"pulumi" "pulumi/pulumi"}}

@@ -2,6 +2,7 @@
 ;; SPDX-FileCopyrightText: The breto Authors
 ;; SPDX-License-Identifier: MIT
 
-{:source {:github "suzuki-shunsuke/matchfile"}
+{:description "CLI tool to check file paths are matched to the condition",
+ :source {:github "suzuki-shunsuke/matchfile"}
  :asset "matchfile_{version}_linux_amd64.tar.gz"
  :checksum "matchfile_{version}_checksums.txt"}

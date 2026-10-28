@@ -2,6 +2,7 @@
 ;; SPDX-FileCopyrightText: The breto Authors
 ;; SPDX-License-Identifier: MIT
 
-{:source {:github "KusionStack/kusion"}
+{:description "Deliver intentions to Kubernetes and Clouds",
+ :source {:github "KusionStack/kusion"}
  :asset "kusion_{version}_linux_amd64.tar.gz"
  :checksum "checksums.txt"}

@@ -2,6 +2,7 @@
 ;; SPDX-FileCopyrightText: The breto Authors
 ;; SPDX-License-Identifier: MIT
 
-{:source {:github "dispatchrun/wzprof"}
+{:description "WebAssembly Profiler based on Wazero",
+ :source {:github "dispatchrun/wzprof"}
  :asset "wzprof_{version}_linux_amd64.tar.gz"
  :checksum "wzprof_{version}_checksums.txt"}

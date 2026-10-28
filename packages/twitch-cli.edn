@@ -2,7 +2,8 @@
 ;; SPDX-FileCopyrightText: The breto Authors
 ;; SPDX-License-Identifier: MIT
 
-{:source {:github "twitchdev/twitch-cli"}
+{:description "The official Twitch CLI to make developing on Twitch easier",
+ :source {:github "twitchdev/twitch-cli"}
  :asset "twitch-cli_{version}_Linux_x86_64.tar.gz"
  :checksum "checksums.txt"
  :bins {"twitch" "twitch-cli_{version}_Linux_x86_64/twitch"}}

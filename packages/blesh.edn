@@ -1,7 +1,8 @@
 ;; SPDX-FileCopyrightText: The breto Authors
 ;; SPDX-License-Identifier: 0BSD
 
-{:source {:github "akinomyoga/ble.sh" :tag "nightly"}
+{:description "Bash Line Editor―a line editor written in pure Bash with syntax highlighting, auto suggestions, vim modes, etc. for Bash interactive sessions.",
+ :source {:github "akinomyoga/ble.sh" :tag "nightly"}
  :asset "ble-nightly-{version}.tar.xz"
  :strip 1
  :layout :tree

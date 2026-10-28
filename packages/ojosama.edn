@@ -2,6 +2,7 @@
 ;; SPDX-FileCopyrightText: The breto Authors
 ;; SPDX-License-Identifier: MIT
 
-{:source {:github "jiro4989/ojosama"}
+{:description "テキストを壱百満天原サロメお嬢様風の口調に変換します",
+ :source {:github "jiro4989/ojosama"}
  :asset "ojosama_{version}_linux_x86_64.tar.gz"
  :checksum "checksums.txt"}

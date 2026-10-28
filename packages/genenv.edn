@@ -2,5 +2,6 @@
 ;; SPDX-FileCopyrightText: The breto Authors
 ;; SPDX-License-Identifier: MIT
 
-{:source {:github "yashikota/genenv"}
+{:description "A simple CLI tool to generate .env files from template files, automatically filling in placeholders with cryptographically secure random values",
+ :source {:github "yashikota/genenv"}
  :asset "genenv-linux-amd64"}

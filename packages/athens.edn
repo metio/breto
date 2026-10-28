@@ -2,6 +2,7 @@
 ;; SPDX-FileCopyrightText: The breto Authors
 ;; SPDX-License-Identifier: MIT
 
-{:source {:github "gomods/athens"}
+{:description "A Go module datastore and proxy",
+ :source {:github "gomods/athens"}
  :asset "athens_{version}_linux_amd64.tar.gz"
  :checksum "checksums.txt"}

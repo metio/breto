@@ -2,6 +2,7 @@
 ;; SPDX-FileCopyrightText: The breto Authors
 ;; SPDX-License-Identifier: MIT
 
-{:source {:github "yashikota/exiftool-go"}
+{:description "Pure Go ExifTool wrapper powered by WebAssembly",
+ :source {:github "yashikota/exiftool-go"}
  :asset "exiftool-go_{version}_linux_amd64.tar.gz"
  :checksum "exiftool-go_{version}_checksums.txt"}

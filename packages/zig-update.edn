@@ -2,6 +2,7 @@
 ;; SPDX-FileCopyrightText: The breto Authors
 ;; SPDX-License-Identifier: MIT
 
-{:source {:github "mattn/zig-update"}
+{:description "Zig updator",
+ :source {:github "mattn/zig-update"}
  :asset "zig-update_{tag}_linux_amd64.tar.gz"
  :bins {"zig-update" "zig-update_{tag}_linux_amd64/zig-update"}}

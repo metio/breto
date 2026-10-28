@@ -2,6 +2,7 @@
 ;; SPDX-FileCopyrightText: The breto Authors
 ;; SPDX-License-Identifier: MIT
 
-{:source {:github "terraform-linters/tflint"}
+{:description "A Pluggable Terraform Linter",
+ :source {:github "terraform-linters/tflint"}
  :asset "tflint_linux_amd64.zip"
  :checksum "checksums.txt"}

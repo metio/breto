@@ -2,6 +2,7 @@
 ;; SPDX-FileCopyrightText: The breto Authors
 ;; SPDX-License-Identifier: MIT
 
-{:source {:github "Owloops/updo"}
+{:description "Uptime monitoring CLI tool with alerting and advanced settings",
+ :source {:github "Owloops/updo"}
  :asset "updo_Linux_x86_64"
  :checksum "checksums.txt"}

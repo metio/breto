@@ -2,6 +2,7 @@
 ;; SPDX-FileCopyrightText: The breto Authors
 ;; SPDX-License-Identifier: MIT
 
-{:source {:github "inlets/inletsctl"}
+{:description "Create inlets servers on the top cloud platforms",
+ :source {:github "inlets/inletsctl"}
  :tag-prefix ""
  :asset "inletsctl.tgz"}

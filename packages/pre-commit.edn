@@ -2,5 +2,6 @@
 ;; SPDX-FileCopyrightText: The breto Authors
 ;; SPDX-License-Identifier: MIT
 
-{:source {:github "pre-commit/pre-commit"}
+{:description "A framework for managing and maintaining multi-language pre-commit hooks",
+ :source {:github "pre-commit/pre-commit"}
  :asset "pre-commit-{version}.pyz"}

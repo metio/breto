@@ -2,6 +2,7 @@
 ;; SPDX-FileCopyrightText: The breto Authors
 ;; SPDX-License-Identifier: MIT
 
-{:source {:github "d2lang/d2"}
+{:description "D2 is a modern diagram scripting language that turns text to diagrams",
+ :source {:github "d2lang/d2"}
  :asset "d2-{tag}-linux-amd64.tar.gz"
  :bins {"d2" "d2-{tag}/bin/d2"}}

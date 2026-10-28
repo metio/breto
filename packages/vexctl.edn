@@ -2,6 +2,7 @@
 ;; SPDX-FileCopyrightText: The breto Authors
 ;; SPDX-License-Identifier: MIT
 
-{:source {:github "openvex/vexctl"}
+{:description "A  tool to create, transform and attest VEX metadata",
+ :source {:github "openvex/vexctl"}
  :asset "vexctl-linux-amd64"
  :checksum "vexctl_checksums.txt"}

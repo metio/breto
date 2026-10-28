@@ -2,5 +2,6 @@
 ;; SPDX-FileCopyrightText: The breto Authors
 ;; SPDX-License-Identifier: MIT
 
-{:source {:github "bazelbuild/bazelisk"}
+{:description "A user-friendly launcher for Bazel",
+ :source {:github "bazelbuild/bazelisk"}
  :asset "bazelisk-linux-amd64"}

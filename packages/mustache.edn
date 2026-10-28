@@ -2,6 +2,7 @@
 ;; SPDX-FileCopyrightText: The breto Authors
 ;; SPDX-License-Identifier: MIT
 
-{:source {:github "cbroglie/mustache"}
+{:description "The mustache template language in Go",
+ :source {:github "cbroglie/mustache"}
  :asset "mustache_{version}_linux_amd64.tar.gz"
  :checksum "mustache_{version}_checksums.txt"}

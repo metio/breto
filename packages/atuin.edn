@@ -1,7 +1,8 @@
 ;; SPDX-FileCopyrightText: The breto Authors
 ;; SPDX-License-Identifier: 0BSD
 
-{:source {:github "atuinsh/atuin"},
+{:description "Magical shell history",
+ :source {:github "atuinsh/atuin"},
  :asset "atuin-x86_64-unknown-linux-gnu.tar.gz",
  :checksum "atuin-x86_64-unknown-linux-gnu.tar.gz.sha256",
  :strip 1}

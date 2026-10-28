@@ -2,7 +2,8 @@
 ;; SPDX-FileCopyrightText: The breto Authors
 ;; SPDX-License-Identifier: MIT
 
-{:source {:github "lima-vm/lima"}
+{:description "Linux virtual machines, with a focus on running containers",
+ :source {:github "lima-vm/lima"}
  :asset "lima-{version}-Linux-x86_64.tar.gz"
  :checksum "SHA256SUMS"
  :bins {"lima" "bin/lima", "limactl" "bin/limactl"}}

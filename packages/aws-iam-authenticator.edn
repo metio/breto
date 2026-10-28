@@ -2,6 +2,7 @@
 ;; SPDX-FileCopyrightText: The breto Authors
 ;; SPDX-License-Identifier: MIT
 
-{:source {:github "kubernetes-sigs/aws-iam-authenticator"}
+{:description "A tool to use AWS IAM credentials to authenticate to a Kubernetes cluster",
+ :source {:github "kubernetes-sigs/aws-iam-authenticator"}
  :asset "aws-iam-authenticator_{version}_linux_amd64"
  :checksum "authenticator_{version}_checksums.txt"}

@@ -1,7 +1,8 @@
 ;; SPDX-FileCopyrightText: The breto Authors
 ;; SPDX-License-Identifier: 0BSD
 
-{:source {:github "goss-org/goss"},
+{:description "Quick and Easy server testing/validation",
+ :source {:github "goss-org/goss"},
  :asset "goss_{version}_linux_x86_64.tar.gz",
  :checksum "goss_{version}_SHA256SUMS",
  :history [{:before "0.4.10" :asset "goss-linux-amd64" :checksum "goss-linux-amd64.sha256"}]}

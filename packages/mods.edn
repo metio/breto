@@ -2,7 +2,8 @@
 ;; SPDX-FileCopyrightText: The breto Authors
 ;; SPDX-License-Identifier: MIT
 
-{:source {:github "charmbracelet/mods"}
+{:description "AI on the command line",
+ :source {:github "charmbracelet/mods"}
  :asset "mods_{version}_Linux_x86_64.tar.gz"
  :checksum "checksums.txt"
  :bins {"mods" "mods_{version}_Linux_x86_64/mods"}}

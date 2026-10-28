@@ -2,7 +2,8 @@
 ;; SPDX-FileCopyrightText: The breto Authors
 ;; SPDX-License-Identifier: MIT
 
-{:source {:github "openshift-online/ocm-cli"}
+{:description "CLI for the Red Hat OpenShift Cluster Manager",
+ :source {:github "openshift-online/ocm-cli"}
  :asset "ocm-linux-amd64"
  :checksum "{asset}.sha256"
  :bins {"ocm" "{asset}"}}

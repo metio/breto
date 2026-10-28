@@ -2,5 +2,6 @@
 ;; SPDX-FileCopyrightText: The breto Authors
 ;; SPDX-License-Identifier: MIT
 
-{:source {:github "earthly/earthly"}
+{:description "Repeatable builds",
+ :source {:github "earthly/earthly"}
  :asset "earthly-linux-amd64"}

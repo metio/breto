@@ -2,6 +2,7 @@
 ;; SPDX-FileCopyrightText: The breto Authors
 ;; SPDX-License-Identifier: MIT
 
-{:source {:github "suzuki-shunsuke/durl"}
+{:description "[DEPRECATED] Use https://github.com/lycheeverse/lychee",
+ :source {:github "suzuki-shunsuke/durl"}
  :asset "durl_{version}_linux_amd64.tar.gz"
  :checksum "durl_{version}_checksums.txt"}

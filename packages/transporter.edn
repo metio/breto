@@ -2,5 +2,6 @@
 ;; SPDX-FileCopyrightText: The breto Authors
 ;; SPDX-License-Identifier: MIT
 
-{:source {:github "compose/transporter"}
+{:description "Sync data between persistence engines, like ETL only not stodgy",
+ :source {:github "compose/transporter"}
  :asset "transporter-{version}-linux-amd64"}

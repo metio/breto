@@ -2,6 +2,7 @@
 ;; SPDX-FileCopyrightText: The breto Authors
 ;; SPDX-License-Identifier: MIT
 
-{:source {:github "ldez/prm"}
+{:description "Pull Request Manager for Maintainers",
+ :source {:github "ldez/prm"}
  :asset "prm_{tag}_linux_amd64.tar.gz"
  :checksum "prm_{version}_checksums.txt"}

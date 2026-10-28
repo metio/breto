@@ -18,7 +18,7 @@
             archive-suffixes)
       :raw))
 
-(def ^:private source-kinds #{:github :gitlab :text :json})
+(def source-kinds #{:github :gitlab :text :json})
 
 (defn source-kind [{:keys [source]}]
   (let [kinds (filter source-kinds (keys source))]
@@ -101,6 +101,9 @@
 
     (not (boolean? (:verify pkg true)))
     (conj ":verify must be true or false")
+
+    (not (string? (:description pkg "")))
+    (conj ":description must be a string")
 
     (not (and (sequential? (:man pkg [])) (every? relative-path? (:man pkg []))))
     (conj ":man must be a vector of relative paths or globs inside the release, without ..")

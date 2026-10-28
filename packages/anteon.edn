@@ -2,7 +2,8 @@
 ;; SPDX-FileCopyrightText: The breto Authors
 ;; SPDX-License-Identifier: MIT
 
-{:source {:github "getanteon/anteon"}
+{:description "Anteon (formerly Ddosify) - Effortless Kubernetes Monitoring and Performance Testing. Available on CLI, Self-Hosted, and Cloud",
+ :source {:github "getanteon/anteon"}
  :asset "ddosify_{version}_linux_amd64.tar.gz"
  :checksum "checksums.txt"
  :bins {"ddosify" "ddosify"}}

@@ -2,7 +2,8 @@
 ;; SPDX-FileCopyrightText: The breto Authors
 ;; SPDX-License-Identifier: MIT
 
-{:source {:github "Code-Hex/Neo-cowsay"}
+{:description "Cowsay reborn in Go",
+ :source {:github "Code-Hex/Neo-cowsay"}
  :asset "cowsay_{version}_Linux_x86_64.tar.gz"
  :checksum "cowsay_checksums.txt"
  :bins {"cowsay" "cowsay", "cowthink" "cowthink"}}

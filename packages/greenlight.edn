@@ -2,6 +2,7 @@
 ;; SPDX-FileCopyrightText: The breto Authors
 ;; SPDX-License-Identifier: MIT
 
-{:source {:github "fujiwara/greenlight"}
+{:description "greenlight is a graceful health check agent",
+ :source {:github "fujiwara/greenlight"}
  :asset "greenlight_{version}_linux_amd64.tar.gz"
  :checksum "checksums.txt"}

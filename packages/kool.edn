@@ -2,7 +2,8 @@
 ;; SPDX-FileCopyrightText: The breto Authors
 ;; SPDX-License-Identifier: MIT
 
-{:source {:github "kool-dev/kool"}
+{:description "From local development to the cloud: web apps development with containers made easy",
+ :source {:github "kool-dev/kool"}
  :tag-prefix ""
  :asset "kool-linux-amd64"
  :checksum "{asset}.sha256"}

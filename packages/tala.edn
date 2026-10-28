@@ -2,6 +2,7 @@
 ;; SPDX-FileCopyrightText: The breto Authors
 ;; SPDX-License-Identifier: MIT
 
-{:source {:github "terrastruct/tala"}
+{:description "A diagram layout engine designed specifically for software architecture diagrams",
+ :source {:github "terrastruct/tala"}
  :asset "tala-{tag}-linux-amd64.tar.gz"
  :bins {"d2plugin-tala" "tala-{tag}/bin/d2plugin-tala"}}

@@ -1,6 +1,7 @@
 ;; SPDX-FileCopyrightText: The breto Authors
 ;; SPDX-License-Identifier: 0BSD
 
-{:source {:github "google/go-containerregistry"},
+{:description "Go library and CLIs for working with container registries",
+ :source {:github "google/go-containerregistry"},
  :asset "go-containerregistry_Linux_x86_64.tar.gz",
  :checksum "checksums.txt"}

@@ -2,6 +2,7 @@
 ;; SPDX-FileCopyrightText: The breto Authors
 ;; SPDX-License-Identifier: MIT
 
-{:source {:github "pete911/jwt"}
+{:description "jwt cli",
+ :source {:github "pete911/jwt"}
  :asset "jwt_{version}_linux_amd64.tar.gz"
  :checksum "checksums.txt"}

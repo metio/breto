@@ -2,6 +2,7 @@
 ;; SPDX-FileCopyrightText: The breto Authors
 ;; SPDX-License-Identifier: MIT
 
-{:source {:github "txn2/kubefwd"}
+{:description "Bulk port forwarding Kubernetes services for local development",
+ :source {:github "txn2/kubefwd"}
  :asset "kubefwd_Linux_x86_64.tar.gz"
  :checksum "kubefwd_checksums.txt"}

@@ -2,6 +2,7 @@
 ;; SPDX-FileCopyrightText: The breto Authors
 ;; SPDX-License-Identifier: MIT
 
-{:source {:github "transcend-io/terragrunt-atlantis-config"}
+{:description "Generate Atlantis config for Terragrunt projects",
+ :source {:github "transcend-io/terragrunt-atlantis-config"}
  :asset "terragrunt-atlantis-config_{version}_linux_amd64"
  :checksum "SHA512SUMS"}

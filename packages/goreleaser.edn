@@ -2,6 +2,7 @@
 ;; SPDX-FileCopyrightText: The breto Authors
 ;; SPDX-License-Identifier: MIT
 
-{:source {:github "goreleaser/goreleaser"}
+{:description "Deliver Go binaries as fast and easily as possible",
+ :source {:github "goreleaser/goreleaser"}
  :asset "goreleaser_Linux_x86_64.tar.gz"
  :checksum "checksums.txt"}

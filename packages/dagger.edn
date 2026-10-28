@@ -2,6 +2,7 @@
 ;; SPDX-FileCopyrightText: The breto Authors
 ;; SPDX-License-Identifier: MIT
 
-{:source {:github "dagger/dagger"}
+{:description "A portable devkit for CI/CD pipelines",
+ :source {:github "dagger/dagger"}
  :asset "dagger_{tag}_linux_amd64.tar.gz"
  :checksum "checksums.txt"}

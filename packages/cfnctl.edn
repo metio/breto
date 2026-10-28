@@ -2,6 +2,7 @@
 ;; SPDX-FileCopyrightText: The breto Authors
 ;; SPDX-License-Identifier: MIT
 
-{:source {:github "rogerwelin/cfnctl"}
+{:description "Cfnctl brings the Terraform cli experience to AWS Cloudformation :cloud:",
+ :source {:github "rogerwelin/cfnctl"}
  :asset "cfnctl_Linux_x86_64.tar.gz"
  :checksum "checksums.txt"}

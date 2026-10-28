@@ -2,6 +2,7 @@
 ;; SPDX-FileCopyrightText: The breto Authors
 ;; SPDX-License-Identifier: MIT
 
-{:source {:github "checkmake/checkmake"}
+{:description "Linter/analyzer for Makefiles",
+ :source {:github "checkmake/checkmake"}
  :asset "checkmake-{tag}.linux.amd64"
  :checksum "checksums.txt"}

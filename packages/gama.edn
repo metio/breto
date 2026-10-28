@@ -2,6 +2,7 @@
 ;; SPDX-FileCopyrightText: The breto Authors
 ;; SPDX-License-Identifier: MIT
 
-{:source {:github "termkit/gama"}
+{:description "Manage your GitHub Actions from Terminal with great UI",
+ :source {:github "termkit/gama"}
  :asset "gama-linux-amd64"
  :checksum "{asset}.sha256"}

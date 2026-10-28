@@ -2,6 +2,7 @@
 ;; SPDX-FileCopyrightText: The breto Authors
 ;; SPDX-License-Identifier: MIT
 
-{:source {:github "suzuki-shunsuke/pinact"}
+{:description "pinact is a CLI to edit GitHub Workflow and Composite action files and pin versions of Actions and Reusable Workflows. pinact can also update their versions and verify version annotations",
+ :source {:github "suzuki-shunsuke/pinact"}
  :asset "pinact_linux_amd64.tar.gz"
  :checksum "pinact_{version}_checksums.txt"}

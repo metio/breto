@@ -2,7 +2,8 @@
 ;; SPDX-FileCopyrightText: The breto Authors
 ;; SPDX-License-Identifier: MIT
 
-{:source {:github "uutils/coreutils"}
+{:description "Cross-platform Rust rewrite of the GNU coreutils",
+ :source {:github "uutils/coreutils"}
  :tag-prefix ""
  :asset "coreutils-{tag}-x86_64-unknown-linux-musl.tar.gz"
  :bins {"coreutils" "coreutils-{tag}-x86_64-unknown-linux-musl/coreutils"}}

@@ -2,6 +2,7 @@
 ;; SPDX-FileCopyrightText: The breto Authors
 ;; SPDX-License-Identifier: MIT
 
-{:source {:github "aptly-dev/aptly"}
+{:description "aptly - Debian repository management tool",
+ :source {:github "aptly-dev/aptly"}
  :asset "aptly_{version}_linux_amd64.zip"
  :bins {"aptly" "aptly_{version}_linux_amd64/aptly"}}

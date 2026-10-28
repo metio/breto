@@ -2,5 +2,6 @@
 ;; SPDX-FileCopyrightText: The breto Authors
 ;; SPDX-License-Identifier: MIT
 
-{:source {:github "kubemq-io/kubemqctl"}
+{:description "Kubemqctl is a command line interface (CLI) for KubeMQ, Kubernetes Message Broker",
+ :source {:github "kubemq-io/kubemqctl"}
  :asset "kubemqctl_linux_amd64"}

@@ -2,6 +2,7 @@
 ;; SPDX-FileCopyrightText: The breto Authors
 ;; SPDX-License-Identifier: MIT
 
-{:source {:github "wasmerio/wasmer"}
+{:description "The leading WebAssembly Runtime supporting WASI and Emscripten",
+ :source {:github "wasmerio/wasmer"}
  :asset "wasmer-linux-amd64.tar.gz"
  :bins {"wasmer" "bin/wasmer", "wasmer-headless" "bin/wasmer-headless"}}

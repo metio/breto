@@ -2,6 +2,7 @@
 ;; SPDX-FileCopyrightText: The breto Authors
 ;; SPDX-License-Identifier: MIT
 
-{:source {:github "gokcehan/lf"}
+{:description "Terminal file manager",
+ :source {:github "gokcehan/lf"}
  :tag-prefix ""
  :asset "lf-linux-amd64.tar.gz"}

@@ -2,6 +2,7 @@
 ;; SPDX-FileCopyrightText: The breto Authors
 ;; SPDX-License-Identifier: MIT
 
-{:source {:github "DeNA/unity-meta-check"}
+{:description "Reporter for GitHub comments of GitHub issues or pull requests. It need a result of unity-meta-check from stdin.",
+ :source {:github "DeNA/unity-meta-check"}
  :asset "unity-meta-check-github-pr-comment-linux-amd64"
  :checksum "checksums.txt"}

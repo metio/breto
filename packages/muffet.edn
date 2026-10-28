@@ -2,6 +2,7 @@
 ;; SPDX-FileCopyrightText: The breto Authors
 ;; SPDX-License-Identifier: MIT
 
-{:source {:github "raviqqe/muffet"}
+{:description "Fast website link checker in Go",
+ :source {:github "raviqqe/muffet"}
  :asset "muffet_linux_amd64.tar.gz"
  :checksum "muffet_{version}_checksums.txt"}

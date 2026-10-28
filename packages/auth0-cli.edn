@@ -2,7 +2,8 @@
 ;; SPDX-FileCopyrightText: The breto Authors
 ;; SPDX-License-Identifier: MIT
 
-{:source {:github "auth0/auth0-cli"}
+{:description "Build, manage and test your Auth0 integrations from the command line",
+ :source {:github "auth0/auth0-cli"}
  :asset "auth0-cli_{version}_Linux_x86_64.tar.gz"
  :checksum "checksums.txt"
  :bins {"auth0" "auth0"}}

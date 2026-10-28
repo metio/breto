@@ -2,6 +2,7 @@
 ;; SPDX-FileCopyrightText: The breto Authors
 ;; SPDX-License-Identifier: MIT
 
-{:source {:github "sonatype-nexus-community/nancy"}
+{:description "A tool to check for vulnerabilities in your Golang dependencies, powered by Sonatype OSS Index",
+ :source {:github "sonatype-nexus-community/nancy"}
  :asset "nancy-{tag}-linux-amd64.tar.gz"
  :checksum "nancychecksums.txt"}

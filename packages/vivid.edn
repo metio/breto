@@ -2,6 +2,7 @@
 ;; SPDX-FileCopyrightText: The breto Authors
 ;; SPDX-License-Identifier: MIT
 
-{:source {:github "sharkdp/vivid"}
+{:description "A themeable LS_COLORS generator with a rich filetype database",
+ :source {:github "sharkdp/vivid"}
  :asset "vivid-{tag}-x86_64-unknown-linux-musl.tar.gz"
  :bins {"vivid" "vivid-{tag}-x86_64-unknown-linux-musl/vivid"}}

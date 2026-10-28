@@ -2,6 +2,7 @@
 ;; SPDX-FileCopyrightText: The breto Authors
 ;; SPDX-License-Identifier: MIT
 
-{:source {:github "m7medVision/lazycommit"}
+{:description "using AI to generate commit message suggestions",
+ :source {:github "m7medVision/lazycommit"}
  :asset "lazycommit_{version}_linux_amd64.tar.gz"
  :checksum "checksums.txt"}

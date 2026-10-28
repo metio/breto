@@ -2,6 +2,7 @@
 ;; SPDX-FileCopyrightText: The breto Authors
 ;; SPDX-License-Identifier: MIT
 
-{:source {:github "dimo414/bkt"}
+{:description "a subprocess caching utility, available as a command line binary and a Rust library",
+ :source {:github "dimo414/bkt"}
  :tag-prefix ""
  :asset "bkt.v{tag}.x86_64-unknown-linux-musl.zip"}

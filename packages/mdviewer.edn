@@ -2,6 +2,7 @@
 ;; SPDX-FileCopyrightText: The breto Authors
 ;; SPDX-License-Identifier: MIT
 
-{:source {:github "noborus/mdviewer"}
+{:description "Rendered display of markdown on terminal",
+ :source {:github "noborus/mdviewer"}
  :asset "mdviewer_{version}_linux_amd64.zip"
  :checksum "mdviewer_{version}_checksums.txt"}

@@ -2,5 +2,6 @@
 ;; SPDX-FileCopyrightText: The breto Authors
 ;; SPDX-License-Identifier: MIT
 
-{:source {:github "josephburnett/jd"}
+{:description "JSON diff and patch",
+ :source {:github "josephburnett/jd"}
  :asset "jd-amd64-linux"}

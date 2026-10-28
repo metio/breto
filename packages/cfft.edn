@@ -2,6 +2,7 @@
 ;; SPDX-FileCopyrightText: The breto Authors
 ;; SPDX-License-Identifier: MIT
 
-{:source {:github "fujiwara/cfft"}
+{:description "cfft is a testing tool for CloudFront Functions",
+ :source {:github "fujiwara/cfft"}
  :asset "cfft_{version}_linux_amd64.tar.gz"
  :checksum "checksums.txt"}

@@ -1,7 +1,8 @@
 ;; SPDX-FileCopyrightText: The breto Authors
 ;; SPDX-License-Identifier: 0BSD
 
-{:source {:github "pimalaya/cardamum"},
+{:description "CLI to manage contacts.",
+ :source {:github "pimalaya/cardamum"},
  :asset "cardamum.x86_64-linux.tgz",
  :man ["share/man/*.1.gz"],
  :completions {:bash "share/completions/cardamum.bash",

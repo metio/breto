@@ -2,7 +2,8 @@
 ;; SPDX-FileCopyrightText: The breto Authors
 ;; SPDX-License-Identifier: MIT
 
-{:source {:github "cloudflare/pint"}
+{:description "Prometheus rule linter/validator",
+ :source {:github "cloudflare/pint"}
  :asset "pint-{version}-linux-amd64.tar.gz"
  :checksum "checksums.txt"
  :bins {"pint" "pint-linux-amd64"}}

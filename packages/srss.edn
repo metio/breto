@@ -2,6 +2,7 @@
 ;; SPDX-FileCopyrightText: The breto Authors
 ;; SPDX-License-Identifier: MIT
 
-{:source {:github "sheepla/srss"}
+{:description "A command line RSS/ATOM/JSON feed reader",
+ :source {:github "sheepla/srss"}
  :asset "srss_{version}_Linux_x86_64.tar.gz"
  :checksum "checksums.txt"}

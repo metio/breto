@@ -2,6 +2,7 @@
 ;; SPDX-FileCopyrightText: The breto Authors
 ;; SPDX-License-Identifier: MIT
 
-{:source {:github "owenrumney/squealer"}
+{:description "Telling tales on you for leaking secrets",
+ :source {:github "owenrumney/squealer"}
  :asset "squealer.linux.amd64"
  :checksum "squealer_checksums.txt"}

@@ -2,7 +2,8 @@
 ;; SPDX-FileCopyrightText: The breto Authors
 ;; SPDX-License-Identifier: MIT
 
-{:source {:github "hougesen/mdsf"}
+{:description "Format markdown code blocks using your favorite tools",
+ :source {:github "hougesen/mdsf"}
  :asset "mdsf-x86_64-unknown-linux-gnu.tar.gz"
  :checksum "{asset}.sha256"
  :bins {"mdsf" "mdsf-x86_64-unknown-linux-gnu/mdsf"}}

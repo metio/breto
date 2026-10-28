@@ -2,6 +2,7 @@
 ;; SPDX-FileCopyrightText: The breto Authors
 ;; SPDX-License-Identifier: MIT
 
-{:source {:github "ohkrab/krab"}
+{:description "Krab is a migration and automation tool for PostgreSQL based on HCL syntax",
+ :source {:github "ohkrab/krab"}
  :asset "krab_{version}_linux_amd64.tar.gz"
  :checksum "krab_{version}_checksums.txt"}

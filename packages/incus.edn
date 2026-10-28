@@ -2,5 +2,6 @@
 ;; SPDX-FileCopyrightText: The breto Authors
 ;; SPDX-License-Identifier: MIT
 
-{:source {:github "lxc/incus"}
+{:description "Powerful system container and virtual machine manager",
+ :source {:github "lxc/incus"}
  :asset "bin.linux.incus.x86_64"}

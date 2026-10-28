@@ -2,6 +2,7 @@
 ;; SPDX-FileCopyrightText: The breto Authors
 ;; SPDX-License-Identifier: MIT
 
-{:source {:github "authzed/zed"}
+{:description "Official command-line tool for managing SpiceDB",
+ :source {:github "authzed/zed"}
  :asset "zed_{version}_linux_amd64_gnu.tar.gz"
  :checksum "checksums.txt"}

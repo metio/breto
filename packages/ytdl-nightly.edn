@@ -2,7 +2,8 @@
 ;; SPDX-FileCopyrightText: The breto Authors
 ;; SPDX-License-Identifier: MIT
 
-{:source {:github "ytdl-org/ytdl-nightly"}
+{:description "Nightly builds for youtube-dl",
+ :source {:github "ytdl-org/ytdl-nightly"}
  :tag-prefix ""
  :asset "youtube-dl-{tag}.tar.gz"
  :bins {"youtube-dl" "youtube-dl/youtube-dl"}}

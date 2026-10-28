@@ -2,7 +2,8 @@
 ;; SPDX-FileCopyrightText: The breto Authors
 ;; SPDX-License-Identifier: MIT
 
-{:source {:github "jbangdev/jbang"}
+{:description "Unleash the power of Java - JBang Lets Students, Educators and Professional Developers create, edit and run self-contained source-only Java programs with unprecedented ease",
+ :source {:github "jbangdev/jbang"}
  :asset "jbang.zip"
  :checksum "{asset}.sha256"
  :bins {"jbang" "jbang/bin/jbang"}}

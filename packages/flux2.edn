@@ -2,7 +2,8 @@
 ;; SPDX-FileCopyrightText: The breto Authors
 ;; SPDX-License-Identifier: MIT
 
-{:source {:github "fluxcd/flux2"}
+{:description "Open and extensible continuous delivery solution for Kubernetes. Powered by GitOps Toolkit",
+ :source {:github "fluxcd/flux2"}
  :asset "flux_{version}_linux_amd64.tar.gz"
  :checksum "flux_{version}_checksums.txt"
  :bins {"flux" "flux"}}

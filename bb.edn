@@ -13,4 +13,8 @@
   convert {:doc "Converts install-latest-* shell wrappers into package definitions: bb convert SCRIPT-DIR OUT-DIR"
            :extra-paths ["dev"]
            :requires ([breto.convert :as convert])
-           :task (apply convert/-main *command-line-args*)}}}
+           :task (apply convert/-main *command-line-args*)}
+  descriptions {:doc "Adds descriptions from an aqua registry checkout: bb descriptions AQUA-DIR PACKAGES-DIR"
+            :extra-paths ["dev"]
+            :requires ([breto.describe :as describe])
+            :task (apply describe/-main *command-line-args*)}}}

@@ -1,7 +1,8 @@
 ;; SPDX-FileCopyrightText: The breto Authors
 ;; SPDX-License-Identifier: 0BSD
 
-{:source {:github "metio/ansible-wrapper"}
+{:description "Wrapper around various Ansible commands to automatically manage dependencies",
+ :source {:github "metio/ansible-wrapper"}
  :asset "ansible-wrapper-x86_64-unknown-linux-gnu.tar.gz"
  :tag-prefix ""
  :checksum "SHA256SUMS"

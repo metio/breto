@@ -2,7 +2,8 @@
 ;; SPDX-FileCopyrightText: The breto Authors
 ;; SPDX-License-Identifier: MIT
 
-{:source {:github "zix99/rare"}
+{:description "Create console histograms, bar graphs, tables, heatmaps and more in realtime using regex and expressions",
+ :source {:github "zix99/rare"}
  :tag-prefix ""
  :asset "rare_{tag}_Linux_x86_64.tar.gz"
  :checksum "checksums.txt"}

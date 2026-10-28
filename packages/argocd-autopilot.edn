@@ -2,7 +2,8 @@
 ;; SPDX-FileCopyrightText: The breto Authors
 ;; SPDX-License-Identifier: MIT
 
-{:source {:github "argoproj-labs/argocd-autopilot"}
+{:description "Argo-CD Autopilot",
+ :source {:github "argoproj-labs/argocd-autopilot"}
  :asset "argocd-autopilot-linux-amd64.tar.gz"
  :checksum "argocd-autopilot-linux-amd64.sha256"
  :bins {"argocd-autopilot" "argocd-autopilot-linux-amd64"}}

@@ -2,5 +2,6 @@
 ;; SPDX-FileCopyrightText: The breto Authors
 ;; SPDX-License-Identifier: MIT
 
-{:source {:github "telepresenceio/telepresence"}
+{:description "Local development against a remote Kubernetes or OpenShift cluster",
+ :source {:github "telepresenceio/telepresence"}
  :asset "telepresence-linux-amd64"}

@@ -2,6 +2,7 @@
 ;; SPDX-FileCopyrightText: The breto Authors
 ;; SPDX-License-Identifier: MIT
 
-{:source {:github "pyama86/pachanger"}
+{:description "Pachanger - A CLI tool for renaming Go package names safely and efficiently",
+ :source {:github "pyama86/pachanger"}
  :asset "pachanger_{version}_linux_amd64.tar.gz"
  :checksum "pachanger_{version}_checksums.txt"}

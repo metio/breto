@@ -2,6 +2,7 @@
 ;; SPDX-FileCopyrightText: The breto Authors
 ;; SPDX-License-Identifier: MIT
 
-{:source {:github "idursun/jjui"}
+{:description "Jujutsu UI (jjui) is a Text User Interface (TUI) designed for interacting with the Jujutsu version control system",
+ :source {:github "idursun/jjui"}
  :asset "jjui-{version}-linux-amd64.zip"
  :bins {"jjui" "jjui-{version}-linux-amd64"}}

@@ -2,6 +2,7 @@
 ;; SPDX-FileCopyrightText: The breto Authors
 ;; SPDX-License-Identifier: MIT
 
-{:source {:github "suzuki-shunsuke/docfresh"}
+{:description "Make document maintainable, reusable, and testable",
+ :source {:github "suzuki-shunsuke/docfresh"}
  :asset "docfresh_linux_amd64.tar.gz"
  :checksum "docfresh_checksums.txt"}

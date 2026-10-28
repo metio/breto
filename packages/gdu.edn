@@ -2,7 +2,8 @@
 ;; SPDX-FileCopyrightText: The breto Authors
 ;; SPDX-License-Identifier: MIT
 
-{:source {:github "dundee/gdu"}
+{:description "Fast disk usage analyzer with console interface written in Go",
+ :source {:github "dundee/gdu"}
  :asset "gdu_linux_amd64.tgz"
  :checksum "sha256sums.txt"
  :bins {"gdu" "gdu_linux_amd64"}}

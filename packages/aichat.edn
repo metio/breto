@@ -2,5 +2,6 @@
 ;; SPDX-FileCopyrightText: The breto Authors
 ;; SPDX-License-Identifier: MIT
 
-{:source {:github "sigoden/aichat"}
+{:description "Use GPT-4(V), Gemini, LocalAI, Ollama and other LLMs in the terminal",
+ :source {:github "sigoden/aichat"}
  :asset "aichat-{tag}-x86_64-unknown-linux-musl.tar.gz"}

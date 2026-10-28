@@ -2,6 +2,7 @@
 ;; SPDX-FileCopyrightText: The breto Authors
 ;; SPDX-License-Identifier: MIT
 
-{:source {:github "bitnami/charts-syncer"}
+{:description "Tool for synchronizing Helm Chart repositories",
+ :source {:github "bitnami/charts-syncer"}
  :asset "charts-syncer_{version}_linux_x86_64.tar.gz"
  :checksum "checksums.txt"}

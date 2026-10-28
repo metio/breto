@@ -2,6 +2,7 @@
 ;; SPDX-FileCopyrightText: The breto Authors
 ;; SPDX-License-Identifier: MIT
 
-{:source {:github "robinovitch61/kl"}
+{:description "An interactive Kubernetes log viewer for your terminal",
+ :source {:github "robinovitch61/kl"}
  :asset "kl_{version}_Linux_x86_64.tar.gz"
  :checksum "checksums.txt"}

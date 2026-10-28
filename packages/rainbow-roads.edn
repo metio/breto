@@ -2,5 +2,6 @@
 ;; SPDX-FileCopyrightText: The breto Authors
 ;; SPDX-License-Identifier: MIT
 
-{:source {:github "NathanBaulch/rainbow-roads"}
+{:description "Animate your exercise maps",
+ :source {:github "NathanBaulch/rainbow-roads"}
  :asset "rainbow-roads-{tag}-linux-amd64.tar.gz"}

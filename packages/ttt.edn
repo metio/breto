@@ -1,6 +1,7 @@
 ;; SPDX-FileCopyrightText: The breto Authors
 ;; SPDX-License-Identifier: 0BSD
 
-{:source {:github "eugenioenko/ttt"},
+{:description "TTT Editor (Terminal Text Tool): A real alternative to VS Code, Zed, and Sublime that runs in your terminal. A TUI that feels like GUI. Single binary, zero config.",
+ :source {:github "eugenioenko/ttt"},
  :asset "ttt-linux-amd64",
  :checksum "checksums.txt"}

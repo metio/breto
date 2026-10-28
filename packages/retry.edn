@@ -2,6 +2,7 @@
 ;; SPDX-FileCopyrightText: The breto Authors
 ;; SPDX-License-Identifier: MIT
 
-{:source {:github "joshdk/retry"}
+{:description "Rerun a command until it eventually succeeds, or doesn't",
+ :source {:github "joshdk/retry"}
  :asset "retry-linux-amd64.tar.gz"
  :checksum "checksums.txt"}

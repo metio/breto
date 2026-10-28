@@ -2,6 +2,7 @@
 ;; SPDX-FileCopyrightText: The breto Authors
 ;; SPDX-License-Identifier: MIT
 
-{:source {:github "fujiwara/lamux"}
+{:description "Lamux is a HTTP multiplexer for AWS Lambda Function aliases",
+ :source {:github "fujiwara/lamux"}
  :asset "lamux_{version}_linux_amd64.tar.gz"
  :checksum "checksums.txt"}

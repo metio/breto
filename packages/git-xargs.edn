@@ -2,6 +2,7 @@
 ;; SPDX-FileCopyrightText: The breto Authors
 ;; SPDX-License-Identifier: MIT
 
-{:source {:github "gruntwork-io/git-xargs"}
+{:description "git-xargs is a command-line tool (CLI) for making updates across multiple Github repositories with a single command",
+ :source {:github "gruntwork-io/git-xargs"}
  :asset "git-xargs_linux_amd64"
  :checksum "SHA256SUMS"}

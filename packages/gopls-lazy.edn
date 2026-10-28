@@ -2,6 +2,7 @@
 ;; SPDX-FileCopyrightText: The breto Authors
 ;; SPDX-License-Identifier: MIT
 
-{:source {:github "sivchari/gopls-lazy"}
+{:description "An LSP proxy that lazily scopes gopls to open files, keeping large monorepos fast",
+ :source {:github "sivchari/gopls-lazy"}
  :asset "gopls-lazy_{version}_linux_amd64.tar.gz"
  :checksum "gopls-lazy_{version}_checksums.txt"}

@@ -2,6 +2,7 @@
 ;; SPDX-FileCopyrightText: The breto Authors
 ;; SPDX-License-Identifier: MIT
 
-{:source {:github "incu6us/goimports-reviser"}
+{:description "Right imports sorting & code formatting tool (goimports alternative)",
+ :source {:github "incu6us/goimports-reviser"}
  :asset "goimports-reviser_{version}_linux_amd64.tar.gz"
  :checksum "checksums.txt"}

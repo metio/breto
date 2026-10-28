@@ -2,6 +2,7 @@
 ;; SPDX-FileCopyrightText: The breto Authors
 ;; SPDX-License-Identifier: MIT
 
-{:source {:github "cdxgen/cdxgen"}
+{:description "Creates CycloneDX Bill of Materials (BOM) from source code and container images",
+ :source {:github "cdxgen/cdxgen"}
  :asset "cdxgen-linux-amd64-musl"
  :checksum "{asset}.sha256"}

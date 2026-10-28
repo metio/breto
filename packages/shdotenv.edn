@@ -2,5 +2,6 @@
 ;; SPDX-FileCopyrightText: The breto Authors
 ;; SPDX-License-Identifier: MIT
 
-{:source {:github "ko1nksm/shdotenv"}
+{:description "dotenv for shells with support for POSIX-compliant and multiple .env file syntax",
+ :source {:github "ko1nksm/shdotenv"}
  :asset "shdotenv"}

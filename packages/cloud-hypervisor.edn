@@ -2,5 +2,6 @@
 ;; SPDX-FileCopyrightText: The breto Authors
 ;; SPDX-License-Identifier: MIT
 
-{:source {:github "cloud-hypervisor/cloud-hypervisor"}
+{:description "Cloud Hypervisor is an open source Virtual Machine Monitor (VMM) that runs on top of KVM hypervisor and Microsoft Hypervisor (MSHV)",
+ :source {:github "cloud-hypervisor/cloud-hypervisor"}
  :asset "cloud-hypervisor-static"}

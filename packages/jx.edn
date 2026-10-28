@@ -2,6 +2,7 @@
 ;; SPDX-FileCopyrightText: The breto Authors
 ;; SPDX-License-Identifier: MIT
 
-{:source {:github "jenkins-x/jx"}
+{:description "Jenkins X provides automated CI+CD for Kubernetes with Preview Environments on Pull Requests using Cloud Native pipelines from Tekton",
+ :source {:github "jenkins-x/jx"}
  :asset "jx-linux-amd64.tar.gz"
  :checksum "jx-checksums.txt"}

@@ -2,6 +2,7 @@
 ;; SPDX-FileCopyrightText: The breto Authors
 ;; SPDX-License-Identifier: MIT
 
-{:source {:github "ffuf/ffuf"}
+{:description "Fast web fuzzer written in Go",
+ :source {:github "ffuf/ffuf"}
  :asset "ffuf_{version}_linux_amd64.tar.gz"
  :checksum "ffuf_{version}_checksums.txt"}

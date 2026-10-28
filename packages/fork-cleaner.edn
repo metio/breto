@@ -2,6 +2,7 @@
 ;; SPDX-FileCopyrightText: The breto Authors
 ;; SPDX-License-Identifier: MIT
 
-{:source {:github "caarlos0/fork-cleaner"}
+{:description "Quickly clean up unused forks on your github account",
+ :source {:github "caarlos0/fork-cleaner"}
  :asset "fork-cleaner_{version}_linux_amd64.tar.gz"
  :checksum "checksums.txt"}

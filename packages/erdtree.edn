@@ -2,6 +2,7 @@
 ;; SPDX-FileCopyrightText: The breto Authors
 ;; SPDX-License-Identifier: MIT
 
-{:source {:github "solidiquis/erdtree"}
+{:description "A modern, cross-platform, multi-threaded, and general purpose filesystem and disk-usage utility that is aware of .gitignore and hidden file rules",
+ :source {:github "solidiquis/erdtree"}
  :asset "erd-{tag}-x86_64-unknown-linux-musl.tar.gz"
  :bins {"erd" "erd"}}

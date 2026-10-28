@@ -2,7 +2,8 @@
 ;; SPDX-FileCopyrightText: The breto Authors
 ;; SPDX-License-Identifier: MIT
 
-{:source {:github "etcd-io/etcd"}
+{:description "Distributed reliable key-value store for the most critical data of a distributed system",
+ :source {:github "etcd-io/etcd"}
  :asset "etcd-{tag}-linux-amd64.tar.gz"
  :checksum "SHA256SUMS"
  :bins {"etcd" "etcd-{tag}-linux-amd64/etcd", "etcdctl" "etcd-{tag}-linux-amd64/etcdctl"}}

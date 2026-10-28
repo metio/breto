@@ -1,7 +1,8 @@
 ;; SPDX-FileCopyrightText: The breto Authors
 ;; SPDX-License-Identifier: 0BSD
 
-{:source {:github "metio/pasejo"},
+{:description "CLI password manager using age.",
+ :source {:github "metio/pasejo"},
  :asset "pasejo-x86_64-unknown-linux-gnu.tar.gz",
  :tag-prefix "",
  :checksum "SHA256SUMS"}

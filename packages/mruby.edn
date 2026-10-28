@@ -2,7 +2,8 @@
 ;; SPDX-FileCopyrightText: The breto Authors
 ;; SPDX-License-Identifier: MIT
 
-{:source {:github "IxDay/mruby"}
+{:description "Lightweight Ruby",
+ :source {:github "IxDay/mruby"}
  :tag-prefix ""
  :asset "mruby-linux-x86_64.zip"
  :bins {"mrake" "mrake", "mruby" "mruby"}}

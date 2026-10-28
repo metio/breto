@@ -1,6 +1,7 @@
 ;; SPDX-FileCopyrightText: The breto Authors
 ;; SPDX-License-Identifier: 0BSD
 
-{:source {:github "zegl/kube-score"},
+{:description "Kubernetes object analysis with recommendations for improved reliability and security. kube-score actively prevents downtime and bugs in your Kubernetes YAML and Charts. Static code analysis for Kubernetes",
+ :source {:github "zegl/kube-score"},
  :asset "kube-score_{version}_linux_amd64.tar.gz",
  :checksum "checksums.txt"}

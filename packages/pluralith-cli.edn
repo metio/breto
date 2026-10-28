@@ -2,7 +2,8 @@
 ;; SPDX-FileCopyrightText: The breto Authors
 ;; SPDX-License-Identifier: MIT
 
-{:source {:github "Pluralith/pluralith-cli"}
+{:description "A tool for Terraform state visualisation and automated generation of infrastructure documentation",
+ :source {:github "Pluralith/pluralith-cli"}
  :asset "pluralith_cli_tap_linux_amd64_{tag}.tar.gz"
  :checksum "pluralith_checksums_{tag}.txt"
  :bins {"pluralith" "linux/pluralith"}}

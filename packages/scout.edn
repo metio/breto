@@ -2,5 +2,6 @@
 ;; SPDX-FileCopyrightText: The breto Authors
 ;; SPDX-License-Identifier: MIT
 
-{:source {:github "liamg/scout"}
+{:description "Lightweight URL fuzzer and spider: Discover a web server's undisclosed files, directories and VHOSTs",
+ :source {:github "liamg/scout"}
  :asset "scout-linux-amd64"}

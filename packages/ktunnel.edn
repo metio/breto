@@ -2,7 +2,8 @@
 ;; SPDX-FileCopyrightText: The breto Authors
 ;; SPDX-License-Identifier: MIT
 
-{:source {:github "omrikiei/ktunnel"}
+{:description "A cli that exposes your local resources to kubernetes",
+ :source {:github "omrikiei/ktunnel"}
  :asset "ktunnel_{version}_Linux_x86_64.tar.gz"
  :checksum "checksums.txt"
  :bins {"ktunnel" "ktunnel", "kubectl-tunnel" "ktunnel"}}

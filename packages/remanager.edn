@@ -2,5 +2,6 @@
 ;; SPDX-FileCopyrightText: The breto Authors
 ;; SPDX-License-Identifier: MIT
 
-{:source {:github "rmitchellscott/reManager"}
+{:description "Linux, MacOS, and Windows desktop app for managing mods on reMarkable tablets",
+ :source {:github "rmitchellscott/reManager"}
  :asset "reManager-linux-amd64.tar.gz"}

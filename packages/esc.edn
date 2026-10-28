@@ -2,7 +2,8 @@
 ;; SPDX-FileCopyrightText: The breto Authors
 ;; SPDX-License-Identifier: MIT
 
-{:source {:github "pulumi/esc"}
+{:description "Pulumi ESC is a centralized, secure service for environments, secrets, and configuration management, optimized for multi-cloud infrastructures and applications",
+ :source {:github "pulumi/esc"}
  :asset "esc-{tag}-linux-x64.tar.gz"
  :checksum "esc-{version}-checksums.txt"
  :bins {"esc" "esc/esc"}}

@@ -2,6 +2,7 @@
 ;; SPDX-FileCopyrightText: The breto Authors
 ;; SPDX-License-Identifier: MIT
 
-{:source {:github "isksss/isksh"}
+{:description "A cross-platform POSIX-oriented shell written in Rust",
+ :source {:github "isksss/isksh"}
  :asset "isksh-linux-x86_64"
  :checksum "{asset}.sha256"}

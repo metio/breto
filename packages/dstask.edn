@@ -2,5 +2,6 @@
 ;; SPDX-FileCopyrightText: The breto Authors
 ;; SPDX-License-Identifier: MIT
 
-{:source {:github "naggie/dstask"}
+{:description "Git powered terminal-based todo manager -- markdown note page per task. Single binary",
+ :source {:github "naggie/dstask"}
  :asset "dstask-linux-amd64"}

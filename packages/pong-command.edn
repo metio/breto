@@ -2,7 +2,8 @@
 ;; SPDX-FileCopyrightText: The breto Authors
 ;; SPDX-License-Identifier: MIT
 
-{:source {:github "kurehajime/pong-command"}
+{:description "pong is not ping. pong is CLI game",
+ :source {:github "kurehajime/pong-command"}
  :asset "pong-command_{version}_linux_x86_64.zip"
  :checksum "checksums.txt"
  :bins {"pong" "pong"}}

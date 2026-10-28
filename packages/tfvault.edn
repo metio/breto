@@ -2,6 +2,7 @@
 ;; SPDX-FileCopyrightText: The breto Authors
 ;; SPDX-License-Identifier: MIT
 
-{:source {:github "tedilabs/tfvault"}
+{:description "A Terraform credentials helper to fetch secrets from several secret backends (OS keyring, environment variables, pass)",
+ :source {:github "tedilabs/tfvault"}
  :asset "tfvault_{version}_linux_amd64.tar.gz"
  :checksum "checksums.txt"}

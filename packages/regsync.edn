@@ -2,5 +2,6 @@
 ;; SPDX-FileCopyrightText: The breto Authors
 ;; SPDX-License-Identifier: MIT
 
-{:source {:github "regclient/regclient"}
+{:description "Docker and OCI image mirroring tool",
+ :source {:github "regclient/regclient"}
  :asset "regsync-linux-amd64"}

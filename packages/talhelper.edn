@@ -2,6 +2,7 @@
 ;; SPDX-FileCopyrightText: The breto Authors
 ;; SPDX-License-Identifier: MIT
 
-{:source {:github "budimanjojo/talhelper"}
+{:description "A tool to help creating Talos kubernetes cluster",
+ :source {:github "budimanjojo/talhelper"}
  :asset "talhelper_linux_amd64.tar.gz"
  :checksum "checksums.txt"}

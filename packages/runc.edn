@@ -2,6 +2,7 @@
 ;; SPDX-FileCopyrightText: The breto Authors
 ;; SPDX-License-Identifier: MIT
 
-{:source {:github "opencontainers/runc"}
+{:description "CLI tool for spawning and running containers according to the OCI specification",
+ :source {:github "opencontainers/runc"}
  :asset "runc.amd64"
  :checksum "runc.sha256sum"}

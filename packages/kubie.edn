@@ -2,5 +2,6 @@
 ;; SPDX-FileCopyrightText: The breto Authors
 ;; SPDX-License-Identifier: MIT
 
-{:source {:github "kubie-org/kubie"}
+{:description "A more powerful alternative to kubectx and kubens",
+ :source {:github "kubie-org/kubie"}
  :asset "kubie-linux-amd64"}

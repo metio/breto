@@ -2,6 +2,7 @@
 ;; SPDX-FileCopyrightText: The breto Authors
 ;; SPDX-License-Identifier: MIT
 
-{:source {:github "pivotal-cf/pivnet-cli"}
+{:description "CLI to interact with Tanzu Network API V2 interface",
+ :source {:github "pivotal-cf/pivnet-cli"}
  :asset "pivnet-linux-amd64-{version}"
  :bins {"pivnet" "{asset}"}}

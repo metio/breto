@@ -2,6 +2,7 @@
 ;; SPDX-FileCopyrightText: The breto Authors
 ;; SPDX-License-Identifier: MIT
 
-{:source {:github "jesseduffield/lazydocker"}
+{:description "The lazier way to manage everything docker",
+ :source {:github "jesseduffield/lazydocker"}
  :asset "lazydocker_{version}_Linux_x86_64.tar.gz"
  :checksum "checksums.txt"}

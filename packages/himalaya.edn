@@ -2,7 +2,8 @@
 ;; SPDX-FileCopyrightText: The breto Authors
 ;; SPDX-License-Identifier: MIT
 
-{:source {:github "pimalaya/himalaya"}
+{:description "CLI to manage emails",
+ :source {:github "pimalaya/himalaya"}
  :asset "himalaya.x86_64-linux.tgz",
  :man ["share/man/*.1.gz"],
  :completions {:bash "share/completions/himalaya.bash",

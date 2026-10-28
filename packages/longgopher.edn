@@ -2,6 +2,7 @@
 ;; SPDX-FileCopyrightText: The breto Authors
 ;; SPDX-License-Identifier: MIT
 
-{:source {:github "sheepla/longgopher"}
+{:description "ʕ◉ϖ◉ʔ loooooooooooooooooooooong gopher",
+ :source {:github "sheepla/longgopher"}
  :asset "longgopher_{version}_Linux_x86_64.tar.gz"
  :checksum "checksums.txt"}

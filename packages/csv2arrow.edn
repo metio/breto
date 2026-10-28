@@ -2,7 +2,8 @@
 ;; SPDX-FileCopyrightText: The breto Authors
 ;; SPDX-License-Identifier: MIT
 
-{:source {:github "domoritz/arrow-tools"}
+{:description "A collection of handy CLI tools to convert CSV and JSON to Apache Arrow and Parquet",
+ :source {:github "domoritz/arrow-tools"}
  :asset "csv2arrow-x86_64-unknown-linux-gnu.tar.xz"
  :checksum "{asset}.sha256"
  :bins {"csv2arrow" "csv2arrow-x86_64-unknown-linux-gnu/csv2arrow"}}

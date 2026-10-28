@@ -2,6 +2,7 @@
 ;; SPDX-FileCopyrightText: The breto Authors
 ;; SPDX-License-Identifier: MIT
 
-{:source {:github "clamoriniere/crd-to-markdown"}
+{:description "util to generate a markdown file from a Kubernetes CRD go struct definition",
+ :source {:github "clamoriniere/crd-to-markdown"}
  :asset "crd-to-markdown_Linux_x86_64"
  :checksum "checksums.txt"}

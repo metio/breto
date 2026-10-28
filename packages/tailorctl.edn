@@ -2,5 +2,6 @@
 ;; SPDX-FileCopyrightText: The breto Authors
 ;; SPDX-License-Identifier: MIT
 
-{:source {:github "tailor-platform/tailorctl"}
+{:description "Command line tool for Tailor Platform",
+ :source {:github "tailor-platform/tailorctl"}
  :asset "tailorctl_linux_{tag}_x86_64.tar.gz"}

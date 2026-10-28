@@ -2,6 +2,7 @@
 ;; SPDX-FileCopyrightText: The breto Authors
 ;; SPDX-License-Identifier: MIT
 
-{:source {:github "lusingander/serie"}
+{:description "A rich git commit graph in your terminal, like magic",
+ :source {:github "lusingander/serie"}
  :asset "serie-{version}-x86_64-unknown-linux-musl.tar.gz"
  :checksum "checksum.txt"}

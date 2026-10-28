@@ -2,7 +2,8 @@
 ;; SPDX-FileCopyrightText: The breto Authors
 ;; SPDX-License-Identifier: MIT
 
-{:source {:github "go-swagger/go-swagger"}
+{:description "Swagger 2.0 implementation for go",
+ :source {:github "go-swagger/go-swagger"}
  :asset "swagger_{version}_Linux_x86_64.tar.gz"
  :checksum "go-swagger-checksums.txt"
  :bins {"swagger" "swagger"}}

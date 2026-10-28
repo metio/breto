@@ -2,5 +2,6 @@
 ;; SPDX-FileCopyrightText: The breto Authors
 ;; SPDX-License-Identifier: MIT
 
-{:source {:github "neilpa/yajsv"}
+{:description "Yet Another JSON Schema Validator [CLI]",
+ :source {:github "neilpa/yajsv"}
  :asset "yajsv.linux.amd64"}

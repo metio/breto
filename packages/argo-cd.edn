@@ -2,7 +2,8 @@
 ;; SPDX-FileCopyrightText: The breto Authors
 ;; SPDX-License-Identifier: MIT
 
-{:source {:github "argoproj/argo-cd"}
+{:description "Declarative continuous deployment for Kubernetes",
+ :source {:github "argoproj/argo-cd"}
  :asset "argocd-linux-amd64"
  :checksum "cli_checksums.txt"
  :bins {"argocd" "{asset}"}}

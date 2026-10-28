@@ -2,6 +2,7 @@
 ;; SPDX-FileCopyrightText: The breto Authors
 ;; SPDX-License-Identifier: MIT
 
-{:source {:github "sudorandom/protoc-gen-connect-openapi"}
+{:description "Plugin for generating OpenAPIv3 from protobufs matching the Connect RPC interface",
+ :source {:github "sudorandom/protoc-gen-connect-openapi"}
  :asset "protoc-gen-connect-openapi_{version}_linux_amd64.tar.gz"
  :checksum "checksums.txt"}

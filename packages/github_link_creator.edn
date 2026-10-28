@@ -2,7 +2,8 @@
 ;; SPDX-FileCopyrightText: The breto Authors
 ;; SPDX-License-Identifier: MIT
 
-{:source {:github "po3rin/github_link_creator"}
+{:description "GitHub Link Card Creator lets you generate GitHub images has links to repositories",
+ :source {:github "po3rin/github_link_creator"}
  :asset "github_link_creator_{version}_linux_amd64.tar.gz"
  :checksum "github_link_creator_{version}_checksums.txt"
  :bins {"repoimg" "repoimg"}}

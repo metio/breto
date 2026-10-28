@@ -2,6 +2,7 @@
 ;; SPDX-FileCopyrightText: The breto Authors
 ;; SPDX-License-Identifier: MIT
 
-{:source {:github "azu/dockerfile-pin"}
+{:description "A CLI tool that adds @sha256:<digest> to FROM lines in Dockerfiles and image fields in docker-compose.yml to prevent supply chain attacks",
+ :source {:github "azu/dockerfile-pin"}
  :asset "dockerfile-pin_linux_amd64.tar.gz"
  :checksum "checksums.txt"}

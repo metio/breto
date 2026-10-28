@@ -2,6 +2,7 @@
 ;; SPDX-FileCopyrightText: The breto Authors
 ;; SPDX-License-Identifier: MIT
 
-{:source {:github "dex4er/tf"}
+{:description "Less verbose and more shell friendly Terraform",
+ :source {:github "dex4er/tf"}
  :asset "tf-linux-amd64"
  :checksum "checksums.txt"}

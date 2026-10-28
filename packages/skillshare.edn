@@ -2,6 +2,7 @@
 ;; SPDX-FileCopyrightText: The breto Authors
 ;; SPDX-License-Identifier: MIT
 
-{:source {:github "runkids/skillshare"}
+{:description "Sync skills across all AI CLI tools with one command and simplify team sharing. Supporting Claude Code, OpenClaw, OpenCode & more",
+ :source {:github "runkids/skillshare"}
  :asset "skillshare_{version}_linux_amd64.tar.gz"
  :checksum "checksums.txt"}

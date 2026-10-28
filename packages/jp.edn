@@ -2,6 +2,7 @@
 ;; SPDX-FileCopyrightText: The breto Authors
 ;; SPDX-License-Identifier: MIT
 
-{:source {:github "jmespath/jp"}
+{:description "Command line interface to JMESPath - http://jmespath.org",
+ :source {:github "jmespath/jp"}
  :tag-prefix ""
  :asset "jp-linux-amd64"}

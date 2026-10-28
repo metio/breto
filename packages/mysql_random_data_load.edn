@@ -2,6 +2,7 @@
 ;; SPDX-FileCopyrightText: The breto Authors
 ;; SPDX-License-Identifier: MIT
 
-{:source {:github "Percona-Lab/mysql_random_data_load"}
+{:description "MySQL random data loader",
+ :source {:github "Percona-Lab/mysql_random_data_load"}
  :asset "mysql_random_data_load_{version}_Linux_x86_64.tar.gz"
  :checksum "checksums.txt"}

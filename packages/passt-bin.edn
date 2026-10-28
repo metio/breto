@@ -2,7 +2,8 @@
 ;; SPDX-FileCopyrightText: The breto Authors
 ;; SPDX-License-Identifier: MIT
 
-{:source {:github "takumin/passt-bin"}
+{:description "Prebuilt binaries of `passt` built with zig cc",
+ :source {:github "takumin/passt-bin"}
  :asset "passt-x86_64-linux-gnu.tar.gz"
  :checksum "SHA256SUMS"
  :bins {"passt" "bin/passt", "passt-repair" "bin/passt-repair", "pasta" "bin/pasta", "pesto" "bin/pesto"}}

@@ -2,6 +2,7 @@
 ;; SPDX-FileCopyrightText: The breto Authors
 ;; SPDX-License-Identifier: MIT
 
-{:source {:github "Melkeydev/go-blueprint"}
+{:description "Go-blueprint allows users to spin up a quick Go project using a popular framework",
+ :source {:github "Melkeydev/go-blueprint"}
  :asset "go-blueprint_{version}_Linux_x86_64.tar.gz"
  :checksum "checksums.txt"}

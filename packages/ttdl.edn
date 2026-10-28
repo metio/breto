@@ -1,5 +1,6 @@
 ;; SPDX-FileCopyrightText: The breto Authors
 ;; SPDX-License-Identifier: 0BSD
 
-{:source {:github "VladimirMarkelov/ttdl"},
+{:description "TTDL - Terminal Todo List Manager.",
+ :source {:github "VladimirMarkelov/ttdl"},
  :asset "ttdl_{version}_linux-x64-musl.tar.gz"}

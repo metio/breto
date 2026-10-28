@@ -2,6 +2,7 @@
 ;; SPDX-FileCopyrightText: The breto Authors
 ;; SPDX-License-Identifier: MIT
 
-{:source {:github "allyring/pvw"}
+{:description "A port viewer TUI made with BubbleTea in Go",
+ :source {:github "allyring/pvw"}
  :asset "pvw_{version}_linux_amd64.tar.gz"
  :checksum "pvw_{version}_checksums.txt"}

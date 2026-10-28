@@ -2,6 +2,7 @@
 ;; SPDX-FileCopyrightText: The breto Authors
 ;; SPDX-License-Identifier: MIT
 
-{:source {:github "micro-editor/micro"}
+{:description "A modern and intuitive terminal-based text editor",
+ :source {:github "micro-editor/micro"}
  :asset "micro-{version}-linux64-static.tar.gz"
  :bins {"micro" "micro-{version}/micro"}}

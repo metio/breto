@@ -2,7 +2,8 @@
 ;; SPDX-FileCopyrightText: The breto Authors
 ;; SPDX-License-Identifier: MIT
 
-{:source {:github "nubjs/nub"}
+{:description "The fast all-in-one Node.js toolkit",
+ :source {:github "nubjs/nub"}
  :asset "nub-linux-x64-musl.tar.gz"
  :checksum "{asset}.sha256"
  :bins {"nub" "bin/nub", "nubr" "bin/nub", "nubx" "bin/nub"}}

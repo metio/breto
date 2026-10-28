@@ -2,6 +2,7 @@
 ;; SPDX-FileCopyrightText: The breto Authors
 ;; SPDX-License-Identifier: MIT
 
-{:source {:github "suzuki-shunsuke/renovate-issue-action"}
+{:description "Create, update, and close GitHub Issues with GitHub Actions according to Renovate Pull Requests",
+ :source {:github "suzuki-shunsuke/renovate-issue-action"}
  :asset "renovate-issue-action_linux_amd64.tar.gz"
  :checksum "renovate-issue-action_{version}_checksums.txt"}

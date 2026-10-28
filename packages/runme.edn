@@ -2,6 +2,7 @@
 ;; SPDX-FileCopyrightText: The breto Authors
 ;; SPDX-License-Identifier: MIT
 
-{:source {:github "runmedev/runme"}
+{:description "DevOps Notebooks Built with Markdown",
+ :source {:github "runmedev/runme"}
  :asset "runme_linux_x86_64.tar.gz"
  :checksum "checksums.txt"}

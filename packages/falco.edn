@@ -2,5 +2,6 @@
 ;; SPDX-FileCopyrightText: The breto Authors
 ;; SPDX-License-Identifier: MIT
 
-{:source {:github "ysugimoto/falco"}
+{:description "falco is a VCL developer tool dedicated to Fastly",
+ :source {:github "ysugimoto/falco"}
  :asset "falco-linux-amd64.tar.gz"}

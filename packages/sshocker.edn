@@ -2,6 +2,7 @@
 ;; SPDX-FileCopyrightText: The breto Authors
 ;; SPDX-License-Identifier: MIT
 
-{:source {:github "lima-vm/sshocker"}
+{:description "ssh + reverse sshfs + port forwarder, in Docker-like CLI (predecessor of Lima)",
+ :source {:github "lima-vm/sshocker"}
  :asset "sshocker-Linux-x86_64"
  :checksum "SHA256SUMS"}

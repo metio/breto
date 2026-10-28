@@ -2,7 +2,8 @@
 ;; SPDX-FileCopyrightText: The breto Authors
 ;; SPDX-License-Identifier: MIT
 
-{:source {:github "awslabs/soci-snapshotter"}
+{:description "A containerd snapshotter plugin which enables standard OCI images to be lazily loaded without requiring a build-time conversion step.",
+ :source {:github "awslabs/soci-snapshotter"}
  :asset "soci-snapshotter-{version}-linux-amd64-static.tar.gz"
  :checksum "{asset}.sha256sum"
  :bins {"soci" "soci", "soci-snapshotter-grpc" "soci-snapshotter-grpc"}}

@@ -2,6 +2,7 @@
 ;; SPDX-FileCopyrightText: The breto Authors
 ;; SPDX-License-Identifier: MIT
 
-{:source {:github "ossf/scorecard"}
+{:description "OpenSSF Scorecard - Security health metrics for Open Source",
+ :source {:github "ossf/scorecard"}
  :asset "scorecard_{version}_linux_amd64.tar.gz"
  :checksum "scorecard_checksums.txt"}

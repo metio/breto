@@ -2,6 +2,7 @@
 ;; SPDX-FileCopyrightText: The breto Authors
 ;; SPDX-License-Identifier: MIT
 
-{:source {:github "lc/gau"}
+{:description "Fetch known URLs from AlienVault's Open Threat Exchange, the Wayback Machine, and Common Crawl",
+ :source {:github "lc/gau"}
  :asset "gau_{version}_linux_amd64.tar.gz"
  :checksum "gau_{version}_checksums.txt"}

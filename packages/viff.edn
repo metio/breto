@@ -2,6 +2,7 @@
 ;; SPDX-FileCopyrightText: The breto Authors
 ;; SPDX-License-Identifier: MIT
 
-{:source {:github "orangekame3/viff"}
+{:description "Visual Diff Viewer",
+ :source {:github "orangekame3/viff"}
  :asset "viff_Linux_x86_64.tar.gz"
  :checksum "checksums.txt"}

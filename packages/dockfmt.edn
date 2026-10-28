@@ -2,5 +2,6 @@
 ;; SPDX-FileCopyrightText: The breto Authors
 ;; SPDX-License-Identifier: MIT
 
-{:source {:github "jessfraz/dockfmt"}
+{:description "Dockerfile format and parser. Like `gofmt` but for Dockerfiles",
+ :source {:github "jessfraz/dockfmt"}
  :asset "dockfmt-linux-amd64"}

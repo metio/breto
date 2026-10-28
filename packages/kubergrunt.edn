@@ -2,6 +2,7 @@
 ;; SPDX-FileCopyrightText: The breto Authors
 ;; SPDX-License-Identifier: MIT
 
-{:source {:github "gruntwork-io/kubergrunt"}
+{:description "Kubergrunt is a standalone go binary with a collection of commands to fill in the gaps between Terraform, Helm, and Kubectl. https://www.gruntwork.io",
+ :source {:github "gruntwork-io/kubergrunt"}
  :asset "kubergrunt_linux_amd64"
  :checksum "SHA256SUMS"}

@@ -2,7 +2,8 @@
 ;; SPDX-FileCopyrightText: The breto Authors
 ;; SPDX-License-Identifier: MIT
 
-{:source {:github "CQLabs/homebrew-dcm"}
+{:description "Homebrew formula for DCM",
+ :source {:github "CQLabs/homebrew-dcm"}
  :tag-prefix ""
  :asset "dcm-linux-x64-release.zip"
  :bins {"dcm" "dcm"}}

@@ -2,6 +2,7 @@
 ;; SPDX-FileCopyrightText: The breto Authors
 ;; SPDX-License-Identifier: MIT
 
-{:source {:github "docker/hub-tool"}
+{:description "Docker Hub experimental CLI tool",
+ :source {:github "docker/hub-tool"}
  :asset "hub-tool-linux-amd64.tar.gz"
  :bins {"hub-tool" "hub-tool/hub-tool"}}

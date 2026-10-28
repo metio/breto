@@ -2,6 +2,7 @@
 ;; SPDX-FileCopyrightText: The breto Authors
 ;; SPDX-License-Identifier: MIT
 
-{:source {:github "dwisiswant0/tlder"}
+{:description "TLDs finder — check domain name availability across all valid top-level domains",
+ :source {:github "dwisiswant0/tlder"}
  :asset "tlder_{tag}-linux_x86_64"
  :checksum "tlder_{version}_checksums.txt"}

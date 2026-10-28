@@ -2,6 +2,7 @@
 ;; SPDX-FileCopyrightText: The breto Authors
 ;; SPDX-License-Identifier: MIT
 
-{:source {:github "suzuki-shunsuke/deny-self-approve"}
+{:description "CLI to deny self-approved GitHub Pull Requests",
+ :source {:github "suzuki-shunsuke/deny-self-approve"}
  :asset "deny-self-approve_linux_amd64.tar.gz"
  :checksum "deny-self-approve_{version}_checksums.txt"}

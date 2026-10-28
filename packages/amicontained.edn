@@ -2,5 +2,6 @@
 ;; SPDX-FileCopyrightText: The breto Authors
 ;; SPDX-License-Identifier: MIT
 
-{:source {:github "genuinetools/amicontained"}
+{:description "Container introspection tool. Find out what container runtime is being used as well as features available",
+ :source {:github "genuinetools/amicontained"}
  :asset "amicontained-linux-amd64"}

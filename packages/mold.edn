@@ -2,6 +2,7 @@
 ;; SPDX-FileCopyrightText: The breto Authors
 ;; SPDX-License-Identifier: MIT
 
-{:source {:github "rui314/mold"}
+{:description "mold: A Modern Linker",
+ :source {:github "rui314/mold"}
  :asset "mold-{version}-x86_64-linux.tar.gz"
  :bins {"ld.mold" "mold-{version}-x86_64-linux/bin/mold", "ld64.mold" "mold-{version}-x86_64-linux/bin/mold", "mold" "mold-{version}-x86_64-linux/bin/mold"}}

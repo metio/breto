@@ -2,6 +2,7 @@
 ;; SPDX-FileCopyrightText: The breto Authors
 ;; SPDX-License-Identifier: MIT
 
-{:source {:github "sharkdp/numbat"}
+{:description "A statically typed programming language for scientific computations with first class support for physical dimensions and units",
+ :source {:github "sharkdp/numbat"}
  :asset "numbat-{tag}-x86_64-unknown-linux-musl.tar.gz"
  :bins {"numbat" "numbat-{tag}-x86_64-unknown-linux-musl/numbat"}}

@@ -2,6 +2,7 @@
 ;; SPDX-FileCopyrightText: The breto Authors
 ;; SPDX-License-Identifier: MIT
 
-{:source {:github "bmf-san/ggc"}
+{:description "A modern Git CLI tool with both traditional command-line and interactive incremental-search UI",
+ :source {:github "bmf-san/ggc"}
  :asset "ggc_{version}_linux_amd64.tar.gz"
  :checksum "checksums.txt"}

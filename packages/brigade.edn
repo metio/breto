@@ -2,6 +2,7 @@
 ;; SPDX-FileCopyrightText: The breto Authors
 ;; SPDX-License-Identifier: MIT
 
-{:source {:github "brigadecore/brigade"}
+{:description "Brigade CLI. Event-driven scripting for Kubernetes",
+ :source {:github "brigadecore/brigade"}
  :asset "brig-linux-amd64"
  :bins {"brig" "{asset}"}}

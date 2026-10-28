@@ -2,6 +2,7 @@
 ;; SPDX-FileCopyrightText: The breto Authors
 ;; SPDX-License-Identifier: MIT
 
-{:source {:github "unfrl/dug"}
+{:description "A global DNS propagation checker that gives pretty output. Written in dotnet core",
+ :source {:github "unfrl/dug"}
  :tag-prefix ""
  :asset "dug.{tag}.linux-x64.tar.gz"}

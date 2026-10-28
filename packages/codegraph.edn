@@ -2,7 +2,8 @@
 ;; SPDX-FileCopyrightText: The breto Authors
 ;; SPDX-License-Identifier: MIT
 
-{:source {:github "colbymchenry/codegraph"}
+{:description "Pre-indexed code knowledge graph for coding agents",
+ :source {:github "colbymchenry/codegraph"}
  :asset "codegraph-linux-x64.tar.gz"
  :checksum "SHA256SUMS"
  :bins {"codegraph" "codegraph-linux-x64/bin/codegraph"}}

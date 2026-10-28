@@ -2,6 +2,7 @@
 ;; SPDX-FileCopyrightText: The breto Authors
 ;; SPDX-License-Identifier: MIT
 
-{:source {:github "flosell/iam-policy-json-to-terraform"}
+{:description "Small tool to convert an IAM Policy in JSON format into a Terraform aws_iam_policy_document",
+ :source {:github "flosell/iam-policy-json-to-terraform"}
  :tag-prefix ""
  :asset "iam-policy-json-to-terraform_amd64"}

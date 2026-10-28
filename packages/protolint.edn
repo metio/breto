@@ -2,7 +2,8 @@
 ;; SPDX-FileCopyrightText: The breto Authors
 ;; SPDX-License-Identifier: MIT
 
-{:source {:github "yoheimuta/protolint"}
+{:description "A pluggable linter and fixer to enforce Protocol Buffer style and conventions",
+ :source {:github "yoheimuta/protolint"}
  :asset "protolint_{version}_linux_amd64.tar.gz"
  :checksum "checksums.txt"
  :bins {"protoc-gen-protolint" "protoc-gen-protolint", "protolint" "protolint"}}

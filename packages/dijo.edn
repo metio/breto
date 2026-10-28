@@ -2,5 +2,6 @@
 ;; SPDX-FileCopyrightText: The breto Authors
 ;; SPDX-License-Identifier: MIT
 
-{:source {:github "oppiliappan/dijo"}
+{:description "scriptable, curses-based, digital habit tracker",
+ :source {:github "oppiliappan/dijo"}
  :asset "dijo-x86_64-linux"}

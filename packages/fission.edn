@@ -2,6 +2,7 @@
 ;; SPDX-FileCopyrightText: The breto Authors
 ;; SPDX-License-Identifier: MIT
 
-{:source {:github "fission/fission"}
+{:description "Fast and Simple Serverless Functions for Kubernetes",
+ :source {:github "fission/fission"}
  :asset "fission-{tag}-linux-amd64"
  :checksum "checksums.txt"}

@@ -2,6 +2,7 @@
 ;; SPDX-FileCopyrightText: The breto Authors
 ;; SPDX-License-Identifier: MIT
 
-{:source {:github "breml/tfreveal"}
+{:description "tfreveal shows a Terraform plan with all the secret (sensitive) values revealed",
+ :source {:github "breml/tfreveal"}
  :asset "tfreveal_{version}_Linux_x86_64.tar.gz"
  :checksum "tfreveal_{version}_checksums.txt"}

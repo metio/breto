@@ -2,5 +2,6 @@
 ;; SPDX-FileCopyrightText: The breto Authors
 ;; SPDX-License-Identifier: MIT
 
-{:source {:github "cnosuke/kushi"}
+{:description "Auto SSH port-forwarding agent which gets forwarding configs from URL",
+ :source {:github "cnosuke/kushi"}
  :asset "kushi-linux-amd64.zip"}

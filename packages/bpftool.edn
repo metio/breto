@@ -2,6 +2,7 @@
 ;; SPDX-FileCopyrightText: The breto Authors
 ;; SPDX-License-Identifier: MIT
 
-{:source {:github "libbpf/bpftool"}
+{:description "Automated upstream mirror for bpftool stand-alone build",
+ :source {:github "libbpf/bpftool"}
  :asset "bpftool-{tag}-amd64.tar.gz"
  :checksum "bpftool-{tag}-amd64.tar.gz.sha256sum"}

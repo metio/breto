@@ -2,6 +2,7 @@
 ;; SPDX-FileCopyrightText: The breto Authors
 ;; SPDX-License-Identifier: MIT
 
-{:source {:github "alajmo/mani"}
+{:description "CLI tool to help you manage repositories",
+ :source {:github "alajmo/mani"}
  :asset "mani_{version}_linux_amd64.tar.gz"
  :checksum "checksums.txt"}

@@ -2,6 +2,7 @@
 ;; SPDX-FileCopyrightText: The breto Authors
 ;; SPDX-License-Identifier: MIT
 
-{:source {:github "particledecay/kconf"}
+{:description "Manage multiple kubeconfigs easily",
+ :source {:github "particledecay/kconf"}
  :asset "kconf-linux-x86_64-{version}.tar.gz"
  :checksum "checksums.txt"}

@@ -2,6 +2,7 @@
 ;; SPDX-FileCopyrightText: The breto Authors
 ;; SPDX-License-Identifier: MIT
 
-{:source {:github "ikawaha/kagome"}
+{:description "Self-contained Japanese Morphological Analyzer written in pure Go",
+ :source {:github "ikawaha/kagome"}
  :asset "kagome_{version}_linux_amd64.tar.gz"
  :checksum "kagome_{version}_checksums.txt"}

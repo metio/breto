@@ -2,6 +2,7 @@
 ;; SPDX-FileCopyrightText: The breto Authors
 ;; SPDX-License-Identifier: MIT
 
-{:source {:github "filebrowser/filebrowser"}
+{:description "Web File Browser",
+ :source {:github "filebrowser/filebrowser"}
  :asset "linux-amd64-filebrowser.tar.gz"
  :checksum "filebrowser_{version}_checksums.txt"}

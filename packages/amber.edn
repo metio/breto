@@ -2,6 +2,7 @@
 ;; SPDX-FileCopyrightText: The breto Authors
 ;; SPDX-License-Identifier: MIT
 
-{:source {:github "amber-lang/amber"}
+{:description "Amber the programming language compiled to bash",
+ :source {:github "amber-lang/amber"}
  :tag-prefix ""
  :asset "amber-linux-musl-x86_64.tar.xz"}

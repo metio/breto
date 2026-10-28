@@ -2,7 +2,8 @@
 ;; SPDX-FileCopyrightText: The breto Authors
 ;; SPDX-License-Identifier: MIT
 
-{:source {:github "cloudfoundry/credhub-cli"}
+{:description "CredHub CLI provides a command line interface to interact with CredHub servers",
+ :source {:github "cloudfoundry/credhub-cli"}
  :tag-prefix ""
  :asset "credhub-linux-amd64-{tag}.tgz"
  :bins {"credhub" "credhub"}}

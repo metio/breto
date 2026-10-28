@@ -2,5 +2,6 @@
 ;; SPDX-FileCopyrightText: The breto Authors
 ;; SPDX-License-Identifier: MIT
 
-{:source {:github "dag-andersen/argocd-diff-preview"}
+{:description "Tool for rendering manifest changes on pull requests",
+ :source {:github "dag-andersen/argocd-diff-preview"}
  :asset "argocd-diff-preview-Linux-x86_64.tar.gz"}

@@ -2,6 +2,7 @@
 ;; SPDX-FileCopyrightText: The breto Authors
 ;; SPDX-License-Identifier: MIT
 
-{:source {:github "pomdtr/sunbeam"}
+{:description "Command-line launcher",
+ :source {:github "pomdtr/sunbeam"}
  :asset "sunbeam-linux_amd64.tar.gz"
  :checksum "checksums.txt"}

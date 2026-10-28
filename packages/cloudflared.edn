@@ -2,6 +2,7 @@
 ;; SPDX-FileCopyrightText: The breto Authors
 ;; SPDX-License-Identifier: MIT
 
-{:source {:github "cloudflare/cloudflared"}
+{:description "Cloudflare Tunnel client",
+ :source {:github "cloudflare/cloudflared"}
  :tag-prefix ""
  :asset "cloudflared-linux-amd64"}

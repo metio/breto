@@ -2,5 +2,6 @@
 ;; SPDX-FileCopyrightText: The breto Authors
 ;; SPDX-License-Identifier: MIT
 
-{:source {:github "slsa-framework/slsa-verifier"}
+{:description "Verify provenance from SLSA compliant builders",
+ :source {:github "slsa-framework/slsa-verifier"}
  :asset "slsa-verifier-linux-amd64"}

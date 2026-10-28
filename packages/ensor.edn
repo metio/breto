@@ -2,7 +2,8 @@
 ;; SPDX-FileCopyrightText: The breto Authors
 ;; SPDX-License-Identifier: MIT
 
-{:source {:github "pratyay360/ensor"}
+{:description "A fast, interactive CLI for finding and redacting secrets in your codebase",
+ :source {:github "pratyay360/ensor"}
  :tag-prefix ""
  :asset "ensor_Linux_x86_64.tar.gz"
  :checksum "checksums.txt"}

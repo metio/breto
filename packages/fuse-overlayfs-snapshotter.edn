@@ -2,7 +2,8 @@
 ;; SPDX-FileCopyrightText: The breto Authors
 ;; SPDX-License-Identifier: MIT
 
-{:source {:github "containerd/fuse-overlayfs-snapshotter"}
+{:description "fuse-overlayfs plugin for rootless containerd on old Linux (not needed on modern Linux)",
+ :source {:github "containerd/fuse-overlayfs-snapshotter"}
  :asset "containerd-fuse-overlayfs-{version}-linux-amd64.tar.gz"
  :checksum "SHA256SUMS"
  :bins {"containerd-fuse-overlayfs-grpc" "containerd-fuse-overlayfs-grpc"}}

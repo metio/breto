@@ -2,6 +2,7 @@
 ;; SPDX-FileCopyrightText: The breto Authors
 ;; SPDX-License-Identifier: MIT
 
-{:source {:github "devops-works/dw-query-digest"}
+{:description "MySQL slow log analyzer. Alternative to pt-query-digest",
+ :source {:github "devops-works/dw-query-digest"}
  :asset "dw-query-digest_{version}_linux_amd64.tar.gz"
  :checksum "checksums.txt"}

@@ -2,5 +2,6 @@
 ;; SPDX-FileCopyrightText: The breto Authors
 ;; SPDX-License-Identifier: MIT
 
-{:source {:github "mattn/bsky"}
+{:description "A cli application for bluesky social",
+ :source {:github "mattn/bsky"}
  :asset "bsky-linux-{version}.zip"}

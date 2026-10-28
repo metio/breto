@@ -2,6 +2,7 @@
 ;; SPDX-FileCopyrightText: The breto Authors
 ;; SPDX-License-Identifier: MIT
 
-{:source {:github "kubeshark/kubeshark"}
+{:description "The API traffic analyzer for Kubernetes providing real-time K8s protocol-level visibility, capturing and monitoring all traffic and payloads going in, out and across containers, pods, nodes and clusters. Inspired by Wireshark, purposely built for Kubernetes",
+ :source {:github "kubeshark/kubeshark"}
  :asset "kubeshark_linux_amd64"
  :checksum "{asset}.sha256"}

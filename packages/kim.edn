@@ -2,6 +2,7 @@
 ;; SPDX-FileCopyrightText: The breto Authors
 ;; SPDX-License-Identifier: MIT
 
-{:source {:github "rancher/kim"}
+{:description "In ur kubernetes, buildin ur imagez",
+ :source {:github "rancher/kim"}
  :asset "kim-linux-amd64"
  :checksum "sha256sum.txt"}

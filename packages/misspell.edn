@@ -2,7 +2,8 @@
 ;; SPDX-FileCopyrightText: The breto Authors
 ;; SPDX-License-Identifier: MIT
 
-{:source {:github "golangci/misspell"}
+{:description "Correct commonly misspelled English words in source files",
+ :source {:github "golangci/misspell"}
  :asset "misspell_{version}_linux_amd64.tar.gz"
  :checksum "misspell_{version}_checksums.txt"
  :bins {"misspell" "misspell_{version}_linux_amd64/misspell"}}

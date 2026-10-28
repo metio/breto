@@ -2,7 +2,8 @@
 ;; SPDX-FileCopyrightText: The breto Authors
 ;; SPDX-License-Identifier: MIT
 
-{:source {:github "daichirata/hammer"}
+{:description "hammer is a command-line tool to schema management for Google Cloud Spanner",
+ :source {:github "daichirata/hammer"}
  :asset "hammer-{version}-linux-amd64.tar.gz"
  :checksum "checksums.txt"
  :bins {"hammer" "hammer-{version}-linux-amd64/hammer"}}

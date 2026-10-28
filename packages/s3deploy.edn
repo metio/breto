@@ -2,6 +2,7 @@
 ;; SPDX-FileCopyrightText: The breto Authors
 ;; SPDX-License-Identifier: MIT
 
-{:source {:github "bep/s3deploy"}
+{:description "A simple tool to deploy static websites to Amazon S3 and CloudFront with Gzip and custom headers support (e.g. \"Cache-Control\")",
+ :source {:github "bep/s3deploy"}
  :asset "s3deploy_{version}_linux-amd64.tar.gz"
  :checksum "s3deploy_{version}_checksums.txt"}

@@ -2,5 +2,6 @@
 ;; SPDX-FileCopyrightText: The breto Authors
 ;; SPDX-License-Identifier: MIT
 
-{:source {:github "loft-sh/devpod"}
+{:description "Codespaces but open-source, client-only and unopinionated: Works with any IDE and lets you use any cloud, kubernetes or just localhost docker",
+ :source {:github "loft-sh/devpod"}
  :asset "devpod-linux-amd64"}

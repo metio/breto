@@ -2,5 +2,6 @@
 ;; SPDX-FileCopyrightText: The breto Authors
 ;; SPDX-License-Identifier: MIT
 
-{:source {:github "imuxin/kubectl-watch"}
+{:description "A kubectl plugin to provide a pretty delta change view of being watched kubernetes resources",
+ :source {:github "imuxin/kubectl-watch"}
  :asset "kubectl-watch-x86_64-unknown-linux-gnu.tar.gz"}

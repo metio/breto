@@ -2,6 +2,7 @@
 ;; SPDX-FileCopyrightText: The breto Authors
 ;; SPDX-License-Identifier: MIT
 
-{:source {:github "projectdiscovery/proxify"}
+{:description "A versatile and portable proxy for capturing, manipulating, and replaying HTTP/HTTPS traffic on the go",
+ :source {:github "projectdiscovery/proxify"}
  :asset "proxify_{version}_linux_amd64.zip"
  :checksum "proxify_{version}_checksums.txt"}

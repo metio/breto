@@ -2,6 +2,7 @@
 ;; SPDX-FileCopyrightText: The breto Authors
 ;; SPDX-License-Identifier: MIT
 
-{:source {:github "suzuki-shunsuke/cmdx"}
+{:description "Task runner. It provides useful help messages and supports interactive prompts and validation of arguments",
+ :source {:github "suzuki-shunsuke/cmdx"}
  :asset "cmdx_linux_amd64.tar.gz"
  :checksum "cmdx_{version}_checksums.txt"}

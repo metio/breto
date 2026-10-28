@@ -2,6 +2,7 @@
 ;; SPDX-FileCopyrightText: The breto Authors
 ;; SPDX-License-Identifier: MIT
 
-{:source {:github "bloznelis/typioca"}
+{:description "Cozy typing speed tester in terminal",
+ :source {:github "bloznelis/typioca"}
  :tag-prefix ""
  :asset "typioca-linux-amd64"}

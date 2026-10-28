@@ -2,7 +2,8 @@
 ;; SPDX-FileCopyrightText: The breto Authors
 ;; SPDX-License-Identifier: MIT
 
-{:source {:github "newrelic/newrelic-cli"}
+{:description "The New Relic Command Line Interface",
+ :source {:github "newrelic/newrelic-cli"}
  :asset "newrelic-cli_{version}_Linux_x86_64.tar.gz"
  :checksum "newrelic-cli_{version}_checksums.txt"
  :bins {"newrelic" "newrelic"}}

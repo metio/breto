@@ -2,5 +2,6 @@
 ;; SPDX-FileCopyrightText: The breto Authors
 ;; SPDX-License-Identifier: MIT
 
-{:source {:github "weedonandscott/trolley"}
+{:description "Run terminal apps anywhere",
+ :source {:github "weedonandscott/trolley"}
  :asset "trolley-cli-x86_64-linux.tar.xz"}

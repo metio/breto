@@ -2,5 +2,6 @@
 ;; SPDX-FileCopyrightText: The breto Authors
 ;; SPDX-License-Identifier: MIT
 
-{:source {:github "chmln/handlr"}
+{:description "A better xdg-utils",
+ :source {:github "chmln/handlr"}
  :asset "handlr"}

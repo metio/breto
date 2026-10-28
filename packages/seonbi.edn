@@ -2,6 +2,7 @@
 ;; SPDX-FileCopyrightText: The breto Authors
 ;; SPDX-License-Identifier: MIT
 
-{:source {:github "dahlia/seonbi"}
+{:description "SmartyPants for Korean language",
+ :source {:github "dahlia/seonbi"}
  :tag-prefix ""
  :asset "seonbi-{tag}.linux-x86_64.tar.bz2"}

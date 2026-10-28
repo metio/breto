@@ -2,5 +2,6 @@
 ;; SPDX-FileCopyrightText: The breto Authors
 ;; SPDX-License-Identifier: MIT
 
-{:source {:github "kawaz/authsock-filter"}
+{:description "SSH agent proxy with filtering and logging",
+ :source {:github "kawaz/authsock-filter"}
  :asset "authsock-filter-x86_64-unknown-linux-gnu.tar.gz"}

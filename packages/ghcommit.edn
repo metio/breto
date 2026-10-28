@@ -2,6 +2,7 @@
 ;; SPDX-FileCopyrightText: The breto Authors
 ;; SPDX-License-Identifier: MIT
 
-{:source {:github "planetscale/ghcommit"}
+{:description "Use GitHub's GraphQL API to commit files to a GitHub repository",
+ :source {:github "planetscale/ghcommit"}
  :asset "ghcommit_linux_amd64.tar.gz"
  :checksum "checksums.txt"}

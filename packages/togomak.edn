@@ -2,6 +2,7 @@
 ;; SPDX-FileCopyrightText: The breto Authors
 ;; SPDX-License-Identifier: MIT
 
-{:source {:github "srevinsaju/togomak"}
+{:description "A declarative pipeline orchestrator with the magic of HCL as a configuration language, inspired from Terraform's architecture",
+ :source {:github "srevinsaju/togomak"}
  :asset "togomak_{version}_linux_amd64.tar.gz"
  :checksum "togomak_{version}_checksums.txt"}

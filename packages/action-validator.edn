@@ -2,5 +2,6 @@
 ;; SPDX-FileCopyrightText: The breto Authors
 ;; SPDX-License-Identifier: MIT
 
-{:source {:github "mpalmer/action-validator"}
+{:description "Tool to validate GitHub Action and Workflow YAML files",
+ :source {:github "mpalmer/action-validator"}
  :asset "action-validator_linux_amd64"}

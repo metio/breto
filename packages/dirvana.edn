@@ -2,6 +2,7 @@
 ;; SPDX-FileCopyrightText: The breto Authors
 ;; SPDX-License-Identifier: MIT
 
-{:source {:github "NikitaCOEUR/dirvana"}
+{:description "Reach directory nirvana - per-project aliases, functions, and env vars that auto-load when you cd. Zero friction, zero pollution",
+ :source {:github "NikitaCOEUR/dirvana"}
  :asset "dirvana_{version}_Linux_x86_64.tar.gz"
  :checksum "checksums.txt"}

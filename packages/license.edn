@@ -2,6 +2,7 @@
 ;; SPDX-FileCopyrightText: The breto Authors
 ;; SPDX-License-Identifier: MIT
 
-{:source {:github "nishanths/license"}
+{:description "Command line license text generator",
+ :source {:github "nishanths/license"}
  :asset "license-{tag}-linux-amd64"
  :checksum "SHA256SUMS.txt"}

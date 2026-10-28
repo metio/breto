@@ -1,6 +1,7 @@
 ;; SPDX-FileCopyrightText: The breto Authors
 ;; SPDX-License-Identifier: 0BSD
 
-{:source {:github "oras-project/oras"},
+{:description "ORAS CLI",
+ :source {:github "oras-project/oras"},
  :asset "oras_{version}_linux_amd64.tar.gz",
  :checksum "oras_{version}_checksums.txt"}

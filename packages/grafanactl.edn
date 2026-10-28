@@ -1,6 +1,7 @@
 ;; SPDX-FileCopyrightText: The breto Authors
 ;; SPDX-License-Identifier: 0BSD
 
-{:source {:github "grafana/grafanactl"},
+{:description "The Grafana CLI. Command-line tool designed to simplify interaction with Grafana resources",
+ :source {:github "grafana/grafanactl"},
  :asset "grafanactl_Linux_x86_64.tar.gz",
  :checksum "grafanactl_checksums.txt"}

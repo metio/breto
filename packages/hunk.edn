@@ -2,6 +2,7 @@
 ;; SPDX-FileCopyrightText: The breto Authors
 ;; SPDX-License-Identifier: MIT
 
-{:source {:github "modem-dev/hunk"}
+{:description "Review-first terminal diff viewer for agentic coders",
+ :source {:github "modem-dev/hunk"}
  :asset "hunkdiff-linux-x64.tar.gz"
  :bins {"hunk" "hunkdiff-linux-x64/hunk"}}

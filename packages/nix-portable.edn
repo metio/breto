@@ -1,7 +1,8 @@
 ;; SPDX-FileCopyrightText: The breto Authors
 ;; SPDX-License-Identifier: 0BSD
 
-{:source {:github "DavHau/nix-portable"},
+{:description "Nix - Static, Permissionless, Installation-free, Pre-configured",
+ :source {:github "DavHau/nix-portable"},
  :asset "nix-portable-x86_64",
  :tag-prefix "",
  :history [{:before "v013" :verify false}]}

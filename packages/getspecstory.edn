@@ -2,7 +2,8 @@
 ;; SPDX-FileCopyrightText: The breto Authors
 ;; SPDX-License-Identifier: MIT
 
-{:source {:github "specstoryai/getspecstory"}
+{:description "Install our local first extensions for your favorite AI IDE or Terminal Agent. Process your histories into reusable skills with Lore. Sync your conversations to the cloud. File issues and requests",
+ :source {:github "specstoryai/getspecstory"}
  :asset "SpecStoryCLI_Linux_x86_64.tar.gz"
  :checksum "SpecStoryCLI_{version}_checksums.txt"
  :bins {"specstory" "specstory"}}

@@ -2,6 +2,7 @@
 ;; SPDX-FileCopyrightText: The breto Authors
 ;; SPDX-License-Identifier: MIT
 
-{:source {:github "x-motemen/ghq"}
+{:description "Remote repository management made easy",
+ :source {:github "x-motemen/ghq"}
  :asset "ghq_linux_amd64.zip"
  :bins {"ghq" "ghq_linux_amd64/ghq"}}

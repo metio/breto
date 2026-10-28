@@ -2,7 +2,8 @@
 ;; SPDX-FileCopyrightText: The breto Authors
 ;; SPDX-License-Identifier: MIT
 
-{:source {:github "openclaw/gogcli"}
+{:description "Google Suite CLI: Gmail, GCal, GDrive, GContacts",
+ :source {:github "openclaw/gogcli"}
  :asset "gogcli_{version}_linux_amd64.tar.gz"
  :checksum "checksums.txt"
  :bins {"gog" "gog"}}

@@ -2,6 +2,7 @@
 ;; SPDX-FileCopyrightText: The breto Authors
 ;; SPDX-License-Identifier: MIT
 
-{:source {:github "pypa/pipx"}
+{:description "Install and Run Python Applications in Isolated Environments",
+ :source {:github "pypa/pipx"}
  :tag-prefix ""
  :asset "pipx.pyz"}

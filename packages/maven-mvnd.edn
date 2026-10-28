@@ -2,7 +2,8 @@
 ;; SPDX-FileCopyrightText: The breto Authors
 ;; SPDX-License-Identifier: MIT
 
-{:source {:github "apache/maven-mvnd"}
+{:description "Apache Maven Daemon",
+ :source {:github "apache/maven-mvnd"}
  :tag-prefix ""
  :asset "maven-mvnd-{tag}-linux-amd64.tar.gz"
  :bins {"mvnd" "maven-mvnd-{tag}-linux-amd64/bin/mvnd"}}

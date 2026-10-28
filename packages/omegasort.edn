@@ -2,5 +2,6 @@
 ;; SPDX-FileCopyrightText: The breto Authors
 ;; SPDX-License-Identifier: MIT
 
-{:source {:github "houseabsolute/omegasort"}
+{:description "The last text sorting tool you'll ever need",
+ :source {:github "houseabsolute/omegasort"}
  :asset "omegasort-Linux-x86_64-musl.tar.gz"}

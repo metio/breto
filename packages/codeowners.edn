@@ -2,6 +2,7 @@
 ;; SPDX-FileCopyrightText: The breto Authors
 ;; SPDX-License-Identifier: MIT
 
-{:source {:github "hmarr/codeowners"}
+{:description "Command line tool and Go library for CODEOWNERS files",
+ :source {:github "hmarr/codeowners"}
  :asset "codeowners_{version}_linux_amd64.tar.gz"
  :checksum "checksums.txt"}

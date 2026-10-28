@@ -2,5 +2,6 @@
 ;; SPDX-FileCopyrightText: The breto Authors
 ;; SPDX-License-Identifier: MIT
 
-{:source {:github "pavius/impi"}
+{:description "Verify proper golang import directives, beyond the capability of gofmt and goimports",
+ :source {:github "pavius/impi"}
  :asset "impi-{tag}-linux-amd64"}

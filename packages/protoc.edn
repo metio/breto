@@ -2,6 +2,7 @@
 ;; SPDX-FileCopyrightText: The breto Authors
 ;; SPDX-License-Identifier: MIT
 
-{:source {:github "protocolbuffers/protobuf"}
+{:description "Protocol Buffers - Google's data interchange format",
+ :source {:github "protocolbuffers/protobuf"}
  :asset "protoc-{version}-linux-x86_64.zip"
  :bins {"protoc" "bin/protoc"}}

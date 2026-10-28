@@ -2,6 +2,7 @@
 ;; SPDX-FileCopyrightText: The breto Authors
 ;; SPDX-License-Identifier: MIT
 
-{:source {:github "envoyproxy/gateway"}
+{:description "Manages Envoy Proxy as a Standalone or Kubernetes-based Application Gateway",
+ :source {:github "envoyproxy/gateway"}
  :asset "egctl_{tag}_linux_amd64.tar.gz"
  :bins {"egctl" "bin/linux/amd64/egctl"}}

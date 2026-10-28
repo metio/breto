@@ -2,6 +2,7 @@
 ;; SPDX-FileCopyrightText: The breto Authors
 ;; SPDX-License-Identifier: MIT
 
-{:source {:github "sharkdp/hyperfine"}
+{:description "A command-line benchmarking tool",
+ :source {:github "sharkdp/hyperfine"}
  :asset "hyperfine-{tag}-x86_64-unknown-linux-musl.tar.gz"
  :bins {"hyperfine" "hyperfine-{tag}-x86_64-unknown-linux-musl/hyperfine"}}

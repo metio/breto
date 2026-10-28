@@ -2,5 +2,6 @@
 ;; SPDX-FileCopyrightText: The breto Authors
 ;; SPDX-License-Identifier: MIT
 
-{:source {:github "datarootsio/tf-profile"}
+{:description "CLI tool to profile Terraform runs, written in Go",
+ :source {:github "datarootsio/tf-profile"}
  :asset "tf-profile-{tag}-linux-amd64.zip"}

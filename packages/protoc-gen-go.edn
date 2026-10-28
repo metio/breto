@@ -2,5 +2,6 @@
 ;; SPDX-FileCopyrightText: The breto Authors
 ;; SPDX-License-Identifier: MIT
 
-{:source {:github "protocolbuffers/protobuf-go"}
+{:description "Go support for Google's protocol buffers",
+ :source {:github "protocolbuffers/protobuf-go"}
  :asset "protoc-gen-go.{tag}.linux.amd64.tar.gz"}

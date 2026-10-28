@@ -2,7 +2,8 @@
 ;; SPDX-FileCopyrightText: The breto Authors
 ;; SPDX-License-Identifier: MIT
 
-{:source {:github "velero-io/velero"}
+{:description "Backup and migrate Kubernetes applications and their persistent volumes",
+ :source {:github "velero-io/velero"}
  :asset "velero-{tag}-linux-amd64.tar.gz"
  :checksum "CHECKSUM"
  :bins {"velero" "velero-{tag}-linux-amd64/velero"}}

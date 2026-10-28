@@ -2,6 +2,7 @@
 ;; SPDX-FileCopyrightText: The breto Authors
 ;; SPDX-License-Identifier: MIT
 
-{:source {:github "pseudomuto/protoc-gen-doc"}
+{:description "Documentation generator plugin for Google Protocol Buffers",
+ :source {:github "pseudomuto/protoc-gen-doc"}
  :asset "protoc-gen-doc_{version}_linux_amd64.tar.gz"
  :checksum "checksums.txt"}

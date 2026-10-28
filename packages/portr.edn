@@ -2,6 +2,7 @@
 ;; SPDX-FileCopyrightText: The breto Authors
 ;; SPDX-License-Identifier: MIT
 
-{:source {:github "amalshaji/portr"}
+{:description "Open source ngrok alternative designed for teams. Tunnel http, tcp or websocket connections",
+ :source {:github "amalshaji/portr"}
  :asset "portr_{version}_Linux_x86_64.zip"
  :checksum "checksums.txt"}

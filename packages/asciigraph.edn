@@ -2,6 +2,7 @@
 ;; SPDX-FileCopyrightText: The breto Authors
 ;; SPDX-License-Identifier: MIT
 
-{:source {:github "guptarohit/asciigraph"}
+{:description "Go package to make lightweight ASCII line graph ╭┈╯ in command line apps with no other dependencies",
+ :source {:github "guptarohit/asciigraph"}
  :asset "asciigraph_{version}_Linux_x86_64.tar.gz"
  :checksum "asciigraph_{version}_sha512-checksums.txt"}

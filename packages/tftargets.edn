@@ -2,6 +2,7 @@
 ;; SPDX-FileCopyrightText: The breto Authors
 ;; SPDX-License-Identifier: MIT
 
-{:source {:github "takaishi/tftargets"}
+{:description "A tool that analyzes Terraform configurations and identifies directories that need to be executed based on Git changes",
+ :source {:github "takaishi/tftargets"}
  :asset "tftargets_Linux_x86_64.tar.gz"
  :checksum "checksums.txt"}

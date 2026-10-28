@@ -2,5 +2,6 @@
 ;; SPDX-FileCopyrightText: The breto Authors
 ;; SPDX-License-Identifier: MIT
 
-{:source {:github "ysugimoto/gcsdeploy"}
+{:description "Deploy files to GCS like rsync",
+ :source {:github "ysugimoto/gcsdeploy"}
  :asset "gcsdeploy-linux-amd64.tar.gz"}

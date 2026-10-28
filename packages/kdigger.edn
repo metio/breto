@@ -2,6 +2,7 @@
 ;; SPDX-FileCopyrightText: The breto Authors
 ;; SPDX-License-Identifier: MIT
 
-{:source {:github "quarkslab/kdigger"}
+{:description "Kubernetes focused container assessment tool for penetration testing",
+ :source {:github "quarkslab/kdigger"}
  :asset "kdigger-linux-amd64"
  :checksum "{asset}.sha256"}

@@ -2,5 +2,6 @@
 ;; SPDX-FileCopyrightText: The breto Authors
 ;; SPDX-License-Identifier: MIT
 
-{:source {:github "kurehajime/kuzusi"}
+{:description "breakout for terminal",
+ :source {:github "kurehajime/kuzusi"}
  :asset "linux_amd64.zip"}

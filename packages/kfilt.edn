@@ -2,6 +2,7 @@
 ;; SPDX-FileCopyrightText: The breto Authors
 ;; SPDX-License-Identifier: MIT
 
-{:source {:github "ryane/kfilt"}
+{:description "kfilt can filter Kubernetes resources",
+ :source {:github "ryane/kfilt"}
  :asset "kfilt_linux_amd64"
  :checksum "checksums.txt"}

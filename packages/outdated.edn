@@ -2,7 +2,8 @@
 ;; SPDX-FileCopyrightText: The breto Authors
 ;; SPDX-License-Identifier: MIT
 
-{:source {:github "replicatedhq/outdated"}
+{:description "Kubectl plugin to find and report outdated images running in a Kubernetes cluster",
+ :source {:github "replicatedhq/outdated"}
  :asset "outdated_linux_amd64.tar.gz"
  :checksum "outdated_{version}_checksums.txt"
  :bins {"kubectl-outdated" "outdated"}}

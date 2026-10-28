@@ -2,5 +2,6 @@
 ;; SPDX-FileCopyrightText: The breto Authors
 ;; SPDX-License-Identifier: MIT
 
-{:source {:github "nil0x42/dnsanity"}
+{:description "High-performance DNS validator using template-based verification",
+ :source {:github "nil0x42/dnsanity"}
  :asset "dnsanity-linux-x64-{tag}"}

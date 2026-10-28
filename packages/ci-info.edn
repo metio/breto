@@ -2,6 +2,7 @@
 ;; SPDX-FileCopyrightText: The breto Authors
 ;; SPDX-License-Identifier: MIT
 
-{:source {:github "suzuki-shunsuke/ci-info"}
+{:description "CLI tool to get CI related information",
+ :source {:github "suzuki-shunsuke/ci-info"}
  :asset "ci-info_{version}_linux_amd64.tar.gz"
  :checksum "ci-info_{version}_checksums.txt"}

@@ -2,6 +2,7 @@
 ;; SPDX-FileCopyrightText: The breto Authors
 ;; SPDX-License-Identifier: MIT
 
-{:source {:github "cloud66-oss/copper"}
+{:description "A configuration file validator for Kubernetes",
+ :source {:github "cloud66-oss/copper"}
  :tag-prefix ""
  :asset "linux_amd64_{tag}"}

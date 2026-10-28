@@ -2,7 +2,8 @@
 ;; SPDX-FileCopyrightText: The breto Authors
 ;; SPDX-License-Identifier: MIT
 
-{:source {:github "jckuester/terradozer"}
+{:description "Terraform destroy without configuration files",
+ :source {:github "jckuester/terradozer"}
  :asset "terradozer_{version}_linux_amd64.tar.gz"
  :checksum "terradozer_{version}_checksums.txt"
  :bins {"terradozer" "terradozer_{version}_linux_amd64/terradozer"}}

@@ -2,6 +2,7 @@
 ;; SPDX-FileCopyrightText: The breto Authors
 ;; SPDX-License-Identifier: MIT
 
-{:source {:github "goreleaser/nfpm"}
+{:description "nFPM is Not FPM - a simple deb, rpm, apk, ipk, and arch linux packager written in Go",
+ :source {:github "goreleaser/nfpm"}
  :asset "nfpm_{version}_Linux_x86_64.tar.gz"
  :checksum "checksums.txt"}

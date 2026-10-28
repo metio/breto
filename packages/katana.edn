@@ -2,6 +2,7 @@
 ;; SPDX-FileCopyrightText: The breto Authors
 ;; SPDX-License-Identifier: MIT
 
-{:source {:github "projectdiscovery/katana"}
+{:description "A next-generation crawling and spidering framework",
+ :source {:github "projectdiscovery/katana"}
  :asset "katana_{version}_linux_amd64.zip"
  :checksum "katana-linux-checksums.txt"}

@@ -2,5 +2,6 @@
 ;; SPDX-FileCopyrightText: The breto Authors
 ;; SPDX-License-Identifier: MIT
 
-{:source {:github "Macchina-CLI/macchina"}
+{:description "A system information frontend with an emphasis on performance",
+ :source {:github "Macchina-CLI/macchina"}
  :asset "macchina-{tag}-linux-gnu-x86_64.tar.gz"}

@@ -2,6 +2,7 @@
 ;; SPDX-FileCopyrightText: The breto Authors
 ;; SPDX-License-Identifier: MIT
 
-{:source {:github "busser/tftree"}
+{:description "Display your Terraform module call stack in your terminal",
+ :source {:github "busser/tftree"}
  :asset "tftree_{version}_linux_amd64.tar.gz"
  :checksum "checksums.txt"}

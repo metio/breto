@@ -2,6 +2,7 @@
 ;; SPDX-FileCopyrightText: The breto Authors
 ;; SPDX-License-Identifier: MIT
 
-{:source {:github "minamijoyo/tfupdate"}
+{:description "Update version constraints in your Terraform configurations",
+ :source {:github "minamijoyo/tfupdate"}
  :asset "tfupdate_{version}_linux_amd64.tar.gz"
  :checksum "tfupdate_{version}_checksums.txt"}

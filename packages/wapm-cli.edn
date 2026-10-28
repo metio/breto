@@ -2,6 +2,7 @@
 ;; SPDX-FileCopyrightText: The breto Authors
 ;; SPDX-License-Identifier: MIT
 
-{:source {:github "wasmerio/wapm-cli"}
+{:description "WebAssembly Package Manager (CLI)",
+ :source {:github "wasmerio/wapm-cli"}
  :asset "wapm-cli-linux-amd64.tar.gz"
  :bins {"wapm" "bin/wapm", "wax" "bin/wax"}}

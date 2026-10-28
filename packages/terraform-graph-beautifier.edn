@@ -2,6 +2,7 @@
 ;; SPDX-FileCopyrightText: The breto Authors
 ;; SPDX-License-Identifier: MIT
 
-{:source {:github "pcasteran/terraform-graph-beautifier"}
+{:description "Terraform graph beautifier",
+ :source {:github "pcasteran/terraform-graph-beautifier"}
  :asset "terraform-graph-beautifier_{version}_linux_amd64.tar.gz"
  :checksum "checksums.txt"}

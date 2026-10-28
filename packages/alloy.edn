@@ -2,7 +2,8 @@
 ;; SPDX-FileCopyrightText: The breto Authors
 ;; SPDX-License-Identifier: MIT
 
-{:source {:github "grafana/alloy"}
+{:description "OpenTelemetry Collector distribution with programmable pipelines",
+ :source {:github "grafana/alloy"}
  :asset "alloy-linux-amd64.zip"
  :checksum "SHA256SUMS"
  :bins {"alloy" "alloy-linux-amd64"}}

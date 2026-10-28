@@ -2,7 +2,8 @@
 ;; SPDX-FileCopyrightText: The breto Authors
 ;; SPDX-License-Identifier: MIT
 
-{:source {:github "thestormforge/optimize-controller"}
+{:description "Release with Confidence",
+ :source {:github "thestormforge/optimize-controller"}
  :asset "stormforge-linux-amd64.tar.gz"
  :checksum "checksums.txt"
  :bins {"stormforge" "stormforge"}}

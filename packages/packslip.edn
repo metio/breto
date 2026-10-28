@@ -2,6 +2,7 @@
 ;; SPDX-FileCopyrightText: The breto Authors
 ;; SPDX-License-Identifier: MIT
 
-{:source {:github "jdx/packslip"}
+{:description "A signed release manifest for vendor binaries",
+ :source {:github "jdx/packslip"}
  :asset "packslip-{tag}-linux-x64.tar.xz"
  :bins {"packslip" "packslip-{tag}-linux-x64/packslip"}}

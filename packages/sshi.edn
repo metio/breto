@@ -2,7 +2,8 @@
 ;; SPDX-FileCopyrightText: The breto Authors
 ;; SPDX-License-Identifier: MIT
 
-{:source {:github "aakso/ssh-inscribe"}
+{:description "SSH CA Client/Server",
+ :source {:github "aakso/ssh-inscribe"}
  :tag-prefix ""
  :asset "sshi-linux-x86_64"
  :checksum "checksums.txt"}

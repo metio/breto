@@ -2,5 +2,6 @@
 ;; SPDX-FileCopyrightText: The breto Authors
 ;; SPDX-License-Identifier: MIT
 
-{:source {:github "elkowar/pipr"}
+{:description "A tool to interactively write shell pipelines",
+ :source {:github "elkowar/pipr"}
  :asset "pipr"}

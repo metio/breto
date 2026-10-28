@@ -2,6 +2,7 @@
 ;; SPDX-FileCopyrightText: The breto Authors
 ;; SPDX-License-Identifier: MIT
 
-{:source {:github "mergestat/mergestat-lite"}
+{:description "Query git repositories with SQL. Generate reports, perform status checks, analyze codebases",
+ :source {:github "mergestat/mergestat-lite"}
  :asset "mergestat-linux-amd64.tar.gz"
  :bins {"mergestat" "mergestat"}}

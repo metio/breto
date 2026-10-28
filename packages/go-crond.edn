@@ -2,6 +2,7 @@
 ;; SPDX-FileCopyrightText: The breto Authors
 ;; SPDX-License-Identifier: MIT
 
-{:source {:github "webdevops/go-crond"}
+{:description "Cron daemon written in golang (for eg. usage in docker images)",
+ :source {:github "webdevops/go-crond"}
  :tag-prefix ""
  :asset "go-crond.linux.amd64"}

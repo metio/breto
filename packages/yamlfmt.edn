@@ -2,6 +2,7 @@
 ;; SPDX-FileCopyrightText: The breto Authors
 ;; SPDX-License-Identifier: MIT
 
-{:source {:github "google/yamlfmt"}
+{:description "An extensible command line tool or library to format yaml files",
+ :source {:github "google/yamlfmt"}
  :asset "yamlfmt_{version}_Linux_x86_64.tar.gz"
  :checksum "checksums.txt"}

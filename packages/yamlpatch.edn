@@ -2,6 +2,7 @@
 ;; SPDX-FileCopyrightText: The breto Authors
 ;; SPDX-License-Identifier: MIT
 
-{:source {:github "int128/yamlpatch"}
+{:description "Apply JSON Patch to YAML Document preserving positions and comments",
+ :source {:github "int128/yamlpatch"}
  :asset "yamlpatch_{tag}_linux_amd64.tar.gz"
  :checksum "checksums.txt"}

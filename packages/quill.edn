@@ -2,6 +2,7 @@
 ;; SPDX-FileCopyrightText: The breto Authors
 ;; SPDX-License-Identifier: MIT
 
-{:source {:github "anchore/quill"}
+{:description "Simple mac binary signing from any platform",
+ :source {:github "anchore/quill"}
  :asset "quill_{version}_linux_amd64.tar.gz"
  :checksum "quill_{version}_checksums.txt"}

@@ -2,6 +2,7 @@
 ;; SPDX-FileCopyrightText: The breto Authors
 ;; SPDX-License-Identifier: MIT
 
-{:source {:github "ctxrs/ctx"}
+{:description "Search the coding agent history already on your machine",
+ :source {:github "ctxrs/ctx"}
  :asset "ctx-linux-x64"
  :checksum "SHA256SUMS"}

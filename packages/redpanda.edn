@@ -2,7 +2,8 @@
 ;; SPDX-FileCopyrightText: The breto Authors
 ;; SPDX-License-Identifier: MIT
 
-{:source {:github "redpanda-data/redpanda"}
+{:description "Redpanda is a streaming data platform for developers. Kafka API compatible. 10x faster. No ZooKeeper. No JVM",
+ :source {:github "redpanda-data/redpanda"}
  :asset "rpk-linux-amd64.zip"
  :checksum "rpk_{version}_checksums.txt"
  :bins {"rpk" "rpk"}}

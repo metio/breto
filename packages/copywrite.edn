@@ -2,6 +2,7 @@
 ;; SPDX-FileCopyrightText: The breto Authors
 ;; SPDX-License-Identifier: MIT
 
-{:source {:github "hashicorp/copywrite"}
+{:description "Automate copyright headers and license files at scale",
+ :source {:github "hashicorp/copywrite"}
  :asset "copywrite_{version}_linux_x86_64.tar.gz"
  :checksum "SHA256SUMS"}

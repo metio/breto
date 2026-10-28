@@ -2,6 +2,7 @@
 ;; SPDX-FileCopyrightText: The breto Authors
 ;; SPDX-License-Identifier: MIT
 
-{:source {:github "juicedata/juicefs"}
+{:description "JuiceFS is a distributed POSIX file system built on top of Redis and S3",
+ :source {:github "juicedata/juicefs"}
  :asset "juicefs-{version}-linux-amd64.tar.gz"
  :checksum "checksums.txt"}
