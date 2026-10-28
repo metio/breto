@@ -12,8 +12,11 @@
   (:import (java.time Instant)))
 
 (defn github-probes [io]
-  {:repo (fn [repo] (github/repo-info io repo))
-   :assets (fn [repo tag] (:assets (github/release io repo tag)))})
+  (let [release (memoize (fn [repo tag] (github/release io repo tag)))]
+    {:repo (fn [repo] (github/repo-info io repo))
+     :assets (fn [repo tag] (:assets (release repo tag)))
+     :published (fn [repo tag] (:published_at (release repo tag)))
+     :now #(Instant/now)}))
 
 (defn- probe [probes k & args]
   (when-let [f (get probes k)]
@@ -91,15 +94,33 @@
   "A map of :summary, :facts and :advice for one failure."
   (fn [data _] (:breto/problem data)))
 
+(def ^:private upload-window-hours
+  "How long after publishing a release breto takes a missing asset as one
+  upstream has not uploaded yet. Projects with many build jobs publish the
+  release first and attach each build when its job finishes."
+  24)
+
+(defn- minutes-since [published now]
+  (try (.toMinutes (java.time.Duration/between (Instant/parse published) now))
+       (catch Exception _ nil)))
+
 (defn- missing-asset
   "The explanation for a release without the expected asset, given the names
-  of the assets it has."
-  [{:keys [asset tag version repo names fact]}]
-  (let [near (closest asset names 3)]
-    {:summary (str "The release " tag " has no asset named " asset ".")
+  of the assets it has and, from `probes`, when it was published."
+  [{:keys [asset tag version repo names fact]} probes]
+  (let [near (closest asset names 3)
+        age (when repo
+              (when-let [published (probe probes :published repo tag)]
+                (some-> (probe probes :now) (->> (minutes-since published)))))
+        fresh? (and age (< age (* 60 upload-window-hours)))]
+    {:summary (str "The release " tag " has no asset named " asset
+                   (when fresh? (str "; it was published " (if (< age 120) (str age " minutes") (str (quot age 60) " hours")) " ago")) ".")
      :facts (cond-> [fact]
               (seq near) (conj (str "Closest assets in " tag ": " (str/join ", " near))))
      :advice (cond-> []
+               fresh?
+               (conj (str "Upstream may still be uploading its builds. If the previous release has its asset under the same :asset"
+                          " template, nothing needs to change: a later run installs " version " once the asset appears."))
                (seq near)
                (conj (str "If upstream renamed the asset, set :asset to "
                           (pr-str (as-template (first near) {:tag tag :version version})) "."))
@@ -159,7 +180,8 @@
       (and (= :download stage) (= 404 status))
       (missing-asset {:asset asset :tag tag :version version :repo repo
                       :names (when repo (map :name (probe probes :assets repo tag)))
-                      :fact (str "GET " url " returned 404")})
+                      :fact (str "GET " url " returned 404")}
+                     probes)
 
       (and (= :verify stage) (= 404 status))
       (let [assets (when repo (probe probes :assets repo tag))
@@ -350,9 +372,10 @@
             "Under systemd the command runs without your interactive session; a password manager may need its agent or an unlocked store."
             "Remove :token-command to fall back to 60 unauthenticated requests an hour."]})
 
-(defmethod explain :asset-missing [{:keys [asset tag version repo assets]} _]
+(defmethod explain :asset-missing [{:keys [asset tag version repo assets]} probes]
   (missing-asset {:asset asset :tag tag :version version :repo repo :names assets
-                  :fact (str "The release lists " (count assets) " assets, none named " asset)}))
+                  :fact (str "The release lists " (count assets) " assets, none named " asset)}
+                 probes))
 
 (defmethod explain :unverifiable [{:keys [package version asset tag assets]} _]
   (let [sums (filter #(re-find checksum-like %) assets)]

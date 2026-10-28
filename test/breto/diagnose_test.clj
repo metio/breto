@@ -80,6 +80,25 @@
     (is (str/includes? text "--no-verify"))
     (is (not (str/includes? text "Set :checksum")))))
 
+(deftest assets-missing-from-a-fresh-release-are-taken-as-still-uploading
+  (let [data {:breto/problem :http-status :status 404 :stage :download :source {:github "VSCodium/vscodium"}
+              :repo "VSCodium/vscodium" :tag "1.143.17232" :version "1.143.17232"
+              :asset "VSCodium-linux-x64-1.143.17232.tar.gz"
+              :url "https://github.com/VSCodium/vscodium/releases/download/1.143.17232/VSCodium-linux-x64-1.143.17232.tar.gz"}
+        probes (fn [published now]
+                 {:assets (fn [_ _] [{:name "vscodium-reh-linux-x64-1.143.17232.tar.gz"}])
+                  :published (fn [_ _] published)
+                  :now (constantly (java.time.Instant/parse now))})
+        fresh (diagnose/diagnose (ex-info "404" data) (probes "2026-10-28T08:54:31Z" "2026-10-28T09:25:00Z"))
+        old (diagnose/diagnose (ex-info "404" data) (probes "2026-10-25T08:54:31Z" "2026-10-28T09:25:00Z"))]
+    (is (str/ends-with? (:summary fresh) "it was published 30 minutes ago."))
+    (is (str/starts-with? (first (:advice fresh)) "Upstream may still be uploading its builds."))
+    (is (not (str/includes? (:summary old) "published")))
+    (is (not-any? #(str/includes? % "still uploading") (:advice old)))
+    (testing "a release published hours ago"
+      (is (str/includes? (:summary (diagnose/diagnose (ex-info "404" data) (probes "2026-10-28T02:00:00Z" "2026-10-28T09:25:00Z")))
+                         "published 7 hours ago")))))
+
 (deftest rejected-tokens-are-named
   (let [d (diagnose/diagnose (ex-info "x" {:breto/problem :http-status :status 401 :stage :verify
                                            :url "https://api.github.com/repos/a/b/releases/tags/v1"})
