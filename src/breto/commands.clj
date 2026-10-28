@@ -15,6 +15,7 @@
             [breto.hooks :as hooks]
             [breto.install :as install]
             [breto.lockfile :as lockfile]
+            [breto.package :as package]
             [breto.registry :as registry]
             [breto.report :as report]
             [breto.search :as search]
@@ -96,9 +97,12 @@
     (batch/run-batch io (vec (cosign-first registry specs))
                      ((pacer ctx progress transferred)
                       (fn [spec]
-                        (let [[name version] (batch/split-spec spec)]
-                          (installed-result name (install/install! config io (registry/lookup registry name)
-                                                                   (install-one name version))))))
+                        (let [[name version] (batch/split-spec spec)
+                              pkg (registry/lookup registry name)
+                              result (installed-result name (install/install! config io pkg (install-one name version)))]
+                          (if-let [warning (package/superseded-warning pkg)]
+                            (clojure.core/update result :warnings (fnil conj []) warning)
+                            result))))
                      progress)))
 
 (defn- installing

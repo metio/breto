@@ -153,3 +153,31 @@
       (is (= ["beta@0.9.0"] (:missing (ex-data e))))
       (is (str/includes? (first (:advice (diagnose/diagnose e {}))) "eval \"$(breto env)\"")))
     (is (not (fs/exists? (path "store" "beta"))))))
+
+(deftest installing-a-superseded-package-warns
+  (let [io (world)]
+    (s/define! "alpha" {:source {:github "acme/alpha"} :asset "alpha" :verify false :superseded-by "beta"})
+    (let [{:keys [code out]} (s/breto! (assoc config :env-dir (path "envs")) ["install" "alpha"] {:io io})]
+      (is (= 0 code))
+      (is (str/includes? out "[WARN] alpha: superseded by beta")))))
+
+(deftest a-shared-group-pins-the-versions-of-projects
+  (let [io (world)
+        shared (path "shared")]
+    (fs/create-dirs shared)
+    (spit (str (fs/path shared "@toolchain.edn")) (pr-str {:members ["alpha@0.9.0" "beta@1.0.0"]}))
+    (project! "app" ["@toolchain"])
+    (let [env! (fn [] (let [err (java.io.StringWriter.)
+                            result (binding [*err* err]
+                                     (s/breto! (assoc config :env-dir (path "envs") :registries [(path "packages") shared])
+                                               ["env" "--dir" (path "app")] {:io io}))]
+                        (assoc result :err (str err))))
+          bin #(first (str/split (exported-path (:out %)) #":"))
+          first-run (env!)]
+      (is (= 0 (:code first-run)) (:err first-run))
+      (is (= "#!/bin/sh\necho alpha 0.9.0\n" (slurp (str (fs/path (bin first-run) "alpha")))))
+      (testing "a new version in the shared group reaches the project on its next env"
+        (spit (str (fs/path shared "@toolchain.edn")) (pr-str {:members ["alpha@1.0.0" "beta@1.0.0"]}))
+        (let [second-run (env!)]
+          (is (= 0 (:code second-run)) (:err second-run))
+          (is (= "#!/bin/sh\necho alpha 1.0.0\n" (slurp (str (fs/path (bin second-run) "alpha"))))))))))

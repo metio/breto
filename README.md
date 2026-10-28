@@ -192,6 +192,7 @@ A package is a file `<name>.edn` in a registry directory, and its file name is t
 | Key | Meaning | Default |
 | --- | --- | --- |
 | `:description` | One line about the tool, shown and searched by `breto search` and `breto install`. | none |
+| `:superseded-by` | The package that replaces this one, such as a maintained fork. `install`, `update`, `sync` and `env` warn when they install the package, `breto search` marks it, and `breto doctor` lists configured packages it applies to. breto never switches to the successor itself, because its commands may have other names. | none |
 | `:source` | Where releases are discovered; see below. | required |
 | `:replace` | In an overlay, replaces the earlier definition of the name instead of merging over it; see [Overlays](#overlays). | `false` |
 | `:asset` | Template for the file name to download. | required |

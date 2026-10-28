@@ -234,6 +234,18 @@
         (check :ok (str "The last breto " command " succeeded") (report/heading run))))
     [(check :ok "No previous run recorded" (report/state-path))]))
 
+(defn superseded-check
+  "Configured packages whose definitions name a successor."
+  [{:keys [packages]} registry]
+  (let [superseded (for [name packages
+                         :let [successor (get-in registry [name :superseded-by])]
+                         :when successor]
+                     (str name " by " successor (when-not (contains? registry successor) " (no definition)")))]
+    (if (empty? superseded)
+      (check :ok "No configured package is superseded" (str (count packages) " configured"))
+      (check :warn "Configured packages are superseded" (str/join ", " superseded)
+             "Install the successor, check that scripts call its commands, then replace the name under :packages."))))
+
 (defn unconfigured-check [{:keys [packages prune] :as config}]
   (let [extra (store/prune-candidates (store/installed-packages config) packages)]
     (cond
@@ -247,7 +259,8 @@
           (dirs-check config)
           (config-check config-path config registry)
           (store-check config registry)
-          [(unconfigured-check config)
+          [(superseded-check config registry)
+           (unconfigured-check config)
            (unverified-check config registry)
            (signature-check config registry #(some-> (fs/which %) str))
            (hooks-check config (System/getProperty "os.name") #(some-> (fs/which %) str))

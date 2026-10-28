@@ -72,3 +72,11 @@
       (is (some #(str/includes? % "installs cosign first") (:advice pending))))
     (is (= :fail (:level (doctor/signature-check {:packages ["cosign" "kyverno"] :cosign "/opt/c"} registry (constantly nil)))))
     (is (= :ok (:level (doctor/signature-check {:packages ["kyverno"] :cosign "/opt/c"} registry {"/opt/c" "/opt/c"}))))))
+
+(deftest superseded-packages-are-listed
+  (is (= :ok (:level (doctor/superseded-check {:packages ["eza"]} {"eza" {:name "eza"}}))))
+  (let [{:keys [level detail]} (doctor/superseded-check {:packages ["exa" "gitleaks" "@group"]}
+                                                       {"exa" {:superseded-by "eza"} "eza" {}
+                                                        "gitleaks" {:superseded-by "betterleaks"}})]
+    (is (= :warn level))
+    (is (= "exa by eza, gitleaks by betterleaks (no definition)" detail))))

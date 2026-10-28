@@ -4,4 +4,5 @@
 {:description "Find secrets with Gitleaks",
  :source {:github "gitleaks/gitleaks"},
  :asset "gitleaks_{version}_linux_x64.tar.gz",
- :checksum "gitleaks_{version}_checksums.txt"}
+ :checksum "gitleaks_{version}_checksums.txt",
+ :superseded-by "betterleaks"}

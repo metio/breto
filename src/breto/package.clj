@@ -105,6 +105,9 @@
     (not (string? (:description pkg "")))
     (conj ":description must be a string")
 
+    (and (contains? pkg :superseded-by) (not (and (string? (:superseded-by pkg)) (not (str/blank? (:superseded-by pkg))))))
+    (conj ":superseded-by must name the package that replaces this one")
+
     (not (and (sequential? (:man pkg [])) (every? relative-path? (:man pkg []))))
     (conj ":man must be a vector of relative paths or globs inside the release, without ..")
 
@@ -118,6 +121,12 @@
                      (contains? #{nil :asset :checksum} of)
                      (or (not= :checksum of) (:checksum pkg))))))
     (conj ":signature needs :bundle, :issuer and :identity or :identity-regexp; :of is :asset or :checksum, which needs :checksum")))
+
+(defn superseded-warning
+  "The warning for a package whose definition names a successor, or nil."
+  [{:keys [superseded-by]}]
+  (when superseded-by
+    (str "superseded by " superseded-by ", which breto install " superseded-by " installs; its commands may have other names")))
 
 (defn- complete
   "Fills in defaults and validates one flat definition."

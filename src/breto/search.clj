@@ -30,7 +30,11 @@
 (defn row
   "One tab-separated line per package: name, description, origin."
   [pkg]
-  (str/join "\t" [(:name pkg) (one-line (:description pkg)) (one-line (origin pkg))]))
+  (let [description (one-line (:description pkg))
+        description (if-let [successor (:superseded-by pkg)]
+                      (str/triml (str description " (superseded by " successor ")"))
+                      description)]
+    (str/join "\t" [(:name pkg) description (one-line (origin pkg))])))
 
 (def ^:private finders ["fzf" "sk"])
 

@@ -152,3 +152,9 @@
   (is (= :ok (:level (doctor/finder-check {:finder :auto :bin-dir (path "bin")} #(when (= "sk" %) "/usr/bin/sk")))))
   (is (= :warn (:level (doctor/finder-check {:finder :auto :bin-dir (path "bin")} (constantly nil)))))
   (is (str/includes? (:detail (doctor/finder-check {:finder ["peco"]} (constantly nil))) "peco from :finder")))
+
+(deftest superseded-packages-are-marked
+  (is (= "exa\tls replacement (superseded by eza)\togham/exa"
+         (search/row {:name "exa" :description "ls replacement" :source {:github "ogham/exa"} :superseded-by "eza"})))
+  (is (= "exa\t(superseded by eza)\togham/exa"
+         (search/row {:name "exa" :source {:github "ogham/exa"} :superseded-by "eza"}))))
