@@ -114,3 +114,12 @@
     (is (= 1 code))
     (is (str/includes? out "[FAIL] The definitions do not load"))
     (is (str/includes? out "No registry defines a group called @suiet"))))
+
+(deftest pinned-members-are-compared-with-their-pin
+  (let [io (world)]
+    (group! "packages" "pinned" {:members ["a@0.9.0" "b@1.0.0"]})
+    (let [{:keys [out]} (s/breto! {:packages []} ["outdated" "@pinned"] {:io io})]
+      (is (str/includes? out "a\t0.9.0 -> 1.0.0"))
+      (is (str/includes? out "1 up to date")))
+    (testing "check looks the members up by name"
+      (is (not (str/includes? (:out (s/breto! {:packages []} ["check" "@pinned"] {:io io})) "unknown package"))))))

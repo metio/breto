@@ -339,14 +339,18 @@
                                    (merge {:version (get-in config [:pins name]) :verify? (:verify opts true)} (locked ctx name))))]
     (batch/finish! "update" (into results (when (empty? args) (refresh-projects ctx "update"))))))
 
-(defn outdated [{:keys [config registry io] :as ctx} args]
+(defn outdated
+  "The packages whose latest release differs from the active version, or from
+  the version a group or argument pins."
+  [{:keys [config registry io] :as ctx} args]
   (let [progress (tracker ctx "outdated")]
     (batch/finish! "outdated"
                    (batch/run-batch io (targets ctx args)
                                     ((pacer ctx progress (atom 0))
-                                     (fn [name]
+                                     (fn [spec]
                                        (progress {:type :stage :stage :resolve})
-                                       (let [active (store/current-version config name)
+                                       (let [[name pinned] (batch/split-spec spec)
+                                             active (or pinned (store/current-version config name))
                                              latest (:version (install/with-stage :resolve {:package name}
                                                                 #(source/newest (registry/lookup registry name) io)))]
                                          {:package name :version latest :from active
@@ -358,9 +362,8 @@
   the registries, against their latest release without downloading it."
   [{:keys [registry opts io] :as ctx} args]
   (let [progress (tracker ctx "check")
-        names (cond (seq args) (targets ctx args)
-                    (:all opts) (sort (keys registry))
-                    :else (targets ctx args))
+        names (cond (:all opts) (sort (keys registry))
+                    :else (distinct (map (comp first batch/split-spec) (targets ctx args))))
         io (assoc io :progress progress)]
     (batch/finish! "check"
                    (batch/run-batch io names

@@ -78,7 +78,7 @@ Configure `:token-command`, or set `GITHUB_TOKEN` or `GH_TOKEN`, to raise GitHub
 | `breto use PKG VERSION` | Activates a version that is already installed. |
 | `breto use PKG --previous` | Rolls back to the newest installed version older than the active one. For a configured package it prints the `:pins` entry that keeps the next `update` from switching back. |
 | `breto update [PKG...]` | Installs and activates the latest, or pinned, version. |
-| `breto outdated [PKG...]` | Packages whose latest release is not the active version. |
+| `breto outdated [PKG...]` | Packages whose latest release is not the active version, or not the version a group member or `PKG@VERSION` pins. |
 | `breto check [PKG...] [--all]` | Checks each configured package, or every package of the registries with `--all`, against its latest release without downloading it: the asset must exist and a GitHub digest, a checksum file or `:verify false` must cover it. Run it after editing definitions, or before a scheduled update. |
 | `breto gc [PKG...] [--keep N]` | Deletes all but the N most recently installed versions. The active version is always kept. Also removes what killed installs left behind. With `:prune true` and no package named, also uninstalls unconfigured packages. |
 | `breto uninstall PKG...` | Deletes a package with every link into it. |
