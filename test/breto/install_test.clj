@@ -233,11 +233,12 @@
 (deftest present-versions-are-activated-without-a-download
   (let [cfg (config)
         io {:get-text (fn [url _]
-                        (is (= "https://github.com/kubernetes-sigs/kind/releases/latest" url))
-                        "{\"tag_name\":\"v0.33.0\"}")
+                        (if (= "https://github.com/kubernetes-sigs/kind/releases/latest" url)
+                          "{\"tag_name\":\"v0.33.0\"}"
+                          (throw (ex-info (str "GET " url " returned 404") {:breto/problem :http-status :status 404}))))
             :download! (fn [& _] (throw (ex-info "downloaded" {})))}]
     (stored-version! cfg "kind" "0.33.0" {"kind" "stored"})
-    (is (= {:version "0.33.0" :installed? false :verified? false} (dissoc (install/install! cfg io raw-tool {}) :sha256)))
+    (is (= {:version "0.33.0" :installed? false :verified? false} (install/install! cfg io raw-tool {})))
     (is (= "stored" (slurp (str (fs/path (:bin-dir cfg) "kind")))))))
 
 (deftest incomplete-versions-are-reinstalled

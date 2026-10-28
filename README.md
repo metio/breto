@@ -90,7 +90,7 @@ A daily or weekly `breto update && breto gc` from a systemd timer or cron job ke
 
 With `:lockfile` set, `install`, `update`, `use`, `gc` and `uninstall` rewrite the file afterwards: one line per configured package with its active version, the SHA-256 of the download it came from, and the asset name. Comment lines at its top, such as a license header, are kept. A package that is not active on this machine keeps its entry, so a failed install never drops it.
 
-`breto update --locked` installs the locked version of each configured package instead of the latest, and refuses a download whose hash differs from the locked one. This also covers releases that upstream publishes without checksums: once one machine installed them, every other one gets the same bytes. Versions installed before hashes were recorded have an entry without `:sha256` until they are installed again.
+`breto update --locked` installs the locked version of each configured package instead of the latest, and refuses a download whose hash differs from the locked one. This also covers releases that upstream publishes without checksums: once one machine installed them, every other one gets the same bytes. A version installed before breto recorded hashes gets one on the next `install` or `update` that finds it up to date: breto looks up the hash upstream publishes for that asset, the GitHub digest or the checksum-file entry its verified download had to match, and records it. The lookup costs one request per version, once; when it fails, a later run tries again. A version installed without verification has no upstream hash and keeps an entry without `:sha256` until it is installed again.
 
 ## Hooks
 

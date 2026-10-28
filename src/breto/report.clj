@@ -49,7 +49,7 @@
   {:digest "verifiable by its GitHub digest" :checksum "verifiable by its checksum file"
    :none "installs unverified, as its definition says"})
 
-(defn- line [{:keys [package status version from links unverified signed signature-bootstrap verified-by]}]
+(defn- line [{:keys [package status version from links unverified signed signature-bootstrap hash-recorded verified-by]}]
   (case status
     :checked (str "[OK] " package " " version " " (verification verified-by)
                   (when signed ", signature bundle present"))
@@ -57,6 +57,7 @@
                     (cond unverified " without verification"
                           signed " with a verified signature"
                           signature-bootstrap " by its checksum; no cosign existed yet to check its signature"))
+    :current (when hash-recorded (str "[OK] " package " " version " is up to date; recorded upstream's hash for the lock file"))
     :removed (str "[OK] " package " removed" (when (seq links) (str " with " (count links) " links")))
     :would-remove (str package " would be removed" (when (seq links) (str " with links " (str/join ", " links))))
     :outdated (str package "\t" (or from "-") " -> " version)

@@ -6,6 +6,7 @@
             [breto.archive :as archive]
             [breto.checksum :as checksum]
             [breto.github :as github]
+            [breto.log :as log]
             [breto.package :as package]
             [breto.signature :as signature]
             [breto.source :as source]
@@ -134,6 +135,21 @@
                              {:breto/problem :no-checksum :package (:name pkg) :asset (:asset artifact)}))))))
     {:file file :signed? (= :checked @outcome) :bootstrap? (= :bootstrap @outcome)}))
 
+(defn- record-upstream-hash!
+  "Records the hash upstream publishes for an installed version that has none
+  yet, which is the hash its verified download had to match. Returns it, or
+  nil when there is none or the lookup fails, so a later run tries again."
+  [config pkg io release artifact]
+  (let [meta (store/read-meta config (:name pkg) (:version release))]
+    (when-not (:sha256 meta)
+      (when-let [sha256 (try (expected-hash pkg io release artifact)
+                             (catch Exception e
+                               (log/debug "no upstream hash for" (:name pkg) (:version release) (ex-message e))
+                               nil))]
+        (store/write-meta! config (:name pkg) (:version release)
+                           (merge meta {:sha256 sha256 :asset (:asset artifact) :sha256-source :upstream}))
+        sha256))))
+
 (defn- place!
   "Copies what `pkg` keeps from the unpacked archive into `dest`."
   [{:keys [layout] :as pkg} artifact unpacked dest]
@@ -157,8 +173,9 @@
   or the definition for that version says `:verify false`; `expect-sha256`,
   from a lock file, must match it in any case. Returns {:version v
   :installed? bool :verified? bool :sha256 hex}, the hash only for a fresh
-  install, :signed? when a signature was checked, and :bootstrap? when cosign
-  itself was installed before any cosign could check it. Failures carry the stage and release they happened in."
+  install, :signed? when a signature was checked, :bootstrap? when cosign
+  itself was installed before any cosign could check it, and :hash-recorded?
+  when an installed version without a recorded hash got upstream's. Failures carry the stage and release they happened in."
   [config io pkg {:keys [version activate? verify? expect-sha256] :or {activate? true verify? true}}]
   (let [context {:package (:name pkg) :repo (package/repo pkg) :source (:source pkg)}
         release (staged io :resolve context #(resolve-release pkg io version))
@@ -201,10 +218,13 @@
                          (fs/delete package-dir))))))]
     (when activate?
       (staged io :activate context #(store/activate! config pkg bin-paths version)))
-    (cond-> {:version version :installed? fresh? :verified? (and fresh? verify?)}
-      sha256 (assoc :sha256 sha256)
-      signed? (assoc :signed? true)
-      bootstrap? (assoc :bootstrap? true))))
+    (let [recorded (when (and (not fresh?) verify?)
+                     (record-upstream-hash! config pkg io release artifact))]
+      (cond-> {:version version :installed? fresh? :verified? (and fresh? verify?)}
+        sha256 (assoc :sha256 sha256)
+        signed? (assoc :signed? true)
+        bootstrap? (assoc :bootstrap? true)
+        recorded (assoc :hash-recorded? true)))))
 
 (defn use!
   "Activates an already installed version."

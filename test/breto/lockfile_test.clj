@@ -7,7 +7,7 @@
             [breto.lockfile :as lockfile]
             [breto.support :as s :refer [path]]
             [clojure.string :as str]
-            [clojure.test :refer [deftest is use-fixtures]]))
+            [clojure.test :refer [deftest is testing use-fixtures]]))
 
 (use-fixtures :each s/with-root)
 
@@ -57,6 +57,55 @@
     (s/breto! {:packages ["kind" "absent"] :lockfile (path "breto.lock")} ["update"] {:io io})
     (is (= (str ";; header\n{\"kind\" {:version \"0.33.0\" :sha256 \"" (s/sha256 binary) "\" :asset \"kind-linux-amd64\"}}\n")
            (slurp (path "breto.lock"))))))
+
+(defn- forget-hash!
+  "Removes the recorded metadata of kind 0.33.0, as for a version installed
+  before hashes were recorded."
+  []
+  (fs/delete (path "store" "kind" ".meta-0.33.0.edn")))
+
+(deftest up-to-date-versions-without-a-hash-get-upstreams
+  (let [{:keys [binary io]} (kind-world)
+        config {:packages ["kind"] :lockfile (path "breto.lock")}]
+    (s/breto! config ["update"] {:io io})
+    (forget-hash!)
+    (spit (path "breto.lock") "{}\n")
+    (let [{:keys [code out]} (s/breto! config ["update"] {:io io})]
+      (is (= 0 code))
+      (is (str/includes? out "[OK] kind 0.33.0 is up to date; recorded upstream's hash for the lock file"))
+      (is (str/includes? out "1 up to date")))
+    (is (= {:sha256 (s/sha256 binary) :asset "kind-linux-amd64" :sha256-source :upstream}
+           (read-string (slurp (path "store" "kind" ".meta-0.33.0.edn")))))
+    (is (str/includes? (slurp (path "breto.lock")) (s/sha256 binary)))
+    (testing "the next run has nothing left to record"
+      (let [{:keys [out]} (s/breto! config ["update"] {:io io})]
+        (is (not (str/includes? out "recorded upstream's hash")))))))
+
+(deftest failed-hash-lookups-leave-the-update-alone
+  (let [{:keys [io]} (kind-world)
+        config {:packages ["kind"] :lockfile (path "breto.lock")}]
+    (s/breto! config ["update"] {:io io})
+    (forget-hash!)
+    (let [offline (assoc io :get-text (fn [url headers]
+                                        (if (str/ends-with? url "/latest")
+                                          ((:get-text io) url headers)
+                                          (throw (ex-info "GET returned 503" {:breto/problem :http-status :status 503})))))
+          {:keys [code out]} (s/breto! config ["update"] {:io offline})]
+      (is (= 0 code))
+      (is (str/includes? out "1 up to date"))
+      (is (not (fs/exists? (path "store" "kind" ".meta-0.33.0.edn")))))))
+
+(deftest unverified-versions-get-no-upstream-hash
+  (let [{:keys [io]} (kind-world)
+        requests (atom [])
+        config {:packages ["kind"]}]
+    (s/breto! config ["update"] {:io io})
+    (forget-hash!)
+    (s/define! "kind" {:source {:github "kubernetes-sigs/kind"} :asset "kind-linux-amd64"
+                       :checksum "{asset}.sha256sum" :verify false})
+    (s/breto! config ["update"] {:io (assoc io :get-text (fn [url headers] (swap! requests conj url) ((:get-text io) url headers)))})
+    (is (= ["https://github.com/kubernetes-sigs/kind/releases/latest"] @requests))
+    (is (not (fs/exists? (path "store" "kind" ".meta-0.33.0.edn"))))))
 
 (deftest locked-updates-install-the-locked-version-and-hash
   (let [{:keys [binary io]} (kind-world)]

@@ -54,11 +54,12 @@
                  (batch/counting-down progress sleep-second!)
                  f)))
 
-(defn- installed-result [name {:keys [version installed? verified? signed? bootstrap?]}]
+(defn- installed-result [name {:keys [version installed? verified? signed? bootstrap? hash-recorded?]}]
   (cond-> {:package name :version version :status (if installed? :installed :current)}
     (and installed? (not verified?)) (assoc :unverified true)
     signed? (assoc :signed true)
-    bootstrap? (assoc :signature-bootstrap true)))
+    bootstrap? (assoc :signature-bootstrap true)
+    hash-recorded? (assoc :hash-recorded true)))
 
 (defn- cosign-first
   "`specs` with the packages that provide cosign moved to the front, so that
