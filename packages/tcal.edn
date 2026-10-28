@@ -2,4 +2,8 @@
 ;; SPDX-License-Identifier: 0BSD
 
 {:source {:github "pimalaya/tcal"}
- :asset "tcal.x86_64-linux.tgz"}
+ :asset "tcal.x86_64-linux.tgz",
+ :man ["share/man/*.1.gz"],
+ :completions {:bash "share/completions/tcal.bash",
+               :zsh "share/completions/_tcal",
+               :fish "share/completions/tcal.fish"}}

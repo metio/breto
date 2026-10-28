@@ -2,4 +2,8 @@
 ;; SPDX-License-Identifier: 0BSD
 
 {:source {:github "pimalaya/calendula"}
- :asset "calendula.x86_64-linux.tgz"}
+ :asset "calendula.x86_64-linux.tgz",
+ :man ["share/man/*.1.gz"],
+ :completions {:bash "share/completions/calendula.bash",
+               :zsh "share/completions/_calendula",
+               :fish "share/completions/calendula.fish"}}

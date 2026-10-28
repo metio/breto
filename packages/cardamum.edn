@@ -2,4 +2,8 @@
 ;; SPDX-License-Identifier: 0BSD
 
 {:source {:github "pimalaya/cardamum"},
- :asset "cardamum.x86_64-linux.tgz"}
+ :asset "cardamum.x86_64-linux.tgz",
+ :man ["share/man/*.1.gz"],
+ :completions {:bash "share/completions/cardamum.bash",
+               :zsh "share/completions/_cardamum",
+               :fish "share/completions/cardamum.fish"}}

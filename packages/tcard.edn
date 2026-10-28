@@ -1,4 +1,8 @@
 ;; SPDX-FileCopyrightText: The breto Authors
 ;; SPDX-License-Identifier: 0BSD
 
-{:source {:github "pimalaya/tcard"}, :asset "tcard.x86_64-linux.tgz"}
+{:source {:github "pimalaya/tcard"}, :asset "tcard.x86_64-linux.tgz",
+ :man ["share/man/*.1.gz"],
+ :completions {:bash "share/completions/tcard.bash",
+               :zsh "share/completions/_tcard",
+               :fish "share/completions/tcard.fish"}}
