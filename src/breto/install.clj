@@ -31,6 +31,21 @@
   (when-let [repo (get-in pkg [:source :github])]
     (str/starts-with? (:url artifact) (str "https://github.com/" repo "/releases/download/"))))
 
+(defn- listed-hash
+  "The hash the checksum document `text` of `artifact` gives its asset: the
+  value at the artifact's :checksum-path of a JSON document, else its entry in
+  a checksum listing."
+  [artifact text]
+  (let [{:keys [asset url checksum-url checksum-path]} artifact]
+    (or (if checksum-path
+          (checksum/json-expected text checksum-path)
+          (checksum/expected text asset url))
+        (throw (ex-info (if checksum-path
+                          (str "no hash for " asset " at " (pr-str checksum-path) " in " checksum-url)
+                          (str "no entry for " asset " in " checksum-url))
+                        {:breto/problem :checksum-entry-missing :url checksum-url :asset asset
+                         :entries (when-not checksum-path (checksum/listed-names text))})))))
+
 (defn expected-hash
   "The hash a download must match: the digest GitHub recorded for a release
   asset, else the entry in the package's checksum file, else nil. A failed
@@ -44,11 +59,7 @@
             (when-not (:checksum-url artifact)
               (throw e)))))
       (when-let [url (:checksum-url artifact)]
-        (let [text ((:get-text io) url {})]
-          (or (checksum/expected text (:asset artifact) (:url artifact))
-              (throw (ex-info (str "no entry for " (:asset artifact) " in " url)
-                              {:breto/problem :checksum-entry-missing :url url :asset (:asset artifact)
-                               :entries (checksum/listed-names text)})))))))
+        (listed-hash artifact ((:get-text io) url {})))))
 
 (defn with-stage
   "Runs `f`, adding `stage` and `context` to anything it throws. Data from the
@@ -125,11 +136,7 @@
         (vreset! outcome signature)
         (staged io :verify context
           #(if-let [want (if checksums
-                           (or (checksum/expected (slurp (str checksums)) (:asset artifact) (:url artifact))
-                               (throw (ex-info (str "no entry for " (:asset artifact) " in " (:checksum-url artifact))
-                                               {:breto/problem :checksum-entry-missing :url (:checksum-url artifact)
-                                                :asset (:asset artifact)
-                                                :entries (checksum/listed-names (slurp (str checksums)))})))
+                           (listed-hash artifact (slurp (str checksums)))
                            (expected-hash pkg io release artifact))]
              (checksum/verify! file (:asset artifact) want)
              (throw (ex-info (str (:name pkg) ": nothing to verify " (:asset artifact)

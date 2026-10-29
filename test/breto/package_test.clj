@@ -222,3 +222,18 @@
            (try (package/normalize {:name "tool" :source {:github "a/tool"} :asset "tool.tar.gz"
                                     :signature (assoc sig :of {:file "../tool"})})
                 (catch clojure.lang.ExceptionInfo e (:breto/problem (ex-data e))))))))
+
+(deftest json-checksums-render-their-path
+  (let [pkg (package/normalize {:name "zig" :source {:text "https://ziglang.org/download/index.json" :match "x"}
+                                :tag-prefix "" :asset "zig-{version}.tar.xz" :url "https://ziglang.org/download/{version}/{asset}"
+                                :checksum {:json "https://ziglang.org/download/index.json" :hash ["{version}" "x86_64-linux" :shasum]}})
+        artifact (package/artifact pkg {:tag "0.17.0" :version "0.17.0"})]
+    (is (= "https://ziglang.org/download/index.json" (:checksum-url artifact)))
+    (is (= ["0.17.0" "x86_64-linux" :shasum] (:checksum-path artifact)))))
+
+(deftest json-checksums-need-a-url-and-a-path
+  (doseq [checksum [{:json "u"} {:json "u" :hash []} {:hash ["a"]} {:json "u" :hash ["a"] :extra 1} {:json "u" :hash [1.5]} 42]]
+    (is (= :invalid-package
+           (try (package/normalize {:name "x" :source {:github "a/x"} :asset "x" :checksum checksum}) nil
+                (catch clojure.lang.ExceptionInfo e (:breto/problem (ex-data e)))))
+        (pr-str checksum))))

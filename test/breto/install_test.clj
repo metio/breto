@@ -269,6 +269,26 @@
     (is (= "taplo" (slurp (str (fs/path (:bin-dir cfg) "taplo")))))
     (is (fs/executable? (fs/path (:bin-dir cfg) "taplo")))))
 
+(deftest json-checksums-verify-the-download
+  (let [cfg (config)
+        file (fs/path *root* "zig")
+        _ (spit (str file) "zig")
+        url "https://ziglang.org/download/0.17.0/zig"
+        index "https://ziglang.org/download/index.json"
+        pkg (package/normalize {:name "zig" :source {:text index :match "\"(\\d+\\.\\d+\\.\\d+)\":\\s*\\{"}
+                                :tag-prefix "" :asset "zig" :url "https://ziglang.org/download/{version}/{asset}"
+                                :checksum {:json index :hash ["{version}" "x86_64-linux" "shasum"]}})
+        install (fn [hash]
+                  (install/install! cfg (fake-io {url file}
+                                                 {index (str "{\"master\": {\"version\": \"0.18.0-dev\"}, \"0.17.0\": "
+                                                             "{\"x86_64-linux\": {\"shasum\": \"" hash "\"}}}")})
+                                    pkg {}))]
+    (is (thrown? clojure.lang.ExceptionInfo (install (apply str (repeat 64 "0")))))
+    (is (not (fs/exists? (fs/path (:bin-dir cfg) "zig"))))
+    (is (= {:version "0.17.0" :installed? true :verified? true}
+           (dissoc (install (checksum/digest "SHA-256" file)) :sha256)))
+    (is (= "zig" (slurp (str (fs/path (:bin-dir cfg) "zig")))))))
+
 (deftest failed-first-installs-leave-no-package-directory
   (let [cfg (config)
         io (fake-io {} {"https://github.com/kubernetes-sigs/kind/releases/latest" "{\"tag_name\":\"v0.33.0\"}"})]

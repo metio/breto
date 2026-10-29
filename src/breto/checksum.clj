@@ -3,6 +3,7 @@
 
 (ns breto.checksum
   (:require [babashka.fs :as fs]
+            [cheshire.core :as json]
             [clojure.java.io :as io]
             [clojure.string :as str])
   (:import (java.security MessageDigest)))
@@ -55,6 +56,17 @@
        :else (when-let [[[h]] (seq lines)]
                (when (and (= 1 (count lines)) (hex? h))
                  (str/lower-case h)))))))
+
+(defn json-expected
+  "The hash at `path` in the JSON document `text`, or nil. Strings and
+  keywords in `path` are keys, integers are indices."
+  [text path]
+  (let [step (fn [node k] (if (nat-int? k)
+                            (when (sequential? node) (get (vec node) k))
+                            (when (map? node) (get node (if (keyword? k) (name k) k)))))
+        value (reduce step (json/parse-string text) path)]
+    (when (and (string? value) (hex? value))
+      (str/lower-case value))))
 
 (defn verify!
   "Throws unless `file` hashes to the hex string `want`. The algorithm follows

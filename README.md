@@ -246,7 +246,7 @@ A package is a file `<name>.edn` in a registry directory, and its file name is t
 | `:asset` | Template for the file name to download. | required |
 | `:url` | Template for the download URL. | the GitHub release asset |
 | `:tag-prefix` | Text before the version in a tag: `v1.2.3` is version `1.2.3`. | `"v"` |
-| `:checksum` | Template for a checksum file, next to the asset unless it is a full URL. | none |
+| `:checksum` | Template for a checksum file, next to the asset unless it is a full URL, or `{:json URL :hash [path]}` for a hash inside a JSON document. | none |
 | `:strip` | Leading path components to drop when unpacking, counted as `tar --strip-components` does, a leading `./` included. | `0` |
 | `:layout` | `:binary` keeps only the files named in `:bins`; `:tree` keeps the whole archive. | `:binary` |
 | `:bins` | Command name to path inside the unpacked archive. | the package name, or the asset itself when it is not an archive, without `.gz` or `.bz2` when it is a compressed single file |
@@ -349,7 +349,15 @@ The files of a resolution are pinned by hash, the build dependencies of a source
 
 ### Verification
 
-A download from a GitHub release is checked against the sha256 digest GitHub recorded for the asset. Assets uploaded before GitHub began recording digests carry none; for those, and for downloads from other hosts, breto uses the file named by `:checksum`. A checksum file can list many assets in `sha256sum` format or hold a single hash. The algorithm follows from the length of the hash. A download with neither a digest nor a checksum file is refused unless `--no-verify` is given. A failed digest lookup, for example once the API limit is reached, falls back to the checksum file when there is one and fails otherwise.
+A download from a GitHub release is checked against the sha256 digest GitHub recorded for the asset. Assets uploaded before GitHub began recording digests carry none; for those, and for downloads from other hosts, breto uses the file named by `:checksum`. A checksum file can list many assets in `sha256sum` format or hold a single hash. The algorithm follows from the length of the hash.
+
+Some projects publish their hashes in a JSON index instead. `{:json URL :hash [path]}` reads the hash at a path of keys and indices, whose strings are templates, so Zig's index gives the hash of each release:
+
+```clojure
+:checksum {:json "https://ziglang.org/download/index.json" :hash ["{version}" "x86_64-linux" "shasum"]}
+```
+
+A download with neither a digest nor a checksum file is refused unless `--no-verify` is given. A failed digest lookup, for example once the API limit is reached, falls back to the checksum file when there is one and fails otherwise.
 
 A checksum shows that a download is what the release lists; a signature shows who built the release. A definition with `:signature` has every verified download checked with `cosign verify-blob` against a sigstore bundle published next to the asset:
 

@@ -199,6 +199,13 @@
     (not (completions-valid? (:completions pkg {})))
     (conj ":completions maps :bash, :zsh or :fish to a relative path inside the release or to {:args [...] :env {...}}, and :command to a command name")
 
+    (not (let [checksum (:checksum pkg)]
+           (or (nil? checksum) (string? checksum)
+               (and (map? checksum) (= #{:json :hash} (set (keys checksum))) (string? (:json checksum))
+                    (vector? (:hash checksum)) (seq (:hash checksum))
+                    (every? #(or (string? %) (keyword? %) (nat-int? %)) (:hash checksum))))))
+    (conj ":checksum is a checksum file name or URL, or {:json URL :hash [path]} with a path of keys and indices to the hash")
+
     (and (:signature pkg)
          (let [{:keys [bundle identity identity-regexp issuer of]} (:signature pkg)]
            (not (and (string? bundle) (string? issuer)
@@ -328,7 +335,11 @@
         file-vars (assoc vars :asset asset-name)]
     {:asset asset-name
      :url asset-url
-     :checksum-url (some->> checksum (#(template/render % file-vars)) (sibling-url asset-url))
+     :checksum-url (some->> (if (map? checksum) (:json checksum) checksum)
+                            (#(template/render % file-vars))
+                            (sibling-url asset-url))
+     :checksum-path (when (map? checksum)
+                      (mapv #(if (string? %) (template/render % file-vars) %) (:hash checksum)))
      :signature (when-let [{:keys [bundle] :as sig} signature]
                   (-> sig
                       (assoc :bundle-url (sibling-url asset-url (template/render bundle file-vars)))

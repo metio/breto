@@ -56,3 +56,14 @@
            (try (checksum/expected listing "tool" "https://example.com/v1/tool") nil
                 (catch clojure.lang.ExceptionInfo e (:breto/problem (ex-data e))))))
     (is (= a (checksum/expected (str a "  x/tool\n" a "  y/tool\n") "tool" "https://example.com/tool")))))
+
+(deftest json-documents-give-the-hash-at-a-path
+  (let [text (str "{\"0.17.0\": {\"x86_64-linux\": {\"shasum\": \"ABCDEF0123456789abcdef0123456789abcdef0123456789abcdef0123456789\"}}, \"list\": [\"" sha256-of-hello "\"], \"short\": \"00\"}")]
+    (is (= "abcdef0123456789abcdef0123456789abcdef0123456789abcdef0123456789"
+           (checksum/json-expected text ["0.17.0" "x86_64-linux" "shasum"])))
+    (is (= "abcdef0123456789abcdef0123456789abcdef0123456789abcdef0123456789"
+           (checksum/json-expected text ["0.17.0" :x86_64-linux :shasum])))
+    (is (= sha256-of-hello (checksum/json-expected text [:list 0])))
+    (is (nil? (checksum/json-expected text [:short])))
+    (is (nil? (checksum/json-expected text ["0.16.0" "x86_64-linux" "shasum"])))
+    (is (nil? (checksum/json-expected text ["0.17.0" "x86_64-linux"])))))
