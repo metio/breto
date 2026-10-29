@@ -224,6 +224,13 @@
                 "Set :tag-prefix to the text that precedes the version in the tag.")
               "If only older releases used the old prefix, keep it for them in a :history entry."]}))
 
+(defmethod explain :unsupported-platform [{:keys [package platform supported]} _]
+  {:summary (str "The definition of " package " describes no release for " platform ".")
+   :facts [(str "It has releases for " (str/join ", " supported) ".")
+           "The top level of a definition describes linux-x86_64, and each :platforms entry another platform."]
+   :advice [(str "If the project publishes a build for " platform ", add a :platforms entry for it, e.g. "
+                 "{:platforms {" (pr-str platform) " {:asset \"…\"}}}, in the definition or an overlay.")]})
+
 (defmethod explain :no-release [{:keys [url]} _]
   {:summary "The release lookup answered without a tag."
    :facts [(str "GET " url " returned no tag_name")]

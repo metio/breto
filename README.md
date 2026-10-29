@@ -78,6 +78,7 @@ breto reads `$XDG_CONFIG_HOME/breto/config.edn` (`~/.config/breto/config.edn` by
 | `:bin-dir` | Where binaries are linked. | `~/.local/bin` |
 | `:finder` | The fuzzy finder `breto install` without packages chooses with: `:auto` for fzf or sk from `:bin-dir` or `PATH`, or a command that reads tab-separated lines on stdin and prints the chosen ones. | `:auto` |
 | `:env-dir` | Where `breto env` keeps the bin directory of each project. | `$XDG_DATA_HOME/breto/envs` |
+| `:platform` | The platform definitions are resolved for, one of `linux-x86_64`, `linux-aarch64`, `darwin-x86_64` and `darwin-aarch64`; see [Platforms](#platforms). `--platform` overrides it for one run. | the platform breto runs on |
 | `:man-dir` | Where man pages are linked, as `<man-dir>/man<section>/<file>`. | `$XDG_DATA_HOME/man` |
 | `:completion-dirs` | Where shell completions are linked, per shell. Leaving a shell out skips its completions. | `{:bash "$XDG_DATA_HOME/bash-completion/completions" :zsh "$XDG_DATA_HOME/zsh/site-functions" :fish "$XDG_CONFIG_HOME/fish/completions"}` |
 
@@ -200,7 +201,7 @@ On another machine, `breto sync` turns the store into exactly what the lock file
 
 A registry directory can hold a `breto.lock` with the hash of every version its groups pin, keyed `name@version`. breto reads the lock files of all `:registries`, and any install of a listed version, whether by `install`, `update`, `sync`, `env` or a project refresh, must match its entry; the check comes on top of the upstream verification. A pinned version that no lock file lists installs with a warning, or fails with `:require-locked true`.
 
-`breto lock DIR` installs the pinned versions of the groups defined in DIR beside the active ones, without activating them, and writes the file. An entry that already exists has to match, so a release whose asset changed upstream fails instead of being locked anew. Entries of versions no group pins any more are dropped. Since `breto lock` downloads and runs nothing a project would not, it suits CI: a workflow can run it on every Renovate pull request against the group files and push the result, and `breto lock DIR --check` fails a pull request whose lock file lags behind its groups.
+`breto lock DIR` installs the pinned versions of the groups defined in DIR beside the active ones, without activating them, and writes the file. An entry that already exists has to match, so a release whose asset changed upstream fails instead of being locked anew. Entries of versions no group pins any more are dropped. `--platforms all`, or a comma-separated list such as `--platforms linux-x86_64,darwin-aarch64`, also downloads, verifies and hashes the releases of the other platforms without installing them, so one machine can lock a group for every platform it supports; the hashes of platforms a run does not name stay in the file. Since `breto lock` downloads and runs nothing a project would not, it suits CI: a workflow can run it on every Renovate pull request against the group files and push the result, and `breto lock DIR --check` fails a pull request whose lock file lags behind its groups.
 
 ## Hooks
 
@@ -478,6 +479,27 @@ man finds `$XDG_DATA_HOME/man` through a `PATH` entry `~/.local/bin` once that d
 ### Overlays
 
 A definition in a later registry directory is merged over the one of the same name, so an overlay can change one key, such as `:asset` for another architecture. An overlay whose `:source` names another project defines a different tool under the same name; merging the two would mix the keys of both, so breto refuses to load it and names both files. Rename one of them, or set `:replace true` in the overlay to replace the earlier definition instead of merging over it.
+
+### Platforms
+
+The top level of a definition describes the releases for `linux-x86_64`. A `:platforms` entry overrides keys for another platform, such as the asset name, the archive layout or the commands:
+
+```clojure
+{:source {:github "sigstore/cosign"}
+ :asset "cosign-linux-amd64"
+ :checksum "cosign_checksums.txt"
+ :platforms {"linux-aarch64" {:asset "cosign-linux-arm64"}
+             "darwin-x86_64" {:asset "cosign-darwin-amd64"}
+             "darwin-aarch64" {:asset "cosign-darwin-arm64"}}}
+```
+
+An entry can have a `:history` of its own, which applies over the definition's `:history` for that platform. A definition has releases for `linux-x86_64` and the platforms its `:platforms` names; on any other, `install` and `check` fail and say so. Definitions with a `:go`, `:pypi`, `:npm`, `:cargo` or `:coursier` source build or resolve the package on the machine and serve every platform, and `:ghcup` serves both Linux platforms. An overlay's `:platforms` entries are added to those of the definition it is merged over, so an overlay can add a platform to an upstream definition.
+
+A lock entry keeps the hash of the `linux-x86_64` download at its top level and those of other platforms under `:platforms`, so machines of different platforms share one lock file:
+
+```clojure
+{"cosign@3.0.2" {:sha256 "…" :asset "cosign-linux-amd64" :platforms {"darwin-aarch64" {:sha256 "…" :asset "cosign-darwin-arm64"}}}}
+```
 
 ### Version history
 

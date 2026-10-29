@@ -16,6 +16,7 @@
             [breto.install :as install]
             [breto.lockfile :as lockfile]
             [breto.package :as package]
+            [breto.platform :as platform]
             [breto.registry :as registry]
             [breto.report :as report]
             [breto.sealed :as sealed]
@@ -101,10 +102,10 @@
        (get (install/bin-targets config pkg version) command)))))
 
 (defn- lock-options
-  "install! options checking `name` at `version` against the lock files of
-  the registry directories, when one of them lists it."
-  [locks name version]
-  (when-let [{:keys [sha256 sum exclude-newer]} (and version (get locks (str name "@" version)))]
+  "install! options checking `pkg` at `version` against the lock files of
+  the registry directories, when one of them lists it for its platform."
+  [locks pkg version]
+  (when-let [{:keys [sha256 sum exclude-newer]} (and version (lockfile/hashes (get locks (str (:name pkg) "@" version)) pkg))]
     (cond-> {}
       sha256 (assoc :expect-sha256 sha256)
       sum (assoc :expect-sum sum)
@@ -123,7 +124,7 @@
                         (let [[name version] (batch/split-spec spec)
                               pkg (registry/lookup registry name)
                               options (install-one name version)
-                              locked (lock-options locks name (or (:version options) version))
+                              locked (lock-options locks pkg (or (:version options) version))
                               unlocked? (and (::pinned options) (seq locks) (nil? locked))
                               _ (when (and unlocked? (:require-locked config))
                                   (throw (ex-info (str name " " version " is in no lock file of the registry directories, and :require-locked is set")
@@ -150,12 +151,14 @@
 
 (defn- locked
   "install! options for `name` from the lock file, when --locked asks for it."
-  [{:keys [config opts]} name]
+  [{:keys [config opts registry]} name]
   (when (:locked opts)
     (when-not (:lockfile config)
       (throw (ex-info "--locked needs :lockfile in the config"
                       {:breto/problem :no-lockfile :path nil})))
-    (let [{:keys [version sha256 sum exclude-newer]} (lockfile/locked-entry (:lockfile config) name)]
+    (let [entry (lockfile/locked-entry (:lockfile config) name)
+          {:keys [sha256 sum exclude-newer]} (lockfile/hashes entry (get registry name))
+          version (:version entry)]
       {:version version :expect-sha256 sha256 :expect-sum sum :exclude-newer exclude-newer})))
 
 (defn- which [io]
@@ -481,7 +484,7 @@
   "Makes the store match the lock file: installs and activates each locked
   version, checked against its locked hash, and uninstalls every package the
   lock file does not list and no project uses. --dry-run lists the changes."
-  [{:keys [config opts io] :as ctx} _]
+  [{:keys [config opts io registry] :as ctx} _]
   (let [path (or (:lockfile config)
                  (throw (ex-info "sync needs :lockfile in the config" {:breto/problem :no-lockfile :path nil})))
         _ (when-not (fs/exists? path)
@@ -498,10 +501,9 @@
           0)
       (let [installed (install-results ctx "sync" (mapv (fn [[name {:keys [version]}]] (str name "@" version)) entries)
                                        (fn [name version]
-                                         {:version version :verify? (:verify opts true)
-                                          :expect-sha256 (get-in entries [name :sha256])
-                                          :expect-sum (get-in entries [name :sum])
-                                          :exclude-newer (get-in entries [name :exclude-newer])}))
+                                         (let [{:keys [sha256 sum exclude-newer]} (lockfile/hashes (get entries name) (get registry name))]
+                                           {:version version :verify? (:verify opts true)
+                                            :expect-sha256 sha256 :expect-sum sum :exclude-newer exclude-newer})))
             removed (batch/run-batch io extra #(uninstall-one ctx % false) (fn [_]))]
         (batch/finish! "sync" (-> installed (into removed) (into (refresh-projects ctx "sync"))))))))
 
@@ -563,32 +565,92 @@
         asset (assoc :asset asset)
         exclude-newer (assoc :exclude-newer exclude-newer)))))
 
+(defn- lock-platforms
+  "The platforms --platforms names, comma-separated or all, else the one
+  breto runs for."
+  [{:keys [config opts]}]
+  (let [value (:platforms opts)
+        names (cond (nil? value) [(platform/current config)]
+                    (= "all" value) (sort platform/known)
+                    :else (vec (distinct (remove str/blank? (str/split (str value) #",")))))]
+    (when-let [unknown (seq (remove platform/known names))]
+      (throw (ex-info (str "--platforms names " (str/join ", " unknown) ", which is none of all, "
+                           (str/join ", " (sort platform/known)))
+                      {:breto/problem :usage})))
+    names))
+
+(defn- foreign-hash
+  "The lock result for `spec` on `platform`, hashing the download breto would
+  install there and comparing it with `previous`, the hashes an existing
+  entry gives that platform."
+  [{:keys [config io]} pkg version previous]
+  (let [{:keys [sha256] :as hashes} (install/download-hash! config io pkg version)]
+    (when (and (:sha256 previous) (not= (str/lower-case (:sha256 previous)) (str/lower-case sha256)))
+      (throw (ex-info (str (:name pkg) " " version " for " (:platform pkg) " differs from the lock file: expected "
+                           (:sha256 previous) ", got " sha256)
+                      {:breto/problem :checksum-mismatch :package (:name pkg) :version version :stage :verify
+                       :asset (:asset hashes) :expected (:sha256 previous) :actual sha256 :origin :lockfile})))
+    {:package (:name pkg) :version version :status :current :platform (:platform pkg) :hashes hashes}))
+
 (defn lock
   "Writes breto.lock in the registry directory `dir`: the hash of every
-  version a group defined there pins. The versions are installed first,
-  beside the active ones, and each one an existing entry lists must match it,
-  so a release that changed upstream fails instead of being locked anew.
-  Entries of versions no group pins any more are dropped. --check only
-  reports whether the file is up to date."
-  [{:keys [config groups opts] :as ctx} [dir & more]]
+  version a group defined there pins, for each platform --platforms names,
+  by default the one breto runs for. The versions are installed first,
+  beside the active ones, and the downloads of other platforms are verified
+  and hashed without being installed. Each one an existing entry lists must
+  match it, so a release that changed upstream fails instead of being locked
+  anew. The hashes of platforms not named stay. Entries of versions no group
+  pins any more are dropped. --check only reports whether the file is up to
+  date."
+  [{:keys [config groups registry opts io] :as ctx} [dir & more]]
   (when (or (nil? dir) (seq more))
     (throw (ex-info "lock needs one registry directory" {:breto/problem :usage})))
   (let [dir (str (fs/canonicalize dir))
         path (str (fs/path dir registry/lock-file-name))
         own (filter (fn [[_ {:keys [files]}]] (some #(= dir (str (fs/canonicalize (fs/parent %)))) files)) groups)
         specs (filterv #(second (batch/split-spec %)) (registry/expand groups (map key own)))
-        results (install-results ctx "lock" specs (fn [_ version] {:version version :activate? false :verify? (:verify opts true)}))
-        failed? (some #(= :failed (:status %)) results)
+        platforms (lock-platforms ctx)
+        here (platform/current config)
+        shared? #(contains? package/neutral-kinds (package/source-kind %))
+        pkg-of #(registry/lookup registry (first (batch/split-spec %)))
+        local (filterv #(let [pkg (pkg-of %)]
+                          (or (shared? pkg) (and (some #{here} platforms) (not (:unsupported pkg)))))
+                       specs)
         before (lockfile/read-lock path)
-        text (lockfile/render {:header (:header before)
-                               :entries (into {} (for [spec specs
-                                                       :let [[name version] (batch/split-spec spec)]]
-                                                   [spec (dissoc (lock-entry config name version) :version)]))})
+        results (install-results ctx "lock" local (fn [_ version] {:version version :activate? false :verify? (:verify opts true)}))
+        foreign (for [spec specs
+                      p platforms
+                      :when (not= p here)
+                      :let [pkg (package/for-platform (pkg-of spec) p)]
+                      :when (not (or (shared? pkg) (:unsupported pkg)))]
+                  [spec pkg])
+        labelled (into {} (for [[spec pkg] foreign] [(str spec " for " (:platform pkg)) [spec pkg]]))
+        foreign-results (batch/run-batch io (mapv (fn [[spec pkg]] (str spec " for " (:platform pkg))) foreign)
+                                         (fn [label]
+                                           (let [[spec pkg] (labelled label)]
+                                             (foreign-hash ctx pkg (second (batch/split-spec spec))
+                                                           (lockfile/hashes (get (:entries before) spec) pkg))))
+                                         (tracker ctx "lock"))
+        all-results (into results foreign-results)
+        failed? (some #(= :failed (:status %)) all-results)
+        local? (set local)
+        entries (into {} (for [spec specs
+                               :let [[name version] (batch/split-spec spec)
+                                     pkg (pkg-of spec)
+                                     entry (cond-> (dissoc (get (:entries before) spec) :version)
+                                             (local? spec) (lockfile/with-hashes pkg (dissoc (lock-entry config name version) :version)))
+                                     entry (reduce (fn [e {:keys [hashes platform]}]
+                                                     (lockfile/with-hashes e (package/for-platform pkg platform) hashes))
+                                                   entry
+                                                   (filter #(and (:hashes %) (= name (:package %)) (= version (:version %))) foreign-results))]]
+                           [spec entry]))
+        text (lockfile/render {:header (:header before) :entries entries})
         current? (and (fs/exists? path) (= text (slurp path)))]
     (cond
-      failed? (batch/finish! "lock" results)
+      failed? (batch/finish! "lock" all-results)
       current? (do (println (str "[OK] " path " is up to date")) 0)
       (:check opts) (do (println (str "[ERROR] " path " is out of date; run breto lock " dir)) 1)
       :else (do (spit path text)
-                (println (str "[OK] wrote " path " with " (count specs) " versions"))
+                (println (str "[OK] wrote " path " with " (count specs) " versions"
+                              (when (< 1 (count platforms)) (str " for " (str/join ", " platforms)))))
                 0))))

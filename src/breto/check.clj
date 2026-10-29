@@ -24,6 +24,10 @@
   describing why `breto update` would fail on it."
   [io pkg]
   (let [context {:package (:name pkg) :repo (package/repo pkg) :source (:source pkg)}
+        _ (when (:unsupported pkg)
+            (throw (ex-info (str (:name pkg) " has no release for " (:platform pkg))
+                            (assoc context :stage :resolve :breto/problem :unsupported-platform
+                                   :platform (:platform pkg) :supported (:supported pkg)))))
         release (install/with-stage :resolve context #(install/resolve-release pkg io nil))
         version (:version release)
         pkg (package/at pkg version)

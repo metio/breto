@@ -8,6 +8,7 @@
   every directory."
   (:require [babashka.fs :as fs]
             [breto.package :as package]
+            [breto.platform :as platform]
             [clojure.edn :as edn]
             [clojure.java.io :as io]
             [clojure.string :as str]))
@@ -49,9 +50,10 @@
                             :problems [(str "not valid EDN: " (ex-message e))]}))))))
 
 (defn- normalize
-  "The validated definition, or an error naming the files it came from."
-  [{files ::files :as pkg}]
-  (try (package/normalize (dissoc pkg ::files))
+  "The validated definition for `platform`, or an error naming the files it
+  came from."
+  [platform {files ::files :as pkg}]
+  (try (package/normalize (dissoc pkg ::files) platform)
        (catch clojure.lang.ExceptionInfo e
          (throw (ex-info (ex-message e) (assoc (ex-data e) :files files) e)))))
 
@@ -79,19 +81,24 @@
                                        (str/join ", " (butlast files)) " define " (pr-str (origin earlier))
                                        "; rename one of the files, or set :replace true in the later one"
                                        " to replace the earlier definition instead of merging over it")]})))
-    :else (-> (merge earlier pkg) (assoc ::files (into (vec (::files earlier)) (::files pkg))))))
+    :else (cond-> (-> (merge earlier pkg) (assoc ::files (into (vec (::files earlier)) (::files pkg))))
+            (and (map? (:platforms earlier)) (map? (:platforms pkg)))
+            (assoc :platforms (merge (:platforms earlier) (:platforms pkg))))))
 
 (defn load-registry
   "Package definitions from `builtin`, the files built into breto, and `dirs`,
   keyed by name. A definition in a later directory is merged over the one
   before it, so an overlay can change a single key of an upstream package, or
-  replaces it with :replace true."
+  replaces it with :replace true. An overlay's :platforms entries are added
+  to those of the definition it is merged over. Every definition is resolved
+  for `platform`."
   ([dirs] (load-registry nil dirs))
-  ([builtin dirs]
+  ([builtin dirs] (load-registry builtin dirs platform/default))
+  ([builtin dirs platform]
    (let [merged (reduce (fn [acc pkg] (update acc (:name pkg) layer pkg))
                         {}
                         (map read-file (entries builtin dirs (complement group-name?))))]
-     (update-vals merged normalize))))
+     (update-vals merged #(normalize platform %)))))
 
 (defn lookup [registry name]
   (or (get registry name)

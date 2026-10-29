@@ -151,6 +151,34 @@
                              {:breto/problem :no-checksum :package (:name pkg) :asset (:asset artifact)}))))))
     {:file file :signed? (= :checked @outcome) :bootstrap? (= :bootstrap @outcome)}))
 
+(defn download-hash!
+  "Downloads and verifies the release `version` of `pkg` without placing it,
+  returning {:sha256 :asset}. This is how a lock file pins the download of a
+  platform other than the one breto runs on. A signature over a file inside
+  the archive is checked when that platform installs it, since this one
+  does not unpack it."
+  [config io pkg version]
+  (let [context {:package (:name pkg) :repo (package/repo pkg) :source (:source pkg) :platform (:platform pkg)}
+        _ (when (:unsupported pkg)
+            (throw (ex-info (str (:name pkg) " has no release for " (:platform pkg))
+                            (assoc context :stage :resolve :breto/problem :unsupported-platform
+                                   :supported (:supported pkg)))))
+        release (staged io :resolve context #(resolve-release pkg io version))
+        pkg (package/at pkg (:version release))
+        artifact (package/artifact pkg release)
+        context (assoc context :version (:version release) :tag (:tag release) :asset (:asset artifact)
+                       :url (:url artifact) :checksum-url (:checksum-url artifact))
+        package-dir (store/package-dir config (:name pkg))
+        _ (fs/create-dirs package-dir)
+        work (fs/create-temp-dir {:dir package-dir :prefix store/work-prefix})
+        lock (store/hold! work)]
+    (try
+      (let [{:keys [file]} (fetch! config pkg io release artifact work (:verify pkg true) context)]
+        {:sha256 (checksum/digest "SHA-256" file) :asset (:asset artifact)})
+      (finally
+        (sealed/delete-tree! work)
+        (.close lock)))))
+
 (defn- record-upstream-hash!
   "Records the hash upstream publishes for an installed version that has none
   yet, which is the hash its verified download had to match. Returns it, or
@@ -278,6 +306,10 @@
   got upstream's, or, when upstream publishes none, that of a fresh download. Failures carry the stage and release they happened in."
   [config io pkg {:keys [version activate? verify? expect-sha256 expect-sum exclude-newer go uv npm cargo ghcup coursier] :or {activate? true verify? true}}]
   (let [context {:package (:name pkg) :repo (package/repo pkg) :source (:source pkg)}
+        _ (when (:unsupported pkg)
+            (throw (ex-info (str (:name pkg) " has no release for " (:platform pkg))
+                            (assoc context :stage :resolve :breto/problem :unsupported-platform
+                                   :platform (:platform pkg) :supported (:supported pkg)))))
         release (staged io :resolve context #(resolve-release pkg io version))
         version (:version release)
         pkg (package/at pkg version)

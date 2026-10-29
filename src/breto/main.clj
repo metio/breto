@@ -11,6 +11,7 @@
             [breto.http :as http]
             [breto.lockfile :as lockfile]
             [breto.log :as log]
+            [breto.platform :as platform]
             [breto.proc :as proc]
             [breto.progress :as progress]
             [breto.registry :as registry]
@@ -19,7 +20,7 @@
             [breto.token :as token]))
 
 (def ^:private usage
-  "Usage: breto <command> [args] [--config FILE] [--debug]
+  "Usage: breto <command> [args] [--config FILE] [--platform PLATFORM] [--debug]
 
 Commands:
   list                      installed packages and versions (* marks the active one)
@@ -59,6 +60,8 @@ gc and uninstall accept --dry-run. uninstall refuses configured packages unless 
 since the next update would install them again.
 install and update refuse downloads they cannot verify unless --no-verify is given; with
 --locked they install the versions in :lockfile and check each download against its hash.
+--platform resolves the definitions for linux-x86_64, linux-aarch64, darwin-x86_64 or
+darwin-aarch64 instead of this machine's platform, as check and lock need for another one.
 Every failure is explained with what to do; --debug adds each request and stack traces.")
 
 (def ^:private dispatch
@@ -94,7 +97,8 @@ Every failure is explained with what to do; --debug adds each request and stack 
   "Everything a command needs, from the parsed options."
   [opts]
   (let [config-path (or (:config opts) (config/default-path))
-        config (config/load-config config-path)]
+        config (cond-> (config/load-config config-path)
+                 (:platform opts) (assoc :platform (:platform opts)))]
     {:config-path config-path
      :config config
      :opts opts
@@ -122,7 +126,7 @@ Every failure is explained with what to do; --debug adds each request and stack 
         load (fn [ctx]
                (let [groups (registry/load-groups builtin dirs)]
                  (-> ctx
-                     (assoc :registry (registry/load-registry builtin dirs) :groups groups
+                     (assoc :registry (registry/load-registry builtin dirs (platform/current (:config ctx))) :groups groups
                             :locks (registry/load-locks dirs lockfile/read-lock))
                      (update :config configured groups))))]
     (case command
@@ -139,9 +143,9 @@ Every failure is explained with what to do; --debug adds each request and stack 
   rewriting it from the store would undo the versions sync failed to
   install. A failure to write it is
   reported but does not fail the command."
-  [{:keys [config opts] :as ctx} command]
+  [{:keys [config opts registry] :as ctx} command]
   (when-let [path (when-not (or (:dry-run opts) (= "sync" command)) (:lockfile config))]
-    (try (when (lockfile/write! path config)
+    (try (when (lockfile/write! path config registry)
            (commands/locked! ctx command path))
          (catch Exception e
            (binding [*out* *err*]

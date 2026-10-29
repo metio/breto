@@ -29,6 +29,15 @@
     "aarch64" "A_ARM64"
     nil))
 
+(defn platform-arch
+  "The metadata's name of the architecture of a breto platform such as
+  linux-aarch64, or nil."
+  [platform]
+  (case (second (str/split (str platform) #"-" 2))
+    "x86_64" "A_64"
+    "aarch64" "A_ARM64"
+    nil))
+
 (def ^:private platforms {"A_64" "x86_64-unknown-linux" "A_ARM64" "aarch64-unknown-linux"})
 
 (defn download-path
