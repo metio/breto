@@ -1,0 +1,5 @@
+;; SPDX-FileCopyrightText: The breto Authors
+;; SPDX-License-Identifier: 0BSD
+
+{:description "Language server for Ansible playbooks and roles"
+ :source {:npm "@ansible/ansible-language-server"}}

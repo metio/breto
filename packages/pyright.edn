@@ -1,0 +1,6 @@
+;; SPDX-FileCopyrightText: The breto Authors
+;; SPDX-License-Identifier: 0BSD
+
+{:description "Static type checker and language server for Python"
+ :source {:npm "pyright"}
+ :bins {"pyright" "node_modules/.bin/pyright" "pyright-langserver" "node_modules/.bin/pyright-langserver"}}

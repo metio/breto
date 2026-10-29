@@ -1,0 +1,6 @@
+;; SPDX-FileCopyrightText: The breto Authors
+;; SPDX-License-Identifier: 0BSD
+
+{:description "Fork of the Pyright type checker and language server with more checks and editor features"
+ :source {:pypi "basedpyright"}
+ :bins {"basedpyright" "venv/bin/basedpyright" "basedpyright-langserver" "venv/bin/basedpyright-langserver"}}

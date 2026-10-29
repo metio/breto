@@ -1,0 +1,6 @@
+;; SPDX-FileCopyrightText: The breto Authors
+;; SPDX-License-Identifier: 0BSD
+
+{:description "The TypeScript compiler tsc and language service tsserver"
+ :source {:npm "typescript"}
+ :bins {"tsc" "node_modules/.bin/tsc" "tsserver" "node_modules/.bin/tsserver"}}
