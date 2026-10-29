@@ -10,6 +10,7 @@
             [breto.golang :as golang]
             [breto.npm :as npm]
             [breto.pypi :as pypi]
+            [breto.sealed :as sealed]
             [breto.log :as log]
             [breto.package :as package]
             [breto.share :as share]
@@ -184,7 +185,7 @@
             (log/debug "could not download" (:asset artifact) "to hash it:" (ex-message e))
             nil)
           (finally
-            (fs/delete-tree work)
+            (sealed/delete-tree! work)
             (.close lock)))))))
 
 (defn- keep-share-files!
@@ -293,7 +294,10 @@
                          :when (and want have (not= (str/lower-case want) (str/lower-case have)))]
                    (throw (ex-info (str (:name pkg) " " version " in the store differs from the lock file: expected " want ", got " have)
                                    (assoc context :breto/problem :checksum-mismatch :asset (:asset artifact)
-                                          :expected want :actual have :origin :lockfile)))))))
+                                          :expected want :actual have :origin :lockfile)))))
+              (with-stage :place context
+                #(when-not (sealed/sealed? (store/version-dir config (:name pkg) version))
+                   (sealed/seal! (store/version-dir config (:name pkg) version))))))
         {:keys [sha256 signed? bootstrap?]} (when fresh?
                  (with-stage :place context #(fs/create-dirs package-dir))
                  (let [work (fs/create-temp-dir {:dir package-dir :prefix store/work-prefix})
@@ -334,8 +338,9 @@
                              bootstrap? (or bootstrap? (= :bootstrap file-signature))]
                          (staged io :place context
                            #(do (place! pkg artifact (or built unpacked) staging)
-                                (fs/delete-tree (store/version-dir config (:name pkg) version))
+                                (sealed/delete-tree! (store/version-dir config (:name pkg) version))
                                 (fs/move staging (store/version-dir config (:name pkg) version) {:atomic-move true})
+                                (sealed/seal! (store/version-dir config (:name pkg) version))
                                 (store/write-meta! config (:name pkg) version
                                                    (cond-> {:sha256 sha256 :asset (:asset artifact) :verified verify? :signed signed?}
                                                      sum (assoc :sum sum)
@@ -343,7 +348,7 @@
                                                      bootstrap? (assoc :signature-bootstrap true)))))
                          {:sha256 sha256 :signed? signed? :bootstrap? bootstrap?}))
                      (finally
-                       (fs/delete-tree work)
+                       (sealed/delete-tree! work)
                        (.close lock)
                        (when (empty? (fs/list-dir package-dir))
                          (fs/delete package-dir))))))]

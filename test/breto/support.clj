@@ -7,7 +7,8 @@
   (:require [babashka.fs :as fs]
             [breto.checksum :as checksum]
             [breto.main :as main]
-            [breto.report :as report]))
+            [breto.report :as report]
+            [breto.sealed :as sealed]))
 
 (def ^:dynamic *root* nil)
 
@@ -16,7 +17,7 @@
   [t]
   (let [root (fs/create-temp-dir {:prefix "breto-test-"})]
     (try (binding [*root* root report/*state-home* (str (fs/path root "state"))] (t))
-         (finally (fs/delete-tree root)))))
+         (finally (sealed/delete-tree! root)))))
 
 (defn path [& parts]
   (str (apply fs/path *root* parts)))

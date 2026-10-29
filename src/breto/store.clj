@@ -4,6 +4,7 @@
 (ns breto.store
   (:require [babashka.fs :as fs]
             [breto.filelock :as filelock]
+            [breto.sealed :as sealed]
             [breto.share :as share]
             [clojure.edn :as edn]
             [breto.version :as version]
@@ -174,7 +175,7 @@
       (edn/read-string (slurp (str file))))))
 
 (defn remove-version! [config name version]
-  (fs/delete-tree (version-dir config name version))
+  (sealed/delete-tree! (version-dir config name version))
   (fs/delete-if-exists (meta-file config name version)))
 
 (defn- resolves-into? [dir link]
@@ -201,7 +202,7 @@
   is left pointing at a deleted file."
   [config name links]
   (run! fs/delete links)
-  (fs/delete-tree (package-dir config name)))
+  (sealed/delete-tree! (package-dir config name)))
 
 (defn prune-candidates
   "Installed packages the configuration does not list."

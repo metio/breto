@@ -8,6 +8,7 @@
   .breto/completions in it. Every link goes through the package's `current`
   link, so switching versions switches them too."
   (:require [babashka.fs :as fs]
+            [breto.sealed :as sealed]
             [clojure.string :as str]))
 
 (def shells #{:bash :zsh :fish})
@@ -92,9 +93,10 @@
                              timed-out "it ran longer than 30 seconds"
                              (not= 0 exit) (str "it exited with " exit (when-not (str/blank? err) (str ": " (str/trim err))))
                              (str/blank? out) "it printed nothing"
-                             :else (do (fs/create-dirs (fs/parent target))
-                                       (spit (str target) out)
-                                       nil)))
+                             :else (sealed/writing! version-dir target
+                                   #(do (fs/create-dirs (fs/parent target))
+                                        (spit (str target) out)
+                                        nil))))
                          (catch Exception e (ex-message e)))]
          :when problem]
      (str (name shell) " completions of " (command pkg) " could not be generated: " problem))))

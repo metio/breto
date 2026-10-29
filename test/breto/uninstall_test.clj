@@ -3,6 +3,7 @@
 
 (ns breto.uninstall-test
   (:require [babashka.fs :as fs]
+            [breto.sealed :as sealed]
             [breto.batch :as batch]
             [breto.filelock]
             [breto.main :as main]
@@ -17,7 +18,7 @@
   (fn [t]
     (let [root (fs/create-temp-dir {:prefix "breto-test-"})]
       (try (binding [*root* root report/*state-home* (str (fs/path root "state"))] (t))
-           (finally (fs/delete-tree root))))))
+           (finally (sealed/delete-tree! root))))))
 
 (defn- path [& parts]
   (str (apply fs/path *root* parts)))

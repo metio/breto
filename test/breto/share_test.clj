@@ -3,6 +3,7 @@
 
 (ns breto.share-test
   (:require [babashka.fs :as fs]
+            [breto.sealed :as sealed]
             [babashka.process :as process]
             [breto.install :as install]
             [breto.package :as package]
@@ -18,7 +19,7 @@
   (fn [t]
     (let [root (fs/create-temp-dir {:prefix "breto-test-"})]
       (try (binding [*root* root] (t))
-           (finally (fs/delete-tree root))))))
+           (finally (sealed/delete-tree! root))))))
 
 (defn- at [& parts]
   (str (apply fs/path *root* parts)))

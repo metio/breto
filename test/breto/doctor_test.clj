@@ -3,6 +3,7 @@
 
 (ns breto.doctor-test
   (:require [babashka.fs :as fs]
+            [breto.sealed :as sealed]
             [breto.doctor :as doctor]
             [clojure.string :as str]
             [clojure.test :refer [deftest is]]))
@@ -25,7 +26,7 @@
                 "The store holds packages no registry defines" :warn}
                (levels checks)))
         (is (str/includes? (:detail (nth checks 2)) "zed")))
-      (finally (fs/delete-tree root)))))
+      (finally (sealed/delete-tree! root)))))
 
 (deftest config-checks-report-unknown-packages-and-missing-registries
   (let [checks (doctor/config-check "/nonexistent/config.edn"

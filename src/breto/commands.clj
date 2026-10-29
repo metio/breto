@@ -18,6 +18,7 @@
             [breto.package :as package]
             [breto.registry :as registry]
             [breto.report :as report]
+            [breto.sealed :as sealed]
             [breto.search :as search]
             [breto.signature :as signature]
             [breto.source :as source]
@@ -458,7 +459,7 @@
         failures (for [name (if (seq args) (targets ctx args) (remove (set prune) (store/installed-packages config)))
                        :let [r (try
                                  (doseq [leftover (store/leftovers config name)]
-                                   (when-not dry-run? (fs/delete-tree leftover))
+                                   (when-not dry-run? (sealed/delete-tree! leftover))
                                    (println (str (if dry-run? "would remove " "[OK] removed ") leftover)))
                                  (doseq [version (remove (get used name #{})
                                                          (store/gc-candidates (store/versions config name)

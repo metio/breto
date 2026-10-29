@@ -3,6 +3,7 @@
 
 (ns breto.install-test
   (:require [babashka.fs :as fs]
+            [breto.sealed :as sealed]
             [babashka.process :as process]
             [breto.checksum :as checksum]
             [breto.install :as install]
@@ -18,7 +19,7 @@
   (fn [t]
     (let [root (fs/create-temp-dir {:prefix "breto-test-"})]
       (try (binding [*root* root] (t))
-           (finally (fs/delete-tree root))))))
+           (finally (sealed/delete-tree! root))))))
 
 (defn- config []
   {:store (str (fs/path *root* "store")) :bin-dir (str (fs/path *root* "bin"))})
@@ -72,7 +73,10 @@
     (is (= {:version "1.1.0" :installed? true :verified? true} (dissoc result :sha256)))
     (is (= "1.1.0" (store/current-version cfg "tool")))
     (is (fs/executable? (fs/path (:bin-dir cfg) "tool")))
-    (is (= "#!/bin/sh\necho 1.1.0\n" (slurp (str (fs/path (:bin-dir cfg) "tool")))))))
+    (is (= "#!/bin/sh\necho 1.1.0\n" (slurp (str (fs/path (:bin-dir cfg) "tool")))))
+    (testing "the installed version is read-only"
+      (is (sealed/sealed? (store/version-dir cfg "tool" "1.1.0")))
+      (is (not (fs/writable? (fs/path (store/version-dir cfg "tool" "1.1.0") "tool")))))))
 
 (deftest install-is-idempotent
   (let [cfg (config)
@@ -426,3 +430,12 @@
                     (catch clojure.lang.ExceptionInfo e (ex-data e)))]
       (is (= :path-missing (:breto/problem data)))
       (is (= "rw-------" (fs/posix->str (fs/posix-file-permissions secret)))))))
+
+(deftest present-versions-are-sealed-by-the-next-install
+  (let [cfg (config)
+        io (serve-tool "1.0.0")
+        dir (store/version-dir cfg "tool" "1.0.0")]
+    (install/install! cfg io tool {})
+    (fs/set-posix-file-permissions dir "rwxr-xr-x")
+    (install/install! cfg io tool {})
+    (is (sealed/sealed? dir))))
