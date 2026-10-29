@@ -201,3 +201,27 @@
       (is (str/includes? out "cannot name a directory in the store") name)))
   (is (fs/exists? (path "store" "kept")))
   (is (fs/exists? (path "store"))))
+
+(deftest uninstall-keeps-commands-of-a-configured-bin-dir-package
+  (define! "jdk" {:source {:github "acme/jdk"} :asset "jdk.tar.gz" :layout :tree :bin-dir "bin"})
+  (fs/create-dirs (path "store" "jdk" "17" "bin"))
+  (spit (path "store" "jdk" "17" "bin" "java") "#!/bin/sh\n")
+  (fs/set-posix-file-permissions (path "store" "jdk" "17" "bin" "java") "rwxr-xr-x")
+  (fs/create-sym-link (path "store" "jdk" "current") "17")
+  (install! "jdk-21" "21" ["java"])
+  (let [{:keys [code out]} (breto! {:packages ["jdk"]} "uninstall" "jdk-21")]
+    (is (= 1 code) out)
+    (is (str/includes? out "belongs to jdk"))
+    (is (fs/exists? (path "bin" "java") {:nofollow-links true}))))
+
+(deftest uninstall-keeps-extra-links-of-a-configured-package
+  (define! "ed" {:source {:github "acme/ed"} :asset "ed.tar.gz" :layout :tree
+                 :bins {"ed" "ed"} :links {(path "runtime") "runtime"}})
+  (define! "old-ed" {:source {:github "acme/ed"} :asset "ed.tar.gz" :layout :tree
+                     :bins {"old-ed" "old-ed"} :links {(path "runtime") "runtime"}})
+  (install! "old-ed" "1.0.0" ["old-ed"])
+  (fs/create-dirs (path "store" "old-ed" "1.0.0" "runtime"))
+  (fs/create-sym-link (path "runtime") (path "store" "old-ed" "current" "runtime"))
+  (let [{:keys [code]} (breto! {:packages ["ed"]} "uninstall" "old-ed")]
+    (is (= 1 code))
+    (is (fs/exists? (path "runtime") {:nofollow-links true}))))

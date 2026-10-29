@@ -404,10 +404,17 @@
     0))
 
 (defn- claimed-links
-  "Link name -> configured package, for the links configured packages own."
+  "Link path -> configured package, for the commands and extra links that
+  configured packages own: those their definitions name, and the commands
+  of the active version, which a :bin-dir package only lists once installed."
   [{:keys [config registry]}]
   (into {} (for [name (:packages config)
-                 link (some-> (get registry name) :bins keys)]
+                 :let [pkg (get registry name)
+                       version (store/current-version config name)
+                       commands (concat (keys (:bins pkg))
+                                        (when (and pkg version) (keys (install/bin-targets config pkg version))))]
+                 link (concat (map #(str (fs/path (:bin-dir config) %)) commands)
+                              (map #(str (fs/path (store/expand-home %))) (keys (:links pkg))))]
              [link name])))
 
 (defn- uninstall-one
@@ -422,7 +429,7 @@
   (let [links (store/links-into config name (some-> (get registry name) :links keys))
         claimed (claimed-links ctx)
         blocking (for [link links
-                       :let [owner (claimed (str (fs/file-name link)))]
+                       :let [owner (claimed (str link))]
                        :when (and owner (not= owner name))]
                    [link owner])]
     (when (seq blocking)
