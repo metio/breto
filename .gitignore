@@ -6,3 +6,4 @@
 .lsp/
 .cpcache/
 .claude/
+target/

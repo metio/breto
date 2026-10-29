@@ -66,3 +66,17 @@
         (is (some #(re-find #":layout" %) (:problems data)))
         (is (= [(str (fs/path dir "bad.edn"))] (:files data))))
       (finally (fs/delete-tree dir)))))
+
+(deftest built-in-definitions-come-before-every-directory
+  (let [overlay (fs/create-temp-dir)
+        builtin {"kind.edn" (pr-str {:source {:github "kubernetes-sigs/kind"} :asset "kind-linux-amd64"})
+                 "@k8s.edn" (pr-str {:members ["kind"]})}]
+    (try
+      (spit (str (fs/path overlay "kind.edn")) "{:asset \"kind-linux-arm64\"}")
+      (is (= "kind-linux-amd64" (:asset (registry/lookup (registry/load-registry builtin []) "kind"))))
+      (is (= "kind-linux-arm64" (:asset (registry/lookup (registry/load-registry builtin [(str overlay)]) "kind"))))
+      (is (= ["kind"] (get-in (registry/load-groups builtin []) ["@k8s" :members])))
+      (finally (fs/delete-tree overlay)))))
+
+(deftest a-checkout-has-no-built-in-definitions
+  (is (nil? (registry/builtin))))

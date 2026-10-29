@@ -115,10 +115,11 @@ Every failure is explained with what to do; --debug adds each request and stack 
   definition still leaves the last run readable."
   [ctx command]
   (let [dirs (get-in ctx [:config :registries])
+        builtin (registry/builtin)
         load (fn [ctx]
-               (let [groups (registry/load-groups dirs)]
+               (let [groups (registry/load-groups builtin dirs)]
                  (-> ctx
-                     (assoc :registry (registry/load-registry dirs) :groups groups
+                     (assoc :registry (registry/load-registry builtin dirs) :groups groups
                             :locks (registry/load-locks dirs lockfile/read-lock))
                      (update :config configured groups))))]
     (case command

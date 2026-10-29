@@ -17,6 +17,7 @@ jobs:
     timeout-minutes: 15
     permissions:
       contents: write
+      id-token: write # cosign keyless sign-blob
     steps:
       - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7
         with:
@@ -40,6 +41,32 @@ jobs:
         with:
           version: ${{ steps.version.outputs.version }}
           previous: ${{ steps.gate.outputs.last }}
+      - name: Build the self-contained binaries
+        if: steps.gate.outputs.needed == 'true'
+        env:
+          GH_TOKEN: ${{ github.token }}
+          VERSION: ${{ steps.version.outputs.version }}
+        run: |
+          set -euo pipefail
+          nix develop --command bb build
+          bb_version=$(nix develop --command bb --version | sed 's/^babashka v//')
+          mkdir dist bb
+          for arch in amd64 aarch64; do
+            tarball="babashka-${bb_version}-linux-${arch}-static.tar.gz"
+            gh release download "v${bb_version}" --repo babashka/babashka --dir bb \
+              --pattern "${tarball}" --pattern "${tarball}.sha256"
+            echo "$(cat "bb/${tarball}.sha256")  bb/${tarball}" | sha256sum --check
+            tar --extract --gzip --file "bb/${tarball}" --directory bb bb
+            cat bb/bb target/breto.jar > "dist/breto-linux-${arch}"
+            rm bb/bb
+          done
+          chmod +x dist/breto-linux-*
+          (cd dist && sha256sum breto-linux-* > "breto_${VERSION}_SHA256SUMS")
+      - name: Sign the checksums
+        if: steps.gate.outputs.needed == 'true'
+        uses: metio/ci/cosign-sign-blob@14ad475c5f5c4c0df727df1a22345298604e66ba # 2026.10.26174650
+        with:
+          file: dist/breto_${{ steps.version.outputs.version }}_SHA256SUMS
       - name: Tag and publish the GitHub release
         if: steps.gate.outputs.needed == 'true'
         env:
@@ -47,4 +74,4 @@ jobs:
           VERSION: ${{ steps.version.outputs.version }}
           SHA: ${{ github.sha }}
           NOTES: ${{ steps.notes.outputs.file }}
-        run: gh release create "$VERSION" --target "$SHA" --notes-file "$NOTES" --title "$VERSION"
+        run: gh release create "$VERSION" --target "$SHA" --notes-file "$NOTES" --title "$VERSION" dist/*

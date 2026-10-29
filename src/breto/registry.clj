@@ -3,10 +3,13 @@
 
 (ns breto.registry
   "Package definitions, one EDN file per package, and groups of packages, one
-  @NAME.edn file per group, both read from the :registries directories."
+  @NAME.edn file per group, both read from the :registries directories. A
+  breto binary carries the definitions of its release, which come before
+  every directory."
   (:require [babashka.fs :as fs]
             [breto.package :as package]
             [clojure.edn :as edn]
+            [clojure.java.io :as io]
             [clojure.string :as str]))
 
 (defn group-name?
@@ -14,18 +17,36 @@
   [s]
   (str/starts-with? s "@"))
 
-(defn- read-file [file]
-  (let [name (str (fs/strip-ext (fs/file-name file)))]
-    (try (assoc (edn/read-string (slurp (str file))) :name name ::files [(str file)])
-         (catch RuntimeException e
-           (throw (ex-info (str "invalid package " (pr-str name) ": " file " is not valid EDN: " (ex-message e))
-                           {:breto/problem :invalid-package :package name :files [(str file)]
-                            :problems [(str "not valid EDN: " (ex-message e))]}))))))
+(def ^:private builtin-dir "breto/registry/")
 
-(defn- read-dir [dir]
-  (->> (sort (fs/glob dir "*.edn"))
-       (remove #(group-name? (str (fs/file-name %))))
-       (map read-file)))
+(defn builtin
+  "The files built into a breto binary, file name -> text, or nil when breto
+  runs from a checkout."
+  []
+  (when-let [index (io/resource (str builtin-dir "index.edn"))]
+    (into (sorted-map)
+          (for [file (edn/read-string (slurp index))]
+            [file (slurp (io/resource (str builtin-dir file)))]))))
+
+(defn- entries
+  "[label file-name text] of every .edn file whose name `keep?` accepts:
+  those of `builtin` first, then those of `dirs` in order."
+  [builtin dirs keep?]
+  (concat (for [[file text] builtin :when (keep? file)]
+            [(str "breto:" file) file text])
+          (for [dir (filter fs/directory? dirs)
+                file (sort (fs/glob dir "*.edn"))
+                :let [file-name (str (fs/file-name file))]
+                :when (keep? file-name)]
+            [(str file) file-name (slurp (str file))])))
+
+(defn- read-file [[label file-name text]]
+  (let [name (str (fs/strip-ext file-name))]
+    (try (assoc (edn/read-string text) :name name ::files [label])
+         (catch RuntimeException e
+           (throw (ex-info (str "invalid package " (pr-str name) ": " label " is not valid EDN: " (ex-message e))
+                           {:breto/problem :invalid-package :package name :files [label]
+                            :problems [(str "not valid EDN: " (ex-message e))]}))))))
 
 (defn- normalize
   "The validated definition, or an error naming the files it came from."
@@ -61,14 +82,16 @@
     :else (-> (merge earlier pkg) (assoc ::files (into (vec (::files earlier)) (::files pkg))))))
 
 (defn load-registry
-  "Package definitions from `dirs`, keyed by name. A definition in a later
-  directory is merged over the one before it, so an overlay can change a single
-  key of an upstream package, or replaces it with :replace true."
-  [dirs]
-  (let [merged (reduce (fn [acc pkg] (update acc (:name pkg) layer pkg))
-                       {}
-                       (mapcat read-dir (filter fs/directory? dirs)))]
-    (update-vals merged normalize)))
+  "Package definitions from `builtin`, the files built into breto, and `dirs`,
+  keyed by name. A definition in a later directory is merged over the one
+  before it, so an overlay can change a single key of an upstream package, or
+  replaces it with :replace true."
+  ([dirs] (load-registry nil dirs))
+  ([builtin dirs]
+   (let [merged (reduce (fn [acc pkg] (update acc (:name pkg) layer pkg))
+                        {}
+                        (map read-file (entries builtin dirs (complement group-name?))))]
+     (update-vals merged normalize))))
 
 (defn lookup [registry name]
   (or (get registry name)
@@ -84,21 +107,21 @@
     (conj ":members must hold names as strings")))
 
 (defn load-groups
-  "Groups from `dirs`, keyed by @NAME. A group in a later directory is merged
-  over the one before it, so an overlay can replace its :members."
-  [dirs]
-  (let [files (->> (filter fs/directory? dirs)
-                   (mapcat #(sort (fs/glob % "@*.edn"))))]
-    (->> files
-         (reduce (fn [acc file]
-                   (let [name (str (fs/strip-ext (fs/file-name file)))
-                         group (try (edn/read-string (slurp (str file)))
+  "Groups from `builtin`, the files built into breto, and `dirs`, keyed by
+  @NAME. A group in a later directory is merged over the one before it, so an
+  overlay can replace its :members."
+  ([dirs] (load-groups nil dirs))
+  ([builtin dirs]
+   (->> (entries builtin dirs group-name?)
+         (reduce (fn [acc [label file-name text]]
+                   (let [name (str (fs/strip-ext file-name))
+                         group (try (edn/read-string text)
                                     (catch RuntimeException e
-                                      (throw (ex-info (str "invalid group " name ": " file " is not valid EDN: " (ex-message e))
-                                                      {:breto/problem :invalid-package :package name :files [(str file)]
+                                      (throw (ex-info (str "invalid group " name ": " label " is not valid EDN: " (ex-message e))
+                                                      {:breto/problem :invalid-package :package name :files [label]
                                                        :problems [(str "not valid EDN: " (ex-message e))]}))))]
                      (update acc name #(-> (merge % (if (map? group) group {:members group}))
-                                           (update :files (fnil conj []) (str file))))))
+                                           (update :files (fnil conj []) label)))))
                  {})
          (into {} (map (fn [[name group]]
                          (when-let [problems (seq (group-problems group))]

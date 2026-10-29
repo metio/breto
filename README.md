@@ -9,18 +9,37 @@ breto installs prebuilt binaries from their upstream releases, keeps several ver
 
 ## Requirements
 
-breto runs on [babashka](https://babashka.org/). It unpacks zip archives, plain or gzip-compressed tar archives and gzip-compressed single files itself; `.tar.xz`, `.tar.bz2` and `.tar.zst` need `tar` with `xz`, `bzip2` or `zstd`, and a bzip2- or zstd-compressed single file needs `bzip2` or `zstd`. Packages that require a signature need cosign, which breto installs itself when `cosign` is listed in `:packages`.
+breto runs on [babashka](https://babashka.org/), which the release executables carry inside them. It unpacks zip archives, plain or gzip-compressed tar archives and gzip-compressed single files itself; `.tar.xz`, `.tar.bz2` and `.tar.zst` need `tar` with `xz`, `bzip2` or `zstd`, and a bzip2- or zstd-compressed single file needs `bzip2` or `zstd`. Packages that require a signature need cosign, which breto installs itself when `cosign` is listed in `:packages`.
 
 ## Installation
 
-Clone the repository and link the launcher onto your `PATH`:
+Every release carries breto as one executable for `linux-amd64` and `linux-aarch64`: babashka with breto and the package definitions of that release inside it, so it needs neither babashka nor a checkout. Download it from the [latest release](https://github.com/metio/breto/releases/latest) and let it install itself:
+
+```shell
+chmod +x breto-linux-amd64
+./breto-linux-amd64 install cosign breto
+rm breto-linux-amd64
+```
+
+breto installs cosign first, then checks the signature of its own release with it, and links `breto` into `~/.local/bin`. Listed in `:packages` with cosign, breto is then kept up to date by `breto update` like any other package. The download itself can be checked the same way before running it, with the `SHA256SUMS` file and its signature bundle from the release:
+
+```shell
+cosign verify-blob breto_VERSION_SHA256SUMS --bundle breto_VERSION_SHA256SUMS.bundle \
+  --certificate-identity https://github.com/metio/breto/.github/workflows/release.yml@refs/heads/main \
+  --certificate-oidc-issuer https://token.actions.githubusercontent.com
+sha256sum --check --ignore-missing breto_VERSION_SHA256SUMS
+```
+
+The definitions built into breto come before every directory in `:registries`, which can add packages or override keys of the built-in ones.
+
+To work on breto itself, clone the repository and link the launcher onto your `PATH`. It runs `bb` against the `bb.edn` next to it, so the clone can live anywhere, and it has no built-in definitions, so `:registries` names the clone's `packages` directory:
 
 ```shell
 git clone https://github.com/metio/breto.git ~/src/breto
 ln -s ~/src/breto/breto ~/.local/bin/breto
 ```
 
-The launcher runs `bb` against the `bb.edn` next to it, so the clone can live anywhere.
+`bb build` writes the uberjar the release appends to babashka to `target/breto.jar`.
 
 ## Configuration
 
