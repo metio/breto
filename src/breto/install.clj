@@ -314,8 +314,8 @@
                          (fs/delete package-dir))))))]
     (let [warnings (when activate?
                      (staged io :activate context
-                       #(do (store/activate! config pkg (installed-bin-paths config pkg artifact version) version)
-                            (vec (share! config io pkg version)))))
+                       #(-> (vec (store/activate! config pkg (installed-bin-paths config pkg artifact version) version))
+                            (into (share! config io pkg version)))))
           recorded (when-not (or fresh? (#{:go :pypi} (package/source-kind pkg)))
                      (if verify?
                        (some-> (record-upstream-hash! config pkg io release artifact) (and :upstream))

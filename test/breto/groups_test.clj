@@ -152,3 +152,12 @@
     (is (str/includes? (slurp (path "bin" "a")) "a 0.9.0"))
     (is (str/includes? (:out (s/breto! {:packages []} ["uninstall" "@pinned"] {:io io})) "1 removed"))
     (is (not (fs/exists? (path "bin" "a"))))))
+
+(deftest activation-leaves-commands-breto-did-not-link-alone
+  (let [io (world)]
+    (fs/create-dirs (path "bin"))
+    (spit (path "bin" "a") "mine")
+    (let [{:keys [code out]} (s/breto! {:packages ["a"]} ["update"] {:io io})]
+      (is (= 0 code) out)
+      (is (= "mine" (slurp (path "bin" "a"))))
+      (is (str/includes? out "was not linked by breto")))))

@@ -118,12 +118,17 @@
 (defn activate!
   "Makes `version` the one that `current`, the binaries, any extra links, the
   man pages and the completions of the package resolve to. Links in the bin
-  directory to commands `version` lacks are removed. Returns warnings
-  about files in the way of man pages and completions."
+  directory to commands `version` lacks are removed. A command or link may
+  replace a link into the store, so the package listed last wins, but
+  nothing else. Returns warnings about the files left in the way."
   [config {:keys [name links] :as pkg} bin-paths version]
   (let [dir (package-dir config name)
         current (fs/path dir current-link)
-        extra (set (map #(str (expand-home %)) (keys links)))]
+        extra (set (map #(str (expand-home %)) (keys links)))
+        claim! (fn [link target]
+                 (if (and (fs/exists? link {:nofollow-links true}) (not (points-into? (fs/parent dir) link)))
+                   (str link " exists and was not linked by breto, so " name " leaves it alone")
+                   (do (link! link target) nil)))]
     (link! current version)
     (when (fs/directory? (:bin-dir config))
       (doseq [link (fs/list-dir (:bin-dir config))
@@ -131,11 +136,11 @@
                          (not (contains? bin-paths (str (fs/file-name link))))
                          (not (extra (str link))))]
         (fs/delete link)))
-    (doseq [[link path] bin-paths]
-      (link! (fs/path (:bin-dir config) link) (fs/path current path)))
-    (doseq [[link path] links]
-      (link! (expand-home link) (fs/path current path)))
-    (link-share! config pkg version)))
+    (-> (vec (keep identity (concat (for [[link path] bin-paths]
+                                      (claim! (fs/path (:bin-dir config) link) (fs/path current path)))
+                                    (for [[link path] links]
+                                      (claim! (fs/path (expand-home link)) (fs/path current path))))))
+        (into (link-share! config pkg version)))))
 
 (defn previous-version
   "The newest of `versions` older than `active`, or nil."
