@@ -411,6 +411,17 @@
    :advice [(str "breto update " package " without --locked installs its latest release and adds it to the lock file.")
             "Then commit the lock file so other machines install the same version."]})
 
+(defmethod explain :invalid-project [{:keys [file problems]} _]
+  {:summary (str "The project file " file " is not valid.")
+   :facts (vec problems)
+   :advice ["Fix the file: {:packages [\"PKG\" \"PKG@VERSION\" \"@GROUP\"]}, with at least one entry."]})
+
+(defmethod explain :no-project [{:keys [dir]} _]
+  {:summary (str "There is no .breto.edn in " dir " or any directory above it.")
+   :facts []
+   :advice ["Run breto env in a project, or pass --dir with the project directory."
+            "Create a .breto.edn there with {:packages [\"PKG@VERSION\"]} to start one."]})
+
 (defmethod explain :env-missing [{:keys [missing project]} _]
   {:summary (str project " needs versions that are not installed: " (str/join ", " missing) ".")
    :facts []
@@ -446,7 +457,7 @@
 (defmethod explain :bundle-missing [{:keys [package version bundle assets]} _]
   {:summary (str "Release " version " of " package " has no signature bundle named " bundle ".")
    :facts (cond-> [] (seq assets) (conj (str "Signature-like assets in the release: "
-                                             (str/join ", " (or (seq (filter #(re-find #"(?i)sig|bundle|\\.pem$" %) assets)) ["none"])))))
+                                             (str/join ", " (or (seq (filter #(re-find #"(?i)sig|bundle|\.pem$" %) assets)) ["none"])))))
    :advice ["Correct :bundle in the definition if upstream renamed it."
             "If upstream stopped signing, or started later, scope :signature with a :history entry."]})
 

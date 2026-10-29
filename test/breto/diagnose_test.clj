@@ -153,3 +153,19 @@
                            1)))
   (is (= ["tool-aarch64-apple-darwin.zip"]
          (diagnose/closest "tool-arm64-macos.zip" ["tool-x86_64-apple-darwin.zip" "tool-aarch64-apple-darwin.zip"] 1))))
+
+(deftest pem-files-count-as-signature-like-assets
+  (let [d (diagnose/diagnose (ex-info "x" {:breto/problem :bundle-missing :package "p" :version "1" :bundle "p.sigstore.json"
+                                            :assets ["p" "cert.pem" "README"]})
+                             {})]
+    (is (some #(str/includes? % "cert.pem") (:facts d)))))
+
+(deftest project-file-problems-are-explained
+  (let [invalid (diagnose/diagnose (ex-info "x" {:breto/problem :invalid-project :file "/p/.breto.edn"
+                                                  :problems [":packages must be a non-empty vector"]})
+                                   {})
+        missing (diagnose/diagnose (ex-info "x" {:breto/problem :no-project :dir "/p"}) {})]
+    (is (str/includes? (:summary invalid) "/p/.breto.edn"))
+    (is (some #(str/includes? % ":packages must be") (:facts invalid)))
+    (is (str/includes? (:summary missing) "/p"))
+    (is (not-any? #(str/includes? % "Please report") (concat (:advice invalid) (:advice missing))))))
