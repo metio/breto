@@ -98,3 +98,22 @@
       (is (str/includes? out "[OK] gamma 1.0.0 installed"))
       (is (not (str/includes? out "gamma would be removed")))
       (is (= "#!/bin/sh\necho gamma 1.0.0\n" (slurp (str (fs/path bin "gamma"))))))))
+
+(deftest a-failed-sync-leaves-the-lock-file-alone
+  (let [{:keys [io]} (world)]
+    (s/breto! {:packages ["alpha"] :pins {"alpha" "0.9.0"}} ["update"] {:io io})
+    (lock! {"alpha" {:version "1.0.0" :sha256 (apply str (repeat 64 "0"))}})
+    (let [before (slurp (path "breto.lock"))
+          {:keys [code]} (s/breto! (configured) ["sync"] {:io io})]
+      (is (= 1 code))
+      (is (= before (slurp (path "breto.lock")))))))
+
+(deftest sync-refuses-an-installed-version-that-differs-from-the-lock
+  (let [{:keys [io]} (world)]
+    (s/breto! {:packages ["alpha"]} ["update"] {:io io})
+    (lock! {"alpha" {:version "1.0.0" :sha256 (apply str (repeat 64 "0"))}})
+    (let [before (slurp (path "breto.lock"))
+          {:keys [code out]} (s/breto! (configured) ["sync"] {:io io})]
+      (is (= 1 code) out)
+      (is (str/includes? out "[FAIL] alpha"))
+      (is (= before (slurp (path "breto.lock")))))))

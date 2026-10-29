@@ -91,3 +91,13 @@
       (is (= 1 code))
       (is (str/includes? out "[FAIL] alpha")))
     (is (not (fs/exists? (path "bin" "alpha"))))))
+
+(deftest an-installed-version-must-match-its-locked-hash
+  (let [{:keys [io]} (world)]
+    (group! ["alpha@0.9.0"])
+    (breto! io "install" "alpha@0.9.0")
+    (spit (path "shared" "breto.lock") (pr-str {"alpha@0.9.0" {:sha256 (apply str (repeat 64 "0")) :asset "alpha"}}))
+    (let [before (slurp (path "shared" "breto.lock"))
+          {:keys [code out]} (breto! io "lock" (path "shared"))]
+      (is (= 1 code) out)
+      (is (= before (slurp (path "shared" "breto.lock")))))))

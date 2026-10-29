@@ -131,11 +131,12 @@ Every failure is explained with what to do; --debug adds each request and stack 
 
 (defn- record-lock!
   "Rewrites the lock file, when one is configured, after a command changed the
-  store. A dry run changed nothing, and rewriting the file from the store
-  would drop the versions sync was asked to install. A failure to write it is
+  store. A dry run changed nothing, and sync follows the lock file, so
+  rewriting it from the store would undo the versions sync failed to
+  install. A failure to write it is
   reported but does not fail the command."
   [{:keys [config opts] :as ctx} command]
-  (when-let [path (when-not (:dry-run opts) (:lockfile config))]
+  (when-let [path (when-not (or (:dry-run opts) (= "sync" command)) (:lockfile config))]
     (try (when (lockfile/write! path config)
            (commands/locked! ctx command path))
          (catch Exception e

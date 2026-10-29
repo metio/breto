@@ -266,6 +266,14 @@
         bin-paths (package/bin-paths pkg artifact)
         fresh? (not (store/installed? config (:name pkg) version
                                       (concat (vals bin-paths) (share/shipped-completions pkg))))
+        _ (when-not fresh?
+            (let [meta (store/read-meta config (:name pkg) version)]
+              (staged io :verify context
+                #(doseq [[want have] [[expect-sum (:sum meta)] [expect-sha256 (when-not expect-sum (:sha256 meta))]]
+                         :when (and want have (not= (str/lower-case want) (str/lower-case have)))]
+                   (throw (ex-info (str (:name pkg) " " version " in the store differs from the lock file: expected " want ", got " have)
+                                   (assoc context :breto/problem :checksum-mismatch :asset (:asset artifact)
+                                          :expected want :actual have :origin :lockfile)))))))
         {:keys [sha256 signed? bootstrap?]} (when fresh?
                  (with-stage :place context #(fs/create-dirs package-dir))
                  (let [work (fs/create-temp-dir {:dir package-dir :prefix store/work-prefix})
