@@ -1,7 +1,7 @@
 ;; SPDX-FileCopyrightText: The breto Authors
 ;; SPDX-License-Identifier: 0BSD
 
-{:description "Eclipse's language server for Java, which needs Java 21 or newer and python3"
+{:description "Eclipse's language server for Java, which needs Java 25 or newer and python3"
  :source {:text "https://download.eclipse.org/jdtls/milestones/" :match "milestones/(\\d+\\.\\d+\\.\\d+)" :newest true}
  :tag-prefix ""
  :vars {:build {:text "https://download.eclipse.org/jdtls/milestones/{version}/latest.txt"
