@@ -81,22 +81,23 @@
     (seq warnings) (assoc :warnings warnings)))
 
 (defn- tools-first
-  "`specs` with the packages that provide cosign, go or uv moved to the
+  "`specs` with the packages that provide cosign, go, uv or node moved to the
   front, so that on a fresh host those are installed before they are needed
   to check the signatures of the others or to build them."
   [registry specs]
   (let [provides? #(let [[name] (batch/split-spec %)]
-                     (or (#{"go" "uv"} name) (some-> (get registry name) signature/provides-cosign?)))]
+                     (or (#{"go" "uv" "node"} name) (some-> (get registry name) signature/provides-cosign?)))]
     (concat (filter provides? specs) (remove provides? specs))))
 
 (defn tool-command
-  "The command `name` of the package of the same name, which builds the
-  packages of a :go or :pypi source: that of its active version, else of its
-  newest installed one."
-  [config registry name]
-  (when-let [pkg (get registry name)]
-    (when-let [version (or (store/current-version config name) (:version (first (store/versions config name))))]
-      (get (install/bin-targets config pkg version) name))))
+  "The command `command` of the package `name`, by default the command of the
+  same name, which builds the packages of a :go, :pypi or :npm source: that of
+  its active version, else of its newest installed one."
+  ([config registry name] (tool-command config registry name name))
+  ([config registry name command]
+   (when-let [pkg (get registry name)]
+     (when-let [version (or (store/current-version config name) (:version (first (store/versions config name))))]
+       (get (install/bin-targets config pkg version) command)))))
 
 (defn- lock-options
   "install! options checking `name` at `version` against the lock files of
@@ -128,7 +129,8 @@
                                                   {:breto/problem :not-locked :package name :version version})))
                               options (cond-> (into (or locked {}) (remove (comp nil? val)) (dissoc options ::pinned))
                                         (= :go (package/source-kind pkg)) (assoc :go (tool-command config registry "go"))
-                                        (= :pypi (package/source-kind pkg)) (assoc :uv (tool-command config registry "uv")))
+                                        (= :pypi (package/source-kind pkg)) (assoc :uv (tool-command config registry "uv"))
+                                        (= :npm (package/source-kind pkg)) (assoc :npm (tool-command config registry "node" "npm")))
                               result (installed-result name (install/install! config io pkg options))
                               warnings (cond-> []
                                          (package/superseded-warning pkg) (conj (package/superseded-warning pkg))

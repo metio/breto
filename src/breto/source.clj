@@ -3,6 +3,7 @@
 
 (ns breto.source
   (:require [breto.github :as github]
+            [breto.npm :as npm]
             [breto.package :as package]
             [breto.template :as template]
             [breto.version :as version]
@@ -133,7 +134,10 @@
                           (throw (ex-info (str "no Version in " url) {:breto/problem :no-release :url url})))))
     :pypi (let [url (pypi-url source "/json")]
             (tagged pkg (or (get-in (json/parse-string (get-text url {"Accept" "application/json"})) ["info" "version"])
-                            (throw (ex-info (str "no info.version in " url) {:breto/problem :no-release :url url})))))))
+                            (throw (ex-info (str "no info.version in " url) {:breto/problem :no-release :url url})))))
+    :npm (let [url (npm/registry-url (:npm source) "/latest")]
+           (tagged pkg (or (get (json/parse-string (get-text url {"Accept" "application/json"})) "version")
+                           (throw (ex-info (str "no version in " url) {:breto/problem :no-release :url url})))))))
 
 (defn- release-tags
   "Tags of the published, non-prerelease releases of `pkg`, or nil for a
@@ -155,6 +159,11 @@
     :pypi (->> (get (json/parse-string (get-text (pypi-url source "/json") {"Accept" "application/json"})) "releases")
                (keep (fn [[version files]] (when (and (seq files) (not-every? #(get % "yanked") files)) version)))
                (remove #(re-find #"\d(a|b|rc|\.dev)\d*" %)))
+    :npm (->> (get (json/parse-string (get-text (npm/registry-url (:npm source) "")
+                                                {"Accept" "application/vnd.npm.install-v1+json"}))
+                   "versions")
+              (keep (fn [[version meta]] (when-not (get meta "deprecated") version)))
+              (remove #(str/includes? % "-")))
     nil))
 
 (defn newest

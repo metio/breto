@@ -2,7 +2,8 @@
 ;; SPDX-License-Identifier: 0BSD
 
 (ns breto.package
-  (:require [breto.template :as template]
+  (:require [breto.npm :as npm]
+            [breto.template :as template]
             [breto.version :as version]
             [clojure.string :as str]))
 
@@ -27,7 +28,7 @@
     (subs file-name 0 (- (count file-name) (count suffix)))
     file-name))
 
-(def source-kinds #{:github :gitlab :text :json :go :pypi})
+(def source-kinds #{:github :gitlab :text :json :go :pypi :npm})
 
 (defn source-kind [{:keys [source]}]
   (let [kinds (filter source-kinds (keys source))]
@@ -139,6 +140,11 @@
          (not (and (string? (:pypi source)) (re-matches #"[A-Za-z0-9][A-Za-z0-9._-]*" (:pypi source)))))
     (conj ":source {:pypi NAME} names a project on PyPI")
 
+    (and (= :npm (source-kind pkg))
+         (not (and (string? (:npm source))
+                   (re-matches #"(@[a-z0-9][a-z0-9._~-]*/)?[a-z0-9][a-z0-9._~-]*" (:npm source)))))
+    (conj ":source {:npm NAME} names a package on the npm registry, such as prettier or @biomejs/biome")
+
     (not (or (nil? (:python pkg)) (and (string? (:python pkg)) (re-matches #"\d+\.\d+" (:python pkg)))))
     (conj ":python is a Python version such as \"3.13\"")
 
@@ -238,6 +244,13 @@
                      (when (nil? (:bins pkg))
                        {:bins {(:name pkg) (str "venv/bin/" (:name pkg))}}))
 
+              (= :npm (source-kind pkg))
+              (merge {:tag-prefix "" :layout :tree
+                      :asset "package-lock.json"
+                      :url (npm/registry-url (get-in pkg [:source :npm]) "/{version}")}
+                     (when (nil? (:bins pkg))
+                       {:bins {(:name pkg) (str "node_modules/.bin/" (:name pkg))}}))
+
               (and (nil? (:url pkg)) (= :github (source-kind pkg)))
               (assoc :url (str "https://github.com/" (get-in pkg [:source :github])
                                "/releases/download/{tag}/{asset}"))
@@ -245,7 +258,7 @@
               (and (nil? (:bins pkg)) (:bin-dir pkg))
               (assoc :bins {})
 
-              (and (nil? (:bins pkg)) (nil? (:bin-dir pkg)) (not= :pypi (source-kind pkg)))
+              (and (nil? (:bins pkg)) (nil? (:bin-dir pkg)) (not (#{:pypi :npm} (source-kind pkg))))
               (assoc :bins {(:name pkg) (case (archive-type (str (:asset pkg)))
                                           :raw "{asset}"
                                           (:gz :bz2) (unpacked-name (str (:asset pkg)))

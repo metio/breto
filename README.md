@@ -301,6 +301,7 @@ A tool that ships support files next to its binary uses the tree layout, and `:l
 | `{:json "https://…" :version [:releases 0 :version]}` | A JSON document holding the latest tag at the `:version` path of keys and indices, such as JetBrains' release API. `:url` is required. |
 | `{:pypi "reuse"}` | The version PyPI reports as latest for the project. breto installs it with uv into a virtual environment of its own; see [Python packages](#python-packages). `:asset` and `:url` are filled in, and `:bins` defaults to the package name in the environment's `bin`. |
 | `{:go "golang.org/x/vuln" :package "golang.org/x/vuln/cmd/govulncheck"}` | The version the Go module proxy reports as latest for the module. breto builds `:package`, which defaults to the module itself, with `go install`; see [Go modules](#go-modules). `:asset` and `:url` are filled in. |
+| `{:npm "prettier"}` | The version the npm registry tags as latest for the package, which may be scoped, such as `@biomejs/biome`. breto installs it with npm into a directory of its own; see [npm packages](#npm-packages). `:asset` and `:url` are filled in, and `:bins` defaults to the package name in `node_modules/.bin`. |
 
 A tag is a release of the package when it starts with `:tag-prefix`. A repository that releases several components under one name each, such as `cli/v0.18.1` beside `helm/v9.0.0`, needs only the prefix of its own: when the release GitHub or GitLab marks as latest belongs to another component, breto takes the newest listed release with the package's prefix, which costs one request listing the releases. A repository that changed its naming scheme keeps the old prefix in a `:history` entry, and a tag then counts when its prefix is the one that applies to the version it names:
 
@@ -342,6 +343,18 @@ The resolution depends on a cut-off: uv considers only files published before it
 ```
 
 The files of a resolution are pinned by hash, the build dependencies of a source distribution are not.
+
+### npm packages
+
+A package with an `:npm` source is installed with the `npm` command of the installed `node` package, which any batch installs first. npm resolves the package and its dependencies, checks every tarball against the integrity hash the registry publishes for it, and installs them into the version's directory, recording the resolution in `package-lock.json`. Each version has a directory of its own, so projects can use different versions side by side.
+
+npm runs with the npm registry, without the user's or the global npmrc, and without install scripts, so a package whose install script downloads or builds its program does not work. The installed commands are usually scripts that start `node` from `PATH`, and those need `node` on `PATH` when they run.
+
+The resolution depends on a cut-off: npm considers only versions published before it, given as `--before`. breto records it with the hash of `package-lock.json`, and a lock file entry carries both, so resolving again elsewhere gives the same file or fails:
+
+```clojure
+{"prettier@3.9.10" {:sha256 "…" :asset "package-lock.json" :exclude-newer "2026-10-29T10:12:45Z"}}
+```
 
 ### Rust
 

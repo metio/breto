@@ -7,6 +7,7 @@
             [breto.checksum :as checksum]
             [breto.github :as github]
             [breto.golang :as golang]
+            [breto.npm :as npm]
             [breto.pypi :as pypi]
             [breto.log :as log]
             [breto.package :as package]
@@ -261,15 +262,15 @@
   "Installs `pkg` at `version` (latest when nil) and activates it unless
   `:activate?` is false. The download is verified unless `verify?` is false
   or the definition for that version says `:verify false`; `expect-sha256`,
-  from a lock file, must match it in any case, and for a :pypi package it is
-  the hash of the resolved requirements, resolved with the lock file's
-  `exclude-newer` cut-off. Returns {:version v
+  from a lock file, must match it in any case, and for a :pypi or :npm
+  package it is the hash of the resolved requirements or package-lock.json,
+  resolved with the lock file's `exclude-newer` cut-off. Returns {:version v
   :installed? bool :verified? bool :sha256 hex}, the hash only for a fresh
   install, :signed? when a signature was checked, :bootstrap? when cosign
   itself was installed before any cosign could check it, and :hash-recorded?
   :upstream or :download when an installed version without a recorded hash
   got upstream's, or, when upstream publishes none, that of a fresh download. Failures carry the stage and release they happened in."
-  [config io pkg {:keys [version activate? verify? expect-sha256 expect-sum exclude-newer go uv] :or {activate? true verify? true}}]
+  [config io pkg {:keys [version activate? verify? expect-sha256 expect-sum exclude-newer go uv npm] :or {activate? true verify? true}}]
   (let [context {:package (:name pkg) :repo (package/repo pkg) :source (:source pkg)}
         release (staged io :resolve context #(resolve-release pkg io version))
         version (:version release)
@@ -304,6 +305,10 @@
                                            #(pypi/build! io pkg release work uv (or (:python pkg) (:python config "3.13"))
                                                          (:python-dir config) exclude-newer context))]
                                      {:file file :built unpacked :exclude-newer exclude-newer})
+                             :npm (let [{:keys [file unpacked exclude-newer]}
+                                        (staged io :download context
+                                          #(npm/build! io pkg release work npm exclude-newer (pypi/now) context))]
+                                    {:file file :built unpacked :exclude-newer exclude-newer})
                              (fetch! config pkg io release artifact work verify? context))
                            sha256 (checksum/digest "SHA-256" file)
                            unpacked (fs/path work "unpacked")
@@ -340,7 +345,7 @@
                      (staged io :activate context
                        #(-> (vec (store/activate! config pkg (installed-bin-paths config pkg artifact version) version))
                             (into (share! config io pkg version)))))
-          recorded (when-not (or fresh? (#{:go :pypi} (package/source-kind pkg)))
+          recorded (when-not (or fresh? (#{:go :pypi :npm} (package/source-kind pkg)))
                      (if verify?
                        (some-> (record-upstream-hash! config pkg io release artifact) (and :upstream))
                        (some-> (record-download-hash! config pkg io release artifact context) (and :download))))]
