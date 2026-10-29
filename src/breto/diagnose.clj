@@ -290,7 +290,7 @@
     {:summary (str "Could not unpack " file ".")
      :facts [(str/trim (str stderr))]
      :advice (if missing
-               [(str "Install " missing "; tar needs it for this archive format.")]
+               [(str "Install " missing "; breto needs it for this archive format.")]
                ["The download may not be the archive its name suggests; check the asset in the release."
                 "breto doctor checks that tar and its compressors are installed."])})))
 

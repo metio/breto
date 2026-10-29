@@ -3,6 +3,7 @@
 
 (ns breto.signature-test
   (:require [babashka.fs :as fs]
+            [babashka.process]
             [breto.diagnose :as diagnose]
             [breto.signature :as signature]
             [breto.support :as s]
@@ -148,6 +149,50 @@
     (is (= 0 code) out)
     (is (str/ends-with? (last (first @calls)) "/.checksums"))
     (is (str/includes? out "with a verified signature"))))
+
+(defn- install-archive
+  "Installs acme/tool v1.2.3 from tool.tar.gz, which holds tool-1.2.3/tool."
+  [definition run]
+  (let [dir (s/path "src" "tool-1.2.3")
+        _ (fs/create-dirs dir)
+        _ (spit (str (fs/path dir "tool")) "#!/bin/sh\necho tool\n")
+        archive (str (s/path "tool.tar.gz"))
+        _ (babashka.process/shell "tar" "--create" "--gzip" "--file" archive "--directory" (str (s/path "src")) "tool-1.2.3")
+        bundle (s/file! "bundle" "{}")
+        files {(str base "tool.tar.gz") (fs/path archive)
+               (str base "tool.sigstore") bundle}
+        texts {"https://github.com/acme/tool/releases/latest" "{\"tag_name\":\"v1.2.3\"}"
+               "https://api.github.com/repos/acme/tool/releases/tags/v1.2.3"
+               (json/generate-string {:tag_name "v1.2.3"
+                                      :assets [{:name "tool.tar.gz" :digest (str "sha256:" (s/sha256 (fs/path archive)))}
+                                               {:name "tool.sigstore" :digest nil}]})}]
+    (s/define! "tool" (merge {:source {:github "acme/tool"} :asset "tool.tar.gz" :strip 1} definition))
+    (s/breto! {:packages ["tool"]} ["install" "tool"]
+              {:io (assoc (s/fake-io files texts (atom [])) :run run :which on-path)})))
+
+(def ^:private inner-sig (assoc sig :bundle "tool.sigstore" :of {:file "{name}"}))
+
+(deftest signatures-of-a-file-inside-the-archive-are-verified-on-the-unpacked-file
+  (let [calls (atom [])
+        {:keys [code out]} (install-archive {:signature inner-sig} (cosign calls {:exit 0}))]
+    (is (= 0 code) out)
+    (is (str/includes? out "[OK] tool 1.2.3 installed with a verified signature"))
+    (is (= 1 (count @calls)))
+    (is (str/ends-with? (last (first @calls)) "/unpacked/tool"))))
+
+(deftest a-rejected-signature-of-a-file-inside-the-archive-installs-nothing
+  (let [{:keys [code out]} (install-archive {:signature inner-sig} (cosign (atom []) {:exit 1 :err "mismatch"}))]
+    (is (= 1 code))
+    (is (str/includes? out "does not verify"))
+    (is (not (fs/exists? (s/path "bin" "tool"))))))
+
+(deftest a-signed-file-missing-from-the-archive-fails-before-cosign-runs
+  (let [calls (atom [])
+        {:keys [code out]} (install-archive {:signature (assoc inner-sig :of {:file "missing"})} (cosign calls {:exit 0}))]
+    (is (= 1 code))
+    (is (str/includes? out "missing is not in tool.tar.gz"))
+    (is (empty? @calls))
+    (is (not (fs/exists? (s/path "bin" "tool"))))))
 
 (deftest no-verify-skips-the-signature
   (let [calls (atom [])

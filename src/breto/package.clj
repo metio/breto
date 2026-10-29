@@ -8,7 +8,8 @@
 
 (def ^:private archive-suffixes
   [[".tar.gz" :tar] [".tgz" :tar] [".tar.xz" :tar] [".txz" :tar]
-   [".tar.bz2" :tar] [".tbz2" :tar] [".tar" :tar] [".zip" :zip]])
+   [".tar.bz2" :tar] [".tbz2" :tar] [".tar" :tar] [".zip" :zip]
+   [".gz" :gz] [".bz2" :bz2]])
 
 (defn archive-type
   "The unpack method for a downloaded file, judged by its name. Anything that is
@@ -17,6 +18,14 @@
   (or (some (fn [[suffix type]] (when (str/ends-with? file-name suffix) type))
             archive-suffixes)
       :raw))
+
+(defn unpacked-name
+  "The name a single compressed file is decompressed under: its own name
+  without the compression suffix. Other files keep their name."
+  [file-name]
+  (if-let [suffix ({:gz ".gz" :bz2 ".bz2"} (archive-type file-name))]
+    (subs file-name 0 (- (count file-name) (count suffix)))
+    file-name))
 
 (def source-kinds #{:github :gitlab :text :json :go :pypi})
 
@@ -194,9 +203,11 @@
          (let [{:keys [bundle identity identity-regexp issuer of]} (:signature pkg)]
            (not (and (string? bundle) (string? issuer)
                      (or (string? identity) (string? identity-regexp))
-                     (contains? #{nil :asset :checksum} of)
+                     (or (contains? #{nil :asset :checksum} of)
+                         (and (map? of) (= #{:file} (set (keys of))) (relative-path? (:file of))
+                              (not (#{:raw :gz :bz2} (archive-type (str (:asset pkg)))))))
                      (or (not= :checksum of) (:checksum pkg))))))
-    (conj ":signature needs :bundle, :issuer and :identity or :identity-regexp; :of is :asset or :checksum, which needs :checksum")))
+    (conj ":signature needs :bundle, :issuer and :identity or :identity-regexp; :of is :asset, :checksum, which needs :checksum, or {:file path} inside an archive asset")))
 
 (defn superseded-warning
   "The warning for a package whose definition names a successor, or nil."
@@ -228,8 +239,9 @@
               (assoc :bins {})
 
               (and (nil? (:bins pkg)) (nil? (:bin-dir pkg)) (not= :pypi (source-kind pkg)))
-              (assoc :bins {(:name pkg) (if (= :raw (archive-type (str (:asset pkg))))
-                                          "{asset}"
+              (assoc :bins {(:name pkg) (case (archive-type (str (:asset pkg)))
+                                          :raw "{asset}"
+                                          (:gz :bz2) (unpacked-name (str (:asset pkg)))
                                           (:name pkg))}))]
     (when-let [ps (seq (problems pkg))]
       (throw (ex-info (str "invalid package " (pr-str (:name pkg)) ": " (str/join "; " ps))
@@ -321,7 +333,7 @@
                   (-> sig
                       (assoc :bundle-url (sibling-url asset-url (template/render bundle file-vars)))
                       (update :identity #(some-> % (template/render file-vars)))
-                      (update :of #(or % :asset))))
+                      (update :of #(if (map? %) (update % :file template/render file-vars) (or % :asset)))))
      :archive (archive-type asset-name)
      :bins (update-vals bins #(template/render % file-vars))}))
 

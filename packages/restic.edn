@@ -1,0 +1,7 @@
+;; SPDX-FileCopyrightText: The breto Authors
+;; SPDX-License-Identifier: 0BSD
+
+{:description "Fast, secure, efficient backup program"
+ :source {:github "restic/restic"}
+ :asset "restic_{version}_linux_amd64.bz2"
+ :checksum "SHA256SUMS"}

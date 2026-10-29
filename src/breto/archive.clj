@@ -4,6 +4,7 @@
 (ns breto.archive
   (:require [babashka.fs :as fs]
             [babashka.process :as process]
+            [breto.package :as package]
             [breto.tar :as tar]
             [clojure.java.io :as io]
             [clojure.string :as str]))
@@ -123,14 +124,35 @@
                 (when mode
                   (fs/set-posix-file-permissions target (tar/permissions mode false))))))))))
 
+(defn- decompress!
+  "Decompresses the single compressed `file` to `target`: gzip in process,
+  bzip2 with the bzip2 command."
+  [file archive-type target]
+  (let [problem (fn [message stderr]
+                  (ex-info (str "could not decompress " (fs/file-name file) ": " message)
+                           {:breto/problem :unpack-failed :file (str (fs/file-name file)) :stderr stderr}))]
+    (case archive-type
+      :gz (try (with-open [in (java.util.zip.GZIPInputStream. (io/input-stream (fs/file file)))]
+                 (io/copy in (fs/file target)))
+               (catch java.io.IOException e
+                 (throw (problem (ex-message e) (str (ex-message e))))))
+      :bz2 (let [{:keys [exit err]} (try (process/shell {:out (fs/file target) :err :string :continue true}
+                                                        "bzip2" "--decompress" "--stdout" (str file))
+                                         (catch java.io.IOException e
+                                           (throw (problem (ex-message e) (str "bzip2: Cannot exec: " (ex-message e))))))]
+             (when-not (zero? exit)
+               (throw (problem (str/trim err) err)))))))
+
 (defn unpack!
   "Unpacks `file` into the empty directory `dest`. A raw download is copied in
-  under `file-name`. The scratch space sits next to `dest` so that moving out of
-  it never crosses a filesystem."
+  under `file-name`, a single compressed file is decompressed under its name
+  without the compression suffix. The scratch space sits next to `dest` so that
+  moving out of it never crosses a filesystem."
   [file archive-type file-name dest strip]
   (fs/create-dirs dest)
   (case archive-type
     :raw (fs/copy file (fs/path dest file-name))
+    (:gz :bz2) (decompress! file archive-type (fs/path dest (package/unpacked-name file-name)))
     (let [scratch (fs/create-temp-dir {:dir (fs/parent dest) :prefix ".unpack-"})]
       (try
         (case archive-type

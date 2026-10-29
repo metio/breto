@@ -254,6 +254,21 @@
     (is (= ["kind"] (map (comp str fs/file-name) (fs/list-dir (fs/path (:store cfg) "kind" "0.33.0")))))
     (is (= "fresh" (slurp (str (fs/path (:bin-dir cfg) "kind")))))))
 
+(deftest compressed-binaries-are-installed-decompressed
+  (let [cfg (config)
+        file (fs/path *root* "taplo-linux-x86_64.gz")
+        _ (with-open [out (java.util.zip.GZIPOutputStream. (java.io.FileOutputStream. (str file)))]
+            (.write out (.getBytes "taplo")))
+        url "https://github.com/tamasfe/taplo/releases/download/0.10.0/taplo-linux-x86_64.gz"
+        pkg (package/normalize {:name "taplo" :source {:github "tamasfe/taplo"} :tag-prefix ""
+                                :asset "taplo-linux-x86_64.gz" :checksum "{asset}.sha256"})
+        io (fake-io {url file}
+                    {"https://github.com/tamasfe/taplo/releases/latest" "{\"tag_name\":\"0.10.0\"}"
+                     (str url ".sha256") (checksum/digest "SHA-256" file)})]
+    (is (= {:version "0.10.0" :installed? true :verified? true} (dissoc (install/install! cfg io pkg {}) :sha256)))
+    (is (= "taplo" (slurp (str (fs/path (:bin-dir cfg) "taplo")))))
+    (is (fs/executable? (fs/path (:bin-dir cfg) "taplo")))))
+
 (deftest failed-first-installs-leave-no-package-directory
   (let [cfg (config)
         io (fake-io {} {"https://github.com/kubernetes-sigs/kind/releases/latest" "{\"tag_name\":\"v0.33.0\"}"})]

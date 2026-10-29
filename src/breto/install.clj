@@ -119,7 +119,7 @@
     (staged io :download context #((:download! io) (:url artifact) file))
     (when verify?
       (let [checksums (when (= :checksum (:of sig)) (signed-checksum! io artifact work context))
-            signature (when sig
+            signature (when (and sig (not (map? (:of sig))))
                         (verify-signature! config io pkg artifact (or checksums file) work
                                            (assoc context :signed-what (if checksums :checksum :asset))))]
         (vreset! outcome signature)
@@ -307,16 +307,23 @@
                        (when-not built
                          (staged io :unpack context
                            #(archive/unpack! file (:archive artifact) (:asset artifact) unpacked (:strip pkg))))
-                       (staged io :place context
-                         #(do (place! pkg artifact (or built unpacked) staging)
-                              (fs/delete-tree (store/version-dir config (:name pkg) version))
-                              (fs/move staging (store/version-dir config (:name pkg) version) {:atomic-move true})
-                              (store/write-meta! config (:name pkg) version
-                                                 (cond-> {:sha256 sha256 :asset (:asset artifact) :verified verify? :signed signed?}
-                                                   sum (assoc :sum sum)
-                                                   exclude-newer (assoc :exclude-newer exclude-newer)
-                                                   bootstrap? (assoc :signature-bootstrap true)))))
-                       {:sha256 sha256 :signed? signed? :bootstrap? bootstrap?})
+                       (let [inner (get-in artifact [:signature :of :file])
+                             file-signature (when (and verify? inner (not built))
+                                              (verify-signature! config io pkg artifact
+                                                                 (with-stage :signature context #(tree-file! pkg artifact unpacked inner))
+                                                                 work (assoc context :signed-what :file)))
+                             signed? (or signed? (= :checked file-signature))
+                             bootstrap? (or bootstrap? (= :bootstrap file-signature))]
+                         (staged io :place context
+                           #(do (place! pkg artifact (or built unpacked) staging)
+                                (fs/delete-tree (store/version-dir config (:name pkg) version))
+                                (fs/move staging (store/version-dir config (:name pkg) version) {:atomic-move true})
+                                (store/write-meta! config (:name pkg) version
+                                                   (cond-> {:sha256 sha256 :asset (:asset artifact) :verified verify? :signed signed?}
+                                                     sum (assoc :sum sum)
+                                                     exclude-newer (assoc :exclude-newer exclude-newer)
+                                                     bootstrap? (assoc :signature-bootstrap true)))))
+                         {:sha256 sha256 :signed? signed? :bootstrap? bootstrap?}))
                      (finally
                        (fs/delete-tree work)
                        (.close lock)

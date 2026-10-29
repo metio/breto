@@ -9,7 +9,7 @@ breto installs prebuilt binaries from their upstream releases, keeps several ver
 
 ## Requirements
 
-breto runs on [babashka](https://babashka.org/). It unpacks zip archives and plain or gzip-compressed tar archives itself; `.tar.xz` and `.tar.bz2` need `tar` with `xz` or `bzip2`. Packages that require a signature need cosign, which breto installs itself when `cosign` is listed in `:packages`.
+breto runs on [babashka](https://babashka.org/). It unpacks zip archives, plain or gzip-compressed tar archives and gzip-compressed single files itself; `.tar.xz` and `.tar.bz2` need `tar` with `xz` or `bzip2`, and a bzip2-compressed single file needs `bzip2`. Packages that require a signature need cosign, which breto installs itself when `cosign` is listed in `:packages`.
 
 ## Installation
 
@@ -249,7 +249,7 @@ A package is a file `<name>.edn` in a registry directory, and its file name is t
 | `:checksum` | Template for a checksum file, next to the asset unless it is a full URL. | none |
 | `:strip` | Leading path components to drop when unpacking, counted as `tar --strip-components` does, a leading `./` included. | `0` |
 | `:layout` | `:binary` keeps only the files named in `:bins`; `:tree` keeps the whole archive. | `:binary` |
-| `:bins` | Command name to path inside the unpacked archive. | the package name, or the asset itself when it is not an archive |
+| `:bins` | Command name to path inside the unpacked archive. | the package name, or the asset itself when it is not an archive, without `.gz` or `.bz2` when it is a compressed single file |
 | `:bin-dir` | With the `:tree` layout, a directory inside the release whose executable files all become commands, read from each installed version, so a command a newer version drops loses its link on activation. `:bins` adds to them. | none |
 | `:vars` | Further placeholders derived from the version, as `{:match REGEX}`, the first group or else the whole match, or `{:replace [FROM TO]}`; see [Java](#java). | none |
 | `:python` | For a `:pypi` source, the Python version of its environment, overriding the config's `:python`. | none |
@@ -260,7 +260,7 @@ A package is a file `<name>.edn` in a registry directory, and its file name is t
 | `:signature` | A sigstore bundle signing the asset or its checksum file; see below. | none |
 | `:skip` | Versions never installed as the latest, e.g. a release without a build for this platform. When the latest release is listed, the newest unlisted one is installed instead, which costs one request listing the releases. An explicitly requested or pinned version is installed regardless. | none |
 
-Templates can use `{name}`, `{tag}`, `{version}`, `{repo}` and, except in `:asset` itself, `{asset}`. Files ending in `.tar.gz`, `.tgz`, `.tar.xz`, `.txz`, `.tar.bz2`, `.tbz2`, `.tar` or `.zip` are unpacked; anything else is the binary itself. An entry that would land outside the unpack directory, or a tar entry that would write through a symlink the archive created, fails the install.
+Templates can use `{name}`, `{tag}`, `{version}`, `{repo}` and, except in `:asset` itself, `{asset}`. Files ending in `.tar.gz`, `.tgz`, `.tar.xz`, `.txz`, `.tar.bz2`, `.tbz2`, `.tar` or `.zip` are unpacked. Any other file ending in `.gz` or `.bz2` is a single compressed file, decompressed under its name without that suffix, so `taplo-linux-x86_64.gz` becomes `taplo-linux-x86_64`. Anything else is the binary itself. An entry that would land outside the unpack directory, or a tar entry that would write through a symlink the archive created, fails the install.
 
 The command name is the key in `:bins`, independent of the package name. A package named `babashka` installs into `<store>/babashka/` and provides the command `bb`:
 
@@ -365,7 +365,16 @@ A checksum shows that a download is what the release lists; a signature shows wh
 | `:identity` | Template for the exact certificate identity of the signer, usually the release workflow. |
 | `:identity-regexp` | A regular expression for the identity, instead of `:identity`. |
 | `:issuer` | The OIDC issuer of the signer's certificate. |
-| `:of` | `:asset` when the bundle signs the asset, `:checksum` when it signs the checksum file, whose hash is then trusted. Defaults to `:asset`. |
+| `:of` | `:asset` when the bundle signs the asset, `:checksum` when it signs the checksum file, whose hash is then trusted, or `{:file "path"}` when it signs a file inside an archive asset. Defaults to `:asset`. |
+
+Some projects sign the binary inside the archive instead of the archive itself. `{:file "path"}` names that binary as a template, relative to the unpacked archive after `:strip`; breto verifies the download by its digest or checksum file first, unpacks it, and then checks the signature of the unpacked file before anything is placed. An archive that lacks the file fails the install. codex signs its binaries this way:
+
+```clojure
+:signature {:bundle "codex-x86_64-unknown-linux-musl.sigstore"
+            :of {:file "codex-x86_64-unknown-linux-musl"}
+            :identity "https://github.com/openai/codex/.github/workflows/rust-release.yml@refs/tags/{tag}"
+            :issuer "https://token.actions.githubusercontent.com"}
+```
 
 The signer's identity is in the certificate inside the bundle. Projects usually document it next to their verification instructions. Signed packages need cosign: list `cosign` in `:packages`. `install` and `update` handle cosign before every other package, so on a fresh host the first run installs it, checked by its GitHub digest or checksum file only, since no cosign exists yet to check its signature, and then checks the other signatures with it. The report marks that install. Later updates of cosign are checked by the version already installed. `breto check` confirms the bundle is in the release, and `breto doctor` that cosign can run.
 

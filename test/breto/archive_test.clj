@@ -3,6 +3,7 @@
 
 (ns breto.archive-test
   (:require [babashka.fs :as fs]
+            [babashka.process]
             [breto.archive :as archive]
             [breto.diagnose :as diagnose]
             [breto.support :as s :refer [path]]
@@ -37,6 +38,29 @@
   (let [file (zip! "ok.zip" [["tool-1.0/bin/tool" "t"] ["tool-1.0/README" "r"]])]
     (archive/unpack! file :zip "ok.zip" (path "out") 1)
     (is (= "t" (slurp (path "out" "bin" "tool"))))))
+
+(deftest gzip-compressed-files-are-decompressed-without-the-suffix
+  (let [file (path "tool.gz")]
+    (with-open [out (java.util.zip.GZIPOutputStream. (java.io.FileOutputStream. (str file)))]
+      (.write out (.getBytes "binary")))
+    (archive/unpack! file :gz "tool.gz" (path "out") 0)
+    (is (= ["tool"] (map (comp str fs/file-name) (fs/list-dir (path "out")))))
+    (is (= "binary" (slurp (path "out" "tool"))))))
+
+(deftest bzip2-compressed-files-are-decompressed-without-the-suffix
+  (let [file (path "tool")]
+    (spit (str file) "binary")
+    (babashka.process/shell "bzip2" (str file))
+    (archive/unpack! (path "tool.bz2") :bz2 "tool.bz2" (path "out") 0)
+    (is (= "binary" (slurp (path "out" "tool"))))))
+
+(deftest corrupt-compressed-files-fail-to-unpack
+  (spit (str (path "bad.gz")) "not gzip")
+  (spit (str (path "bad.bz2")) "not bzip2")
+  (is (= :unpack-failed (:breto/problem (try (archive/unpack! (path "bad.gz") :gz "bad.gz" (path "gz") 0) nil
+                                             (catch clojure.lang.ExceptionInfo e (ex-data e))))))
+  (is (= :unpack-failed (:breto/problem (try (archive/unpack! (path "bad.bz2") :bz2 "bad.bz2" (path "bz2") 0) nil
+                                             (catch clojure.lang.ExceptionInfo e (ex-data e)))))))
 
 (defn- patch!
   "Overwrites the bytes of `file` at `offset` (from the first occurrence of

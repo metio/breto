@@ -23,7 +23,15 @@
   (is (= :tar (package/archive-type "tcard.x86_64-linux.tgz")))
   (is (= :tar (package/archive-type "helix-25.07.1-x86_64-linux.tar.xz")))
   (is (= :zip (package/archive-type "tofu_1.10.0_linux_amd64.zip")))
-  (is (= :raw (package/archive-type "kind-linux-amd64"))))
+  (is (= :raw (package/archive-type "kind-linux-amd64")))
+  (is (= :gz (package/archive-type "taplo-linux-x86_64.gz")))
+  (is (= :bz2 (package/archive-type "restic_0.19.1_linux_amd64.bz2"))))
+
+(deftest single-compressed-files-unpack-under-their-name-without-the-suffix
+  (is (= "taplo-linux-x86_64" (package/unpacked-name "taplo-linux-x86_64.gz")))
+  (is (= "restic" (package/unpacked-name "restic.bz2")))
+  (is (= "eza.tar.gz" (package/unpacked-name "eza.tar.gz")))
+  (is (= "kind-linux-amd64" (package/unpacked-name "kind-linux-amd64"))))
 
 (deftest normalize-fills-github-defaults
   (let [pkg (package/normalize {:name "eza" :source {:github "eza-community/eza"}
@@ -37,6 +45,11 @@
   (is (= {"kind" "{asset}"}
          (:bins (package/normalize {:name "kind" :source {:github "kubernetes-sigs/kind"}
                                     :asset "kind-linux-amd64"})))))
+
+(deftest normalize-defaults-compressed-assets-to-the-decompressed-file
+  (is (= {"restic" "restic_{version}_linux_amd64"}
+         (:bins (package/normalize {:name "restic" :source {:github "restic/restic"}
+                                    :asset "restic_{version}_linux_amd64.bz2"})))))
 
 (deftest normalize-rejects-incomplete-definitions
   (testing "non-github sources need a url"
@@ -195,4 +208,17 @@
                                 :vars {:major {:match "(\\d+)x|1"}}})]
     (is (= :invalid-package
            (try (package/artifact pkg {:tag "v1.0" :version "1.0"}) nil
+                (catch clojure.lang.ExceptionInfo e (:breto/problem (ex-data e))))))))
+
+(deftest signatures-of-a-file-need-an-archive-asset
+  (let [sig {:bundle "b" :identity "me" :issuer "iss" :of {:file "tool"}}
+        normalize (fn [asset] (try (package/normalize {:name "tool" :source {:github "a/tool"} :asset asset :signature sig})
+                                   (catch clojure.lang.ExceptionInfo e (:breto/problem (ex-data e)))))]
+    (is (map? (normalize "tool.tar.gz")))
+    (is (map? (normalize "tool.zip")))
+    (is (= :invalid-package (normalize "tool")))
+    (is (= :invalid-package (normalize "tool.gz")))
+    (is (= :invalid-package
+           (try (package/normalize {:name "tool" :source {:github "a/tool"} :asset "tool.tar.gz"
+                                    :signature (assoc sig :of {:file "../tool"})})
                 (catch clojure.lang.ExceptionInfo e (:breto/problem (ex-data e))))))))
