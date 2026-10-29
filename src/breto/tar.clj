@@ -67,24 +67,37 @@
      :type (char (aget buf 156))
      :link (text buf 157 100)}))
 
-(defn- read-data
-  "The `size` bytes of an entry's data as a string, with the padding after it
-  consumed."
+(defn- read-bytes
+  "The `size` bytes of an entry's data, with the padding after it consumed."
   [^InputStream in size file]
   (let [buf (byte-array size)]
     (read-fully! in buf file)
     (skip-fully! in (mod (- block (mod size block)) block) file)
-    (String. buf StandardCharsets/UTF_8)))
+    buf))
+
+(defn- read-data
+  "The `size` bytes of an entry's data as a string, with the padding after it
+  consumed."
+  [in size file]
+  (String. ^bytes (read-bytes in size file) StandardCharsets/UTF_8))
 
 (defn pax-records
-  "The key-value records of a pax extended header."
-  [s]
-  (loop [s s records {}]
-    (if-let [[_ len] (re-find #"^(\d+) " s)]
-      (let [n (parse-long len)
-            [_ k v] (re-matches #"(?s)\d+ ([^=]+)=(.*)\n" (subs s 0 (min n (count s))))]
-        (recur (subs s (min n (count s))) (cond-> records k (assoc k v))))
-      records)))
+  "The key-value records of a pax extended header, given as bytes or as
+  text. Each record starts with its length in bytes."
+  [data]
+  (let [^bytes data (if (string? data) (.getBytes ^String data StandardCharsets/UTF_8) data)
+        total (alength data)]
+    (loop [at 0 records {}]
+      (let [space (loop [i at] (cond (>= i total) nil
+                                     (= 32 (aget data i)) i
+                                     (<= 48 (aget data i) 57) (recur (inc i))
+                                     :else nil))
+            n (when (and space (> space at)) (parse-long (String. data at (- space at) StandardCharsets/US_ASCII)))]
+        (if (and n (pos? n))
+          (let [end (min total (+ at n))
+                [_ k v] (re-matches #"(?s)\d+ ([^=]+)=(.*)\n" (String. data at (- end at) StandardCharsets/UTF_8))]
+            (recur end (cond-> records k (assoc k v))))
+          records)))))
 
 (defn relative-path
   "The path `name` unpacks to after stripping `strip` leading components, as
@@ -186,7 +199,7 @@
                   name (get overrides "path" (:name h))
                   link (get overrides "linkpath" (:link h))]
               (case type
-                \x (recur (merge overrides (pax-records (read-data in size file))))
+                \x (recur (merge overrides (pax-records (read-bytes in size file))))
                 \g (do (read-data in size file) (recur overrides))
                 \L (recur (assoc overrides "path" (str/replace (read-data in size file) #"\u0000+$" "")))
                 \K (recur (assoc overrides "linkpath" (str/replace (read-data in size file) #"\u0000+$" "")))

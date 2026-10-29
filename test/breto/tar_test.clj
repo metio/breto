@@ -175,3 +175,19 @@
     (let [data (problem #(tar/unpack! file (path "out") 0))]
       (is (= :unpack-failed (:breto/problem data)))
       (is (not (fs/exists? (path "out" "leak")))))))
+
+(deftest pax-record-lengths-count-bytes
+  (let [record (fn [k v] (let [body (str " " k "=" v "\n")
+                               n (alength (.getBytes body "UTF-8"))
+                               n (+ n (count (str (+ n (count (str n))))))]
+                           (str n body)))
+        text (str (record "path" "docs/übersicht/a.txt") (record "linkpath" "ö"))]
+    (is (= {"path" "docs/übersicht/a.txt" "linkpath" "ö"} (tar/pax-records text)))
+    (is (= {"path" "docs/übersicht/a.txt" "linkpath" "ö"} (tar/pax-records (.getBytes text "UTF-8"))))))
+
+(deftest long-non-ascii-pax-paths-unpack-where-they-belong
+  (let [name (str "release/" (str/join "/" (repeat 8 "übersicht-über-alles")) "/datei.txt")]
+    (fs/create-dirs (fs/parent (path "src" name)))
+    (spit (path "src" name) "inhalt\n")
+    (tar/unpack! (gnu-tar! (path "pax.tar") "--format=pax" "--directory" (path "src") "release") (path "out") 0)
+    (is (= "inhalt\n" (slurp (path "out" name))))))
