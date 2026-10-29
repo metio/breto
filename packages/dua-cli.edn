@@ -1,0 +1,8 @@
+;; SPDX-FileCopyrightText: The breto Authors
+;; SPDX-License-Identifier: 0BSD
+
+{:description "Shows disk usage interactively or as a summary, faster than du"
+ :source {:github "Byron/dua-cli"}
+ :asset "dua-v{version}-x86_64-unknown-linux-musl.tar.gz"
+ :strip 1
+ :bins {"dua" "dua"}}

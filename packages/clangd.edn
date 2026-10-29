@@ -1,0 +1,10 @@
+;; SPDX-FileCopyrightText: The breto Authors
+;; SPDX-License-Identifier: 0BSD
+
+{:description "Language server for C and C++ from the LLVM project"
+ :source {:github "clangd/clangd"}
+ :tag-prefix ""
+ :asset "clangd-linux-{version}.zip"
+ :strip 1
+ :layout :tree
+ :bins {"clangd" "bin/clangd"}}
