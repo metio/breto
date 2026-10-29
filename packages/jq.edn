@@ -1,0 +1,9 @@
+;; SPDX-FileCopyrightText: The breto Authors
+;; SPDX-License-Identifier: 0BSD
+
+{:description "Command-line JSON processor"
+ :source {:github "jqlang/jq"}
+ :tag-prefix "jq-"
+ :asset "jq-linux-amd64"
+ :checksum "sha256sum.txt"
+ :bins {"jq" "jq-linux-amd64"}}

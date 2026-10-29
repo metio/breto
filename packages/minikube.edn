@@ -1,0 +1,8 @@
+;; SPDX-FileCopyrightText: The breto Authors
+;; SPDX-License-Identifier: 0BSD
+
+{:description "Runs a local Kubernetes cluster"
+ :source {:github "kubernetes/minikube"}
+ :asset "minikube-linux-amd64"
+ :checksum "{asset}.sha256"
+ :bins {"minikube" "minikube-linux-amd64"}}

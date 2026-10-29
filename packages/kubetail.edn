@@ -1,0 +1,8 @@
+;; SPDX-FileCopyrightText: The breto Authors
+;; SPDX-License-Identifier: 0BSD
+
+{:description "Real-time logging dashboard for Kubernetes, in the terminal or the browser"
+ :source {:github "kubetail-org/kubetail"}
+ :tag-prefix "cli/v"
+ :asset "kubetail-linux-amd64.tar.gz"
+ :checksum "SHA256SUMS"}

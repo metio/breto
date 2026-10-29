@@ -1,0 +1,11 @@
+;; SPDX-FileCopyrightText: The breto Authors
+;; SPDX-License-Identifier: 0BSD
+
+{:description "Command line client for Talos Linux clusters"
+ :source {:github "siderolabs/talos"}
+ :asset "talosctl-linux-amd64"
+ :checksum "sha256sum.txt"
+ :bins {"talosctl" "talosctl-linux-amd64"}
+ :signature {:bundle "{asset}.bundle"
+             :identity "https://github.com/siderolabs/talos/.github/workflows/ci.yaml@refs/tags/{tag}"
+             :issuer "https://token.actions.githubusercontent.com"}}

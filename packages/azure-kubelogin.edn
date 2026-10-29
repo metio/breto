@@ -1,0 +1,8 @@
+;; SPDX-FileCopyrightText: The breto Authors
+;; SPDX-License-Identifier: 0BSD
+
+{:description "client-go credential plugin for Azure Kubernetes Service with Microsoft Entra ID"
+ :source {:github "Azure/kubelogin"}
+ :asset "kubelogin-linux-amd64.zip"
+ :checksum "{asset}.sha256"
+ :bins {"kubelogin" "bin/linux_amd64/kubelogin"}}

@@ -1,0 +1,7 @@
+;; SPDX-FileCopyrightText: The breto Authors
+;; SPDX-License-Identifier: 0BSD
+
+{:description "Security risk analysis for Kubernetes resources"
+ :source {:github "controlplaneio/kubesec"}
+ :asset "kubesec_linux_amd64.tar.gz"
+ :checksum "kubesec_checksums.txt"}

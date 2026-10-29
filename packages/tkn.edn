@@ -1,0 +1,7 @@
+;; SPDX-FileCopyrightText: The breto Authors
+;; SPDX-License-Identifier: 0BSD
+
+{:description "Command line client for Tekton Pipelines"
+ :source {:github "tektoncd/cli"}
+ :asset "tkn_{version}_Linux_x86_64.tar.gz"
+ :checksum "checksums.txt"}

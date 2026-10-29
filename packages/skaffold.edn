@@ -1,0 +1,8 @@
+;; SPDX-FileCopyrightText: The breto Authors
+;; SPDX-License-Identifier: 0BSD
+
+{:description "Continuous development for Kubernetes applications"
+ :source {:github "GoogleContainerTools/skaffold"}
+ :asset "skaffold-linux-amd64"
+ :checksum "{asset}.sha256"
+ :bins {"skaffold" "skaffold-linux-amd64"}}

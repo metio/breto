@@ -1,0 +1,13 @@
+;; SPDX-FileCopyrightText: The breto Authors
+;; SPDX-License-Identifier: 0BSD
+
+{:description "Command line client for Testkube, which runs tests inside Kubernetes"
+ :source {:github "kubeshop/testkube"}
+ :tag-prefix ""
+ :asset "testkube_{version}_Linux_x86_64.tar.gz"
+ :checksum "checksums.txt"
+ :bins {"testkube" "kubectl-testkube" "kubectl-testkube" "kubectl-testkube"}
+ :signature {:of :checksum
+             :bundle "checksums.txt.sigstore.json"
+             :identity "https://github.com/kubeshop/testkube/.github/workflows/release.yaml@refs/tags/{tag}"
+             :issuer "https://token.actions.githubusercontent.com"}}

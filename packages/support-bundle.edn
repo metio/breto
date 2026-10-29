@@ -1,0 +1,7 @@
+;; SPDX-FileCopyrightText: The breto Authors
+;; SPDX-License-Identifier: 0BSD
+
+{:description "Collects and analyzes diagnostic information from a Kubernetes cluster"
+ :source {:github "replicatedhq/troubleshoot"}
+ :asset "support-bundle_linux_amd64.tar.gz"
+ :checksum "troubleshoot_{version}_checksums.txt"}

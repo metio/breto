@@ -1,0 +1,7 @@
+;; SPDX-FileCopyrightText: The breto Authors
+;; SPDX-License-Identifier: 0BSD
+
+{:description "Checks that a Kubernetes cluster meets the requirements of an application before installing it"
+ :source {:github "replicatedhq/troubleshoot"}
+ :asset "preflight_linux_amd64.tar.gz"
+ :checksum "troubleshoot_{version}_checksums.txt"}

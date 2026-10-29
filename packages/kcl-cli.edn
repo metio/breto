@@ -1,0 +1,8 @@
+;; SPDX-FileCopyrightText: The breto Authors
+;; SPDX-License-Identifier: 0BSD
+
+{:description "Command line client of the KCL configuration language"
+ :source {:github "kcl-lang/cli"}
+ :asset "kcl-{tag}-linux-amd64.tar.gz"
+ :checksum "cli_{version}_checksums.txt"
+ :bins {"kcl" "kcl"}}
