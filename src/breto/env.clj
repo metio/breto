@@ -128,14 +128,15 @@
   project's packages come from, and the variables in `vars`, for :sh (also
   bash and zsh) or :fish. The variables of a project entered before get
   their earlier values back first, and the values the new ones replace are
-  saved, so leaving the project can restore them; BRETO_ENV_VARS names them."
+  saved, exported so that a child shell can restore them as well;
+  BRETO_ENV_VARS names them."
   ([shell path project-dir bin files] (exports shell path project-dir bin files {}))
   ([shell path project-dir bin files vars]
    (let [names (str/join " " (sort (keys vars)))]
      (case shell
        :fish (str restore-fish
                   (apply str (for [[k v] (sort vars)]
-                               (str "set --query " k "; and set --global __breto_saved_" k " $" k ";\n"
+                               (str "set --query " k "; and set --global --export __breto_saved_" k " $" k ";\n"
                                     "set --global --export " k " " (sh-quote v) ";\n")))
                   "set --global --export BRETO_ENV_VARS " (sh-quote names) ";\n"
                   "set --global --export PATH " (str/join " " (map sh-quote (str/split path #":"))) ";\n"
@@ -144,7 +145,7 @@
                   "set --global --export BRETO_ENV_FILES " (sh-quote (str/join ":" files)) ";")
        (str restore-sh
             (apply str (for [[k v] (sort vars)]
-                         (str "if [ -n \"${" k "+x}\" ]; then __breto_saved_" k "=$" k "; fi\n"
+                         (str "if [ -n \"${" k "+x}\" ]; then export __breto_saved_" k "=\"$" k "\"; fi\n"
                               "export " k "=" (sh-quote v) "\n")))
             "export BRETO_ENV_VARS=" (sh-quote names) "\n"
             "export PATH=" (sh-quote path) "\n"

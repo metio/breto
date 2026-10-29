@@ -108,3 +108,41 @@
                                         (str "PATH=" (path "fake") ":/usr/bin:/bin\nsource shell/env-hook.bash\n"
                                              "cd " (path "app") "\n__breto_env\ncd " (path) "\n__breto_env\n"
                                              "echo \"${BRETO_ENV_FILES-unset}\"")))))))
+
+(deftest another-shells-env-run-does-not-hide-an-edit
+  (fake-breto!)
+  (project! "app" "{:packages [\"kind\"]}")
+  (session (str "cd " (path "app"))
+           (str "sleep 1.1; echo '{:packages [\"helm\"]}' > .breto.edn; sleep 1.1; touch " (path "envs" "app"))
+           "true")
+  (is (= [(path "app") (path "app")] (calls))))
+
+(deftest a-failing-env-in-the-next-project-leaves-the-previous-one
+  (fake-breto!)
+  (project! "one" "{:packages [\"kind\"]}")
+  (project! "two" "{:fail true}")
+  (is (= (str "PATH=" (path "fake") ":/usr/bin:/bin|PROJECT=")
+         (session (str "export XDG_RUNTIME_DIR=" (path)) (str "cd " (path "one")) (str "cd " (path "two"))))))
+
+(deftest a-child-shell-outside-the-project-leaves-it
+  (fake-breto!)
+  (project! "app" "{:packages [\"kind\"]}")
+  (is (= (str "PATH=" (path "fake") ":/usr/bin:/bin|PROJECT=")
+         (session (str "cd " (path "app")) (str "unset __breto_project __breto_stamp; cd " (path))))))
+
+(deftest the-hook-runs-under-nounset
+  (fake-breto!)
+  (project! "app" "{:fail true}")
+  (let [{:keys [err]} (process/shell {:out :string :err :string :continue true} "bash" "--norc" "-c"
+                                     (str "PATH=" (path "fake") ":/usr/bin:/bin\nsource shell/env-hook.bash\nset -u\n"
+                                          "__breto_env\ncd " (path "app") "\n__breto_env\n__breto_env\ncd " (path) "\n__breto_env\n"))]
+    (is (not (str/includes? err "unbound variable")) err)))
+
+(deftest the-failure-marker-is-not-at-a-predictable-path
+  (fake-breto!)
+  (project! "app" "{:fail true}")
+  (is (= "unpredictable"
+         (str/trim (:out (process/shell {:out :string :err :string} "bash" "--norc" "-c"
+                                        (str "unset XDG_RUNTIME_DIR\nPATH=" (path "fake") ":/usr/bin:/bin\nsource shell/env-hook.bash\n"
+                                             "cd " (path "app") "\n__breto_env\n"
+                                             "[ -n \"$__breto_stamp\" ] && [ \"$__breto_stamp\" != /tmp/breto-hook-$$ ] && echo unpredictable")))))))

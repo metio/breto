@@ -242,3 +242,10 @@
       (is (= 0 code))
       (is (str/includes? out (str "[WARN] project " (path "app") " keeps its links: unknown group @nothing")))
       (is (= "#!/bin/sh\necho alpha 0.9.0\n" (linked-alpha))))))
+
+(deftest a-child-shell-can-restore-the-replaced-values
+  (is (= "/original x"
+         (:out (process/shell {:out :string} "bash" "--norc" "-c"
+                              (str "export JAVA_HOME='/original x'\n"
+                                   (env/exports :sh "/a" "/p" "/a" [] {"JAVA_HOME" "/project"})
+                                   "\n" (fs/which "bash") " --norc -c 'printf %s \"$__breto_saved_JAVA_HOME\"'"))))))

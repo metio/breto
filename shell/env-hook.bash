@@ -12,15 +12,37 @@
 # installs it.
 
 # Whether the project file or a file it takes packages from, such as a group
-# in a shared registry, changed since the last run.
+# in a shared registry, changed since this shell last ran breto env.
 __breto_changed() {
     local file files
     [ "$1/.breto.edn" -nt "$__breto_stamp" ] && return 0
-    IFS=: read -r -a files <<< "$BRETO_ENV_FILES"
+    IFS=: read -r -a files <<< "${BRETO_ENV_FILES-}"
     for file in "${files[@]}"; do
         [ -n "$file" ] && [ "$file" -nt "$__breto_stamp" ] && return 0
     done
     return 1
+}
+
+# Takes the project's bin directory off PATH and gives the variables breto env
+# set their earlier values back.
+__breto_leave() {
+    if [ -n "${BRETO_ENV_BIN-}" ]; then
+        PATH=":$PATH:"
+        PATH=${PATH//":$BRETO_ENV_BIN:"/:}
+        PATH=${PATH#:}
+        PATH=${PATH%:}
+    fi
+    local var saved
+    for var in ${BRETO_ENV_VARS-}; do
+        saved=__breto_saved_$var
+        if [ -n "${!saved+x}" ]; then
+            export "$var=${!saved}"
+            unset "$saved"
+        else
+            unset "$var"
+        fi
+    done
+    unset BRETO_ENV_BIN BRETO_ENV_FILES BRETO_ENV_VARS BRETO_PROJECT __breto_project
 }
 
 __breto_env() {
@@ -29,36 +51,23 @@ __breto_env() {
         dir=${dir%/*}
     done
     if [ -n "$dir" ]; then
-        # A failed run stamps a marker of this shell, so it is retried once the
-        # file changes or the shell enters the project again, not on every prompt.
-        if [ "$dir" != "$__breto_project" ] || __breto_changed "$dir"; then
-            __breto_project=$dir
+        # The stamp belongs to this shell, so runs of other shells in the same
+        # project do not count, and a failed run is retried once a file changes
+        # or the shell enters the project again, not on every prompt.
+        if [ "$dir" != "${__breto_project-}" ] || __breto_changed "$dir"; then
+            if [ -z "${__breto_stamp-}" ] || [ ! -f "$__breto_stamp" ]; then
+                __breto_stamp=$(mktemp "${XDG_RUNTIME_DIR:-${TMPDIR:-/tmp}}/breto-hook.XXXXXX") || return
+            fi
+            touch "$__breto_stamp"
             if code=$(breto env --no-install --dir "$dir"); then
                 eval "$code"
-                __breto_stamp=$BRETO_ENV_BIN
-            else
-                __breto_stamp=${XDG_RUNTIME_DIR:-/tmp}/breto-hook-$$
-                : > "$__breto_stamp"
+            elif [ "${BRETO_PROJECT-}" != "$dir" ]; then
+                __breto_leave
             fi
+            __breto_project=$dir
         fi
-    elif [ -n "$__breto_project" ]; then
-        if [ -n "$BRETO_ENV_BIN" ]; then
-            PATH=":$PATH:"
-            PATH=${PATH//":$BRETO_ENV_BIN:"/:}
-            PATH=${PATH#:}
-            PATH=${PATH%:}
-        fi
-        local var saved
-        for var in ${BRETO_ENV_VARS-}; do
-            saved=__breto_saved_$var
-            if [ -n "${!saved+x}" ]; then
-                export "$var=${!saved}"
-                unset "$saved"
-            else
-                unset "$var"
-            fi
-        done
-        unset BRETO_ENV_BIN BRETO_ENV_FILES BRETO_ENV_VARS BRETO_PROJECT __breto_project __breto_stamp
+    elif [ -n "${__breto_project-}" ] || [ -n "${BRETO_ENV_BIN-}" ]; then
+        __breto_leave
     fi
 }
 
