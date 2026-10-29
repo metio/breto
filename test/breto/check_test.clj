@@ -81,3 +81,12 @@
   (s/define! "b" {:source {:github "acme/b"} :asset "b"})
   (let [{:keys [events]} (s/breto! {:packages []} ["check" "--all"])]
     (is (= ["a" "b"] (keep #(when (= :start (:type %)) (:package %)) events)))))
+
+(deftest a-signed-checksum-file-must-exist-despite-a-digest
+  (let [sig {:of :checksum :bundle "SHA256SUMS.sigstore.json"
+             :identity "https://github.com/acme/tool/.github/workflows/release.yaml@refs/tags/{tag}"
+             :issuer "https://token.actions.githubusercontent.com"}
+        {:keys [code out]} (run-check {:checksum "SHA256SUMS" :signature sig}
+                                      (github-world [["tool-1.2.3-linux.tar.gz" "sha256:abc"] "SHA256SUMS.sigstore.json"]))]
+    (is (= 1 code) out)
+    (is (str/includes? out "checksum file the package names does not exist"))))

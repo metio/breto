@@ -42,7 +42,8 @@
                   (when-not (names (:asset artifact))
                     (missing! pkg release artifact names))
                   (cond
-                    (github/asset-digest data (:asset artifact)) :digest
+                    (and (github/asset-digest data (:asset artifact))
+                         (not= :checksum (get-in artifact [:signature :of]))) :digest
                     (and checksum-url (sibling? checksum-url)
                          (names (subs checksum-url (inc (str/last-index-of checksum-url "/"))))) :checksum
                     (and checksum-url (not (sibling? checksum-url)) ((:exists? io) checksum-url)) :checksum
