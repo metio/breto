@@ -119,7 +119,11 @@
     :gitlab (let [url (gitlab-latest-url (:gitlab source))]
               (listed-latest pkg io (or (get (json/parse-string (get-text url {})) "tag_name")
                                         (throw (ex-info (str "no tag_name in " url) {:breto/problem :no-release :url url})))))
-    :text (let [body (get-text (:text source) {})]
+    :text (if (:newest source)
+            (or (newest-listed pkg io #{})
+                (throw (ex-info (str "nothing in " (:text source) " matches " (:match source))
+                                {:breto/problem :no-release :url (:text source)})))
+            (let [body (get-text (:text source) {})]
             (tagged pkg (if-let [pattern (:match source)]
                           (let [m (re-find (re-pattern pattern) body)]
                             (cond (nil? m) (throw (ex-info (str "nothing in " (:text source) " matches " pattern)
@@ -128,7 +132,7 @@
                                   :else (or (some identity (rest m))
                                             (throw (ex-info (str "the groups of " pattern " match nothing in " (:text source))
                                                             {:breto/problem :no-release :url (:text source)})))))
-                          (str/trim body))))
+                          (str/trim body)))))
     :json (tagged pkg (json-version pkg (json/parse-string (get-text (:json source) {"Accept" "application/json"}))))
     :go (let [url (go-proxy-url source "/@latest")]
           (tagged pkg (or (get (json/parse-string (get-text url {})) "Version")
@@ -163,6 +167,10 @@
     :pypi (->> (get (json/parse-string (get-text (pypi-url source "/json") {"Accept" "application/json"})) "releases")
                (keep (fn [[version files]] (when (and (seq files) (not-every? #(get % "yanked") files)) version)))
                (remove #(re-find #"\d(a|b|rc|\.dev)\d*" %)))
+    :text (when (:newest source)
+            (->> (re-seq (re-pattern (:match source)) (get-text (:text source) {}))
+                 (keep #(if (string? %) % (some identity (rest %))))
+                 distinct))
     :cargo (->> (json/parsed-seq (java.io.StringReader. (get-text (cargo/index-url (:cargo source)) {})))
                 (remove #(get % "yanked"))
                 (map #(get % "vers"))
@@ -173,6 +181,24 @@
               (keep (fn [[version meta]] (when-not (get meta "deprecated") version)))
               (remove #(str/includes? % "-")))
     nil))
+
+(defn fetch-vars
+  "`release` with the :vars of `pkg` that are read from a document in
+  :fetched: the first group of :match in the body of :text, or the whole
+  match without a group. Their templates can use the release's other
+  placeholders."
+  [pkg {:keys [get-text]} release]
+  (if-let [specs (seq (package/fetched-vars pkg))]
+    (let [base (package/template-vars pkg release)]
+      (assoc release :fetched
+             (into {} (for [[k {:keys [text match]}] specs
+                            :let [url (template/render text base)
+                                  m (re-find (re-pattern match) (get-text url {}))]]
+                        [k (cond (string? m) m
+                                 (some identity (rest m)) (some identity (rest m))
+                                 :else (throw (ex-info (str (:name pkg) ": " match " for :vars " k " matches nothing in " url)
+                                                       {:breto/problem :no-release :url url})))]))))
+    release))
 
 (defn newest
   "The tag and version of the newest release of `pkg` that its `:skip` list

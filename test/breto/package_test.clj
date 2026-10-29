@@ -241,3 +241,14 @@
            (try (package/normalize {:name "x" :source {:github "a/x"} :asset "x" :checksum checksum}) nil
                 (catch clojure.lang.ExceptionInfo e (:breto/problem (ex-data e)))))
         (pr-str checksum))))
+
+(deftest vars-read-from-a-document-come-from-the-release
+  (let [pkg (package/normalize {:name "jdtls" :source {:text "https://example.org/latest.txt"} :tag-prefix ""
+                                :asset "jdtls-{version}-{build}.tar.gz" :url "https://example.org/{version}/{asset}"
+                                :vars {:build {:text "https://example.org/{version}/latest.txt" :match "-(\\d+)\\.tar"}}})]
+    (is (= "jdtls-1.63.0-202610191322.tar.gz"
+           (:asset (package/artifact pkg {:tag "1.63.0" :version "1.63.0" :fetched {:build "202610191322"}}))))
+    (testing "a release built without fetching keeps the placeholder"
+      (is (= "jdtls-1.63.0-{build}.tar.gz" (:asset (package/artifact pkg {:tag "1.63.0" :version "1.63.0"})))))
+    (is (thrown-with-msg? clojure.lang.ExceptionInfo #"matched in a document"
+                          (package/normalize (assoc-in pkg [:vars :build] {:text "u"}))))))

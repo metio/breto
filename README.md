@@ -251,7 +251,7 @@ A package is a file `<name>.edn` in a registry directory, and its file name is t
 | `:layout` | `:binary` keeps only the files named in `:bins`; `:tree` keeps the whole archive. | `:binary` |
 | `:bins` | Command name to path inside the unpacked archive. | the package name, or the asset itself when it is not an archive, without `.gz`, `.bz2` or `.zst` when it is a compressed single file |
 | `:bin-dir` | With the `:tree` layout, a directory inside the release whose executable files all become commands, read from each installed version, so a command a newer version drops loses its link on activation. `:bins` adds to them. | none |
-| `:vars` | Further placeholders derived from the version, as `{:match REGEX}`, the first group or else the whole match, or `{:replace [FROM TO]}`; see [Java](#java). | none |
+| `:vars` | Further placeholders derived from the version, as `{:match REGEX}`, the first group or else the whole match, or `{:replace [FROM TO]}`; see [Java](#java). `{:text URL :match REGEX}` reads one from a document instead, such as a build stamp the version does not contain; the URL can use the other placeholders. | none |
 | `:python` | For a `:pypi` source, the Python version of its environment, overriding the config's `:python`. | none |
 | `:env` | Variables `breto env` sets in a project using the package, as templates; `{home}` is a link to the version the project uses. | none |
 | `:links` | Further symlinks: target path to path inside the installed version. | none |
@@ -298,6 +298,7 @@ A tool that ships support files next to its binary uses the tree layout, and `:l
 | `{:gitlab "gitlab.com/group/project"}` | GitLab's latest release. `:url` is required, because GitLab release links have no fixed shape. |
 | `{:text "https://…"}` | A URL whose body is the latest tag, such as Kubernetes' `stable.txt`. `:url` is required. |
 | `{:text "https://…" :match "(?m)^version = '([^']+)'"}` | The first group of a regular expression in the body, or the whole match without one, is the latest tag. |
+| `{:text "https://…" :match "milestones/([0-9.]+)" :newest true}` | Every match in the body is a release, and the newest of them is the latest, for listings such as a download directory that are not in version order. |
 | `{:json "https://…" :version [:releases 0 :version]}` | A JSON document holding the latest tag at the `:version` path of keys and indices, such as JetBrains' release API. `:url` is required. |
 | `{:pypi "reuse"}` | The version PyPI reports as latest for the project. breto installs it with uv into a virtual environment of its own; see [Python packages](#python-packages). `:asset` and `:url` are filled in, and `:bins` defaults to the package name in the environment's `bin`. |
 | `{:go "golang.org/x/vuln" :package "golang.org/x/vuln/cmd/govulncheck"}` | The version the Go module proxy reports as latest for the module. breto builds `:package`, which defaults to the module itself, with `go install`; see [Go modules](#go-modules). `:asset` and `:url` are filled in. |

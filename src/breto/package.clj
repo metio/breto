@@ -95,9 +95,11 @@
   (and (map? vars)
        (every? (fn [[k v]]
                  (and (keyword? k) (re-matches #"[a-z-]+" (name k)) (not (reserved-vars k))
-                      (map? v) (= 1 (count v))
-                      (or (and (string? (:match v)) (try (re-pattern (:match v)) (catch Exception _ false)))
-                          (and (vector? (:replace v)) (= 2 (count (:replace v))) (every? string? (:replace v))))))
+                      (map? v)
+                      (or (and (= 1 (count v)) (string? (:match v)) (try (re-pattern (:match v)) (catch Exception _ false)))
+                          (and (= 1 (count v)) (vector? (:replace v)) (= 2 (count (:replace v))) (every? string? (:replace v)))
+                          (and (= #{:text :match} (set (keys v))) (string? (:text v)) (string? (:match v))
+                               (try (re-pattern (:match v)) (catch Exception _ false))))))
                vars)))
 
 (defn- env-valid? [env]
@@ -125,6 +127,10 @@
          (not (and (= :text (source-kind pkg)) (string? (:match source))
                    (try (re-pattern (:match source)) (catch Exception _ false)))))
     (conj ":source :match is a regular expression for a :text source, whose first group, or else whole match, is the tag")
+
+    (and (contains? source :newest)
+         (not (and (= :text (source-kind pkg)) (:match source) (boolean? (:newest source)))))
+    (conj ":source :newest true makes a :text source take the newest of all the tags its :match finds")
 
     (and (:tag source) (not= :github (source-kind pkg)))
     (conj ":source :tag is only supported for :github")
@@ -193,7 +199,7 @@
     (conj ":bin-dir needs the :tree layout and is a relative path inside the release, without ..")
 
     (not (vars-valid? (:vars pkg {})))
-    (conj ":vars maps placeholder keywords other than :name, :tag, :version, :repo, :asset and :home to {:match REGEX} or {:replace [FROM TO]}, applied to the version")
+    (conj ":vars maps placeholder keywords other than :name, :tag, :version, :repo, :asset and :home to {:match REGEX} or {:replace [FROM TO]}, applied to the version, or {:text URL :match REGEX}, matched in a document")
 
     (not (env-valid? (:env pkg {})))
     (conj ":env maps environment variable names other than PATH and BRETO_* to template strings")
@@ -353,11 +359,23 @@
                                    :problems [(str ":vars " k " matches version " version " without any group")]})))))
     (str/replace version (first replace) (second replace))))
 
-(defn template-vars [{:keys [name vars] :as pkg} {:keys [tag version]}]
+(defn fetched-vars
+  "The :vars of `pkg` read from a document, {:text URL :match REGEX}."
+  [pkg]
+  (into {} (filter (comp :text val)) (:vars pkg)))
+
+(defn template-vars
+  "The placeholders of `release`. A var read from a document takes its value
+  from the release's :fetched; a release built without fetching, as for the
+  commands of an installed version, keeps its placeholder, which only the
+  download names use."
+  [{:keys [name vars] :as pkg} {:keys [tag version fetched]}]
   (into {:name name :tag (or tag "") :version (or version "") :repo (or (repo pkg) "")}
         (when (seq version)
           (for [[k spec] vars]
-            [k (derived pkg k spec version)]))))
+            [k (if (:text spec)
+                 (get fetched k (str "{" (clojure.core/name k) "}"))
+                 (derived pkg k spec version))]))))
 
 (defn artifact
   "Everything needed to fetch and unpack one release of `pkg`."

@@ -5,6 +5,7 @@
   (:require [breto.diagnose :as diagnose]
             [breto.package :as package]
             [breto.source :as source]
+            [breto.support :as s]
             [clojure.string :as str]
             [clojure.test :refer [deftest is testing]]))
 
@@ -122,3 +123,14 @@
     (testing "a prefix outside the versions it covers is no release"
       (is (= {:tag "release-2.0.0" :version "2.0.0"}
              (source/newest pkg (serving-releases "v2.5.0" ["v2.5.0" "release-2.0.0"])))))))
+
+(deftest text-sources-can-take-the-newest-of-all-matches
+  (let [io (s/fake-io {} {"https://example.org/milestones/"
+                          "<a href='milestones/0.2.0'/><a href='milestones/1.10.0'/><a href='milestones/1.63.0'/><a href='milestones/1.9.0'/>"}
+                      (atom []))
+        pkg (package/normalize {:name "jdtls" :tag-prefix "" :asset "x" :url "https://example.org/{version}/{asset}"
+                                :source {:text "https://example.org/milestones/" :match "milestones/(\\d+\\.\\d+\\.\\d+)" :newest true}})]
+    (is (= "1.63.0" (:version (source/latest pkg io))))
+    (is (= "1.10.0" (:version (source/newest (assoc pkg :skip ["1.63.0"]) io))))
+    (is (thrown-with-msg? clojure.lang.ExceptionInfo #":newest true"
+                          (package/normalize (assoc-in pkg [:source :newest] "yes"))))))

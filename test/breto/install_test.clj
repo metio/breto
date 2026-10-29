@@ -289,6 +289,26 @@
            (dissoc (install (checksum/digest "SHA-256" file)) :sha256)))
     (is (= "zig" (slurp (str (fs/path (:bin-dir cfg) "zig")))))))
 
+(deftest vars-read-from-a-document-name-the-download
+  (let [cfg (config)
+        file (fs/path *root* "jdtls.tar")
+        _ (spit (str file) "jdtls")
+        base "https://download.example.org/jdtls/milestones/"
+        url (str base "1.63.0/jdtls-1.63.0-202610191322")
+        pkg (package/normalize {:name "jdtls" :source {:text base :match "(?s).*milestones/(\\d+\\.\\d+\\.\\d+)"}
+                                :tag-prefix "" :asset "jdtls-{version}-{build}"
+                                :url (str base "{version}/{asset}") :checksum "{asset}.sha256"
+                                :vars {:build {:text (str base "{version}/latest.txt") :match "jdtls-[^-]+-(\\d+)"}}})
+        io (fake-io {url file}
+                    {base "<a href='milestones/1.62.0'></a><a href='milestones/1.63.0'></a>"
+                     (str base "1.63.0/latest.txt") "jdtls-1.63.0-202610191322\n"
+                     (str url ".sha256") (checksum/digest "SHA-256" file)})]
+    (is (= {:version "1.63.0" :installed? true :verified? true} (dissoc (install/install! cfg io pkg {}) :sha256)))
+    (is (= "jdtls" (slurp (str (fs/path (:bin-dir cfg) "jdtls")))))
+    (testing "a pinned version fetches them too"
+      (is (= {:version "1.63.0" :installed? false :verified? false}
+             (dissoc (install/install! cfg io pkg {:version "1.63.0"}) :sha256))))))
+
 (deftest failed-first-installs-leave-no-package-directory
   (let [cfg (config)
         io (fake-io {} {"https://github.com/kubernetes-sigs/kind/releases/latest" "{\"tag_name\":\"v0.33.0\"}"})]

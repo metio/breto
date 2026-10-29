@@ -22,9 +22,10 @@
   "The tag and version to install: the requested `version`, or the newest one
   `:skip` does not name."
   [pkg io version]
-  (if version
-    {:tag (package/tag-of-version (package/at pkg version) version) :version version}
-    (source/newest pkg io)))
+  (let [release (if version
+                  {:tag (package/tag-of-version (package/at pkg version) version) :version version}
+                  (source/newest pkg io))]
+    (source/fetch-vars (package/at pkg (:version release)) io release)))
 
 (defn github-asset?
   "Whether `artifact` is an asset of a GitHub release of `pkg`, so the
