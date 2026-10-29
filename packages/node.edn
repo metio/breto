@@ -9,4 +9,7 @@
  :strip 1
  :layout :tree
  :bin-dir "bin"
- :man ["share/man/man1/node.1"]}
+ :man ["share/man/man1/node.1"]
+ :platforms {"darwin-aarch64" {:asset "node-v{version}-darwin-arm64.tar.xz"}
+             "darwin-x86_64" {:asset "node-v{version}-darwin-x64.tar.xz"}
+             "linux-aarch64" {:asset "node-v{version}-linux-arm64.tar.xz"}}}

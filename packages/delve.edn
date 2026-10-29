@@ -6,4 +6,7 @@
  :source {:github "go-delve/delve"}
  :asset "dlv_{version}_linux_amd64.tar.gz"
  :checksum "checksums.txt"
- :bins {"dlv" "dlv"}}
+ :bins {"dlv" "dlv"}
+ :platforms {"darwin-aarch64" {:asset "dlv_{version}_darwin_arm64.tar.gz"}
+             "darwin-x86_64" {:asset "dlv_{version}_darwin_amd64.tar.gz"}
+             "linux-aarch64" {:asset "dlv_{version}_linux_arm64.tar.gz"}}}

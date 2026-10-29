@@ -9,4 +9,7 @@
  :checksum "{asset}.sha256"
  :strip 1
  :layout :tree
- :bins {"go" "bin/go" "gofmt" "bin/gofmt"}}
+ :bins {"go" "bin/go" "gofmt" "bin/gofmt"}
+ :platforms {"darwin-aarch64" {:asset "go{version}.darwin-arm64.tar.gz"}
+             "darwin-x86_64" {:asset "go{version}.darwin-amd64.tar.gz"}
+             "linux-aarch64" {:asset "go{version}.linux-arm64.tar.gz"}}}

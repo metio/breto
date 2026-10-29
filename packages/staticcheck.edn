@@ -7,4 +7,7 @@
  :tag-prefix ""
  :asset "staticcheck_linux_amd64.tar.gz"
  :checksum "{asset}.sha256"
- :bins {"staticcheck" "staticcheck/staticcheck"}}
+ :bins {"staticcheck" "staticcheck/staticcheck"}
+ :platforms {"darwin-aarch64" {:asset "staticcheck_darwin_arm64.tar.gz"}
+             "darwin-x86_64" {:asset "staticcheck_darwin_amd64.tar.gz"}
+             "linux-aarch64" {:asset "staticcheck_linux_arm64.tar.gz"}}}

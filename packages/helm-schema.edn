@@ -5,4 +5,7 @@
  :source {:github "dadav/helm-schema"},
  :asset "helm-schema_{version}_Linux_x86_64.tar.gz",
  :tag-prefix "",
- :checksum "checksums.txt"}
+ :checksum "checksums.txt"
+ :platforms {"darwin-aarch64" {:asset "helm-schema_{version}_Darwin_arm64.tar.gz"}
+             "darwin-x86_64" {:asset "helm-schema_{version}_Darwin_x86_64.tar.gz"}
+             "linux-aarch64" {:asset "helm-schema_{version}_Linux_arm64.tar.gz"}}}

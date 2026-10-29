@@ -7,4 +7,7 @@
  :checksum "cosign_checksums.txt",
  :signature {:bundle "{asset}.sigstore.json",
              :identity "keyless@projectsigstore.iam.gserviceaccount.com",
-             :issuer "https://accounts.google.com"}}
+             :issuer "https://accounts.google.com"}
+ :platforms {"darwin-aarch64" {:asset "cosign-darwin-arm64"}
+             "darwin-x86_64" {:asset "cosign-darwin-amd64"}
+             "linux-aarch64" {:asset "cosign-linux-arm64"}}}

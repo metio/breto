@@ -5,4 +5,7 @@
 {:description "Go security checker",
  :source {:github "securego/gosec"}
  :asset "gosec_{version}_linux_amd64.tar.gz"
- :checksum "gosec_{version}_checksums.txt"}
+ :checksum "gosec_{version}_checksums.txt"
+ :platforms {"darwin-aarch64" {:asset "gosec_{version}_darwin_arm64.tar.gz"}
+             "darwin-x86_64" {:asset "gosec_{version}_darwin_amd64.tar.gz"}
+             "linux-aarch64" {:asset "gosec_{version}_linux_arm64.tar.gz"}}}

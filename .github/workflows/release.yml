@@ -51,17 +51,18 @@ jobs:
           nix develop --command bb build
           bb_version=$(nix develop --command bb --version | sed 's/^babashka v//')
           mkdir dist bb
-          for arch in amd64 aarch64; do
-            tarball="babashka-${bb_version}-linux-${arch}-static.tar.gz"
+          for target in linux-amd64:linux-amd64-static linux-aarch64:linux-aarch64-static \
+                        darwin-amd64:macos-amd64 darwin-aarch64:macos-aarch64; do
+            tarball="babashka-${bb_version}-${target#*:}.tar.gz"
             gh release download "v${bb_version}" --repo babashka/babashka --dir bb \
               --pattern "${tarball}" --pattern "${tarball}.sha256"
             echo "$(cat "bb/${tarball}.sha256")  bb/${tarball}" | sha256sum --check
             tar --extract --gzip --file "bb/${tarball}" --directory bb bb
-            cat bb/bb target/breto.jar > "dist/breto-linux-${arch}"
+            cat bb/bb target/breto.jar > "dist/breto-${target%%:*}"
             rm bb/bb
           done
-          chmod +x dist/breto-linux-*
-          (cd dist && sha256sum breto-linux-* > "breto_${VERSION}_SHA256SUMS")
+          chmod +x dist/breto-*
+          (cd dist && sha256sum breto-* > "breto_${VERSION}_SHA256SUMS")
       - name: Sign the checksums
         if: steps.gate.outputs.needed == 'true'
         uses: metio/ci/cosign-sign-blob@14ad475c5f5c4c0df727df1a22345298604e66ba # 2026.10.26174650

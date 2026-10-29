@@ -4,4 +4,7 @@
 {:description "A static analysis tool for shell scripts"
  :source {:github "koalaman/shellcheck"}
  :asset "shellcheck-v{version}.linux.x86_64.tar.gz"
- :strip 1}
+ :strip 1
+ :platforms {"darwin-aarch64" {:asset "shellcheck-v{version}.darwin.aarch64.tar.gz"}
+             "darwin-x86_64" {:asset "shellcheck-v{version}.darwin.x86_64.tar.gz"}
+             "linux-aarch64" {:asset "shellcheck-v{version}.linux.aarch64.tar.gz"}}}
