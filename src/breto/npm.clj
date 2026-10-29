@@ -23,11 +23,12 @@
 (defn arguments
   "The arguments of `npm install` for `spec` into `prefix`. They come before
   any configuration of the user's own: npm reads neither the user's nor the
-  global npmrc, `config` being an empty file, runs no install scripts, and
-  considers only versions published before `before`."
+  global npmrc, reading the empty files userrc and globalrc in `config`
+  instead, runs no install scripts, and considers only versions published
+  before `before`. npm refuses to load one file as both."
   [spec prefix config before]
   ["install" "--prefix" (str prefix) "--registry" registry
-   "--userconfig" (str config) "--globalconfig" (str config)
+   "--userconfig" (str (fs/path config "userrc")) "--globalconfig" (str (fs/path config "globalrc"))
    "--before" before "--ignore-scripts" "--save-exact" "--omit=dev"
    "--no-audit" "--no-fund" "--update-notifier=false" "--loglevel=error"
    spec])
@@ -50,7 +51,8 @@
         run (or (:run-in io) proc/run-in)
         path (str (fs/parent npm) (some->> (System/getenv "PATH") (str ":")))]
     (fs/create-dirs unpacked)
-    (spit (str config) "")
+    (fs/create-dirs config)
+    (run! #(spit (str (fs/path config %)) "") ["userrc" "globalrc"])
     (let [{:keys [exit out err]} (run {:command (cons npm args) :env {"PATH" path} :dir work})]
       (when-not (zero? exit)
         (throw (ex-info (str "npm install " spec " failed: " (str/trim (str err)))

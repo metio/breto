@@ -63,7 +63,7 @@
     (testing "npm ignores the user's configuration, runs no scripts and resolves before the cut-off"
       (let [[line] (log-lines)]
         (is (str/includes? line "--registry https://registry.npmjs.org/"))
-        (is (re-find #"--userconfig \S+/npmrc --globalconfig \S+/npmrc" line))
+        (is (re-find #"--userconfig (\S+)/npmrc/userrc --globalconfig \1/npmrc/globalrc" line))
         (is (str/includes? line "--ignore-scripts"))
         (is (re-find #"--before \d{4}-\d\d-\d\dT" line))))
     (testing "the directory of npm, which holds node, comes first on PATH"
