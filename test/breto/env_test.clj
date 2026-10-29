@@ -249,3 +249,12 @@
                               (str "export JAVA_HOME='/original x'\n"
                                    (env/exports :sh "/a" "/p" "/a" [] {"JAVA_HOME" "/project"})
                                    "\n" (fs/which "bash") " --norc -c 'printf %s \"$__breto_saved_JAVA_HOME\"'"))))))
+
+(deftest projects-are-named-without-dots-and-by-the-logical-directory
+  (fs/create-dirs (path "real" "app"))
+  (spit (path "real" "app" ".breto.edn") "{:packages [\"a\"]}")
+  (fs/create-sym-link (path "link") (path "real"))
+  (is (= (path "real" "app" ".breto.edn") (env/find-project (str (path "real" "app") "/."))))
+  (is (= (path "link" "app" ".breto.edn") (env/find-project "." {"PWD" (path "link" "app")} (path "real" "app"))))
+  (testing "a PWD naming another directory is ignored"
+    (is (= (path "real" "app" ".breto.edn") (env/find-project "." {"PWD" (path)} (path "real" "app"))))))

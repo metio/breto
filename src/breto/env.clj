@@ -13,13 +13,24 @@
 
 (def file-name ".breto.edn")
 
-(defn find-project
-  "The nearest .breto.edn at `dir` or above it, or nil."
-  [dir]
-  (loop [dir (fs/absolutize dir)]
+(defn- find-project-from [dir]
+  (loop [dir dir]
     (when dir
       (let [file (fs/path dir file-name)]
         (if (fs/regular-file? file) (str file) (recur (fs/parent dir)))))))
+
+(defn find-project
+  "The nearest .breto.edn at `dir` or above it, or nil. The current directory
+  is named as the shell names it, by PWD when that is the same directory, so
+  that a project reached through a symlink keeps the name the env hook gives
+  it."
+  ([dir] (find-project dir (System/getenv) (System/getProperty "user.dir")))
+  ([dir env cwd]
+   (let [pwd (get env "PWD")
+         start (if (and (= "." (str dir)) pwd (fs/absolute? pwd) (fs/exists? pwd) (fs/same-file? pwd cwd))
+                 pwd
+                 (.resolve (fs/path cwd) (str dir)))]
+     (find-project-from (fs/normalize start)))))
 
 (defn read-project
   "The package specs of the project file `file`."
