@@ -156,3 +156,22 @@
   (is (= "rwxr-xr-x" (tar/permissions 0755 false)))
   (is (= "rw-------" (tar/permissions 0 false)))
   (is (= "rwx------" (tar/permissions 0 true))))
+
+(deftest refuses-hard-links-that-read-through-a-symlink
+  (let [outside (path "outside")
+        a (path "a")
+        b (path "b")
+        file (path "leak.tar")]
+    (fs/create-dirs outside)
+    (spit (str (fs/path outside "secret")) "key\n")
+    (fs/create-dirs a)
+    (fs/create-sym-link (fs/path a "d") (str outside))
+    (gnu-tar! file "--directory" (str a) "d")
+    (fs/create-dirs b)
+    (spit (str (fs/path b "x")) "x\n")
+    (fs/create-link (fs/path b "leak") (fs/path b "x"))
+    (process/shell {:out :string :err :string} "tar" "--append" "--file" (str file) "--directory" (str b)
+                   "--transform=s,^x$,d/secret,R" "x" "leak")
+    (let [data (problem #(tar/unpack! file (path "out") 0))]
+      (is (= :unpack-failed (:breto/problem data)))
+      (is (not (fs/exists? (path "out" "leak")))))))

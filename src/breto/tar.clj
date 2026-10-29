@@ -101,15 +101,21 @@
                 (empty? kept) nil
                 :else (str/join "/" kept))))))
 
-(defn- ensure-parents!
-  "Creates the parent directories of `target` below `root`, refusing a parent
-  that is a symlink, since writing through one could leave `root`."
-  [root target file name]
-  (loop [dir (fs/parent target)]
+(defn- refuse-symlinked-parents!
+  "Throws when a parent of `path` below `root` is a symlink, since reading or
+  writing through one could leave `root`."
+  [root path file name]
+  (loop [dir (fs/parent path)]
     (when (and dir (not= dir root))
       (when (fs/sym-link? dir)
         (throw (problem file (str "the entry " name " passes through a symlink") :escaping [name])))
-      (recur (fs/parent dir))))
+      (recur (fs/parent dir)))))
+
+(defn- ensure-parents!
+  "Creates the parent directories of `target` below `root`, refusing a parent
+  that is a symlink."
+  [root target file name]
+  (refuse-symlinked-parents! root target file name)
   (fs/create-dirs (fs/parent target)))
 
 (defn- replace-existing!
@@ -215,6 +221,7 @@
                         (when-not (string? source)
                           (throw (problem file (str "the hard link " name " points outside of the archive") :escaping [name])))
                         (let [source (fs/path root source)]
+                          (refuse-symlinked-parents! root source file name)
                           (when-not (fs/regular-file? source {:nofollow-links true})
                             (throw (problem file (str "the hard link " name " points at " link ", which is not an earlier file"))))
                           (ensure-parents! root target file name)
