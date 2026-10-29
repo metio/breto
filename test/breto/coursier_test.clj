@@ -21,7 +21,7 @@
   its output."
   []
   (s/file! "cs" (str "#!/bin/sh\n"
-                     "echo \"$* | $COURSIER_MIRRORS\" >> " (path "cs.log") "\n"
+                     "echo \"$* | $COURSIER_CACHE $COURSIER_MIRRORS\" >> " (path "cs.log") "\n"
                      "command=$1; shift\n"
                      "while [ $# -gt 0 ]; do\n"
                      "  case \"$1\" in\n"
@@ -67,7 +67,7 @@
       (testing "only Maven Central counts, and every file needs a checksum"
         (is (str/starts-with? fetch "fetch --cache "))
         (is (str/includes? fetch " --no-default --repository central --checksum SHA-256,SHA-1 org.scalameta:metals_2.13:1.6.9 "))
-        (is (re-find #"\| \S+/\.work-[^/]+/coursier-config/mirror.properties$" fetch)))
+        (is (re-find #"\| (\S+)/coursier-cache \1/coursier-config/mirror.properties$" fetch)))
       (testing "the launcher embeds the fetched jars without the network"
         (is (str/includes? bootstrap " --mode offline --standalone --deterministic --output "))
         (is (str/includes? bootstrap " --java-opt -Xss4m org.scalameta:metals_2.13:1.6.9 "))))

@@ -54,9 +54,11 @@
 
 (defn environment
   "Settings under `work` that keep the user's coursier, Maven and Scala CLI
-  configuration, and the mirrors in it, out of the resolution."
-  [work]
-  {"COURSIER_CONFIG_DIR" (str (fs/path work "coursier-config"))
+  configuration, and the mirrors in it, out of the resolution. cs creates
+  the cache COURSIER_CACHE names even when --cache gives another."
+  [work cache]
+  {"COURSIER_CACHE" (str cache)
+   "COURSIER_CONFIG_DIR" (str (fs/path work "coursier-config"))
    "COURSIER_MIRRORS" (str (fs/path work "coursier-config" "mirror.properties"))
    "COURSIER_MAVEN_SETTINGS" "false"
    "SCALA_CLI_CONFIG" (str (fs/path work "coursier-config" "scala-cli.json"))})
@@ -87,7 +89,7 @@
         built (fs/path work "built")
         launcher (fs/path built "bin" (:name pkg))
         listing (fs/path work "jars.txt")
-        env (environment work)
+        env (environment work cache)
         run (or (:run-in io) proc/run-in)
         cs! (fn [args]
               (let [{:keys [exit out err]} (run {:command (cons cs args) :env env :dir work})]
