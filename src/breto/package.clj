@@ -136,6 +136,9 @@
     (and (rolling? pkg) (not (str/includes? (str asset) "{version}")))
     (conj ":asset of a rolling release must contain {version}")
 
+    (and (rolling? pkg) (some #(str/includes? (str asset) (str "{" (clojure.core/name %) "}")) (keys (:vars pkg))))
+    (conj ":asset of a rolling release cannot use :vars, which derive from a version it does not know yet")
+
     (not (string? asset))
     (conj ":asset must be a template string")
 
@@ -290,7 +293,10 @@
                                  {:breto/problem :invalid-package :package (:name pkg)
                                   :problems [(str ":vars " k " does not match version " version)]}))
         (string? m) m
-        :else (second m)))
+        :else (or (some identity (rest m))
+                  (throw (ex-info (str (:name pkg) ": the groups of the " k " pattern " match " match nothing in version " version)
+                                  {:breto/problem :invalid-package :package (:name pkg)
+                                   :problems [(str ":vars " k " matches version " version " without any group")]})))))
     (str/replace version (first replace) (second replace))))
 
 (defn template-vars [{:keys [name vars] :as pkg} {:keys [tag version]}]

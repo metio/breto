@@ -185,3 +185,14 @@
   (is (version/older? "1.0.0-rc1" "1.0.0-rc2"))
   (is (version/older? "1.1.1" "1.1.1a"))
   (is (version/older? "1.0" "1.0.1")))
+
+(deftest version-words-compare-without-case
+  (is (version/older? "1.0.0-beta1" "1.0.0-RC1"))
+  (is (version/older? "1.0.0-Beta1" "1.0.0-rc1")))
+
+(deftest a-var-pattern-whose-group-is-empty-is-reported
+  (let [pkg (package/normalize {:name "x" :source {:github "a/x"} :asset "x-{major}"
+                                :vars {:major {:match "(\\d+)x|1"}}})]
+    (is (= :invalid-package
+           (try (package/artifact pkg {:tag "v1.0" :version "1.0"}) nil
+                (catch clojure.lang.ExceptionInfo e (:breto/problem (ex-data e))))))))

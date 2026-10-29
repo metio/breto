@@ -12,7 +12,7 @@
     (and (number? a) (number? b)) (compare a b)
     (number? a) 1
     (number? b) -1
-    :else (compare a b)))
+    :else (compare (.toLowerCase ^String a) (.toLowerCase ^String b))))
 
 (def ^:private pre-release-words
   #{"alpha" "beta" "rc" "pre" "preview" "dev" "snapshot" "nightly" "canary" "milestone" "ea"})

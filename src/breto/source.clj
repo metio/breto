@@ -14,7 +14,9 @@
   {:tag tag :version (package/version-of-tag pkg tag)})
 
 (defn- latest-rolling
-  "The newest build in a rolling release, by upload time."
+  "The newest build in a rolling release, by upload time, that :skip does
+  not name. The other releases of the repository are unrelated to the builds,
+  so a skipped build falls back to an older one of the same release."
   [{:keys [source asset name] :as pkg} io]
   (let [tag (:tag source)
         pattern (template/matcher asset (package/template-vars pkg {:tag tag}))
@@ -26,7 +28,13 @@
     (when (empty? builds)
       (throw (ex-info (str name ": no asset in release " tag " matches " asset)
                       {:breto/problem :rolling-no-match :package name :repo (:github source) :tag tag :asset asset})))
-    {:tag tag :version (:version (last (sort-by :created builds)))}))
+    (let [skip (set (:skip pkg))
+          newest (last (remove (comp skip :version) (sort-by :created builds)))]
+      (when-not newest
+        (throw (ex-info (str name ": every build in release " tag " is listed in :skip")
+                        {:breto/problem :all-skipped :package name :latest (:version (last (sort-by :created builds)))
+                         :skip (vec (:skip pkg)) :source source})))
+      {:tag tag :version (:version newest)})))
 
 (defn- gitlab-api [project suffix]
   (let [[host path] (str/split project #"/" 2)]
@@ -45,11 +53,12 @@
                             (when (map? node) (get node (if (keyword? k) (clojure.core/name k) k)))))
         found (reductions step doc path)
         value (last found)]
-    (if (or (string? value) (number? value))
+    (if (or (string? value) (integer? value))
       (str value)
       (let [depth (count (take-while some? (rest found)))
             node (nth found depth)]
-        (throw (ex-info (str name ": no version at " (pr-str path) " in " (:json source))
+        (throw (ex-info (str name ": no version at " (pr-str path) " in " (:json source)
+                             (when (number? value) ", only a fractional number, which JSON parsing cannot keep exact"))
                         {:breto/problem :json-path :package name :url (:json source) :path path
                          :found (vec (take depth path))
                          :keys (cond (map? node) (vec (sort (keys node)))
@@ -80,7 +89,9 @@
                             (cond (nil? m) (throw (ex-info (str "nothing in " (:text source) " matches " pattern)
                                                            {:breto/problem :no-release :url (:text source)}))
                                   (string? m) m
-                                  :else (second m)))
+                                  :else (or (some identity (rest m))
+                                            (throw (ex-info (str "the groups of " pattern " match nothing in " (:text source))
+                                                            {:breto/problem :no-release :url (:text source)})))))
                           (str/trim body))))
     :json (tagged pkg (json-version pkg (json/parse-string (get-text (:json source) {"Accept" "application/json"}))))
     :go (let [url (go-proxy-url source "/@latest")]
