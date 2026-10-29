@@ -302,6 +302,17 @@ A tool that ships support files next to its binary uses the tree layout, and `:l
 | `{:pypi "reuse"}` | The version PyPI reports as latest for the project. breto installs it with uv into a virtual environment of its own; see [Python packages](#python-packages). `:asset` and `:url` are filled in, and `:bins` defaults to the package name in the environment's `bin`. |
 | `{:go "golang.org/x/vuln" :package "golang.org/x/vuln/cmd/govulncheck"}` | The version the Go module proxy reports as latest for the module. breto builds `:package`, which defaults to the module itself, with `go install`; see [Go modules](#go-modules). `:asset` and `:url` are filled in. |
 
+A tag is a release of the package when it starts with `:tag-prefix`. A repository that releases several components under one name each, such as `cli/v0.18.1` beside `helm/v9.0.0`, needs only the prefix of its own: when the release GitHub or GitLab marks as latest belongs to another component, breto takes the newest listed release with the package's prefix, which costs one request listing the releases. A repository that changed its naming scheme keeps the old prefix in a `:history` entry, and a tag then counts when its prefix is the one that applies to the version it names:
+
+```clojure
+{:source {:github "acme/tool"}
+ :tag-prefix "release-"
+ :asset "tool"
+ :history [{:before "2.0.0" :tag-prefix "v"}]}
+```
+
+Here `release-2.1.0` and `v1.9.0` are releases, while `v2.5.0` is not.
+
 ble.sh publishes its nightly builds as a rolling release:
 
 ```clojure

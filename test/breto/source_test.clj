@@ -89,3 +89,36 @@
   (let [pkg (package/normalize {:name "x" :source {:json "https://example.com/releases" :version ["v"]}
                                 :tag-prefix "" :asset "x" :url "https://example.com/{asset}"})]
     (is (= :json-path (:breto/problem (problem #(source/latest pkg (serving "{\"v\":1.10}"))))))))
+
+(defn- serving-releases
+  "A GitHub repository acme/mono whose latest release is `latest` and whose
+  release listing holds `tags`."
+  [latest tags]
+  {:get-text (fn [url _]
+               (case url
+                 "https://github.com/acme/mono/releases/latest" (cheshire.core/generate-string {:tag_name latest})
+                 "https://api.github.com/repos/acme/mono/releases?per_page=100"
+                 (cheshire.core/generate-string (for [t tags] {:tag_name t}))))
+   :github-token (constantly nil)})
+
+(defn- mono [extra]
+  (package/normalize (merge {:name "tool" :source {:github "acme/mono"} :tag-prefix "cli/v" :asset "tool"} extra)))
+
+(deftest a-latest-release-of-another-component-falls-back-to-the-newest-with-the-prefix
+  (is (= {:tag "cli/v1.2.0" :version "1.2.0"}
+         (source/newest (mono {}) (serving-releases "helm/v9.0.0" ["helm/v9.0.0" "cli/v1.1.0" "cli/v1.2.0" "dashboard/v3.0.0"]))))
+  (is (= :tag-prefix
+         (:breto/problem (problem #(source/newest (mono {}) (serving-releases "helm/v9.0.0" ["helm/v9.0.0"])))))))
+
+(deftest history-entries-scope-older-tag-prefixes
+  (let [pkg (mono {:tag-prefix "release-" :history [{:before "2.0.0" :tag-prefix "v"}]})
+        io (serving-releases "release-2.1.0" ["release-2.1.0" "release-2.0.0" "v1.9.0" "v2.5.0" "release-1.5.0"])]
+    (is (= {:tag "release-2.1.0" :version "2.1.0"} (source/newest pkg io)))
+    (is (= {:tag "release-2.0.0" :version "2.0.0"} (source/newest (assoc pkg :skip ["2.1.0"]) io)))
+    (testing "an older version is found under the prefix its history entry names"
+      (is (= {:tag "v1.9.0" :version "1.9.0"} (source/newest (assoc pkg :skip ["2.1.0" "2.0.0"]) io))))
+    (testing "a latest release under an older prefix counts for the versions it covers"
+      (is (= {:tag "v1.9.0" :version "1.9.0"} (source/newest pkg (serving-releases "v1.9.0" ["v1.9.0"])))))
+    (testing "a prefix outside the versions it covers is no release"
+      (is (= {:tag "release-2.0.0" :version "2.0.0"}
+             (source/newest pkg (serving-releases "v2.5.0" ["v2.5.0" "release-2.0.0"])))))))

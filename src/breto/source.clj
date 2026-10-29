@@ -13,6 +13,19 @@
 (defn- tagged [pkg tag]
   {:tag tag :version (package/version-of-tag pkg tag)})
 
+(defn- release-of
+  "The release `tag` names for `pkg`, or nil when it names none. A tag counts
+  when it starts with the :tag-prefix of the definition that applies to the
+  version after it, so a :history entry keeps the prefix of older releases
+  and a repository releasing several components yields only this one."
+  [pkg tag]
+  (some (fn [prefix]
+          (when (str/starts-with? tag prefix)
+            (let [version (subs tag (count prefix))]
+              (when (and (seq version) (= prefix (:tag-prefix (package/at pkg version))))
+                {:tag tag :version version}))))
+        (sort-by (comp - count) (distinct (cons (:tag-prefix pkg) (map (comp :tag-prefix :package) (:history pkg)))))))
+
 (defn- latest-rolling
   "The newest build in a rolling release, by upload time, that :skip does
   not name. The other releases of the repository are unrelated to the builds,
@@ -71,6 +84,27 @@
 (defn- pypi-url [source suffix]
   (str "https://pypi.org/pypi/" (:pypi source) suffix))
 
+(declare release-tags)
+
+(defn- newest-listed
+  "The newest release of `pkg` among its listed releases that `skip` does not
+  name, or nil."
+  [pkg io skip]
+  (->> (release-tags pkg io)
+       (keep #(release-of pkg %))
+       (remove (comp skip :version))
+       (sort #(version/compare-versions (:version %2) (:version %1)))
+       first))
+
+(defn- listed-latest
+  "The release the forge marks as latest, `tag`, when it is one of `pkg`;
+  else, as for another component of the same repository, the newest listed
+  release that is. Without one, the tag is reported against :tag-prefix."
+  [pkg io tag]
+  (or (release-of pkg tag)
+      (newest-listed pkg io #{})
+      (tagged pkg tag)))
+
 (defn latest
   "The tag and version of the newest release of `pkg`."
   [{:keys [source] :as pkg} {:keys [get-text] :as io}]
@@ -78,11 +112,11 @@
     :github (if (package/rolling? pkg)
               (latest-rolling pkg io)
               (let [url (str "https://github.com/" (:github source) "/releases/latest")]
-                (tagged pkg (or (get (json/parse-string (get-text url {"Accept" "application/json"})) "tag_name")
-                                (throw (ex-info (str "no tag_name in " url) {:breto/problem :no-release :url url}))))))
+                (listed-latest pkg io (or (get (json/parse-string (get-text url {"Accept" "application/json"})) "tag_name")
+                                          (throw (ex-info (str "no tag_name in " url) {:breto/problem :no-release :url url}))))))
     :gitlab (let [url (gitlab-latest-url (:gitlab source))]
-              (tagged pkg (or (get (json/parse-string (get-text url {})) "tag_name")
-                              (throw (ex-info (str "no tag_name in " url) {:breto/problem :no-release :url url})))))
+              (listed-latest pkg io (or (get (json/parse-string (get-text url {})) "tag_name")
+                                        (throw (ex-info (str "no tag_name in " url) {:breto/problem :no-release :url url})))))
     :text (let [body (get-text (:text source) {})]
             (tagged pkg (if-let [pattern (:match source)]
                           (let [m (re-find (re-pattern pattern) body)]
@@ -131,12 +165,7 @@
         skip (set (:skip pkg))]
     (if-not (skip (:version found))
       found
-      (or (->> (release-tags pkg io)
-               (filter #(str/starts-with? % (:tag-prefix pkg)))
-               (map #(tagged pkg %))
-               (remove (comp skip :version))
-               (sort #(version/compare-versions (:version %2) (:version %1)))
-               first)
+      (or (newest-listed pkg io skip)
           (throw (ex-info (str (:name pkg) ": every release found is listed in :skip")
                           {:breto/problem :all-skipped :package (:name pkg) :latest (:version found)
                            :skip (vec (:skip pkg)) :source (:source pkg)}))))))
