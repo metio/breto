@@ -3,6 +3,7 @@
 
 (ns breto.package
   (:require [breto.cargo :as cargo]
+            [breto.coursier :as coursier]
             [breto.document :as document]
             [breto.ghcup :as ghcup]
             [breto.npm :as npm]
@@ -31,7 +32,7 @@
     (subs file-name 0 (- (count file-name) (count suffix)))
     file-name))
 
-(def source-kinds #{:github :gitlab :text :json :go :pypi :npm :cargo :ghcup})
+(def source-kinds #{:github :gitlab :text :json :go :pypi :npm :cargo :ghcup :coursier})
 
 (defn source-kind [{:keys [source]}]
   (let [kinds (filter source-kinds (keys source))]
@@ -158,6 +159,12 @@
     (and (= :cargo (source-kind pkg))
          (not (and (string? (:cargo source)) (re-matches #"[A-Za-z0-9][A-Za-z0-9_-]{0,63}" (:cargo source)))))
     (conj ":source {:cargo NAME} names a crate on crates.io")
+
+    (and (= :coursier (source-kind pkg))
+         (not (and (string? (:coursier source)) (re-matches #"[A-Za-z0-9_.-]+:[A-Za-z0-9_.-]+" (:coursier source))
+                   (or (nil? (:main source)) (and (string? (:main source)) (re-matches #"[A-Za-z_$][\w$.]*" (:main source))))
+                   (or (nil? (:java-opts source)) (and (vector? (:java-opts source)) (every? string? (:java-opts source)))))))
+    (conj ":source {:coursier \"GROUP:ARTIFACT\"} names a module on Maven Central, with an optional :main class and :java-opts vector")
 
     (and (= :ghcup (source-kind pkg)) (not (contains? ghcup/tools (:ghcup source))))
     (conj ":source {:ghcup TOOL} names a tool ghcup installs: cabal, ghc, hls or stack")
@@ -300,6 +307,13 @@
               (= :ghcup (source-kind pkg))
               (merge (ghcup-defaults pkg))
 
+              (= :coursier (source-kind pkg))
+              (merge {:tag-prefix "" :layout :tree
+                      :asset "jars.txt"
+                      :url (coursier/pom-url (get-in pkg [:source :coursier]))}
+                     (when (nil? (:bins pkg))
+                       {:bins {(:name pkg) (str "bin/" (:name pkg))}}))
+
               (and (nil? (:url pkg)) (= :github (source-kind pkg)))
               (assoc :url (str "https://github.com/" (get-in pkg [:source :github])
                                "/releases/download/{tag}/{asset}"))
@@ -307,7 +321,7 @@
               (and (nil? (:bins pkg)) (:bin-dir pkg))
               (assoc :bins {})
 
-              (and (nil? (:bins pkg)) (nil? (:bin-dir pkg)) (not (#{:pypi :npm :cargo :ghcup} (source-kind pkg))))
+              (and (nil? (:bins pkg)) (nil? (:bin-dir pkg)) (not (#{:pypi :npm :cargo :ghcup :coursier} (source-kind pkg))))
               (assoc :bins {(:name pkg) (case (archive-type (str (:asset pkg)))
                                           :raw "{asset}"
                                           (:gz :bz2 :zst) (unpacked-name (str (:asset pkg)))

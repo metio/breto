@@ -3,6 +3,7 @@
 
 (ns breto.source
   (:require [breto.cargo :as cargo]
+            [breto.coursier :as coursier]
             [breto.document :as document]
             [breto.ghcup :as ghcup]
             [breto.github :as github]
@@ -145,6 +146,9 @@
     :cargo (or (newest-listed pkg io #{})
                (throw (ex-info (str "no release of " (:cargo source) " in " (cargo/index-url (:cargo source)))
                                {:breto/problem :no-release :url (cargo/index-url (:cargo source))})))
+    :coursier (or (newest-listed pkg io #{})
+                  (throw (ex-info (str "no release of " (:coursier source) " in " (coursier/metadata-url (:coursier source)))
+                                  {:breto/problem :no-release :url (coursier/metadata-url (:coursier source))})))
     :ghcup (or (newest-listed pkg io #{})
                (throw (ex-info (str "no release of " (:ghcup source) " for this platform in " ghcup/metadata-url)
                                {:breto/problem :no-release :url ghcup/metadata-url})))
@@ -185,6 +189,7 @@
                    "versions")
               (keep (fn [[version meta]] (when-not (get meta "deprecated") version)))
               (remove #(str/includes? % "-")))
+    :coursier (coursier/release-versions (get-text (coursier/metadata-url (:coursier source)) {}))
     :ghcup (ghcup/versions (document/parse ghcup/metadata-url (get-text ghcup/metadata-url {}))
                            (:ghcup source) (ghcup/arch))
     nil))

@@ -87,12 +87,12 @@
   to check the signatures of the others or to build them."
   [registry specs]
   (let [provides? #(let [[name] (batch/split-spec %)]
-                     (or (#{"go" "uv" "node" "rustup" "ghcup"} name) (some-> (get registry name) signature/provides-cosign?)))]
+                     (or (#{"go" "uv" "node" "rustup" "ghcup" "coursier"} name) (some-> (get registry name) signature/provides-cosign?)))]
     (concat (filter provides? specs) (remove provides? specs))))
 
 (defn tool-command
   "The command `command` of the package `name`, by default the command of the
-  same name, which builds the packages of a :go, :pypi, :npm, :cargo or :ghcup source: that of
+  same name, which builds the packages of a :go, :pypi, :npm, :cargo, :ghcup or :coursier source: that of
   its active version, else of its newest installed one."
   ([config registry name] (tool-command config registry name name))
   ([config registry name command]
@@ -133,7 +133,8 @@
                                         (= :pypi (package/source-kind pkg)) (assoc :uv (tool-command config registry "uv"))
                                         (= :npm (package/source-kind pkg)) (assoc :npm (tool-command config registry "node" "npm"))
                                         (= :cargo (package/source-kind pkg)) (assoc :cargo (tool-command config registry "rustup" "cargo"))
-                                        (= :ghcup (package/source-kind pkg)) (assoc :ghcup (tool-command config registry "ghcup")))
+                                        (= :ghcup (package/source-kind pkg)) (assoc :ghcup (tool-command config registry "ghcup"))
+                                        (= :coursier (package/source-kind pkg)) (assoc :coursier (tool-command config registry "coursier" "cs")))
                               result (installed-result name (install/install! config io pkg options))
                               warnings (cond-> []
                                          (package/superseded-warning pkg) (conj (package/superseded-warning pkg))
