@@ -1,0 +1,7 @@
+;; SPDX-FileCopyrightText: The breto Authors
+;; SPDX-License-Identifier: 0BSD
+
+{:description "Language server for Crystal"
+ :source {:github "elbywan/crystalline"}
+ :asset "crystalline_x86_64-unknown-linux-musl.gz"
+ :bins {"crystalline" "crystalline_x86_64-unknown-linux-musl"}}

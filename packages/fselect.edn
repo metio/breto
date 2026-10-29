@@ -1,0 +1,8 @@
+;; SPDX-FileCopyrightText: The breto Authors
+;; SPDX-License-Identifier: 0BSD
+
+{:description "Find files with SQL-like queries"
+ :source {:github "jhspetersson/fselect"}
+ :tag-prefix ""
+ :asset "fselect-x86_64-linux-musl.gz"
+ :bins {"fselect" "fselect-x86_64-linux-musl"}}

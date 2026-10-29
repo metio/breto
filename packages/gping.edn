@@ -1,0 +1,8 @@
+;; SPDX-FileCopyrightText: The breto Authors
+;; SPDX-License-Identifier: 0BSD
+
+{:description "Ping, but with a graph"
+ :source {:github "orf/gping"}
+ :tag-prefix "gping-v"
+ :asset "gping-Linux-musl-x86_64.tar.gz"
+ :man ["gping.1"]}

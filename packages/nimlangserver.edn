@@ -1,0 +1,6 @@
+;; SPDX-FileCopyrightText: The breto Authors
+;; SPDX-License-Identifier: 0BSD
+
+{:description "Language server for Nim"
+ :source {:github "nim-lang/langserver"}
+ :asset "nimlangserver-linux-amd64.tar.gz"}

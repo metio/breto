@@ -1,0 +1,6 @@
+;; SPDX-FileCopyrightText: The breto Authors
+;; SPDX-License-Identifier: 0BSD
+
+{:description "Language server for the Vale prose linter"
+ :source {:github "errata-ai/vale-ls"}
+ :asset "vale-ls-x86_64-unknown-linux-gnu.zip"}

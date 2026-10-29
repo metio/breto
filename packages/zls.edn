@@ -1,0 +1,7 @@
+;; SPDX-FileCopyrightText: The breto Authors
+;; SPDX-License-Identifier: 0BSD
+
+{:description "Language server for Zig"
+ :source {:github "zigtools/zls"}
+ :tag-prefix ""
+ :asset "zls-x86_64-linux.tar.xz"}

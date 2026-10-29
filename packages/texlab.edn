@@ -1,0 +1,6 @@
+;; SPDX-FileCopyrightText: The breto Authors
+;; SPDX-License-Identifier: 0BSD
+
+{:description "Language server for LaTeX"
+ :source {:github "latex-lsp/texlab"}
+ :asset "texlab-x86_64-linux.tar.gz"}

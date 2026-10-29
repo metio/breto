@@ -1,0 +1,9 @@
+;; SPDX-FileCopyrightText: The breto Authors
+;; SPDX-License-Identifier: 0BSD
+
+{:description "Runs large language models locally"
+ :source {:github "ollama/ollama"}
+ :asset "ollama-linux-amd64.tar.zst"
+ :checksum "sha256sum.txt"
+ :layout :tree
+ :bins {"ollama" "bin/ollama"}}

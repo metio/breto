@@ -1,0 +1,6 @@
+;; SPDX-FileCopyrightText: The breto Authors
+;; SPDX-License-Identifier: 0BSD
+
+{:description "A simple and pretty alternative to strace"
+ :source {:github "JakWai01/lurk"}
+ :asset "lurk-x86_64-unknown-linux-gnu.tar.gz"}

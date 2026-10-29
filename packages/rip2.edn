@@ -1,0 +1,7 @@
+;; SPDX-FileCopyrightText: The breto Authors
+;; SPDX-License-Identifier: 0BSD
+
+{:description "A safe and ergonomic alternative to rm that moves files to a graveyard"
+ :source {:github "MilesCranmer/rip2"}
+ :asset "rip-Linux-x86_64-musl.tar.gz"
+ :bins {"rip" "rip"}}

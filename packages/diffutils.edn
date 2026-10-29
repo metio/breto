@@ -1,0 +1,8 @@
+;; SPDX-FileCopyrightText: The breto Authors
+;; SPDX-License-Identifier: 0BSD
+
+{:description "Rust rewrite of the GNU diffutils as one multi-call binary"
+ :source {:github "uutils/diffutils"}
+ :asset "diffutils-x86_64-unknown-linux-gnu.tar.xz"
+ :checksum "{asset}.sha256"
+ :strip 1}

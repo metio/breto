@@ -1,0 +1,7 @@
+;; SPDX-FileCopyrightText: The breto Authors
+;; SPDX-License-Identifier: 0BSD
+
+{:description "A sharp cut, which splits fields by regular expressions and selects them by header"
+ :source {:github "sstadick/hck"}
+ :asset "hck-linux-amd64"
+ :bins {"hck" "hck-linux-amd64"}}

@@ -1,0 +1,10 @@
+;; SPDX-FileCopyrightText: The breto Authors
+;; SPDX-License-Identifier: 0BSD
+
+{:description "Rust rewrite of the GNU findutils, linked as uu-find, uu-xargs, uu-locate and uu-updatedb beside the system tools"
+ :source {:github "uutils/findutils"}
+ :tag-prefix ""
+ :asset "findutils-x86_64-unknown-linux-musl.tar.xz"
+ :checksum "{asset}.sha256"
+ :strip 1
+ :bins {"uu-find" "find" "uu-xargs" "xargs" "uu-locate" "locate" "uu-updatedb" "updatedb"}}
