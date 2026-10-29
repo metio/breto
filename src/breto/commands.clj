@@ -244,8 +244,9 @@
 (defn- project-environment
   "{:homes :vars} of `project`: the version directory of each package whose
   definition has :env, and the variables those definitions set, rendered
-  with {home} as the project's stable link to that directory. Two packages
-  setting one variable is an error, since only one value can win."
+  with {home} as the project's stable link to that directory and {homes} as
+  the directory of all those links. Two packages setting one variable to
+  different values is an error, since only one value can win."
   [config registry {:keys [dir specs]}]
   (let [entries (for [spec specs
                       :let [[name version] (batch/split-spec spec)
@@ -256,12 +257,13 @@
                       :when version
                       :let [pkg (package/at pkg version)
                             vars (assoc (package/template-vars pkg {:tag (package/tag-of-version pkg version) :version version})
-                                        :home (str (env/home config dir name)))]]
+                                        :home (str (env/home config dir name))
+                                        :homes (str (fs/parent (env/home config dir name))))]]
                   {:name name
                    :home (str (store/version-dir config name version))
                    :vars (update-vals (:env pkg) #(template/render % vars))})]
-    (doseq [[k owners] (group-by first (for [{:keys [name vars]} entries, [k _] vars] [k name]))
-            :when (< 1 (count owners))]
+    (doseq [[k owners] (group-by first (for [{:keys [name vars]} entries, [k v] vars] [k name v]))
+            :when (< 1 (count (distinct (map #(nth % 2) owners))))]
       (throw (ex-info (str "the project's packages " (str/join " and " (map second owners)) " all set " k)
                       {:breto/problem :env-conflict :variable k :packages (mapv second owners)})))
     {:homes (into {} (map (juxt :name :home)) entries)

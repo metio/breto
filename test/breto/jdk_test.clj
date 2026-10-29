@@ -166,6 +166,22 @@
         (is (= "JAVA_HOME" (:variable (ex-data e))))
         (is (= ["jdk" "jdk-again"] (:packages (ex-data e))))))))
 
+(deftest packages-agreeing-on-a-value-share-the-directory-of-homes
+  (let [io (world)
+        plugin (assoc definition :env {"PLUGINS" "{homes}"})]
+    (s/define! "jdk" plugin)
+    (s/define! "jdk-again" plugin)
+    (let [io (assoc io :download! (let [d (:download! io)]
+                                    (fn [url dest & more]
+                                      (apply d (str/replace url "acme/jdk-again" "acme/jdk") dest more))))]
+      (project! "app" ["jdk@25.0.1+8" "jdk-again@27.0.1+2"])
+      (let [{:keys [code out err]} (env! io "app")
+            homes (second (re-find #"export PLUGINS='([^']*)'" out))]
+        (is (= 0 code) err)
+        (is (str/ends-with? homes "/homes"))
+        (is (= #{"jdk" "jdk-again"} (set (map (comp str fs/file-name) (fs/list-dir homes)))))
+        (is (= "jdk27" (slurp (str (fs/path homes "jdk-again" "release")))))))))
+
 (deftest doctor-reports-commands-several-packages-provide
   (let [io (world)]
     (s/define! "jdk-again" definition)

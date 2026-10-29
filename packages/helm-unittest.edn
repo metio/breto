@@ -1,0 +1,9 @@
+;; SPDX-FileCopyrightText: The breto Authors
+;; SPDX-License-Identifier: 0BSD
+
+{:description "A helm plugin that unit tests the templates of a chart, found by helm through HELM_PLUGINS in a project that uses it"
+ :source {:github "helm-unittest/helm-unittest"}
+ :asset "helm-unittest-linux-amd64-{version}.tgz"
+ :layout :tree
+ :bins {}
+ :env {"HELM_PLUGINS" "{homes}"}}

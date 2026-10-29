@@ -146,7 +146,7 @@ eval "$(breto hook bash)"
 
 `breto hook` reads neither the configuration nor the registry, so it adds little to the start of a shell. The hook is `shell/env-hook.bash` in this repository, which a checkout can also source directly.
 
-A package whose definition has `:env` also sets those variables, such as `JAVA_HOME`. `{home}` in their values is a link of the project's own to the version directory, so the variable keeps its value when the version changes and `update` or `sync` only moves the link. The values the variables had before the project are saved, and the hook restores them, or unsets the variables, when the shell leaves the project; entering another project does the same first. Two packages of one project setting the same variable is an error.
+A package whose definition has `:env` also sets those variables, such as `JAVA_HOME`. `{home}` in their values is a link of the project's own to the version directory, so the variable keeps its value when the version changes and `update` or `sync` only moves the link. `{homes}` is the directory holding those links, one per package of the project that sets a variable, for tools that look for plugins in the subdirectories of one directory. The values the variables had before the project are saved, and the hook restores them, or unsets the variables, when the shell leaves the project; entering another project does the same first. Two packages of one project setting the same variable to different values is an error.
 
 A package without a version uses the active version, else the most recently installed one. Versions that are not installed yet are installed without activating them, so the commands in `:bin-dir` keep their versions. Everything but the shell code goes to stderr. Each run makes the project's bin directory hold exactly what the file lists and replaces the `PATH` entry of a project entered before. The `PATH` it prints also drops entries that repeat.
 
@@ -274,7 +274,7 @@ A package is a file `<name>.edn` in a registry directory, and its file name is t
 | `:bin-dir` | With the `:tree` layout, a directory inside the release whose executable files all become commands, read from each installed version, so a command a newer version drops loses its link on activation. `:bins` adds to them. | none |
 | `:vars` | Further placeholders derived from the version, as `{:match REGEX}`, the first group or else the whole match, or `{:replace [FROM TO]}`; see [Java](#java). `{:text URL :match REGEX}` reads one from a document instead, such as a build stamp the version does not contain, and `{:json URL :path [path]}` takes the value at a path in a JSON or YAML document, read like the path of a `:checksum`; the URL can use the other placeholders. | none |
 | `:python` | For a `:pypi` source, the Python version of its environment, overriding the config's `:python`. | none |
-| `:env` | Variables `breto env` sets in a project using the package, as templates; `{home}` is a link to the version the project uses. | none |
+| `:env` | Variables `breto env` sets in a project using the package, as templates; `{home}` is a link to the version the project uses, `{homes}` the directory of those links. | none |
 | `:links` | Further symlinks: target path to path inside the installed version. | none |
 | `:history` | Definitions for older versions; see below. | none |
 | `:verify` | `false` installs without verification, for releases whose upstream publishes neither GitHub digests nor checksums. Usually set in a `:history` entry, so newer releases are still verified. | `true` |
