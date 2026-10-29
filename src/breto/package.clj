@@ -3,6 +3,8 @@
 
 (ns breto.package
   (:require [breto.cargo :as cargo]
+            [breto.document :as document]
+            [breto.ghcup :as ghcup]
             [breto.npm :as npm]
             [breto.template :as template]
             [breto.version :as version]
@@ -29,7 +31,7 @@
     (subs file-name 0 (- (count file-name) (count suffix)))
     file-name))
 
-(def source-kinds #{:github :gitlab :text :json :go :pypi :npm :cargo})
+(def source-kinds #{:github :gitlab :text :json :go :pypi :npm :cargo :ghcup})
 
 (defn source-kind [{:keys [source]}]
   (let [kinds (filter source-kinds (keys source))]
@@ -99,7 +101,8 @@
                       (or (and (= 1 (count v)) (string? (:match v)) (try (re-pattern (:match v)) (catch Exception _ false)))
                           (and (= 1 (count v)) (vector? (:replace v)) (= 2 (count (:replace v))) (every? string? (:replace v)))
                           (and (= #{:text :match} (set (keys v))) (string? (:text v)) (string? (:match v))
-                               (try (re-pattern (:match v)) (catch Exception _ false))))))
+                               (try (re-pattern (:match v)) (catch Exception _ false)))
+                          (and (= #{:json :path} (set (keys v))) (string? (:json v)) (document/path-valid? (:path v))))))
                vars)))
 
 (defn- env-valid? [env]
@@ -156,6 +159,9 @@
          (not (and (string? (:cargo source)) (re-matches #"[A-Za-z0-9][A-Za-z0-9_-]{0,63}" (:cargo source)))))
     (conj ":source {:cargo NAME} names a crate on crates.io")
 
+    (and (= :ghcup (source-kind pkg)) (not (contains? ghcup/tools (:ghcup source))))
+    (conj ":source {:ghcup TOOL} names a tool ghcup installs: cabal, ghc, hls or stack")
+
     (not (or (nil? (:python pkg)) (and (string? (:python pkg)) (re-matches #"\d+\.\d+" (:python pkg)))))
     (conj ":python is a Python version such as \"3.13\"")
 
@@ -199,7 +205,7 @@
     (conj ":bin-dir needs the :tree layout and is a relative path inside the release, without ..")
 
     (not (vars-valid? (:vars pkg {})))
-    (conj ":vars maps placeholder keywords other than :name, :tag, :version, :repo, :asset and :home to {:match REGEX} or {:replace [FROM TO]}, applied to the version, or {:text URL :match REGEX}, matched in a document")
+    (conj ":vars maps placeholder keywords other than :name, :tag, :version, :repo, :asset and :home to {:match REGEX} or {:replace [FROM TO]}, applied to the version, or {:text URL :match REGEX}, matched in a document, or {:json URL :path [path]}, the value at a path in a JSON or YAML document")
 
     (not (env-valid? (:env pkg {})))
     (conj ":env maps environment variable names other than PATH and BRETO_* to template strings")
@@ -219,10 +225,7 @@
     (not (let [checksum (:checksum pkg)]
            (or (nil? checksum) (string? checksum)
                (and (map? checksum) (= #{:json :hash} (set (keys checksum))) (string? (:json checksum))
-                    (vector? (:hash checksum)) (seq (:hash checksum))
-                    (every? #(or (string? %) (keyword? %) (nat-int? %)
-                                 (and (map? %) (seq %) (every? (fn [[k v]] (and (or (string? k) (keyword? k)) (string? v))) %)))
-                            (:hash checksum))))))
+                    (document/path-valid? (:hash checksum))))))
     (conj ":checksum is a checksum file name or URL, or {:json URL :hash [path]} with a path of keys, indices and field selectors to the hash")
 
     (and (:signature pkg)
@@ -253,6 +256,21 @@
            (when (nil? (:bins pkg))
              {:bins {(:name pkg) (str "bin/" (:name pkg))}}))))
 
+(defn- ghcup-defaults
+  "What a :ghcup source fills in: the generic Linux bindist ghcup's metadata
+  lists, checked against the hash listed beside it, and where its commands
+  are once ghcup has installed it."
+  [pkg]
+  (let [tool (get-in pkg [:source :ghcup])
+        download (ghcup/download-path tool (ghcup/arch))]
+    (merge {:tag-prefix "" :layout :tree
+            :asset (str tool "-{version}-bindist")
+            :url "{bindist}"
+            :checksum {:json ghcup/metadata-url :hash (conj download "dlHash")}
+            :vars (merge {:bindist {:json ghcup/metadata-url :path (conj download "dlUri")}} (:vars pkg))}
+           (when-not (or (:bins pkg) (:bin-dir pkg))
+             (ghcup/layout tool)))))
+
 (defn- complete
   "Fills in defaults and validates one flat definition."
   [pkg]
@@ -279,6 +297,9 @@
               (= :cargo (source-kind pkg))
               (merge (cargo-defaults pkg))
 
+              (= :ghcup (source-kind pkg))
+              (merge (ghcup-defaults pkg))
+
               (and (nil? (:url pkg)) (= :github (source-kind pkg)))
               (assoc :url (str "https://github.com/" (get-in pkg [:source :github])
                                "/releases/download/{tag}/{asset}"))
@@ -286,7 +307,7 @@
               (and (nil? (:bins pkg)) (:bin-dir pkg))
               (assoc :bins {})
 
-              (and (nil? (:bins pkg)) (nil? (:bin-dir pkg)) (not (#{:pypi :npm :cargo} (source-kind pkg))))
+              (and (nil? (:bins pkg)) (nil? (:bin-dir pkg)) (not (#{:pypi :npm :cargo :ghcup} (source-kind pkg))))
               (assoc :bins {(:name pkg) (case (archive-type (str (:asset pkg)))
                                           :raw "{asset}"
                                           (:gz :bz2 :zst) (unpacked-name (str (:asset pkg)))
@@ -360,9 +381,10 @@
     (str/replace version (first replace) (second replace))))
 
 (defn fetched-vars
-  "The :vars of `pkg` read from a document, {:text URL :match REGEX}."
+  "The :vars of `pkg` read from a document, {:text URL :match REGEX} or
+  {:json URL :path [path]}."
   [pkg]
-  (into {} (filter (comp :text val)) (:vars pkg)))
+  (into {} (filter (comp #(or (:text %) (:json %)) val)) (:vars pkg)))
 
 (defn template-vars
   "The placeholders of `release`. A var read from a document takes its value
@@ -373,7 +395,7 @@
   (into {:name name :tag (or tag "") :version (or version "") :repo (or (repo pkg) "")}
         (when (seq version)
           (for [[k spec] vars]
-            [k (if (:text spec)
+            [k (if (or (:text spec) (:json spec))
                  (get fetched k (str "{" (clojure.core/name k) "}"))
                  (derived pkg k spec version))]))))
 

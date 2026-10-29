@@ -50,6 +50,7 @@
    :sumdb "verifiable by the Go checksum database"
    :pypi "verifiable by the hashes PyPI publishes"
    :npm "verifiable by the integrity hashes the npm registry publishes"
+   :ghcup "verifiable by the hash ghcup's metadata lists"
    :none "installs unverified, as its definition says"})
 
 (defn- line [{:keys [package status version from links unverified signed signature-bootstrap hash-recorded verified-by]}]

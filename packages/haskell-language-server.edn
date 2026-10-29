@@ -1,0 +1,5 @@
+;; SPDX-FileCopyrightText: The breto Authors
+;; SPDX-License-Identifier: 0BSD
+
+{:description "The Haskell language server, installed with ghcup, with one server per supported GHC version and the wrapper that picks it"
+ :source {:ghcup "hls"}}

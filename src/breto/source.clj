@@ -3,6 +3,8 @@
 
 (ns breto.source
   (:require [breto.cargo :as cargo]
+            [breto.document :as document]
+            [breto.ghcup :as ghcup]
             [breto.github :as github]
             [breto.npm :as npm]
             [breto.package :as package]
@@ -133,7 +135,7 @@
                                             (throw (ex-info (str "the groups of " pattern " match nothing in " (:text source))
                                                             {:breto/problem :no-release :url (:text source)})))))
                           (str/trim body)))))
-    :json (tagged pkg (json-version pkg (json/parse-string (get-text (:json source) {"Accept" "application/json"}))))
+    :json (tagged pkg (json-version pkg (document/parse (:json source) (get-text (:json source) {"Accept" "application/json"}))))
     :go (let [url (go-proxy-url source "/@latest")]
           (tagged pkg (or (get (json/parse-string (get-text url {})) "Version")
                           (throw (ex-info (str "no Version in " url) {:breto/problem :no-release :url url})))))
@@ -143,6 +145,9 @@
     :cargo (or (newest-listed pkg io #{})
                (throw (ex-info (str "no release of " (:cargo source) " in " (cargo/index-url (:cargo source)))
                                {:breto/problem :no-release :url (cargo/index-url (:cargo source))})))
+    :ghcup (or (newest-listed pkg io #{})
+               (throw (ex-info (str "no release of " (:ghcup source) " for this platform in " ghcup/metadata-url)
+                               {:breto/problem :no-release :url ghcup/metadata-url})))
     :npm (let [url (npm/registry-url (:npm source) "/latest")]
            (tagged pkg (or (get (json/parse-string (get-text url {"Accept" "application/json"})) "version")
                            (throw (ex-info (str "no version in " url) {:breto/problem :no-release :url url})))))))
@@ -180,24 +185,49 @@
                    "versions")
               (keep (fn [[version meta]] (when-not (get meta "deprecated") version)))
               (remove #(str/includes? % "-")))
+    :ghcup (ghcup/versions (document/parse ghcup/metadata-url (get-text ghcup/metadata-url {}))
+                           (:ghcup source) (ghcup/arch))
     nil))
+
+(defn- text-var
+  "The first group of `match` in the document at `url`, or the whole match
+  without a group."
+  [pkg get-text k url match]
+  (let [m (re-find (re-pattern match) (get-text url {}))]
+    (cond (string? m) m
+          (some identity (rest m)) (some identity (rest m))
+          :else (throw (ex-info (str (:name pkg) ": " match " for :vars " k " matches nothing in " url)
+                                {:breto/problem :no-release :url url})))))
+
+(defn- json-var
+  "The string or integer at `path` in the JSON or YAML document at `url`."
+  [pkg get-text k url path]
+  (let [doc (document/parse url (get-text url {}))
+        value (document/at doc path)]
+    (if (or (string? value) (integer? value))
+      (str value)
+      (throw (ex-info (str (:name pkg) ": no value for :vars " k " at " (pr-str path) " in " url)
+                      {:breto/problem :json-path :package (:name pkg) :url url :path path
+                       :found (vec (take (document/deepest doc path) path))})))))
 
 (defn fetch-vars
   "`release` with the :vars of `pkg` that are read from a document in
-  :fetched: the first group of :match in the body of :text, or the whole
-  match without a group. Their templates can use the release's other
+  :fetched: the first group of :match in the body of :text, or the value at
+  :path in the document :json. Their templates can use the release's other
   placeholders."
   [pkg {:keys [get-text]} release]
   (if-let [specs (seq (package/fetched-vars pkg))]
-    (let [base (package/template-vars pkg release)]
+    (let [base (package/template-vars pkg release)
+          render #(template/render % base)]
       (assoc release :fetched
-             (into {} (for [[k {:keys [text match]}] specs
-                            :let [url (template/render text base)
-                                  m (re-find (re-pattern match) (get-text url {}))]]
-                        [k (cond (string? m) m
-                                 (some identity (rest m)) (some identity (rest m))
-                                 :else (throw (ex-info (str (:name pkg) ": " match " for :vars " k " matches nothing in " url)
-                                                       {:breto/problem :no-release :url url})))]))))
+             (into {} (for [[k {:keys [text match json path]}] specs]
+                        [k (if text
+                             (text-var pkg get-text k (render text) match)
+                             (json-var pkg get-text k (render json)
+                                       (mapv #(cond (string? %) (render %)
+                                                    (map? %) (update-vals % render)
+                                                    :else %)
+                                             path)))]))))
     release))
 
 (defn newest

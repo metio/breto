@@ -3,7 +3,7 @@
 
 (ns breto.checksum
   (:require [babashka.fs :as fs]
-            [cheshire.core :as json]
+            [breto.document :as document]
             [clojure.java.io :as io]
             [clojure.string :as str])
   (:import (java.security MessageDigest)))
@@ -57,29 +57,14 @@
                (when (and (= 1 (count lines)) (hex? h))
                  (str/lower-case h)))))))
 
-(defn- key-name [k]
-  (if (keyword? k) (name k) k))
-
 (defn json-expected
-  "The hash at `path` in the JSON document `text`, or nil. A document of
-  several values, one per line as in JSON Lines, is the list of them. Strings
-  and keywords in `path` are keys, integers are indices, and a map selects
-  the first element of a list whose fields have the values it names."
-  [text path]
-  (let [values (vec (json/parsed-seq (java.io.StringReader. text)))
-        doc (if (= 1 (count values)) (first values) values)
-        step (fn [node k]
-               (cond (nat-int? k) (when (sequential? node) (get (vec node) k))
-                     (map? k) (when (sequential? node)
-                                (some (fn [element]
-                                        (when (and (map? element)
-                                                   (every? (fn [[f v]] (= v (get element (key-name f)))) k))
-                                          element))
-                                      node))
-                     :else (when (map? node) (get node (key-name k)))))
-        value (reduce step doc path)]
-    (when (and (string? value) (hex? value))
-      (str/lower-case value))))
+  "The hash at `path` in the document `text`, fetched from `url`, or nil; see
+  breto.document for how documents and paths are read."
+  ([text path] (json-expected nil text path))
+  ([url text path]
+   (let [value (document/at (document/parse url text) path)]
+     (when (and (string? value) (hex? value))
+       (str/lower-case value)))))
 
 (defn verify!
   "Throws unless `file` hashes to the hex string `want`. The algorithm follows

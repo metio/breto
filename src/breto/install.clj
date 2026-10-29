@@ -7,6 +7,7 @@
             [breto.cargo :as cargo]
             [breto.checksum :as checksum]
             [breto.github :as github]
+            [breto.ghcup :as ghcup]
             [breto.golang :as golang]
             [breto.npm :as npm]
             [breto.pypi :as pypi]
@@ -42,7 +43,7 @@
   [artifact text]
   (let [{:keys [asset url checksum-url checksum-path]} artifact]
     (or (if checksum-path
-          (checksum/json-expected text checksum-path)
+          (checksum/json-expected checksum-url text checksum-path)
           (checksum/expected text asset url))
         (throw (ex-info (if checksum-path
                           (str "no hash for " asset " at " (pr-str checksum-path) " in " checksum-url)
@@ -273,7 +274,7 @@
   itself was installed before any cosign could check it, and :hash-recorded?
   :upstream or :download when an installed version without a recorded hash
   got upstream's, or, when upstream publishes none, that of a fresh download. Failures carry the stage and release they happened in."
-  [config io pkg {:keys [version activate? verify? expect-sha256 expect-sum exclude-newer go uv npm cargo] :or {activate? true verify? true}}]
+  [config io pkg {:keys [version activate? verify? expect-sha256 expect-sum exclude-newer go uv npm cargo ghcup] :or {activate? true verify? true}}]
   (let [context {:package (:name pkg) :repo (package/repo pkg) :source (:source pkg)}
         release (staged io :resolve context #(resolve-release pkg io version))
         version (:version release)
@@ -285,8 +286,10 @@
                        :repo (package/repo pkg) :source (:source pkg))
         package-dir (store/package-dir config (:name pkg))
         bin-paths (package/bin-paths pkg artifact)
-        fresh? (not (store/installed? config (:name pkg) version
-                                      (concat (vals bin-paths) (share/shipped-completions pkg))))
+        in-place? (= :ghcup (package/source-kind pkg))
+        fresh? (or (not (store/installed? config (:name pkg) version
+                                          (concat (vals bin-paths) (share/shipped-completions pkg))))
+                   (and in-place? (nil? (store/read-meta config (:name pkg) version))))
         _ (when-not fresh?
             (let [meta (store/read-meta config (:name pkg) version)]
               (staged io :verify context
@@ -322,7 +325,7 @@
                        (when (and expect-sha256 (not sum))
                          (staged io :verify context
                            #(checksum/verify! file (:asset artifact) expect-sha256 :lockfile)))
-                       (when-not built
+                       (when-not (or built in-place?)
                          (staged io :unpack context
                            #(archive/unpack! file (:archive artifact) (:asset artifact) unpacked (:strip pkg))))
                        (let [built (or built
@@ -335,12 +338,25 @@
                                                                  (with-stage :signature context #(tree-file! pkg artifact unpacked inner))
                                                                  work (assoc context :signed-what :file)))
                              signed? (or signed? (= :checked file-signature))
-                             bootstrap? (or bootstrap? (= :bootstrap file-signature))]
+                             bootstrap? (or bootstrap? (= :bootstrap file-signature))
+                             dest (store/version-dir config (:name pkg) version)]
+                         (when in-place?
+                           (staged io :build context
+                             #(do (sealed/delete-tree! dest)
+                                  (try
+                                    (ghcup/install! io pkg release file (:url artifact)
+                                                    ((:get-text io) ghcup/metadata-url {}) dest work ghcup context)
+                                    (doseq [path (vals bin-paths)]
+                                      (tree-file! pkg artifact dest path))
+                                    (catch Throwable e
+                                      (sealed/delete-tree! dest)
+                                      (throw e))))))
                          (staged io :place context
-                           #(do (place! pkg artifact (or built unpacked) staging)
-                                (sealed/delete-tree! (store/version-dir config (:name pkg) version))
-                                (fs/move staging (store/version-dir config (:name pkg) version) {:atomic-move true})
-                                (sealed/seal! (store/version-dir config (:name pkg) version))
+                           #(do (when-not in-place?
+                                  (place! pkg artifact (or built unpacked) staging)
+                                  (sealed/delete-tree! dest)
+                                  (fs/move staging dest {:atomic-move true}))
+                                (sealed/seal! dest)
                                 (store/write-meta! config (:name pkg) version
                                                    (cond-> {:sha256 sha256 :asset (:asset artifact) :verified verify? :signed signed?}
                                                      sum (assoc :sum sum)

@@ -246,12 +246,12 @@ A package is a file `<name>.edn` in a registry directory, and its file name is t
 | `:asset` | Template for the file name to download. | required |
 | `:url` | Template for the download URL. | the GitHub release asset |
 | `:tag-prefix` | Text before the version in a tag: `v1.2.3` is version `1.2.3`. | `"v"` |
-| `:checksum` | Template for a checksum file, next to the asset unless it is a full URL, or `{:json URL :hash [path]}` for a hash inside a JSON document. | none |
+| `:checksum` | Template for a checksum file, next to the asset unless it is a full URL, or `{:json URL :hash [path]}` for a hash inside a JSON or YAML document. | none |
 | `:strip` | Leading path components to drop when unpacking, counted as `tar --strip-components` does, a leading `./` included. | `0` |
 | `:layout` | `:binary` keeps only the files named in `:bins`; `:tree` keeps the whole archive. | `:binary` |
 | `:bins` | Command name to path inside the unpacked archive. | the package name, or the asset itself when it is not an archive, without `.gz`, `.bz2` or `.zst` when it is a compressed single file |
 | `:bin-dir` | With the `:tree` layout, a directory inside the release whose executable files all become commands, read from each installed version, so a command a newer version drops loses its link on activation. `:bins` adds to them. | none |
-| `:vars` | Further placeholders derived from the version, as `{:match REGEX}`, the first group or else the whole match, or `{:replace [FROM TO]}`; see [Java](#java). `{:text URL :match REGEX}` reads one from a document instead, such as a build stamp the version does not contain; the URL can use the other placeholders. | none |
+| `:vars` | Further placeholders derived from the version, as `{:match REGEX}`, the first group or else the whole match, or `{:replace [FROM TO]}`; see [Java](#java). `{:text URL :match REGEX}` reads one from a document instead, such as a build stamp the version does not contain, and `{:json URL :path [path]}` takes the value at a path in a JSON or YAML document, read like the path of a `:checksum`; the URL can use the other placeholders. | none |
 | `:python` | For a `:pypi` source, the Python version of its environment, overriding the config's `:python`. | none |
 | `:env` | Variables `breto env` sets in a project using the package, as templates; `{home}` is a link to the version the project uses. | none |
 | `:links` | Further symlinks: target path to path inside the installed version. | none |
@@ -304,6 +304,7 @@ A tool that ships support files next to its binary uses the tree layout, and `:l
 | `{:go "golang.org/x/vuln" :package "golang.org/x/vuln/cmd/govulncheck"}` | The version the Go module proxy reports as latest for the module. breto builds `:package`, which defaults to the module itself, with `go install`; see [Go modules](#go-modules). `:asset` and `:url` are filled in. |
 | `{:npm "prettier"}` | The version the npm registry tags as latest for the package, which may be scoped, such as `@biomejs/biome`. breto installs it with npm into a directory of its own; see [npm packages](#npm-packages). `:asset` and `:url` are filled in, and `:bins` defaults to the package name in `node_modules/.bin`. |
 | `{:cargo "ripgrep"}` | The newest version of the crate on crates.io that is neither yanked nor a pre-release, from the crates.io index. breto downloads the crate, checks it against the index, and builds it with cargo; see [Cargo crates](#cargo-crates). `:asset`, `:url` and `:checksum` are filled in, and `:bins` defaults to the package name in `bin`. |
+| `{:ghcup "ghc"}` | The newest version of `ghc`, `cabal`, `hls` or `stack` that ghcup's metadata lists with a generic Linux download and does not tag as a prerelease. breto downloads and checks that bindist and has ghcup install it; see [Haskell tools](#haskell-tools). `:asset`, `:url`, `:checksum` and the commands are filled in. |
 
 A tag is a release of the package when it starts with `:tag-prefix`. A repository that releases several components under one name each, such as `cli/v0.18.1` beside `helm/v9.0.0`, needs only the prefix of its own: when the release GitHub or GitLab marks as latest belongs to another component, breto takes the newest listed release with the package's prefix, which costs one request listing the releases. A repository that changed its naming scheme keeps the old prefix in a `:history` entry, and a tag then counts when its prefix is the one that applies to the version it names:
 
@@ -364,6 +365,12 @@ A package with a `:cargo` source is built from its crate on crates.io with the `
 
 cargo runs with the toolchain `rustup default` selects and reads the user's cargo configuration. Building needs a C linker such as `cc`, and some crates need further system libraries.
 
+### Haskell tools
+
+A package with a `:ghcup` source is installed by the `ghcup` command of the installed `ghcup` package, which any batch installs first. breto reads ghcup's metadata, downloads the generic Linux bindist it lists for the version, the one ghcup itself uses on a distribution without a bindist of its own, and checks it against the hash listed beside it, so a lock file records the hash of the bindist like that of any other asset. ghcup then installs it with `--isolate` into the version directory, from a copy of the metadata that points the download at the verified file, with `--platform` naming that generic bindist. GHC and HLS bindists write their install location into their wrapper scripts, so ghcup installs straight into the store instead of a work directory, and a version counts as installed only once breto has recorded it.
+
+ghcup keeps its cache, logs and configuration in the work directory of the install, so the user's `~/.ghcup` and its configuration take no part. GHC needs `gcc`, `g++`, `make`, `perl`, `pkg-config` and the gmp and ncurses libraries, and HLS needs `make`. Every command in GHC's and HLS's `bin` directory is linked, so `ghc` sits beside `ghc-9.14.1`, and HLS brings one server per GHC version it supports and `haskell-language-server-wrapper`, which picks the one matching a project's compiler.
+
 ### Rust
 
 `rustup` links the rustup binary as `rustup`, `cargo`, `rustc`, `rustfmt`, `rust-analyzer`, `cargo-clippy` and the other commands it proxies. Each proxy runs the toolchain the nearest `rust-toolchain.toml` names, else the one `rustup default` chose, and rustup installs a missing toolchain on first use. Toolchains live in `~/.rustup` and are downloaded and checked by rustup, outside of breto's store and lock files. breto updates rustup itself, so `rustup self update` is not needed. Linking a Rust program needs a C linker such as `cc`.
@@ -372,7 +379,7 @@ cargo runs with the toolchain `rustup default` selects and reads the user's carg
 
 A download from a GitHub release is checked against the sha256 digest GitHub recorded for the asset. Assets uploaded before GitHub began recording digests carry none; for those, and for downloads from other hosts, breto uses the file named by `:checksum`. A checksum file can list many assets in `sha256sum` format or hold a single hash. The algorithm follows from the length of the hash.
 
-Some projects publish their hashes in a JSON index instead. `{:json URL :hash [path]}` reads the hash at a path of keys, indices and field selectors, whose strings are templates, so Zig's index gives the hash of each release. A selector such as `{"vers" "{version}"}` picks the first element of a list whose fields have those values, and a document of one JSON value per line, such as the crates.io index, is the list of them:
+Some projects publish their hashes in a JSON index instead. `{:json URL :hash [path]}` reads the hash at a path of keys, indices and field selectors, whose strings are templates, so Zig's index gives the hash of each release. A URL whose path ends in `.yaml` or `.yml` is read as YAML. A selector such as `{"vers" "{version}"}` picks the first element of a list whose fields have those values, and a document of one JSON value per line, such as the crates.io index, is the list of them:
 
 ```clojure
 :checksum {:json "https://ziglang.org/download/index.json" :hash ["{version}" "x86_64-linux" "shasum"]}

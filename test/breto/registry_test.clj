@@ -16,7 +16,9 @@
 (deftest every-shipped-package-renders-a-release
   (doseq [[name pkg] (registry/load-registry ["packages"])
           :let [tag (str (:tag-prefix pkg) "1.2.3")
-                {:keys [url bins checksum-url]} (package/artifact (package/at pkg "1.2.3") {:tag tag :version "1.2.3"})]]
+                pkg (package/at pkg "1.2.3")
+                fetched (update-vals (package/fetched-vars pkg) #(if (:json %) "https://example.org/fetched" "20260101"))
+                {:keys [url bins checksum-url]} (package/artifact pkg {:tag tag :version "1.2.3" :fetched fetched})]]
     (is (str/starts-with? url "https://") name)
     (is (or (nil? checksum-url) (str/starts-with? checksum-url "https://")) name)
     (is (or (seq bins) (= :tree (:layout pkg))) name)
