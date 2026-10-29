@@ -45,7 +45,7 @@
       (throw (ex-info (str (:name pkg) " " (:version release) ": the module hash " sum " differs from " expect-sum " in the lock file")
                       (assoc context :breto/problem :checksum-mismatch :expected expect-sum :actual sum :against :lockfile))))
     (run! io go work env ["install" "-trimpath" (str (package/go-package pkg) "@" (:tag release))] context)
-    (let [built (fs/path gobin (package/file-name (package/go-package pkg)))
+    (let [built (fs/path gobin (package/go-binary (package/go-package pkg)))
           file (fs/path work (:asset artifact))]
       (when-not (fs/regular-file? built)
         (throw (ex-info (str "go install left no " (fs/file-name built) " in " gobin)

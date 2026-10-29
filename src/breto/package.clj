@@ -49,6 +49,15 @@
   [{:keys [source]}]
   (or (:package source) (:go source)))
 
+(defn go-binary
+  "The name `go install` gives the binary of `package`: its last path
+  element, or the one before when that is a major version such as v2."
+  [package]
+  (let [parts (str/split package #"/")]
+    (if (and (next parts) (re-matches #"v\d+" (last parts)))
+      (last (butlast parts))
+      (last parts))))
+
 (defn- relative-path?
   "Whether `s` is a path or glob inside the release: relative, without .."
   [s]
@@ -198,7 +207,7 @@
   (let [pkg (merge {:tag-prefix "v" :strip 0 :layout :binary :links {}} pkg)
         pkg (cond-> pkg
               (= :go (source-kind pkg))
-              (merge {:asset (file-name (go-package pkg))
+              (merge {:asset (go-binary (go-package pkg))
                       :url (str "https://proxy.golang.org/" (go-escape (get-in pkg [:source :go])) "/@v/{tag}.zip")})
 
               (= :pypi (source-kind pkg))

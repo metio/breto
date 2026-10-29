@@ -4,6 +4,7 @@
 (ns breto.golang-test
   (:require [babashka.fs :as fs]
             [breto.package :as package]
+            [breto.source :as source]
             [breto.store :as store]
             [breto.support :as s :refer [path]]
             [clojure.string :as str]
@@ -13,14 +14,15 @@
 
 (defn- fake-go
   "A go command that answers `mod download -json` with a module hash naming
-  the version, and for `install` writes a script into GOBIN, logging the
+  the version, and for `install` writes a script into GOBIN named as go names
+  binaries, after the last element that is not a major version, logging the
   environment it ran with."
   []
   (s/file! "go" (str "#!/bin/sh\n"
                      "echo \"GOTOOLCHAIN=$GOTOOLCHAIN CGO_ENABLED=$CGO_ENABLED GOFLAGS=$GOFLAGS\" >> " (path "go.log") "\n"
                      "case \"$1\" in\n"
                      "  mod) target=$4; printf '{\"Path\":\"%s\",\"Version\":\"%s\",\"Sum\":\"h1:%s\"}' \"${target%@*}\" \"${target#*@}\" \"${target#*@}\" ;;\n"
-                     "  install) target=$3; pkg=${target%@*}; mkdir -p \"$GOBIN\"; printf '#!/bin/sh\\necho %s %s\\n' \"$pkg\" \"${target#*@}\" > \"$GOBIN/${pkg##*/}\" ;;\n"
+                     "  install) target=$3; pkg=${target%@*}; mkdir -p \"$GOBIN\"; name=${pkg##*/}; case \"$name\" in v[0-9]*) rest=${pkg%/*}; name=${rest##*/} ;; esac; printf '#!/bin/sh\\necho %s %s\\n' \"$pkg\" \"${target#*@}\" > \"$GOBIN/$name\" ;;\n"
                      "esac\n")))
 
 (defn- world []
@@ -56,3 +58,23 @@
 (deftest a-package-outside-the-module-is-refused
   (is (thrown-with-msg? clojure.lang.ExceptionInfo #"a package inside that module"
                         (package/normalize {:name "x" :source {:go "golang.org/x/vuln" :package "golang.org/x/tools/cmd/x"}}))))
+
+(deftest a-module-with-a-major-version-suffix-builds-its-binary
+  (let [io (world)]
+    (s/define! "bar" {:source {:go "github.com/foo/bar/v2"}})
+    (let [io (update io :get-text (fn [get-text]
+                                    (fn [url headers]
+                                      (if (= url "https://proxy.golang.org/github.com/foo/bar/v2/@latest")
+                                        "{\"Version\":\"v2.1.0\"}"
+                                        (get-text url headers)))))
+          {:keys [code out]} (s/breto! {} ["install" "go" "bar"] {:io io})]
+      (is (= 0 code) out)
+      (is (fs/exists? (path "bin" "bar"))))))
+
+(deftest the-skip-fallback-ignores-go-pre-releases
+  (let [pkg (package/normalize {:name "gopls" :source {:go "golang.org/x/tools/gopls"} :skip ["0.16.3"]})
+        io {:get-text (fn [url _]
+                        (case url
+                          "https://proxy.golang.org/golang.org/x/tools/gopls/@latest" "{\"Version\":\"v0.16.3\"}"
+                          "https://proxy.golang.org/golang.org/x/tools/gopls/@v/list" "v0.16.2\nv0.16.3\nv0.17.0-pre.1\nv0.0.0-20240101000000-abcdefabcdef\n"))}]
+    (is (= "0.16.2" (:version (source/newest pkg io))))))
