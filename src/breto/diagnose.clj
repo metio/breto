@@ -411,6 +411,11 @@
    :advice [(str "breto update " package " without --locked installs its latest release and adds it to the lock file.")
             "Then commit the lock file so other machines install the same version."]})
 
+(defmethod explain :checksum-ambiguous [{:keys [asset url entries]} _]
+  {:summary (str "The checksum file lists " asset " under several paths with different hashes.")
+   :facts [(str "Entries: " (str/join ", " entries)) (str "Download: " url)]
+   :advice ["Set :url so that its path ends with the entry for this platform, or point :checksum at a per-platform file."]})
+
 (defmethod explain :invalid-project [{:keys [file problems]} _]
   {:summary (str "The project file " file " is not valid.")
    :facts (vec problems)

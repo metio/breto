@@ -33,19 +33,28 @@
 (defn expected
   "The hash for `asset` in a checksum file. Accepts `sha256sum`-style listings
   and single-entry files, whose one hash is taken whatever name it lists or
-  whether it lists one at all."
-  [text asset]
-  (let [lines (->> (str/split-lines text)
-                   (map str/trim)
-                   (remove str/blank?)
-                   (map #(str/split % #"\s+")))]
-    (or (some (fn [[h & more]]
-                (when (and (hex? h) (seq more) (= asset (listed-name (last more))))
-                  (str/lower-case h)))
-              lines)
-        (when-let [[[h]] (seq lines)]
-          (when (and (= 1 (count lines)) (hex? h))
-            (str/lower-case h))))))
+  whether it lists one at all. Entries for files of the same name in several
+  directories are told apart by the end of the asset's `url`."
+  ([text asset] (expected text asset nil))
+  ([text asset url]
+   (let [lines (->> (str/split-lines text)
+                    (map str/trim)
+                    (remove str/blank?)
+                    (map #(str/split % #"\s+")))
+         matches (for [[h & more] lines
+                       :when (and (hex? h) (seq more) (= asset (listed-name (last more))))]
+                   [(str/lower-case h) (str/replace (last more) #"^\*?(\./)?" "")])
+         by-path (filter (fn [[_ path]] (and url (str/ends-with? url (str "/" path)))) matches)
+         hashes #(distinct (map first %))]
+     (cond
+       (= 1 (count (hashes matches))) (ffirst matches)
+       (= 1 (count (hashes by-path))) (ffirst by-path)
+       (seq matches) (throw (ex-info (str "the checksum file lists " asset " more than once with different hashes")
+                                     {:breto/problem :checksum-ambiguous :asset asset :url url
+                                      :entries (mapv second matches)}))
+       :else (when-let [[[h]] (seq lines)]
+               (when (and (= 1 (count lines)) (hex? h))
+                 (str/lower-case h)))))))
 
 (defn verify!
   "Throws unless `file` hashes to the hex string `want`. The algorithm follows

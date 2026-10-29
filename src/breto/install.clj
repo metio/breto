@@ -45,7 +45,7 @@
               (throw e)))))
       (when-let [url (:checksum-url artifact)]
         (let [text ((:get-text io) url {})]
-          (or (checksum/expected text (:asset artifact))
+          (or (checksum/expected text (:asset artifact) (:url artifact))
               (throw (ex-info (str "no entry for " (:asset artifact) " in " url)
                               {:breto/problem :checksum-entry-missing :url url :asset (:asset artifact)
                                :entries (checksum/listed-names text)})))))))
@@ -125,7 +125,7 @@
         (vreset! outcome signature)
         (staged io :verify context
           #(if-let [want (if checksums
-                           (or (checksum/expected (slurp (str checksums)) (:asset artifact))
+                           (or (checksum/expected (slurp (str checksums)) (:asset artifact) (:url artifact))
                                (throw (ex-info (str "no entry for " (:asset artifact) " in " (:checksum-url artifact))
                                                {:breto/problem :checksum-entry-missing :url (:checksum-url artifact)
                                                 :asset (:asset artifact)

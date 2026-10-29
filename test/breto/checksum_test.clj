@@ -45,3 +45,14 @@
       (is (thrown-with-msg? clojure.lang.ExceptionInfo #"unrecognised checksum"
                             (checksum/verify! file "tool" "abc")))
       (finally (fs/delete file)))))
+
+(deftest expected-tells-same-named-entries-apart-by-their-path
+  (let [a (apply str (repeat 64 "a"))
+        b (apply str (repeat 64 "b"))
+        listing (str a "  darwin-arm64/tool\n" b "  linux-amd64/tool\n")]
+    (is (= b (checksum/expected listing "tool" "https://example.com/v1/linux-amd64/tool")))
+    (is (= a (checksum/expected listing "tool" "https://example.com/v1/darwin-arm64/tool")))
+    (is (= :checksum-ambiguous
+           (try (checksum/expected listing "tool" "https://example.com/v1/tool") nil
+                (catch clojure.lang.ExceptionInfo e (:breto/problem (ex-data e))))))
+    (is (= a (checksum/expected (str a "  x/tool\n" a "  y/tool\n") "tool" "https://example.com/tool")))))
