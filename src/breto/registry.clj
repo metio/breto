@@ -155,6 +155,16 @@
               [name]))]
     (vec (distinct (mapcat #(walk [] %) names)))))
 
+(defn reached-groups
+  "The groups `names` uses, directly or through other groups, in the order
+  they are reached, each once."
+  [groups names]
+  (letfn [(walk [seen name]
+            (if (and (group-name? name) (not (some #{name} seen)))
+              (reduce walk (conj seen name) (get-in groups [name :members]))
+              seen))]
+    (reduce walk [] names)))
+
 (defn group-files
   "The files defining the groups `names` uses, directly or through other
   groups, in the order they are reached."

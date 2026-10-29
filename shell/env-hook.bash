@@ -1,8 +1,10 @@
 # SPDX-FileCopyrightText: The breto Authors
 # SPDX-License-Identifier: 0BSD
 
-# Runs breto env when the shell enters a directory with a .breto.edn above it,
-# or that file or a group file it names changes. When the shell leaves the
+# Runs breto env when the shell enters a directory with a .breto.edn or
+# .breto.local.edn above it, or one of them or a group file they name
+# changes. On entering, breto env --enter prints the project's commands and
+# runs its :on-enter command. When the shell leaves the
 # project, it takes the project's bin directory off PATH and gives the
 # variables breto env set their earlier values back. Source it from an
 # interactive bash.
@@ -16,6 +18,7 @@
 __breto_changed() {
     local file files
     [ "$1/.breto.edn" -nt "$__breto_stamp" ] && return 0
+    [ "$1/.breto.local.edn" -nt "$__breto_stamp" ] && return 0
     IFS=: read -r -a files <<< "${BRETO_ENV_FILES-}"
     for file in "${files[@]}"; do
         [ -n "$file" ] && [ "$file" -nt "$__breto_stamp" ] && return 0
@@ -46,8 +49,8 @@ __breto_leave() {
 }
 
 __breto_env() {
-    local dir=$PWD code
-    while [ -n "$dir" ] && [ ! -f "$dir/.breto.edn" ]; do
+    local dir=$PWD code enter
+    while [ -n "$dir" ] && [ ! -f "$dir/.breto.edn" ] && [ ! -f "$dir/.breto.local.edn" ]; do
         dir=${dir%/*}
     done
     if [ -n "$dir" ]; then
@@ -59,7 +62,9 @@ __breto_env() {
                 __breto_stamp=$(mktemp "${XDG_RUNTIME_DIR:-${TMPDIR:-/tmp}}/breto-hook.XXXXXX") || return
             fi
             touch "$__breto_stamp"
-            if code=$(breto env --no-install --dir "$dir"); then
+            enter=
+            [ "$dir" != "${__breto_project-}" ] && enter=--enter
+            if code=$(breto env --no-install $enter --dir "$dir"); then
                 eval "$code"
             elif [ "${BRETO_PROJECT-}" != "$dir" ]; then
                 __breto_leave

@@ -166,6 +166,19 @@
         (is (= "JAVA_HOME" (:variable (ex-data e))))
         (is (= ["jdk" "jdk-again"] (:packages (ex-data e))))))))
 
+(deftest the-project-settles-a-variable-its-packages-disagree-on
+  (let [io (world)]
+    (s/define! "jdk-again" definition)
+    (let [io (assoc io :download! (let [d (:download! io)]
+                                    (fn [url dest & more]
+                                      (apply d (str/replace url "acme/jdk-again" "acme/jdk") dest more))))]
+      (fs/create-dirs (path "app"))
+      (spit (path "app" ".breto.edn") (pr-str {:packages ["jdk@25.0.1+8" "jdk-again@25.0.1+8"]
+                                               :env {"JAVA_HOME" "{homes}/jdk-again"}}))
+      (let [{:keys [code out err]} (env! io "app")]
+        (is (= 0 code) err)
+        (is (re-find #"export JAVA_HOME='[^']*/homes/jdk-again'" out))))))
+
 (deftest packages-agreeing-on-a-value-share-the-directory-of-homes
   (let [io (world)
         plugin (assoc definition :env {"PLUGINS" "{homes}"})]

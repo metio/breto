@@ -20,7 +20,8 @@
         (str "#!/bin/sh\n"
              "for dir; do :; done\n"
              "echo \"$dir\" >> " (path "calls") "\n"
-             "grep -q :fail \"$dir/.breto.edn\" && { echo failed >&2; exit 1; }\n"
+             "echo \"$*\" >> " (path "args") "\n"
+             "grep -qs :fail \"$dir/.breto.edn\" && { echo failed >&2; exit 1; }\n"
              "bin=" (path "envs") "/$(basename \"$dir\")\n"
              "mkdir -p \"$bin\" && touch \"$bin\"\n"
              "printf 'export PATH=%s:\"$PATH\"\\nexport BRETO_PROJECT=%s\\nexport BRETO_ENV_BIN=%s\\nexport BRETO_ENV_FILES=%s/.breto.edn:%s\\n' \"$bin\" \"$dir\" \"$bin\" \"$dir\" " (path "shared" "@group.edn") "\n"))
@@ -49,6 +50,22 @@
   (is (= (str "PATH=" (path "envs" "app") ":" (path "fake") ":/usr/bin:/bin|PROJECT=" (path "app"))
          (session (str "cd " (path "app" "src")) "cd .." "true")))
   (is (= [(path "app")] (calls))))
+
+(deftest only-entering-asks-for-the-greeting
+  (fake-breto!)
+  (project! "app" "{:packages [\"kind\"]}")
+  (session (str "cd " (path "app")) (str "sleep 1; touch " (path "app" ".breto.edn")))
+  (let [[first-call second-call] (str/split-lines (slurp (path "args")))]
+    (is (str/includes? first-call "--enter"))
+    (is (some? second-call))
+    (is (not (str/includes? second-call "--enter")))))
+
+(deftest a-local-file-alone-makes-a-project
+  (fake-breto!)
+  (fs/create-dirs (path "solo"))
+  (spit (path "solo" ".breto.local.edn") "{:packages [\"kind\"]}")
+  (session (str "cd " (path "solo")))
+  (is (= [(path "solo")] (calls))))
 
 (deftest leaving-a-project-restores-path
   (fake-breto!)

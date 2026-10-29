@@ -78,7 +78,7 @@
          events (atom [])
          slept (atom 0)
          code (binding [*out* out]
-                (main/run (concat args ["--config" (path "config.edn")])
+                (main/run (concat ["--config" (path "config.edn")] args)
                           (merge {:io (fake-io {} {} (atom []))
                                   :reporter (fn [_] #(swap! events conj %))
                                   :sleep-second! #(swap! slept inc)}

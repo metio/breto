@@ -6,6 +6,7 @@
             [babashka.process :as process]
             [breto.diagnose :as diagnose]
             [breto.env :as env]
+            [breto.project :as project]
             [breto.store :as store]
             [breto.support :as s :refer [path]]
             [clojure.string :as str]
@@ -114,11 +115,11 @@
 (deftest projects-are-found-upwards-and-validated
   (project! "app" ["alpha"])
   (fs/create-dirs (path "app" "a" "b"))
-  (is (= (path "app" ".breto.edn") (env/find-project (path "app" "a" "b"))))
-  (is (nil? (env/find-project (fs/temp-dir))))
-  (spit (path "app" ".breto.edn") "{:packages []}")
-  (is (thrown-with-msg? clojure.lang.ExceptionInfo #"needs :packages"
-                        (env/read-project (path "app" ".breto.edn"))))
+  (is (= (path "app") (project/find-dir (path "app" "a" "b"))))
+  (is (nil? (project/find-dir (fs/temp-dir))))
+  (spit (path "app" ".breto.edn") "{:packages [1]}")
+  (is (thrown-with-msg? clojure.lang.ExceptionInfo #":packages must be a vector"
+                        (project/read-file (path "app" ".breto.edn"))))
   (is (thrown-with-msg? clojure.lang.ExceptionInfo #"no \.breto\.edn"
                         (s/breto! {} ["env" "--dir" (str (fs/temp-dir))]))))
 
@@ -254,7 +255,7 @@
   (fs/create-dirs (path "real" "app"))
   (spit (path "real" "app" ".breto.edn") "{:packages [\"a\"]}")
   (fs/create-sym-link (path "link") (path "real"))
-  (is (= (path "real" "app" ".breto.edn") (env/find-project (str (path "real" "app") "/."))))
-  (is (= (path "link" "app" ".breto.edn") (env/find-project "." {"PWD" (path "link" "app")} (path "real" "app"))))
+  (is (= (path "real" "app") (project/find-dir (str (path "real" "app") "/."))))
+  (is (= (path "link" "app") (project/find-dir "." {"PWD" (path "link" "app")} (path "real" "app"))))
   (testing "a PWD naming another directory is ignored"
-    (is (= (path "real" "app" ".breto.edn") (env/find-project "." {"PWD" (path)} (path "real" "app"))))))
+    (is (= (path "real" "app") (project/find-dir "." {"PWD" (path)} (path "real" "app"))))))

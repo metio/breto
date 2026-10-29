@@ -17,8 +17,10 @@
             [breto.lockfile :as lockfile]
             [breto.package :as package]
             [breto.platform :as platform]
+            [breto.project :as project]
             [breto.registry :as registry]
             [breto.report :as report]
+            [breto.run :as run]
             [breto.sealed :as sealed]
             [breto.search :as search]
             [breto.signature :as signature]
@@ -222,15 +224,10 @@
     f))
 
 (defn- project
-  "The packages of the project file `file`: {:dir :file :specs :files}, the
-  specs with groups expanded and :files the project file and the group files
-  the specs come from."
-  [groups file]
-  (let [names (env/read-project file)]
-    {:dir (str (fs/parent (fs/absolutize file)))
-     :file (str (fs/absolutize file))
-     :specs (registry/expand groups names)
-     :files (vec (cons (str (fs/absolutize file)) (registry/group-files groups names)))}))
+  "The project of `dir`: its packages with groups expanded, its variables and
+  commands, and the files they come from; see breto.project."
+  [groups dir]
+  (project/load-project groups dir))
 
 (defn- project-targets
   "[spec bin-targets] for each spec of `project`, bin-targets nil for a
@@ -249,8 +246,9 @@
   definition has :env, and the variables those definitions set, rendered
   with {home} as the project's stable link to that directory and {homes} as
   the directory of all those links. Two packages setting one variable to
-  different values is an error, since only one value can win."
-  [config registry {:keys [dir specs]}]
+  different values is an error, since only one value can win, unless the
+  project's own :env sets it."
+  [config registry {:keys [dir specs] :as project}]
   (let [entries (for [spec specs
                       :let [[name version] (batch/split-spec spec)
                             pkg (registry/lookup registry name)]
@@ -266,11 +264,39 @@
                    :home (str (store/version-dir config name version))
                    :vars (update-vals (:env pkg) #(template/render % vars))})]
     (doseq [[k owners] (group-by first (for [{:keys [name vars]} entries, [k v] vars] [k name v]))
+            :when (not (contains? (:env project) k))
             :when (< 1 (count (distinct (map #(nth % 2) owners))))]
       (throw (ex-info (str "the project's packages " (str/join " and " (map second owners)) " all set " k)
                       {:breto/problem :env-conflict :variable k :packages (mapv second owners)})))
     {:homes (into {} (map (juxt :name :home)) entries)
      :vars (into {} (mapcat :vars) entries)}))
+
+(defn- project-setup
+  "{:links :homes :vars} of `proj`: what its bin directory links, the
+  commands of its packages and wrappers running its own commands, the
+  version directories its homes link to, and the variables it sets, those
+  of its packages under its own. A project command named like a command of
+  one of its packages is an error, since the wrapper would shadow it."
+  [config registry proj]
+  (let [dir (:dir proj)
+        package-links (into {} (mapcat second (project-targets config registry proj)))
+        {:keys [homes vars]} (project-environment config registry proj)
+        clashes (sort (filter package-links (keys (:commands proj))))
+        _ (when (seq clashes)
+            (throw (ex-info (str "the project's commands " (str/join ", " clashes) " have the names of commands its packages link")
+                            {:breto/problem :invalid-project :file (first (:files proj))
+                             :problems [(str "rename the commands " (str/join ", " clashes))]})))
+        _ (when-let [on-enter (:on-enter proj)]
+            (when-not (get-in proj [:commands on-enter])
+              (throw (ex-info (str ":on-enter names " on-enter ", which is none of the project's commands")
+                              {:breto/problem :invalid-project :file (first (:files proj))
+                               :problems [(str ":on-enter names the unknown command " on-enter)]}))))
+        template (run/template-vars dir (env/bin-dir config dir) (env/homes-dir config dir) (platform/current config))
+        commands (env/write-commands! config dir (into {} (for [name (keys (:commands proj))]
+                                                           [name (run/wrapper dir name)])))]
+    {:links (merge package-links commands)
+     :homes homes
+     :vars (merge vars (run/render-env (:env proj) template))}))
 
 (defn- project-install
   "install! options for a version a project needs: installed beside the
@@ -280,17 +306,19 @@
   (fn [_ version] (cond-> {:version version :activate? false :verify? (:verify opts true)}
                     version (assoc ::pinned true))))
 
-(defn env
-  "Links the versions the nearest .breto.edn lists into the project's bin
-  directory, installing those that are missing without activating them, and
-  prints the shell code that puts that directory in front of PATH. Everything
-  else goes to stderr, so the output can be evaluated. Only installing needs
-  the store lock, so linking installed versions never waits for another run."
-  [{:keys [config registry groups opts] :as ctx} _]
-  (let [file (or (env/find-project (or (:dir opts) "."))
-                 (throw (ex-info (str "no " env/file-name " in " (fs/absolutize (or (:dir opts) ".")) " or above it")
-                                 {:breto/problem :no-project :dir (str (fs/absolutize (or (:dir opts) ".")))})))
-        {:keys [dir files] :as proj} (project groups file)
+(defn- prepared-project!
+  "The project at or above --dir with its bin directory linked: the project
+  with :bin, :vars and :code 0, after installing the versions it needs that
+  are missing unless --no-install, or with the failing :code of that install.
+  Warnings about the project files go to stderr."
+  [{:keys [config registry groups opts] :as ctx} command]
+  (let [start (or (:dir opts) ".")
+        dir (or (project/find-dir start)
+                (throw (ex-info (str "no " project/file-name " or " project/local-file-name " in "
+                                     (fs/absolutize start) " or above it")
+                                {:breto/problem :no-project :dir (str (fs/absolutize start))})))
+        {:keys [warnings] :as proj} (project groups dir)
+        _ (binding [*out* *err*] (run! #(println (str "[WARN] " %)) warnings))
         missing (for [[spec targets] (project-targets config registry proj)
                       :when (nil? targets)]
                   spec)
@@ -299,15 +327,82 @@
                             {:breto/problem :env-missing :missing (vec missing) :project dir})))
         code (if (seq missing)
                (binding [*out* *err*]
-                 (with-store-lock ctx #(installing ctx "env" (vec missing) (project-install opts))))
+                 (with-store-lock ctx #(installing ctx command (vec missing) (project-install opts))))
                0)]
     (if (pos? code)
+      (assoc proj :code code)
+      (let [{:keys [links homes vars]} (project-setup config registry proj)]
+        (assoc proj :code 0 :vars vars :bin (env/link! config dir links homes))))))
+
+(defn- sh-quote [s]
+  (str "'" (str/replace s "'" "'\\''") "'"))
+
+(defn env
+  "Links the versions the nearest project files list into the project's bin
+  directory, with wrappers for the project's commands, installing those that
+  are missing without activating them, and prints the shell code that puts
+  that directory in front of PATH and sets the project's variables.
+  Everything else goes to stderr, so the output can be evaluated. --enter,
+  which the shell hook passes on entering the project, also prints the
+  menu of its commands and runs its :on-enter command. Only installing
+  needs the store lock, so linking installed versions never waits for
+  another run."
+  [{:keys [config opts] :as ctx} _]
+  (let [{:keys [code dir files bin vars] :as proj} (prepared-project! ctx "env")]
+    (if (pos? code)
       code
-      (let [links (into {} (mapcat second (project-targets config registry proj)))
-            {:keys [homes vars]} (project-environment config registry proj)
-            bin (env/link! config dir links homes)
-            shell (if (= "fish" (:shell opts)) :fish :sh)]
-        (println (env/exports shell (env/path-value config bin (System/getenv "PATH")) dir bin files vars))
+      (let [shell (if (= "fish" (:shell opts)) :fish :sh)
+            enter? (:enter opts)
+            on-enter (when enter? (:on-enter proj))]
+        (when (and enter? (:menu proj))
+          (binding [*out* *err*] (run! println (run/menu proj))))
+        (println (str (env/exports shell (env/path-value config bin (System/getenv "PATH")) dir bin files vars)
+                      (when on-enter
+                        (str "\n" "breto run --dir " (sh-quote dir) " " (sh-quote on-enter)
+                             (when (= :fish shell) ";")))))
+        0))))
+
+(defn- choose-command
+  "The project command chosen in the fuzzy finder, else through a numbered
+  prompt, or nil."
+  [{:keys [config io]} {:keys [commands] :as proj}]
+  (let [names (sort (keys commands))]
+    (when-not (:interactive? io)
+      (throw (ex-info (str "run needs a command; the project has " (str/join ", " names))
+                      {:breto/problem :usage})))
+    (if-let [finder (search/finder config (which io))]
+      (let [command (if (vector? (:finder config))
+                      finder
+                      (into finder ["--delimiter" "\t" "--with-nth" "1,2" "--prompt" "breto run> "]))
+            {:keys [exit out]} ((:pick io) command (str (str/join "\n" (for [n names] (str n "\t" (get-in commands [n :description] ""))))
+                                                       "\n"))]
+        (when (= 0 exit) (first (search/selected out))))
+      (do (run! println (rest (run/menu proj)))
+          (let [answer (str/trim (or ((:ask io) "Command to run (blank to stop): ") ""))]
+            (cond (str/blank? answer) nil
+                  (re-matches #"\d+" answer) (get (vec names) (dec (parse-long answer)))
+                  :else answer))))))
+
+(defn run-command
+  "Runs the project command named first in `args` with the rest of them,
+  after the commands it depends on, in the project directory with the
+  project's bin directory first on PATH and its variables set. Without a
+  name, the command is chosen interactively. Returns the exit code of the
+  first command that fails, else 0."
+  [{:keys [config io] :as ctx} [name & args]]
+  (let [{:keys [code dir bin vars commands] :as proj} (prepared-project! ctx "run")]
+    (cond
+      (pos? code) code
+      (empty? commands) (throw (ex-info (str "the project " dir " defines no :commands")
+                                        {:breto/problem :unknown-command :command name :known []}))
+      :else
+      (if-let [name (or name (choose-command ctx proj))]
+        (let [platform (platform/current config)]
+          (run/run-order! (project/run-order proj name platform)
+                          {:dir dir :env vars :args (vec args)
+                           :path (env/path-value config bin (System/getenv "PATH"))
+                           :vars (run/template-vars dir bin (env/homes-dir config dir) platform)}
+                          (or (:exec io) run/exec!)))
         0))))
 
 (defn- refresh-projects
@@ -318,7 +413,7 @@
   [{:keys [config registry groups opts] :as ctx} command]
   (let [projects (for [environment (remove env/stale? (env/environments config))
                        :let [dir (:project environment)]]
-                   (try (project groups (str (fs/path dir env/file-name)))
+                   (try (project groups dir)
                         (catch Exception e {:dir dir :problem (ex-message e)})))
         projects (doall projects)
         missing (distinct (for [p projects
@@ -333,8 +428,8 @@
         (try
           (let [targets (project-targets config registry p)]
             (if (every? second targets)
-              (env/link! config (:dir p) (into {} (mapcat second targets))
-                         (:homes (project-environment config registry p)))
+              (let [{:keys [links homes]} (project-setup config registry p)]
+                (env/link! config (:dir p) links homes))
               (println (str "[WARN] project " (:dir p) " keeps its links: "
                             (str/join ", " (map first (remove second targets))) " not installed"))))
           (catch Exception e
@@ -461,7 +556,7 @@
                     :when (env/stale? e)]
               (when-not dry-run? (fs/delete-tree dir))
               (println (str (if dry-run? "would remove " "[OK] removed ") "the links of " (or project dir)
-                            ", which has no " env/file-name " any more"))))
+                            ", which has no " project/file-name " or " project/local-file-name " any more"))))
         pruned (batch/run-batch io prune #(uninstall-one ctx % dry-run?) (fn [_]))
         failures (for [name (if (seq args) (targets ctx args) (remove (set prune) (store/installed-packages config)))
                        :let [r (try

@@ -2,50 +2,15 @@
 ;; SPDX-License-Identifier: 0BSD
 
 (ns breto.env
-  "Per-project versions. A .breto.edn file in a project directory or one of
-  its parents lists packages, with versions where the project needs them. The
-  commands of those versions are linked into a bin directory of the project's
-  own, which goes in front of PATH while working on it."
+  "Per-project versions. The project files of a directory or one of its
+  parents list packages, with versions where the project needs them. The
+  commands of those versions, and the project's own commands, are linked
+  into a bin directory of the project's own, which goes in front of PATH
+  while working on it."
   (:require [babashka.fs :as fs]
-            [clojure.edn :as edn]
+            [breto.project :as project]
             [clojure.string :as str])
   (:import (java.security MessageDigest)))
-
-(def file-name ".breto.edn")
-
-(defn- find-project-from [dir]
-  (loop [dir dir]
-    (when dir
-      (let [file (fs/path dir file-name)]
-        (if (fs/regular-file? file) (str file) (recur (fs/parent dir)))))))
-
-(defn find-project
-  "The nearest .breto.edn at `dir` or above it, or nil. The current directory
-  is named as the shell names it, by PWD when that is the same directory, so
-  that a project reached through a symlink keeps the name the env hook gives
-  it."
-  ([dir] (find-project dir (System/getenv) (System/getProperty "user.dir")))
-  ([dir env cwd]
-   (let [pwd (get env "PWD")
-         start (if (and (= "." (str dir)) pwd (fs/absolute? pwd) (fs/exists? pwd) (fs/same-file? pwd cwd))
-                 pwd
-                 (.resolve (fs/path cwd) (str dir)))]
-     (find-project-from (fs/normalize start)))))
-
-(defn read-project
-  "The package specs of the project file `file`."
-  [file]
-  (let [data (try (edn/read-string (slurp file))
-                  (catch RuntimeException e
-                    (throw (ex-info (str file " is not valid EDN: " (ex-message e))
-                                    {:breto/problem :invalid-project :file file
-                                     :problems [(str "not valid EDN: " (ex-message e))]}))))
-        packages (:packages data)]
-    (when-not (and (map? data) (vector? packages) (seq packages) (every? #(and (string? %) (not (str/blank? %))) packages))
-      (throw (ex-info (str file " needs :packages, a non-empty vector of PKG, PKG@VERSION or @GROUP")
-                      {:breto/problem :invalid-project :file file
-                       :problems [":packages must be a non-empty vector of PKG, PKG@VERSION or @GROUP strings"]})))
-    packages))
 
 (defn env-dir
   "The directory holding the links of the project at `project-dir`, named by a
@@ -81,6 +46,29 @@
     (fs/create-sym-link staged (str target))
     (fs/move staged path {:replace-existing true :atomic-move true})))
 
+(defn homes-dir
+  "The directory of the project's links to its packages' version directories."
+  [config project-dir]
+  (fs/path (env-dir config project-dir) "homes"))
+
+(defn write-commands!
+  "Makes the commands directory of `project-dir` hold exactly `scripts`,
+  name -> script text, each executable, and returns name -> path for
+  linking them into the bin directory."
+  [config project-dir scripts]
+  (let [dir (fs/path (env-dir config project-dir) "commands")]
+    (fs/create-dirs dir)
+    (doseq [existing (fs/list-dir dir)
+            :when (not (contains? scripts (str (fs/file-name existing))))]
+      (fs/delete existing))
+    (into {} (for [[name text] scripts
+                   :let [path (fs/path dir name)
+                         staged (fs/path dir (str "." name ".breto"))]]
+               (do (spit (str staged) text)
+                   (fs/set-posix-file-permissions staged "rwxr-xr-x")
+                   (fs/move staged path {:replace-existing true :atomic-move true})
+                   [name (str path)])))))
+
 (defn link!
   "Makes the bin directory of `project-dir` hold exactly `links`, link name ->
   target, its homes directory exactly `homes`, package -> version directory,
@@ -93,7 +81,7 @@
          bin (fs/path dir "bin")]
      (fs/create-dirs dir)
      (spit (str (fs/path dir "project")) (str (fs/absolutize project-dir)))
-     (hold-exactly! (fs/path dir "homes") homes)
+     (hold-exactly! (homes-dir config project-dir) homes)
      (hold-exactly! bin links)
      (fs/set-last-modified-time bin (java.nio.file.attribute.FileTime/from (java.time.Instant/now)))
      (str bin))))
@@ -180,7 +168,7 @@
 (defn stale?
   "Whether the project of an environment no longer has a project file."
   [{:keys [project]}]
-  (not (and project (fs/regular-file? (fs/path project file-name)))))
+  (not (and project (seq (project/files project)))))
 
 (defn used-versions
   "Package name -> the set of versions some project's links point into, for

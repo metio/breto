@@ -3,6 +3,7 @@
 
 (ns breto.main
   (:require [babashka.cli :as cli]
+            [clojure.string :as str]
             [breto.batch :as batch]
             [breto.cli :as entry]
             [breto.commands :as commands]
@@ -44,7 +45,10 @@ Commands:
   search [TERM...]          the definitions whose name, description or source has every term
   hook bash                 print the bash hook that runs breto env on entering a project:
                             eval \"$(breto hook bash)\" in .bashrc
-  env [--shell fish]        link the versions .breto.edn lists for this project and print the
+  run [COMMAND [ARG...]]    run a command of the project's :commands with its tools on PATH,
+                            after those it :depends on; without one, choose it in fzf or sk
+  env [--shell fish]        link the versions .breto.edn and .breto.local.edn list for this
+                            project, with its commands, and print the
                             shell code putting them first on PATH: eval \"$(breto env)\";
                             --no-install fails instead of installing a missing version;
                             --no-wait fails instead of waiting when it must install while
@@ -78,6 +82,7 @@ Every failure is explained with what to do; --debug adds each request and stack 
    "doctor" commands/doctor
    "search" commands/search
    "env" commands/env
+   "run" commands/run-command
    "sync" commands/sync-store
    "lock" commands/lock})
 
@@ -166,8 +171,29 @@ Every failure is explained with what to do; --debug adds each request and stack 
     (f)))
 
 (def parse-spec
-  {:coerce {:keep :long :delay :long :debug :boolean :verify :boolean :force :boolean :dry-run :boolean :all :boolean :previous :boolean :locked :boolean :brief :boolean :wait :boolean :install :boolean :check :boolean}
+  {:coerce {:keep :long :delay :long :debug :boolean :verify :boolean :force :boolean :dry-run :boolean :all :boolean :previous :boolean :locked :boolean :brief :boolean :wait :boolean :install :boolean :check :boolean :enter :boolean}
    :alias {:d :debug}})
+
+(def ^:private valued
+  "The options that take a value, so that the value is not read as the
+  command."
+  #{"--dir" "--config" "--platform" "--platforms" "--delay" "--keep" "--query" "--shell"})
+
+(defn- parse
+  "The command line as {:args :opts}. breto run stops reading options at the
+  name of the command it runs, so that command gets the rest as given."
+  [args]
+  (let [options (fn [tokens]
+                  (loop [own [] [a & more :as remaining] tokens]
+                    (cond (nil? a) [own []]
+                          (valued a) (recur (conj own a (first more)) (rest more))
+                          (str/starts-with? a "-") (recur (conj own a) more)
+                          :else [own remaining])))
+        [before [command & after]] (options args)]
+    (if (= "run" command)
+      (let [[own rest-args] (options after)]
+        {:args (into ["run"] rest-args) :opts (:opts (cli/parse-args (into before own) parse-spec))})
+      (cli/parse-args (concat (when command [command]) after before) parse-spec))))
 
 (def ^:private reported
   "Commands whose last run breto report shows."
@@ -190,7 +216,7 @@ Every failure is explained with what to do; --debug adds each request and stack 
   parts of the context, which is how tests swap the network and the display."
   ([args] (run args {}))
   ([args overrides]
-   (let [{:keys [args opts]} (cli/parse-args args parse-spec)
+   (let [{:keys [args opts]} (parse args)
          [command & more] args]
      (binding [log/*debug* (boolean (:debug opts))]
        (if (= "hook" command)

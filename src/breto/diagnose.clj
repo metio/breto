@@ -426,13 +426,20 @@
 (defmethod explain :invalid-project [{:keys [file problems]} _]
   {:summary (str "The project file " file " is not valid.")
    :facts (vec problems)
-   :advice ["Fix the file: {:packages [\"PKG\" \"PKG@VERSION\" \"@GROUP\"]}, with at least one entry."]})
+   :advice ["Fix the file: it holds a map with :packages [\"PKG\" \"PKG@VERSION\" \"@GROUP\"], :env {\"NAME\" \"value\"}, :commands {\"name\" {:run [...] :depends [...]}}, :menu and :on-enter."]})
 
 (defmethod explain :no-project [{:keys [dir]} _]
-  {:summary (str "There is no .breto.edn in " dir " or any directory above it.")
+  {:summary (str "There is no .breto.edn or .breto.local.edn in " dir " or any directory above it.")
    :facts []
-   :advice ["Run breto env in a project, or pass --dir with the project directory."
-            "Create a .breto.edn there with {:packages [\"PKG@VERSION\"]} to start one."]})
+   :advice ["Run the command in a project, or pass --dir with the project directory."
+            "Create a .breto.edn there with {:packages [\"PKG@VERSION\"]} to start one, and a .breto.local.edn, ignored by git, for settings of this machine only."]})
+
+(defmethod explain :unknown-command [{:keys [command known]} _]
+  {:summary (if command
+              (str "The project defines no command " command ".")
+              "The project defines no :commands.")
+   :facts (cond-> [] (seq known) (conj (str "Its commands: " (str/join ", " known))))
+   :advice ["Run breto run without a command to choose one, or add it to :commands of .breto.edn, .breto.local.edn or a group the project names."]})
 
 (defmethod explain :env-missing [{:keys [missing project]} _]
   {:summary (str project " needs versions that are not installed: " (str/join ", " missing) ".")
@@ -442,7 +449,7 @@
 (defmethod explain :env-conflict [{:keys [variable packages]} _]
   {:summary (str (str/join " and " packages) " all set " variable ", and a shell holds only one value of it.")
    :facts []
-   :advice [(str "Keep one of " (str/join ", " packages) " in the project's .breto.edn.")]})
+   :advice [(str "Keep one of " (str/join ", " packages) " in the project, or set " variable " in its :env, which wins over packages and groups.")]})
 
 (defmethod explain :store-busy [{:keys [pid]} _]
   {:summary (str "A version of this project has to be installed, and another breto run (process " pid ") holds the store.")

@@ -132,6 +132,8 @@ A `.breto.edn` file in a project lists the packages it needs, with versions wher
 {:packages ["helm@3.19.0" "kind" "@pimalaya"]}
 ```
 
+A `.breto.local.edn` beside it holds the settings of one machine and stays out of version control. It has the same keys and is read over `.breto.edn`: a package or group it names takes the place of the shared file's spec for it, such as `"helm@3.20.0"` for `"helm@3.19.0"`, other packages are added, and its variables and commands replace those of the same name. Either file alone also makes a project. breto warns when `.breto.local.edn` is in a git work tree that does not ignore it; add it to `.gitignore`.
+
 `breto env`, run anywhere below that directory, links the commands of those versions into a bin directory of the project's own and prints the shell code that puts it first on `PATH` and sets `BRETO_PROJECT`, `BRETO_ENV_BIN`, and `BRETO_ENV_FILES`, the project file and the group files its packages come from:
 
 ```sh
@@ -150,6 +152,26 @@ eval "$(breto hook bash)"
 A package whose definition has `:env` also sets those variables, such as `JAVA_HOME`. `{home}` in their values is a link of the project's own to the version directory, so the variable keeps its value when the version changes and `update` or `sync` only moves the link. `{homes}` is the directory holding those links, one per package of the project that sets a variable, for tools that look for plugins in the subdirectories of one directory. The values the variables had before the project are saved, and the hook restores them, or unsets the variables, when the shell leaves the project; entering another project does the same first. Two packages of one project setting the same variable to different values is an error.
 
 A package without a version uses the active version, else the most recently installed one. Versions that are not installed yet are installed without activating them, so the commands in `:bin-dir` keep their versions. Everything but the shell code goes to stderr. Each run makes the project's bin directory hold exactly what the file lists and replaces the `PATH` entry of a project entered before. The `PATH` it prints also drops entries that repeat.
+
+### Project variables and commands
+
+`:env` sets variables in the project's shell, and `:commands` defines commands that run with the project's tools first on `PATH`:
+
+```clojure
+{:packages ["@lint"]
+ :env {"GOTOOLCHAIN" "local"}
+ :commands {"ci-reuse" {:run ["reuse" "lint"]}
+            "ci-markdown" {:run "git ls-files -z -- '*.md' | xargs -0 -r markdownlint-cli2"
+                           :description "Lint the Markdown git tracks"}
+            "check" {:depends ["ci-reuse" "ci-markdown"] :description "Every lint"}}
+ :on-enter "check"}
+```
+
+A vector `:run` starts the program with its arguments; a string runs through `sh -c`, where the arguments of the call are `"$@"`. `:depends` names commands that run first, each once, depth first and in the order given; the first one failing stops the run with its exit code. A command runs in the project directory, or in its `:dir` below it, with its own `:env` on top of the project's. `:platforms` overrides `:run` and `:env` for a platform, such as `{"darwin-aarch64" {:run ["gmake" "dev"]}}`. In `:run`, `:env` and the project's `:env`, `{project}` is the project directory, `{bin}` its bin directory, `{homes}` the directory of its links to version directories, and `{platform}`, `{os}` and `{arch}` the platform; other braces, such as a shell's `${var}`, stay as written.
+
+`breto run lint --fix` runs the command `lint` with `--fix`; options after the command name are its own. `breto run` without a name chooses the command in fzf or sk, else in a numbered prompt. Every command is also linked into the project's bin directory as a script calling `breto run`, so `lint --fix` works in the project's shell as well. A command may not take the name of a command one of the project's packages links.
+
+On entering a project, the hook runs `breto env --enter`, which lists the project's commands with their descriptions and then runs the command `:on-enter` names, in the shell that entered. `:menu false` keeps the list quiet. A group can carry `:env` and `:commands` too; the project's files override them, and two groups defining one variable or command differently is an error. Variables of the project's `:env` win over those of its packages and groups.
 
 `breto update` without package names and `breto sync` finish by bringing every project with a bin directory up to date: they install the versions its `.breto.edn` names, again without activating them, and link its bin directory anew. A shell already working in the project runs the new versions from its next command on. A project whose file no longer loads keeps its links and is reported with `[WARN]`.
 
@@ -187,7 +209,16 @@ A group can pin versions, so projects of one kind can share a toolchain instead 
 
 List the directory holding the group files under `:registries`. When a new version lands in a group file, for example through a Renovate pull request and a `git pull`, the next `breto update` or `breto sync` installs it and moves every project using the group to it, and the hook relinks a shell that is open in such a project. A `breto.lock` next to the group files fixes the hash of each pinned version; see [Registry lock files](#registry-lock-files).
 
-`gc` keeps every version a project links to, and `:prune true` keeps the packages, for as long as the project's `.breto.edn` exists. Once the file is gone, `gc` removes the project's links and treats its versions like any other.
+A group file can also hold the commands every project of its kind runs, so they are defined once:
+
+```clojure
+;; @lint.edn
+{:members ["reuse@6.2.0" "typos@1.51.1"]
+ :commands {"ci-reuse" {:run ["reuse" "lint"]}
+            "ci-typos" {:run ["typos"]}}}
+```
+
+`gc` keeps every version a project links to, and `:prune true` keeps the packages, for as long as the project's `.breto.edn` or `.breto.local.edn` exists. Once the file is gone, `gc` removes the project's links and treats its versions like any other.
 
 ## Lock files
 
@@ -450,6 +481,8 @@ A file named `@NAME.edn` in a registry defines a group of packages:
 ```clojure
 {:members ["himalaya" "cardamum" "tcard" "calendula" "tcal"]}
 ```
+
+In a project, a group's `:env` and `:commands` apply as well; see [Project variables and commands](#project-variables-and-commands).
 
 `"@pimalaya"` in `:packages`, or as an argument to `install`, `update`, `outdated`, `check`, `gc` and `uninstall`, stands for its members, in order. Members can be groups themselves; a package listed twice is handled once. Everything after that sees the packages: the lock file lists each member, and reports name them. `breto info @pimalaya` shows the members and the files that define the group. A later registry directory replaces the members of a group with the same name, so an overlay can trim or extend one.
 
