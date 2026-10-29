@@ -337,3 +337,37 @@
   (let [waited (atom false)]
     (is (= :done (store/with-store-lock (config) (fn [_] (reset! waited true)) (constantly :done))))
     (is (false? @waited))))
+
+(defn- editor [extra]
+  (package/normalize (merge {:name "editor" :source {:github "acme/editor"}
+                             :asset "editor.tar.gz" :strip 1 :layout :tree
+                             :bins {"ed" "bin/ed"}}
+                            extra)))
+
+(defn- serve-editor [archive]
+  (fake-io {"https://github.com/acme/editor/releases/download/v2.0.0/editor.tar.gz" archive}
+           {"https://github.com/acme/editor/releases/latest" "{\"tag_name\":\"v2.0.0\"}"}))
+
+(deftest tree-layout-fails-on-a-missing-named-completion
+  (let [data (try (install/install! (config) (serve-editor (tarball! "editor.tar.gz" {"bin/ed" "ed"}))
+                                    (editor {:completions {:bash "share/ed.bash"}}) {:verify? false})
+                  nil
+                  (catch clojure.lang.ExceptionInfo e (ex-data e)))]
+    (is (= :path-missing (:breto/problem data)))
+    (is (= "share/ed.bash" (:path data)))))
+
+(deftest tree-layout-refuses-commands-outside-the-tree
+  (let [secret (fs/path *root* "secret")
+        src (fs/path *root* "src" "release")
+        out (fs/path *root* "assets" "editor.tar.gz")]
+    (spit (str secret) "key")
+    (fs/set-posix-file-permissions secret "rw-------")
+    (fs/create-dirs (fs/path src "bin"))
+    (fs/create-sym-link (fs/path src "bin" "ed") secret)
+    (fs/create-dirs (fs/parent out))
+    (process/shell "tar" "--create" "--gzip" "--file" (str out) "--directory" (str (fs/parent src)) "release")
+    (let [data (try (install/install! (config) (serve-editor out) (editor {}) {:verify? false})
+                    nil
+                    (catch clojure.lang.ExceptionInfo e (ex-data e)))]
+      (is (= :path-missing (:breto/problem data)))
+      (is (= "rw-------" (fs/posix->str (fs/posix-file-permissions secret)))))))

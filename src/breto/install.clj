@@ -205,23 +205,33 @@
                     (share/generate! config pkg program (store/version-dir config (:name pkg) version) (:run-hook io)))]
     (concat generated (store/link-share! config pkg version))))
 
+(defn- tree-file!
+  "`path` below `root` when it resolves to a regular file inside `root`,
+  following links within it; throws :path-missing otherwise, so a link in an
+  archive cannot make breto read or chmod a file outside of it."
+  [pkg artifact root path]
+  (let [file (fs/path root path)
+        real (when (fs/exists? file) (fs/real-path file))]
+    (when-not (and real (fs/regular-file? real) (.startsWith real (fs/real-path root)))
+      (throw (ex-info (str (:name pkg) ": " path " is not in " (:asset artifact))
+                      {:breto/problem :path-missing :package (:name pkg) :path path
+                       :asset (:asset artifact) :strip (:strip pkg)
+                       :listing (archive/listing root 200)})))
+    file))
+
 (defn- place!
   "Copies what `pkg` keeps from the unpacked archive into `dest`."
   [{:keys [layout] :as pkg} artifact unpacked dest]
   (if (= :tree layout)
-    (fs/move unpacked dest)
+    (do (fs/move unpacked dest)
+        (doseq [path (share/shipped-completions pkg)]
+          (tree-file! pkg artifact dest path)))
     (do (fs/create-dirs dest)
         (doseq [[path stored] (package/stored-files pkg artifact)]
-          (let [src (fs/path unpacked path)]
-            (when-not (fs/regular-file? src)
-              (throw (ex-info (str (:name pkg) ": " path " is not in " (:asset artifact))
-                              {:breto/problem :path-missing :package (:name pkg) :path path
-                               :asset (:asset artifact) :strip (:strip pkg)
-                               :listing (archive/listing unpacked 200)})))
-            (fs/copy src (fs/path dest stored))))
+          (fs/copy (tree-file! pkg artifact unpacked path) (fs/path dest stored)))
         (keep-share-files! pkg artifact unpacked dest)))
   (doseq [path (distinct (vals (package/bin-paths pkg artifact)))]
-    (fs/set-posix-file-permissions (fs/path dest path) "rwxr-xr-x")))
+    (fs/set-posix-file-permissions (tree-file! pkg artifact dest path) "rwxr-xr-x")))
 
 (defn- installed-bin-paths
   "Command name -> path inside the version directory: the :bins of the
