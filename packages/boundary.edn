@@ -1,0 +1,9 @@
+;; SPDX-FileCopyrightText: The breto Authors
+;; SPDX-License-Identifier: 0BSD
+
+{:description "Command line client and server for HashiCorp Boundary, which brokers identity-based access to hosts"
+ :source {:json "https://checkpoint-api.hashicorp.com/v1/check/boundary" :version [:current_version]}
+ :tag-prefix ""
+ :asset "boundary_{version}_linux_amd64.zip"
+ :url "https://releases.hashicorp.com/boundary/{version}/{asset}"
+ :checksum "boundary_{version}_SHA256SUMS"}

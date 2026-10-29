@@ -1,0 +1,8 @@
+;; SPDX-FileCopyrightText: The breto Authors
+;; SPDX-License-Identifier: 0BSD
+
+{:description "OpenAI's coding agent for the terminal"
+ :source {:github "openai/codex"}
+ :tag-prefix "rust-v"
+ :asset "codex-x86_64-unknown-linux-musl.tar.gz"
+ :bins {"codex" "codex-x86_64-unknown-linux-musl"}}

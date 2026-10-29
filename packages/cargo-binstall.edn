@@ -1,0 +1,6 @@
+;; SPDX-FileCopyrightText: The breto Authors
+;; SPDX-License-Identifier: 0BSD
+
+{:description "Installs Rust binaries from their release artifacts instead of building them from source"
+ :source {:github "cargo-bins/cargo-binstall"}
+ :asset "cargo-binstall-x86_64-unknown-linux-musl.tgz"}

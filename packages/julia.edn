@@ -1,0 +1,13 @@
+;; SPDX-FileCopyrightText: The breto Authors
+;; SPDX-License-Identifier: 0BSD
+
+{:description "The Julia programming language"
+ :source {:github "JuliaLang/julia"}
+ :vars {:minor {:match "^\\d+\\.\\d+"}}
+ :asset "julia-{version}-linux-x86_64.tar.gz"
+ :url "https://julialang-s3.julialang.org/bin/linux/x64/{minor}/{asset}"
+ :checksum "https://julialang-s3.julialang.org/bin/checksums/julia-{version}.sha256"
+ :strip 1
+ :layout :tree
+ :bins {"julia" "bin/julia"}
+ :man ["share/man/man1/julia.1"]}

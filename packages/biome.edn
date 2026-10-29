@@ -1,0 +1,8 @@
+;; SPDX-FileCopyrightText: The breto Authors
+;; SPDX-License-Identifier: 0BSD
+
+{:description "Formatter and linter for JavaScript, TypeScript, JSON, CSS and GraphQL"
+ :source {:github "biomejs/biome"}
+ :tag-prefix "@biomejs/biome@"
+ :asset "biome-linux-x64"
+ :bins {"biome" "biome-linux-x64"}}

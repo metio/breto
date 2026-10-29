@@ -1,0 +1,12 @@
+;; SPDX-FileCopyrightText: The breto Authors
+;; SPDX-License-Identifier: 0BSD
+
+{:description "Node.js, the JavaScript runtime, with npm and npx, in its current release"
+ :source {:text "https://nodejs.org/dist/latest/SHASUMS256.txt" :match "node-(v\\d+\\.\\d+\\.\\d+)-linux-x64\\.tar\\.xz"}
+ :asset "node-v{version}-linux-x64.tar.xz"
+ :url "https://nodejs.org/dist/{tag}/{asset}"
+ :checksum "https://nodejs.org/dist/{tag}/SHASUMS256.txt"
+ :strip 1
+ :layout :tree
+ :bin-dir "bin"
+ :man ["share/man/man1/node.1"]}

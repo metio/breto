@@ -1,0 +1,10 @@
+;; SPDX-FileCopyrightText: The breto Authors
+;; SPDX-License-Identifier: 0BSD
+
+{:description "JavaScript runtime, package manager, bundler and test runner"
+ :source {:github "oven-sh/bun"}
+ :tag-prefix "bun-v"
+ :asset "bun-linux-x64.zip"
+ :checksum "SHASUMS256.txt"
+ :strip 1
+ :bins {"bun" "bun" "bunx" "bun"}}

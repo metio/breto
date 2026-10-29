@@ -1,0 +1,9 @@
+;; SPDX-FileCopyrightText: The breto Authors
+;; SPDX-License-Identifier: 0BSD
+
+{:description "Builds identical machine images for several platforms from one configuration"
+ :source {:json "https://checkpoint-api.hashicorp.com/v1/check/packer" :version [:current_version]}
+ :tag-prefix ""
+ :asset "packer_{version}_linux_amd64.zip"
+ :url "https://releases.hashicorp.com/packer/{version}/{asset}"
+ :checksum "packer_{version}_SHA256SUMS"}

@@ -1,0 +1,9 @@
+;; SPDX-FileCopyrightText: The breto Authors
+;; SPDX-License-Identifier: 0BSD
+
+{:description "Command line client and agent for HashiCorp Consul, which provides service discovery and a service mesh"
+ :source {:json "https://checkpoint-api.hashicorp.com/v1/check/consul" :version [:current_version]}
+ :tag-prefix ""
+ :asset "consul_{version}_linux_amd64.zip"
+ :url "https://releases.hashicorp.com/consul/{version}/{asset}"
+ :checksum "consul_{version}_SHA256SUMS"}

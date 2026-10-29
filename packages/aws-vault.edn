@@ -1,0 +1,8 @@
+;; SPDX-FileCopyrightText: The breto Authors
+;; SPDX-License-Identifier: 0BSD
+
+{:description "Stores AWS credentials in the operating system keyring and hands out temporary credentials"
+ :source {:github "ByteNess/aws-vault"}
+ :asset "aws-vault-linux-amd64"
+ :checksum "aws-vault_sha256_checksums.txt"
+ :bins {"aws-vault" "aws-vault-linux-amd64"}}

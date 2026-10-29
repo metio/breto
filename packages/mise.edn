@@ -1,0 +1,10 @@
+;; SPDX-FileCopyrightText: The breto Authors
+;; SPDX-License-Identifier: 0BSD
+
+{:description "Polyglot tool version manager, environment variable manager and task runner"
+ :source {:github "jdx/mise"}
+ :asset "mise-v{version}-linux-x64.tar.gz"
+ :checksum "SHASUMS256.txt"
+ :strip 1
+ :bins {"mise" "bin/mise"}
+ :man ["man/man1/mise.1"]}

@@ -1,0 +1,6 @@
+;; SPDX-FileCopyrightText: The breto Authors
+;; SPDX-License-Identifier: 0BSD
+
+{:description "AI coding agent for the terminal"
+ :source {:github "anomalyco/opencode"}
+ :asset "opencode-linux-x64.tar.gz"}

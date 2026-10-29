@@ -1,0 +1,11 @@
+;; SPDX-FileCopyrightText: The breto Authors
+;; SPDX-License-Identifier: 0BSD
+
+{:description "Concurrent, cache-efficient container image builder with the buildctl client and the buildkitd daemon"
+ :source {:github "moby/buildkit"}
+ :asset "buildkit-v{version}.linux-amd64.tar.gz"
+ :layout :tree
+ :bin-dir "bin"
+ :signature {:bundle "buildkit-v{version}.linux-amd64.sigstore.json"
+             :identity-regexp "^https://github\\.com/docker/github-builder/\\.github/workflows/bake\\.yml@[0-9a-f]{40}$"
+             :issuer "https://token.actions.githubusercontent.com"}}
