@@ -138,11 +138,13 @@ eval "$(breto env)"
 breto env --shell fish | source
 ```
 
-In bash, `shell/env-hook.bash` from this repository does this on its own: sourced from `.bashrc`, it runs `breto env` when the shell enters a directory below a `.breto.edn` or one of the files in `BRETO_ENV_FILES` changes, and takes the project's bin directory off `PATH` again, through `BRETO_ENV_BIN`, when the shell leaves the project. Between those it costs a few file tests per prompt. The hook runs `breto env --no-install`, which only links versions that are installed and never waits for another breto run, since Ctrl-C may not reach a command a prompt hook runs. A project that needs a missing version gets a message to run `eval "$(breto env)"`, which installs it, waiting for a running update if necessary. `--no-wait` instead fails at once when installing has to wait for another run. A failing `breto env` is retried once the file changes or the shell enters the project again, not on every prompt.
+In bash, the hook `breto hook bash` prints does this on its own: evaluated in `.bashrc`, it runs `breto env` when the shell enters a directory below a `.breto.edn` or one of the files in `BRETO_ENV_FILES` changes, and takes the project's bin directory off `PATH` again, through `BRETO_ENV_BIN`, when the shell leaves the project. Between those it costs a few file tests per prompt. The hook runs `breto env --no-install`, which only links versions that are installed and never waits for another breto run, since Ctrl-C may not reach a command a prompt hook runs. A project that needs a missing version gets a message to run `eval "$(breto env)"`, which installs it, waiting for a running update if necessary. `--no-wait` instead fails at once when installing has to wait for another run. A failing `breto env` is retried once the file changes or the shell enters the project again, not on every prompt.
 
 ```sh
-source ~/src/breto/shell/env-hook.bash
+eval "$(breto hook bash)"
 ```
+
+`breto hook` reads neither the configuration nor the registry, so it adds little to the start of a shell. The hook is `shell/env-hook.bash` in this repository, which a checkout can also source directly.
 
 A package whose definition has `:env` also sets those variables, such as `JAVA_HOME`. `{home}` in their values is a link of the project's own to the version directory, so the variable keeps its value when the version changes and `update` or `sync` only moves the link. The values the variables had before the project are saved, and the hook restores them, or unsets the variables, when the shell leaves the project; entering another project does the same first. Two packages of one project setting the same variable is an error.
 

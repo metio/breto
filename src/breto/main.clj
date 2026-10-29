@@ -4,6 +4,7 @@
 (ns breto.main
   (:require [babashka.cli :as cli]
             [breto.batch :as batch]
+            [breto.cli :as entry]
             [breto.commands :as commands]
             [breto.config :as config]
             [breto.diagnose :as diagnose]
@@ -40,6 +41,8 @@ Commands:
   install                   choose packages to install in fzf or sk, else in a numbered prompt;
                             --query TERMS starts with a search
   search [TERM...]          the definitions whose name, description or source has every term
+  hook bash                 print the bash hook that runs breto env on entering a project:
+                            eval \"$(breto hook bash)\" in .bashrc
   env [--shell fish]        link the versions .breto.edn lists for this project and print the
                             shell code putting them first on PATH: eval \"$(breto env)\";
                             --no-install fails instead of installing a missing version;
@@ -186,15 +189,17 @@ Every failure is explained with what to do; --debug adds each request and stack 
    (let [{:keys [args opts]} (cli/parse-args args parse-spec)
          [command & more] args]
      (binding [log/*debug* (boolean (:debug opts))]
-       (if-let [f (dispatch command)]
-         (recording-aborts command
-           #(let [ctx (with-registry (merge (context opts) overrides) command)
-                  chosen? (and (= "install" command) (empty? more))
-                  args (if chosen? (commands/install-args ctx more) more)]
-              (if (and chosen? (empty? args))
-                (do (println "Nothing chosen.") 0)
-                (locked (assoc ctx :chosen? chosen?) command (fn [] (f (assoc ctx :chosen? chosen?) args))))))
-         (do (println usage) (if (#{nil "help"} command) 0 2)))))))
+       (if (= "hook" command)
+         (entry/print-hook more)
+         (if-let [f (dispatch command)]
+           (recording-aborts command
+             #(let [ctx (with-registry (merge (context opts) overrides) command)
+                    chosen? (and (= "install" command) (empty? more))
+                    args (if chosen? (commands/install-args ctx more) more)]
+                (if (and chosen? (empty? args))
+                  (do (println "Nothing chosen.") 0)
+                  (locked (assoc ctx :chosen? chosen?) command (fn [] (f (assoc ctx :chosen? chosen?) args))))))
+           (do (println usage) (if (#{nil "help"} command) 0 2))))))))
 
 (defn -main [& args]
   (let [code (try (run args)

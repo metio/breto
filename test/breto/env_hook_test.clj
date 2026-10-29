@@ -4,6 +4,7 @@
 (ns breto.env-hook-test
   (:require [babashka.fs :as fs]
             [babashka.process :as process]
+            [breto.main :as main]
             [breto.support :as s :refer [path]]
             [clojure.string :as str]
             [clojure.test :refer [deftest is testing use-fixtures]]))
@@ -146,3 +147,24 @@
                                         (str "unset XDG_RUNTIME_DIR\nPATH=" (path "fake") ":/usr/bin:/bin\nsource shell/env-hook.bash\n"
                                              "cd " (path "app") "\n__breto_env\n"
                                              "[ -n \"$__breto_stamp\" ] && [ \"$__breto_stamp\" != /tmp/breto-hook-$$ ] && echo unpredictable")))))))
+
+(deftest breto-hook-prints-the-hook-without-a-configuration
+  (let [out (java.io.StringWriter.)
+        code (binding [*out* out]
+               (main/run ["hook" "bash" "--config" (path "missing" "config.edn")]))]
+    (is (= 0 code))
+    (is (= (slurp "shell/env-hook.bash") (str out))))
+  (testing "another shell is refused"
+    (binding [*err* (java.io.StringWriter.)]
+      (is (= 2 (main/run ["hook" "fish"]))))))
+
+(deftest the-printed-hook-works-when-evaluated
+  (fake-breto!)
+  (project! "app" "{}")
+  (spit (path "hook.bash") (with-out-str (main/run ["hook" "bash"])))
+  (let [script (str "PATH=" (path "fake") ":/usr/bin:/bin\n"
+                    "eval \"$(cat " (path "hook.bash") ")\"\n"
+                    "cd " (path "app" "src") "\n__breto_env\n"
+                    "echo \"PROJECT=$BRETO_PROJECT\"\n")]
+    (is (= (str "PROJECT=" (path "app"))
+           (str/trim (:out (process/shell {:out :string :err :string} "bash" "--norc" "-c" script)))))))
