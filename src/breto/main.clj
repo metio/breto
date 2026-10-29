@@ -3,6 +3,7 @@
 
 (ns breto.main
   (:require [babashka.cli :as cli]
+            [breto.batch :as batch]
             [breto.commands :as commands]
             [breto.config :as config]
             [breto.diagnose :as diagnose]
@@ -98,6 +99,15 @@ Every failure is explained with what to do; --debug adds each request and stack 
      :reporter (fn [_] (progress/reporter))
      :sleep-second! #(Thread/sleep 1000)}))
 
+(defn- configured
+  "`config` with :packages as package names, the groups expanded, and the
+  versions they pin merged under :pins, where the config's own pins win."
+  [config groups]
+  (let [specs (map batch/split-spec (registry/expand groups (:packages config)))]
+    (assoc config
+           :packages (vec (distinct (map first specs)))
+           :pins (merge (into {} (filter second) specs) (:pins config)))))
+
 (defn- with-registry
   "`ctx` with the registry and groups loaded and the groups in :packages
   expanded into their members. doctor runs without one when it fails to
@@ -110,7 +120,7 @@ Every failure is explained with what to do; --debug adds each request and stack 
                  (-> ctx
                      (assoc :registry (registry/load-registry dirs) :groups groups
                             :locks (registry/load-locks dirs lockfile/read-lock))
-                     (update-in [:config :packages] #(registry/expand groups %)))))]
+                     (update :config configured groups))))]
     (case command
       "report" ctx
       "doctor" (try (load ctx) (catch Exception e (assoc ctx :registry nil :load-error (diagnose/diagnose e {}))))

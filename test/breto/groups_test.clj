@@ -57,8 +57,8 @@
     (is (= :invalid-package (:breto/problem cycle)))
     (is (str/includes? (first (:problems cycle)) "@a -> @b -> @a"))))
 
-(defn- world []
-  (let [files (into {} (for [name ["a" "b" "c"]]
+(defn- world [& [extra]]
+  (let [files (into (or extra {}) (for [name ["a" "b" "c"]]
                          [(str "https://github.com/acme/" name "/releases/download/v1.0.0/" name)
                           (s/file! name (str "#!/bin/sh\necho " name "\n"))]))
         texts (into {} (for [name ["a" "b" "c"]]
@@ -123,3 +123,32 @@
       (is (str/includes? out "1 up to date")))
     (testing "check looks the members up by name"
       (is (not (str/includes? (:out (s/breto! {:packages []} ["check" "@pinned"] {:io io})) "unknown package"))))))
+
+(defn- pinned-world []
+  (let [old (s/file! "a-0.9.0" "#!/bin/sh\necho a 0.9.0\n")
+        io (world {"https://github.com/acme/a/releases/download/v0.9.0/a" old})]
+    (group! "packages" "pinned" {:members ["a@0.9.0"]})
+    io))
+
+(deftest configured-pinned-members-install-their-pin
+  (let [io (pinned-world)
+        {:keys [code out]} (s/breto! {:packages ["@pinned"] :lockfile (path "breto.lock")} ["update"] {:io io})]
+    (is (= 0 code) out)
+    (is (str/includes? (slurp (path "bin" "a")) "a 0.9.0"))
+    (testing "the lock file records the member by name"
+      (let [lock (slurp (path "breto.lock"))]
+        (is (str/includes? lock "\"a\" {:version \"0.9.0\""))
+        (is (not (str/includes? lock "a@0.9.0")))))
+    (testing "pruning keeps the pinned member"
+      (s/breto! {:packages ["@pinned"] :prune true} ["gc"] {:io io})
+      (is (fs/exists? (path "bin" "a"))))
+    (testing "a pin in the configuration wins over the group's"
+      (s/breto! {:packages ["@pinned"] :pins {"a" "1.0.0"}} ["update"] {:io io})
+      (is (str/includes? (slurp (path "bin" "a")) "echo a\n")))))
+
+(deftest uninstalling-a-pinned-group-removes-its-members
+  (let [io (pinned-world)]
+    (s/breto! {:packages []} ["install" "@pinned"] {:io io})
+    (is (str/includes? (slurp (path "bin" "a")) "a 0.9.0"))
+    (is (str/includes? (:out (s/breto! {:packages []} ["uninstall" "@pinned"] {:io io})) "1 removed"))
+    (is (not (fs/exists? (path "bin" "a"))))))

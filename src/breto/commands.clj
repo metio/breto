@@ -335,8 +335,8 @@
   with an environment."
   [{:keys [config opts] :as ctx} args]
   (let [results (install-results ctx "update" (targets ctx args)
-                                 (fn [name _]
-                                   (merge {:version (get-in config [:pins name]) :verify? (:verify opts true)} (locked ctx name))))]
+                                 (fn [name version]
+                                   (merge {:version (or version (get-in config [:pins name])) :verify? (:verify opts true)} (locked ctx name))))]
     (batch/finish! "update" (into results (when (empty? args) (refresh-projects ctx "update"))))))
 
 (defn outdated
@@ -350,7 +350,7 @@
                                      (fn [spec]
                                        (progress {:type :stage :stage :resolve})
                                        (let [[name pinned] (batch/split-spec spec)
-                                             active (or pinned (store/current-version config name))
+                                             active (or pinned (get-in config [:pins name]) (store/current-version config name))
                                              latest (:version (install/with-stage :resolve {:package name}
                                                                 #(source/newest (registry/lookup registry name) io)))]
                                          {:package name :version latest :from active
@@ -494,7 +494,7 @@
   (when (empty? args)
     (throw (ex-info "uninstall needs at least one package" {:breto/problem :usage})))
   (batch/finish! "uninstall"
-                 (batch/run-batch io (targets ctx args)
+                 (batch/run-batch io (distinct (map (comp first batch/split-spec) (targets ctx args)))
                                   (fn [name]
                                     (when (and (some #{name} (:packages config)) (not (:force opts)))
                                       (throw (ex-info (str name " is still configured")
