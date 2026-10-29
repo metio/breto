@@ -1,0 +1,138 @@
+# SPDX-FileCopyrightText: The breto Authors
+# SPDX-License-Identifier: 0BSD
+
+name: breto
+description: >
+  Install breto from its signed release, install the packages a project's
+  .breto.edn lists, and put the project's tools and variables in place for
+  the later steps of the job.
+
+inputs:
+  version:
+    description: The breto release to use, or latest.
+    default: latest
+  project:
+    description: The project directory, relative to the workspace.
+    default: .
+  registries:
+    description: >
+      Directories with package definitions and groups, one per line and
+      relative to the workspace, read after the definitions built into breto.
+    default: ""
+  cache:
+    description: Whether to keep the installed packages in the Actions cache.
+    default: "true"
+  token:
+    description: The token for the GitHub API and release downloads.
+    default: ${{ github.token }}
+
+outputs:
+  version:
+    description: The breto release in use.
+    value: ${{ steps.download.outputs.version }}
+  bin:
+    description: The project's bin directory, which is on PATH for the later steps.
+    value: ${{ steps.env.outputs.bin }}
+
+runs:
+  using: composite
+  steps:
+    - id: platform
+      shell: bash
+      run: |
+        set -euo pipefail
+        case "${RUNNER_OS}-${RUNNER_ARCH}" in
+          Linux-X64) asset=linux-amd64 ;;
+          Linux-ARM64) asset=linux-aarch64 ;;
+          macOS-X64) asset=darwin-amd64 ;;
+          macOS-ARM64) asset=darwin-aarch64 ;;
+          *) echo "::error::breto has no release for ${RUNNER_OS} on ${RUNNER_ARCH}"; exit 1 ;;
+        esac
+        echo "asset=${asset}" >> "$GITHUB_OUTPUT"
+    - id: download
+      shell: bash
+      env:
+        GH_TOKEN: ${{ inputs.token }}
+        VERSION: ${{ inputs.version }}
+        ASSET: ${{ steps.platform.outputs.asset }}
+      run: |
+        set -euo pipefail
+        if [ "$VERSION" = latest ]; then
+          VERSION=$(gh release view --repo metio/breto --json tagName --jq .tagName)
+        fi
+        dir="${RUNNER_TEMP}/breto-download"
+        rm -rf "$dir"
+        gh release download "$VERSION" --repo metio/breto --dir "$dir" \
+          --pattern "breto-${ASSET}" \
+          --pattern "breto_${VERSION}_SHA256SUMS" \
+          --pattern "breto_${VERSION}_SHA256SUMS.bundle"
+        echo "version=${VERSION}" >> "$GITHUB_OUTPUT"
+        echo "dir=${dir}" >> "$GITHUB_OUTPUT"
+    - uses: sigstore/cosign-installer@6f9f17788090df1f26f669e9d70d6ae9567deba6 # v4.1.2
+    - shell: bash
+      env:
+        DIR: ${{ steps.download.outputs.dir }}
+        VERSION: ${{ steps.download.outputs.version }}
+        ASSET: ${{ steps.platform.outputs.asset }}
+      run: |
+        set -euo pipefail
+        cd "$DIR"
+        cosign verify-blob "breto_${VERSION}_SHA256SUMS" \
+          --bundle "breto_${VERSION}_SHA256SUMS.bundle" \
+          --certificate-identity https://github.com/metio/breto/.github/workflows/release.yml@refs/heads/main \
+          --certificate-oidc-issuer https://token.actions.githubusercontent.com
+        grep " breto-${ASSET}\$" "breto_${VERSION}_SHA256SUMS" > checksum
+        if command -v sha256sum > /dev/null; then sha256sum --check checksum; else shasum --algorithm 256 --check checksum; fi
+        bin="${RUNNER_TEMP}/breto/bin"
+        mkdir -p "$bin"
+        install -m 0755 "breto-${ASSET}" "${bin}/breto"
+        echo "$bin" >> "$GITHUB_PATH"
+    - id: config
+      shell: bash
+      env:
+        REGISTRIES: ${{ inputs.registries }}
+        PROJECT: ${{ inputs.project }}
+      run: |
+        set -euo pipefail
+        config="${RUNNER_TEMP}/breto/config.edn"
+        {
+          printf '{:registries ['
+          while IFS= read -r dir; do
+            [ -n "$dir" ] || continue
+            path=$(cd "${GITHUB_WORKSPACE}/${dir}" && pwd)
+            printf '"%s" ' "$(printf '%s' "$path" | sed 's/[\\"]/\\&/g')"
+          done <<< "$REGISTRIES"
+          printf ']}\n'
+        } > "$config"
+        echo "BRETO_CONFIG=${config}" >> "$GITHUB_ENV"
+        key=$({
+          cat "$config"
+          cd "${GITHUB_WORKSPACE}"
+          for f in "${PROJECT}/.breto.edn" "${PROJECT}/.breto.local.edn"; do [ -f "$f" ] && cat "$f"; done
+          while IFS= read -r dir; do
+            [ -n "$dir" ] || continue
+            find "$dir" -maxdepth 1 \( -name '*.edn' -o -name breto.lock \) -type f | LC_ALL=C sort | xargs cat
+          done <<< "$REGISTRIES"
+        } | { if command -v sha256sum > /dev/null; then sha256sum; else shasum --algorithm 256; fi; } | cut -d ' ' -f 1)
+        echo "key=${key}" >> "$GITHUB_OUTPUT"
+    - if: inputs.cache == 'true'
+      uses: actions/cache@55cc8345863c7cc4c66a329aec7e433d2d1c52a9 # v6
+      with:
+        path: ~/.local/share/breto
+        key: breto-${{ steps.platform.outputs.asset }}-${{ steps.download.outputs.version }}-${{ steps.config.outputs.key }}
+        restore-keys: |
+          breto-${{ steps.platform.outputs.asset }}-${{ steps.download.outputs.version }}-
+          breto-${{ steps.platform.outputs.asset }}-
+    - id: env
+      shell: bash
+      env:
+        GITHUB_TOKEN: ${{ inputs.token }}
+        PROJECT: ${{ inputs.project }}
+      run: |
+        set -euo pipefail
+        out="${RUNNER_TEMP}/breto/env"
+        breto env --dir "${GITHUB_WORKSPACE}/${PROJECT}" --shell github > "$out"
+        cat "$out" >> "$GITHUB_ENV"
+        bin=$(sed -n 's/^BRETO_ENV_BIN=//p' "$out")
+        echo "$bin" >> "$GITHUB_PATH"
+        echo "bin=${bin}" >> "$GITHUB_OUTPUT"

@@ -351,13 +351,13 @@
   (let [{:keys [code dir files bin vars] :as proj} (prepared-project! ctx "env")]
     (if (pos? code)
       code
-      (let [shell (if (= "fish" (:shell opts)) :fish :sh)
+      (let [shell (case (:shell opts) "fish" :fish "github" :github :sh)
             enter? (:enter opts)
             on-enter (when enter? (:on-enter proj))]
         (when (and enter? (:menu proj))
           (binding [*out* *err*] (run! println (run/menu proj))))
         (println (str (env/exports shell (env/path-value config bin (System/getenv "PATH")) dir bin files vars)
-                      (when on-enter
+                      (when (and on-enter (not= :github shell))
                         (str "\n" "breto run --dir " (sh-quote dir) " " (sh-quote on-enter)
                              (when (= :fish shell) ";")))))
         0))))

@@ -1,0 +1,6 @@
+;; SPDX-FileCopyrightText: The breto Authors
+;; SPDX-License-Identifier: 0BSD
+
+{:packages ["typos" "shellcheck"]
+ :env {"ACTION_PROJECT" "{project}"}
+ :commands {"versions" {:run "typos --version && shellcheck --version"}}}

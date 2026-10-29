@@ -82,6 +82,13 @@
     (is (= (str (path "envs" "b" "bin") ":/usr/bin:/bin")
            (env/path-value cfg (path "envs" "b" "bin") (str (path "envs" "a" "bin") ":/usr/bin::/bin:/usr/bin"))))))
 
+(deftest exports-for-github-actions-leave-path-to-github-path
+  (let [lines (str/split-lines (env/exports :github "/b:/usr/bin" "/p" "/b" ["/p/.breto.edn"]
+                                            {"A" "it's x" "M" "one\nBRETO_EOF_0\ntwo"}))]
+    (is (= ["A=it's x" "M<<BRETO_EOF_1" "one" "BRETO_EOF_0" "two" "BRETO_EOF_1"
+            "BRETO_ENV_VARS=A M" "BRETO_PROJECT=/p" "BRETO_ENV_BIN=/b" "BRETO_ENV_FILES=/p/.breto.edn"]
+           lines))))
+
 (deftest exports-quote-for-the-shell
   (let [code (env/exports :sh "/a b:/it's" "/p" "/a b" ["/p/.breto.edn" "/r/@go.edn"])]
     (is (= "/a b:/it's|/p|/a b|/p/.breto.edn:/r/@go.edn"

@@ -12,8 +12,13 @@
       (str (fs/path (System/getProperty "user.home") fallback))
       value)))
 
-(defn default-path []
-  (str (fs/path (env-dir "XDG_CONFIG_HOME" ".config") "breto" "config.edn")))
+(defn default-path
+  "BRETO_CONFIG, else config.edn in breto's directory below XDG_CONFIG_HOME."
+  []
+  (let [explicit (System/getenv "BRETO_CONFIG")]
+    (if (str/blank? explicit)
+      (str (fs/path (env-dir "XDG_CONFIG_HOME" ".config") "breto" "config.edn"))
+      explicit)))
 
 (defn defaults []
   {:store (str (fs/path (env-dir "XDG_DATA_HOME" ".local/share") "breto" "installations"))

@@ -13,7 +13,7 @@ breto runs on [babashka](https://babashka.org/), which the release executables c
 
 ## Installation
 
-Every release carries breto as one executable for `linux-amd64` and `linux-aarch64`: babashka with breto and the package definitions of that release inside it, so it needs neither babashka nor a checkout. Download it from the [latest release](https://github.com/metio/breto/releases/latest) and let it install itself:
+Every release carries breto as one executable for `linux-amd64`, `linux-aarch64`, `darwin-amd64` and `darwin-aarch64`: babashka with breto and the package definitions of that release inside it, so it needs neither babashka nor a checkout. Download it from the [latest release](https://github.com/metio/breto/releases/latest) and let it install itself:
 
 ```shell
 chmod +x breto-linux-amd64
@@ -41,9 +41,24 @@ ln -s ~/src/breto/breto ~/.local/bin/breto
 
 `bb build` writes the uberjar the release appends to babashka to `target/breto.jar`.
 
+## GitHub Actions
+
+The action in this repository installs breto from its signed release, installs the packages of a project and puts the project's bin directory on `PATH` for the later steps, with the project's `:env` set:
+
+```yaml
+- uses: actions/checkout@v6
+- uses: metio/breto@VERSION
+  with:
+    registries: |
+      toolchains
+- run: breto run check
+```
+
+`project` names the project directory, `.` by default. `registries` lists directories of definitions and groups beside the built-in ones, relative to the workspace, so groups from another repository need a checkout of it first. `version` picks a breto release, `latest` by default. The action verifies the release's `SHA256SUMS` with cosign against the release workflow's identity before running the binary, and keeps the installed packages in the Actions cache, keyed on the project files and the registries' definitions and lock files; `cache: false` turns that off. It runs on Linux and macOS runners, x86_64 and arm64.
+
 ## Configuration
 
-breto reads `$XDG_CONFIG_HOME/breto/config.edn` (`~/.config/breto/config.edn` by default), or the file given with `--config`. Every key is optional:
+breto reads the file given with `--config`, else the one `BRETO_CONFIG` names, else `$XDG_CONFIG_HOME/breto/config.edn` (`~/.config/breto/config.edn` by default). Every key is optional:
 
 ```clojure
 {:registries ["~/src/breto/packages" "~/.config/breto/packages"]

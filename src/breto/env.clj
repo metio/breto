@@ -121,11 +121,21 @@
        "end;\n"
        "set --erase __breto_var;\n"))
 
+(defn- env-file-line
+  "`k` set to `v` in a GitHub Actions environment file, through a delimiter
+  the value does not contain when it spans lines."
+  [k v]
+  (if (str/includes? v "\n")
+    (let [delimiter (first (remove #(str/includes? v %) (map #(str "BRETO_EOF_" %) (range))))]
+      (str k "<<" delimiter "\n" v "\n" delimiter))
+    (str k "=" v)))
+
 (defn exports
   "The shell code that sets PATH to `path`, BRETO_PROJECT to `project-dir`,
   BRETO_ENV_BIN to `bin`, BRETO_ENV_FILES to the colon-separated `files` the
   project's packages come from, and the variables in `vars`, for :sh (also
-  bash and zsh) or :fish. The variables of a project entered before get
+  bash and zsh) or :fish. :github prints the lines of a GitHub Actions
+  environment file instead and leaves PATH to $GITHUB_PATH. The variables of a project entered before get
   their earlier values back first, and the values the new ones replace are
   saved, exported so that a child shell can restore them as well;
   BRETO_ENV_VARS names them."
@@ -133,6 +143,10 @@
   ([shell path project-dir bin files vars]
    (let [names (str/join " " (sort (keys vars)))]
      (case shell
+       :github (str/join "\n" (for [[k v] (concat (sort vars)
+                                                    [["BRETO_ENV_VARS" names] ["BRETO_PROJECT" project-dir]
+                                                     ["BRETO_ENV_BIN" bin] ["BRETO_ENV_FILES" (str/join ":" files)]])]
+                                 (env-file-line k (str v))))
        :fish (str restore-fish
                   (apply str (for [[k v] (sort vars)]
                                (str "set --query " k "; and set --global --export __breto_saved_" k " $" k ";\n"

@@ -1,0 +1,37 @@
+# SPDX-FileCopyrightText: The breto Authors
+# SPDX-License-Identifier: 0BSD
+
+name: Action
+on:
+  workflow_run:
+    workflows: [Release]
+    types: [completed]
+  workflow_dispatch:
+permissions:
+  contents: read
+jobs:
+  action:
+    if: github.event_name == 'workflow_dispatch' || github.event.workflow_run.conclusion == 'success'
+    strategy:
+      fail-fast: false
+      matrix:
+        runner: [ubuntu-latest, ubuntu-24.04-arm, macos-latest, macos-15-intel]
+    runs-on: ${{ matrix.runner }}
+    timeout-minutes: 15
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7
+        with:
+          persist-credentials: false
+      - id: breto
+        uses: ./
+        with:
+          project: test/action
+      - name: Use the project's tools and commands
+        env:
+          BIN: ${{ steps.breto.outputs.bin }}
+        run: |
+          set -euo pipefail
+          test "$(command -v typos)" = "${BIN}/typos"
+          test "$ACTION_PROJECT" = "${GITHUB_WORKSPACE}/test/action"
+          cd test/action
+          breto run versions

@@ -47,9 +47,10 @@ Commands:
                             eval \"$(breto hook bash)\" in .bashrc
   run [COMMAND [ARG...]]    run a command of the project's :commands with its tools on PATH,
                             after those it :depends on; without one, choose it in fzf or sk
-  env [--shell fish]        link the versions .breto.edn and .breto.local.edn list for this
+  env [--shell fish|github] link the versions .breto.edn and .breto.local.edn list for this
                             project, with its commands, and print the
                             shell code putting them first on PATH: eval \"$(breto env)\";
+                            --shell github prints lines for $GITHUB_ENV instead;
                             --no-install fails instead of installing a missing version;
                             --no-wait fails instead of waiting when it must install while
                             another run changes the store

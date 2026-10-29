@@ -25,7 +25,7 @@ jobs:
       - id: gate
         uses: metio/ci/needs-release@14ad475c5f5c4c0df727df1a22345298604e66ba # 2026.10.26174650
         with:
-          paths: src packages shell bb.edn breto flake.nix flake.lock README.md
+          paths: src packages shell bb.edn breto action.yml flake.nix flake.lock README.md
       - uses: metio/nix-devshell@d0c25fdb0d2c08f23bc62c867317a266b6f1a5c1 # 2026.9.12204255
         if: steps.gate.outputs.needed == 'true'
       - name: Run the test suite before releasing
