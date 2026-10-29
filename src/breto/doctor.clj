@@ -19,7 +19,7 @@
   {:level level :title title :detail detail :advice (vec advice)})
 
 (defn tools-check []
-  (for [tool ["tar" "gzip" "xz" "bzip2"]]
+  (for [tool ["tar" "gzip" "xz" "bzip2" "zstd"]]
     (if (fs/which tool)
       (check :ok (str tool " is installed") (str (fs/which tool)))
       (check (if (= "tar" tool) :fail :warn) (str tool " is missing")

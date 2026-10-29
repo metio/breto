@@ -9,7 +9,7 @@ breto installs prebuilt binaries from their upstream releases, keeps several ver
 
 ## Requirements
 
-breto runs on [babashka](https://babashka.org/). It unpacks zip archives, plain or gzip-compressed tar archives and gzip-compressed single files itself; `.tar.xz` and `.tar.bz2` need `tar` with `xz` or `bzip2`, and a bzip2-compressed single file needs `bzip2`. Packages that require a signature need cosign, which breto installs itself when `cosign` is listed in `:packages`.
+breto runs on [babashka](https://babashka.org/). It unpacks zip archives, plain or gzip-compressed tar archives and gzip-compressed single files itself; `.tar.xz`, `.tar.bz2` and `.tar.zst` need `tar` with `xz`, `bzip2` or `zstd`, and a bzip2- or zstd-compressed single file needs `bzip2` or `zstd`. Packages that require a signature need cosign, which breto installs itself when `cosign` is listed in `:packages`.
 
 ## Installation
 
@@ -249,7 +249,7 @@ A package is a file `<name>.edn` in a registry directory, and its file name is t
 | `:checksum` | Template for a checksum file, next to the asset unless it is a full URL, or `{:json URL :hash [path]}` for a hash inside a JSON document. | none |
 | `:strip` | Leading path components to drop when unpacking, counted as `tar --strip-components` does, a leading `./` included. | `0` |
 | `:layout` | `:binary` keeps only the files named in `:bins`; `:tree` keeps the whole archive. | `:binary` |
-| `:bins` | Command name to path inside the unpacked archive. | the package name, or the asset itself when it is not an archive, without `.gz` or `.bz2` when it is a compressed single file |
+| `:bins` | Command name to path inside the unpacked archive. | the package name, or the asset itself when it is not an archive, without `.gz`, `.bz2` or `.zst` when it is a compressed single file |
 | `:bin-dir` | With the `:tree` layout, a directory inside the release whose executable files all become commands, read from each installed version, so a command a newer version drops loses its link on activation. `:bins` adds to them. | none |
 | `:vars` | Further placeholders derived from the version, as `{:match REGEX}`, the first group or else the whole match, or `{:replace [FROM TO]}`; see [Java](#java). | none |
 | `:python` | For a `:pypi` source, the Python version of its environment, overriding the config's `:python`. | none |
@@ -260,7 +260,7 @@ A package is a file `<name>.edn` in a registry directory, and its file name is t
 | `:signature` | A sigstore bundle signing the asset or its checksum file; see below. | none |
 | `:skip` | Versions never installed as the latest, e.g. a release without a build for this platform. When the latest release is listed, the newest unlisted one is installed instead, which costs one request listing the releases. An explicitly requested or pinned version is installed regardless. | none |
 
-Templates can use `{name}`, `{tag}`, `{version}`, `{repo}` and, except in `:asset` itself, `{asset}`. Files ending in `.tar.gz`, `.tgz`, `.tar.xz`, `.txz`, `.tar.bz2`, `.tbz2`, `.tar` or `.zip` are unpacked. Any other file ending in `.gz` or `.bz2` is a single compressed file, decompressed under its name without that suffix, so `taplo-linux-x86_64.gz` becomes `taplo-linux-x86_64`. Anything else is the binary itself. An entry that would land outside the unpack directory, or a tar entry that would write through a symlink the archive created, fails the install.
+Templates can use `{name}`, `{tag}`, `{version}`, `{repo}` and, except in `:asset` itself, `{asset}`. Files ending in `.tar.gz`, `.tgz`, `.tar.xz`, `.txz`, `.tar.bz2`, `.tbz2`, `.tar.zst`, `.tzst`, `.tar` or `.zip` are unpacked. Any other file ending in `.gz`, `.bz2` or `.zst` is a single compressed file, decompressed under its name without that suffix, so `taplo-linux-x86_64.gz` becomes `taplo-linux-x86_64`. Anything else is the binary itself. An entry that would land outside the unpack directory, or a tar entry that would write through a symlink the archive created, fails the install.
 
 The command name is the key in `:bins`, independent of the package name. A package named `babashka` installs into `<store>/babashka/` and provides the command `bb`:
 

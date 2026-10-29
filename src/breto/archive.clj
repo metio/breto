@@ -126,7 +126,7 @@
 
 (defn- decompress!
   "Decompresses the single compressed `file` to `target`: gzip in process,
-  bzip2 with the bzip2 command."
+  bzip2 and zstd with their commands."
   [file archive-type target]
   (let [problem (fn [message stderr]
                   (ex-info (str "could not decompress " (fs/file-name file) ": " message)
@@ -136,12 +136,14 @@
                  (io/copy in (fs/file target)))
                (catch java.io.IOException e
                  (throw (problem (ex-message e) (str (ex-message e))))))
-      :bz2 (let [{:keys [exit err]} (try (process/shell {:out (fs/file target) :err :string :continue true}
-                                                        "bzip2" "--decompress" "--stdout" (str file))
-                                         (catch java.io.IOException e
-                                           (throw (problem (ex-message e) (str "bzip2: Cannot exec: " (ex-message e))))))]
-             (when-not (zero? exit)
-               (throw (problem (str/trim err) err)))))))
+      (:bz2 :zst)
+      (let [tool ({:bz2 "bzip2" :zst "zstd"} archive-type)
+            {:keys [exit err]} (try (process/shell {:out (fs/file target) :err :string :continue true}
+                                                   tool "--decompress" "--stdout" (str file))
+                                    (catch java.io.IOException e
+                                      (throw (problem (ex-message e) (str tool ": Cannot exec: " (ex-message e))))))]
+        (when-not (zero? exit)
+          (throw (problem (str/trim err) err)))))))
 
 (defn unpack!
   "Unpacks `file` into the empty directory `dest`. A raw download is copied in
@@ -152,7 +154,7 @@
   (fs/create-dirs dest)
   (case archive-type
     :raw (fs/copy file (fs/path dest file-name))
-    (:gz :bz2) (decompress! file archive-type (fs/path dest (package/unpacked-name file-name)))
+    (:gz :bz2 :zst) (decompress! file archive-type (fs/path dest (package/unpacked-name file-name)))
     (let [scratch (fs/create-temp-dir {:dir (fs/parent dest) :prefix ".unpack-"})]
       (try
         (case archive-type

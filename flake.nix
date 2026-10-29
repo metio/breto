@@ -17,6 +17,7 @@
         gzip
         xz
         bzip2
+        zstd
       ];
 
       ciTools = pkgs: with pkgs; [

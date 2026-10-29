@@ -25,7 +25,11 @@
   (is (= :zip (package/archive-type "tofu_1.10.0_linux_amd64.zip")))
   (is (= :raw (package/archive-type "kind-linux-amd64")))
   (is (= :gz (package/archive-type "taplo-linux-x86_64.gz")))
-  (is (= :bz2 (package/archive-type "restic_0.19.1_linux_amd64.bz2"))))
+  (is (= :bz2 (package/archive-type "restic_0.19.1_linux_amd64.bz2")))
+  (is (= :tar (package/archive-type "ollama-linux-amd64.tar.zst")))
+  (is (= :tar (package/archive-type "tool.tzst")))
+  (is (= :zst (package/archive-type "codex-x86_64-unknown-linux-musl.zst")))
+  (is (= "codex-x86_64-unknown-linux-musl" (package/unpacked-name "codex-x86_64-unknown-linux-musl.zst"))))
 
 (deftest single-compressed-files-unpack-under-their-name-without-the-suffix
   (is (= "taplo-linux-x86_64" (package/unpacked-name "taplo-linux-x86_64.gz")))

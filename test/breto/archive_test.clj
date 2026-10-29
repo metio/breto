@@ -54,9 +54,28 @@
     (archive/unpack! (path "tool.bz2") :bz2 "tool.bz2" (path "out") 0)
     (is (= "binary" (slurp (path "out" "tool"))))))
 
+(deftest zstd-compressed-files-are-decompressed-without-the-suffix
+  (let [file (path "tool")]
+    (spit (str file) "binary")
+    (babashka.process/shell "zstd" "--quiet" "--rm" (str file))
+    (archive/unpack! (path "tool.zst") :zst "tool.zst" (path "out") 0)
+    (is (= ["tool"] (map (comp str fs/file-name) (fs/list-dir (path "out")))))
+    (is (= "binary" (slurp (path "out" "tool"))))))
+
+(deftest zstd-compressed-tar-archives-unpack-with-strip
+  (fs/create-dirs (path "src" "tool-1.0" "bin"))
+  (spit (str (path "src" "tool-1.0" "bin" "tool")) "t")
+  (babashka.process/shell "tar" "--create" "--zstd" "--file" (str (path "tool.tar.zst"))
+                          "--directory" (str (path "src")) "tool-1.0")
+  (archive/unpack! (path "tool.tar.zst") :tar "tool.tar.zst" (path "out") 1)
+  (is (= "t" (slurp (path "out" "bin" "tool")))))
+
 (deftest corrupt-compressed-files-fail-to-unpack
   (spit (str (path "bad.gz")) "not gzip")
   (spit (str (path "bad.bz2")) "not bzip2")
+  (spit (str (path "bad.zst")) "not zstd")
+  (is (= :unpack-failed (:breto/problem (try (archive/unpack! (path "bad.zst") :zst "bad.zst" (path "zst") 0) nil
+                                             (catch clojure.lang.ExceptionInfo e (ex-data e))))))
   (is (= :unpack-failed (:breto/problem (try (archive/unpack! (path "bad.gz") :gz "bad.gz" (path "gz") 0) nil
                                              (catch clojure.lang.ExceptionInfo e (ex-data e))))))
   (is (= :unpack-failed (:breto/problem (try (archive/unpack! (path "bad.bz2") :bz2 "bad.bz2" (path "bz2") 0) nil

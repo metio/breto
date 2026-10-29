@@ -10,8 +10,8 @@
 
 (def ^:private archive-suffixes
   [[".tar.gz" :tar] [".tgz" :tar] [".tar.xz" :tar] [".txz" :tar]
-   [".tar.bz2" :tar] [".tbz2" :tar] [".tar" :tar] [".zip" :zip]
-   [".crate" :tar] [".gz" :gz] [".bz2" :bz2]])
+   [".tar.bz2" :tar] [".tbz2" :tar] [".tar.zst" :tar] [".tzst" :tar] [".tar" :tar] [".zip" :zip]
+   [".crate" :tar] [".gz" :gz] [".bz2" :bz2] [".zst" :zst]])
 
 (defn archive-type
   "The unpack method for a downloaded file, judged by its name. Anything that is
@@ -25,7 +25,7 @@
   "The name a single compressed file is decompressed under: its own name
   without the compression suffix. Other files keep their name."
   [file-name]
-  (if-let [suffix ({:gz ".gz" :bz2 ".bz2"} (archive-type file-name))]
+  (if-let [suffix ({:gz ".gz" :bz2 ".bz2" :zst ".zst"} (archive-type file-name))]
     (subs file-name 0 (- (count file-name) (count suffix)))
     file-name))
 
@@ -225,7 +225,7 @@
                      (or (string? identity) (string? identity-regexp))
                      (or (contains? #{nil :asset :checksum} of)
                          (and (map? of) (= #{:file} (set (keys of))) (relative-path? (:file of))
-                              (not (#{:raw :gz :bz2} (archive-type (str (:asset pkg)))))))
+                              (not (#{:raw :gz :bz2 :zst} (archive-type (str (:asset pkg)))))))
                      (or (not= :checksum of) (:checksum pkg))))))
     (conj ":signature needs :bundle, :issuer and :identity or :identity-regexp; :of is :asset, :checksum, which needs :checksum, or {:file path} inside an archive asset")))
 
@@ -283,7 +283,7 @@
               (and (nil? (:bins pkg)) (nil? (:bin-dir pkg)) (not (#{:pypi :npm :cargo} (source-kind pkg))))
               (assoc :bins {(:name pkg) (case (archive-type (str (:asset pkg)))
                                           :raw "{asset}"
-                                          (:gz :bz2) (unpacked-name (str (:asset pkg)))
+                                          (:gz :bz2 :zst) (unpacked-name (str (:asset pkg)))
                                           (:name pkg))}))]
     (when-let [ps (seq (problems pkg))]
       (throw (ex-info (str "invalid package " (pr-str (:name pkg)) ": " (str/join "; " ps))
