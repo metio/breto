@@ -1,0 +1,13 @@
+;; SPDX-FileCopyrightText: The breto Authors
+;; SPDX-License-Identifier: 0BSD
+
+{:description "The Lean toolchain manager, whose proxies run the Lean version a lean-toolchain file or elan default selects"
+ :source {:github "leanprover/elan"}
+ :asset "elan-x86_64-unknown-linux-gnu.tar.gz"
+ :bins {"elan" "elan-init"
+        "lean" "elan-init"
+        "lake" "elan-init"
+        "leanc" "elan-init"
+        "leanmake" "elan-init"
+        "leanpkg" "elan-init"
+        "leanchecker" "elan-init"}}

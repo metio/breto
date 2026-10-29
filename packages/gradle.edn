@@ -1,0 +1,12 @@
+;; SPDX-FileCopyrightText: The breto Authors
+;; SPDX-License-Identifier: 0BSD
+
+{:description "The Gradle build tool, which runs on the java found through JAVA_HOME or PATH"
+ :source {:json "https://services.gradle.org/versions/current" :version ["version"]}
+ :tag-prefix ""
+ :asset "gradle-{version}-bin.zip"
+ :url "https://services.gradle.org/distributions/{asset}"
+ :checksum "{asset}.sha256"
+ :strip 1
+ :layout :tree
+ :bins {"gradle" "bin/gradle"}}

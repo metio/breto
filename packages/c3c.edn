@@ -1,0 +1,9 @@
+;; SPDX-FileCopyrightText: The breto Authors
+;; SPDX-License-Identifier: 0BSD
+
+{:description "The compiler and formatter of the C3 programming language"
+ :source {:github "c3lang/c3c"}
+ :asset "c3-linux-static.tar.gz"
+ :strip 1
+ :layout :tree
+ :bins {"c3c" "c3c" "c3fmt" "c3fmt"}}

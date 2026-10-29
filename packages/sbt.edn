@@ -1,0 +1,10 @@
+;; SPDX-FileCopyrightText: The breto Authors
+;; SPDX-License-Identifier: 0BSD
+
+{:description "sbt, the interactive build tool for Scala and Java, which runs on the java found through JAVA_HOME or PATH"
+ :source {:github "sbt/sbt"}
+ :asset "sbt-{version}.tgz"
+ :checksum "{asset}.sha256"
+ :strip 1
+ :layout :tree
+ :bins {"sbt" "bin/sbt"}}

@@ -1,0 +1,8 @@
+;; SPDX-FileCopyrightText: The breto Authors
+;; SPDX-License-Identifier: 0BSD
+
+{:description "The OCaml package manager, which builds compilers and packages into switches of its own"
+ :source {:github "ocaml/opam"}
+ :tag-prefix ""
+ :asset "opam-{version}-x86_64-linux"
+ :bins {"opam" "{asset}"}}

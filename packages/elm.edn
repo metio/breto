@@ -1,0 +1,7 @@
+;; SPDX-FileCopyrightText: The breto Authors
+;; SPDX-License-Identifier: 0BSD
+
+{:description "The Elm compiler"
+ :source {:github "elm/compiler"}
+ :tag-prefix ""
+ :asset "elm-{version}-linux-x64.gz"}

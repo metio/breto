@@ -1,0 +1,6 @@
+;; SPDX-FileCopyrightText: The breto Authors
+;; SPDX-License-Identifier: 0BSD
+
+{:description "Scala CLI, the command that compiles, runs, tests and packages Scala code"
+ :source {:github "VirtusLab/scala-cli"}
+ :asset "scala-cli-x86_64-pc-linux-static.gz"}

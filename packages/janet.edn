@@ -1,0 +1,10 @@
+;; SPDX-FileCopyrightText: The breto Authors
+;; SPDX-License-Identifier: 0BSD
+
+{:description "The Janet programming language"
+ :source {:github "janet-lang/janet"}
+ :asset "janet-{tag}-linux-x64.tar.gz"
+ :strip 2
+ :layout :tree
+ :bins {"janet" "bin/janet"}
+ :man ["man/man1/janet.1"]}

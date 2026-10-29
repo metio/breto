@@ -1,0 +1,10 @@
+;; SPDX-FileCopyrightText: The breto Authors
+;; SPDX-License-Identifier: 0BSD
+
+{:description "The Odin programming language, released as a monthly build"
+ :source {:github "odin-lang/Odin"}
+ :tag-prefix "dev-"
+ :asset "odin-linux-amd64-dev-{version}.tar.gz"
+ :strip 1
+ :layout :tree
+ :bins {"odin" "odin"}}

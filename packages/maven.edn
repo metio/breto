@@ -1,0 +1,14 @@
+;; SPDX-FileCopyrightText: The breto Authors
+;; SPDX-License-Identifier: 0BSD
+
+{:description "Apache Maven in its newest final release, which runs on the java found through JAVA_HOME or PATH"
+ :source {:text "https://repo1.maven.org/maven2/org/apache/maven/apache-maven/maven-metadata.xml"
+          :match "<version>(\\d+\\.\\d+\\.\\d+)</version>"
+          :newest true}
+ :tag-prefix ""
+ :asset "apache-maven-{version}-bin.tar.gz"
+ :url "https://repo1.maven.org/maven2/org/apache/maven/apache-maven/{version}/{asset}"
+ :checksum "{asset}.sha512"
+ :strip 1
+ :layout :tree
+ :bins {"mvn" "bin/mvn" "mvnDebug" "bin/mvnDebug"}}

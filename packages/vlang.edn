@@ -1,0 +1,10 @@
+;; SPDX-FileCopyrightText: The breto Authors
+;; SPDX-License-Identifier: 0BSD
+
+{:description "The V programming language"
+ :source {:github "vlang/v"}
+ :tag-prefix ""
+ :asset "v_linux.zip"
+ :strip 1
+ :layout :tree
+ :bins {"v" "v"}}
