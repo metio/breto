@@ -81,17 +81,17 @@
     (seq warnings) (assoc :warnings warnings)))
 
 (defn- tools-first
-  "`specs` with the packages that provide cosign, go, uv or node moved to the
+  "`specs` with the packages that provide cosign, go, uv, node or rustup moved to the
   front, so that on a fresh host those are installed before they are needed
   to check the signatures of the others or to build them."
   [registry specs]
   (let [provides? #(let [[name] (batch/split-spec %)]
-                     (or (#{"go" "uv" "node"} name) (some-> (get registry name) signature/provides-cosign?)))]
+                     (or (#{"go" "uv" "node" "rustup"} name) (some-> (get registry name) signature/provides-cosign?)))]
     (concat (filter provides? specs) (remove provides? specs))))
 
 (defn tool-command
   "The command `command` of the package `name`, by default the command of the
-  same name, which builds the packages of a :go, :pypi or :npm source: that of
+  same name, which builds the packages of a :go, :pypi, :npm or :cargo source: that of
   its active version, else of its newest installed one."
   ([config registry name] (tool-command config registry name name))
   ([config registry name command]
@@ -130,7 +130,8 @@
                               options (cond-> (into (or locked {}) (remove (comp nil? val)) (dissoc options ::pinned))
                                         (= :go (package/source-kind pkg)) (assoc :go (tool-command config registry "go"))
                                         (= :pypi (package/source-kind pkg)) (assoc :uv (tool-command config registry "uv"))
-                                        (= :npm (package/source-kind pkg)) (assoc :npm (tool-command config registry "node" "npm")))
+                                        (= :npm (package/source-kind pkg)) (assoc :npm (tool-command config registry "node" "npm"))
+                                        (= :cargo (package/source-kind pkg)) (assoc :cargo (tool-command config registry "rustup" "cargo")))
                               result (installed-result name (install/install! config io pkg options))
                               warnings (cond-> []
                                          (package/superseded-warning pkg) (conj (package/superseded-warning pkg))

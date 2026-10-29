@@ -2,7 +2,8 @@
 ;; SPDX-License-Identifier: 0BSD
 
 (ns breto.source
-  (:require [breto.github :as github]
+  (:require [breto.cargo :as cargo]
+            [breto.github :as github]
             [breto.npm :as npm]
             [breto.package :as package]
             [breto.template :as template]
@@ -135,6 +136,9 @@
     :pypi (let [url (pypi-url source "/json")]
             (tagged pkg (or (get-in (json/parse-string (get-text url {"Accept" "application/json"})) ["info" "version"])
                             (throw (ex-info (str "no info.version in " url) {:breto/problem :no-release :url url})))))
+    :cargo (or (newest-listed pkg io #{})
+               (throw (ex-info (str "no release of " (:cargo source) " in " (cargo/index-url (:cargo source)))
+                               {:breto/problem :no-release :url (cargo/index-url (:cargo source))})))
     :npm (let [url (npm/registry-url (:npm source) "/latest")]
            (tagged pkg (or (get (json/parse-string (get-text url {"Accept" "application/json"})) "version")
                            (throw (ex-info (str "no version in " url) {:breto/problem :no-release :url url})))))))
@@ -159,6 +163,10 @@
     :pypi (->> (get (json/parse-string (get-text (pypi-url source "/json") {"Accept" "application/json"})) "releases")
                (keep (fn [[version files]] (when (and (seq files) (not-every? #(get % "yanked") files)) version)))
                (remove #(re-find #"\d(a|b|rc|\.dev)\d*" %)))
+    :cargo (->> (json/parsed-seq (java.io.StringReader. (get-text (cargo/index-url (:cargo source)) {})))
+                (remove #(get % "yanked"))
+                (map #(get % "vers"))
+                (remove #(str/includes? % "-")))
     :npm (->> (get (json/parse-string (get-text (npm/registry-url (:npm source) "")
                                                 {"Accept" "application/vnd.npm.install-v1+json"}))
                    "versions")

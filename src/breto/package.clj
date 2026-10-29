@@ -2,7 +2,8 @@
 ;; SPDX-License-Identifier: 0BSD
 
 (ns breto.package
-  (:require [breto.npm :as npm]
+  (:require [breto.cargo :as cargo]
+            [breto.npm :as npm]
             [breto.template :as template]
             [breto.version :as version]
             [clojure.string :as str]))
@@ -10,7 +11,7 @@
 (def ^:private archive-suffixes
   [[".tar.gz" :tar] [".tgz" :tar] [".tar.xz" :tar] [".txz" :tar]
    [".tar.bz2" :tar] [".tbz2" :tar] [".tar" :tar] [".zip" :zip]
-   [".gz" :gz] [".bz2" :bz2]])
+   [".crate" :tar] [".gz" :gz] [".bz2" :bz2]])
 
 (defn archive-type
   "The unpack method for a downloaded file, judged by its name. Anything that is
@@ -28,7 +29,7 @@
     (subs file-name 0 (- (count file-name) (count suffix)))
     file-name))
 
-(def source-kinds #{:github :gitlab :text :json :go :pypi :npm})
+(def source-kinds #{:github :gitlab :text :json :go :pypi :npm :cargo})
 
 (defn source-kind [{:keys [source]}]
   (let [kinds (filter source-kinds (keys source))]
@@ -145,6 +146,10 @@
                    (re-matches #"(@[a-z0-9][a-z0-9._~-]*/)?[a-z0-9][a-z0-9._~-]*" (:npm source)))))
     (conj ":source {:npm NAME} names a package on the npm registry, such as prettier or @biomejs/biome")
 
+    (and (= :cargo (source-kind pkg))
+         (not (and (string? (:cargo source)) (re-matches #"[A-Za-z0-9][A-Za-z0-9_-]{0,63}" (:cargo source)))))
+    (conj ":source {:cargo NAME} names a crate on crates.io")
+
     (not (or (nil? (:python pkg)) (and (string? (:python pkg)) (re-matches #"\d+\.\d+" (:python pkg)))))
     (conj ":python is a Python version such as \"3.13\"")
 
@@ -209,8 +214,10 @@
            (or (nil? checksum) (string? checksum)
                (and (map? checksum) (= #{:json :hash} (set (keys checksum))) (string? (:json checksum))
                     (vector? (:hash checksum)) (seq (:hash checksum))
-                    (every? #(or (string? %) (keyword? %) (nat-int? %)) (:hash checksum))))))
-    (conj ":checksum is a checksum file name or URL, or {:json URL :hash [path]} with a path of keys and indices to the hash")
+                    (every? #(or (string? %) (keyword? %) (nat-int? %)
+                                 (and (map? %) (seq %) (every? (fn [[k v]] (and (or (string? k) (keyword? k)) (string? v))) %)))
+                            (:hash checksum))))))
+    (conj ":checksum is a checksum file name or URL, or {:json URL :hash [path]} with a path of keys, indices and field selectors to the hash")
 
     (and (:signature pkg)
          (let [{:keys [bundle identity identity-regexp issuer of]} (:signature pkg)]
@@ -227,6 +234,18 @@
   [{:keys [superseded-by]}]
   (when superseded-by
     (str "superseded by " superseded-by ", which breto install " superseded-by " installs; its commands may have other names")))
+
+(defn- cargo-defaults
+  "What a :cargo source fills in: the crate's download, checked against the
+  checksum its index lists, and the binary named like the package."
+  [pkg]
+  (let [crate (get-in pkg [:source :cargo])]
+    (merge {:tag-prefix "" :strip 1
+            :asset (str crate "-{version}.crate")
+            :url (cargo/download-url crate)
+            :checksum {:json (cargo/index-url crate) :hash [{"vers" "{version}"} "cksum"]}}
+           (when (nil? (:bins pkg))
+             {:bins {(:name pkg) (str "bin/" (:name pkg))}}))))
 
 (defn- complete
   "Fills in defaults and validates one flat definition."
@@ -251,6 +270,9 @@
                      (when (nil? (:bins pkg))
                        {:bins {(:name pkg) (str "node_modules/.bin/" (:name pkg))}}))
 
+              (= :cargo (source-kind pkg))
+              (merge (cargo-defaults pkg))
+
               (and (nil? (:url pkg)) (= :github (source-kind pkg)))
               (assoc :url (str "https://github.com/" (get-in pkg [:source :github])
                                "/releases/download/{tag}/{asset}"))
@@ -258,7 +280,7 @@
               (and (nil? (:bins pkg)) (:bin-dir pkg))
               (assoc :bins {})
 
-              (and (nil? (:bins pkg)) (nil? (:bin-dir pkg)) (not (#{:pypi :npm} (source-kind pkg))))
+              (and (nil? (:bins pkg)) (nil? (:bin-dir pkg)) (not (#{:pypi :npm :cargo} (source-kind pkg))))
               (assoc :bins {(:name pkg) (case (archive-type (str (:asset pkg)))
                                           :raw "{asset}"
                                           (:gz :bz2) (unpacked-name (str (:asset pkg)))
@@ -352,7 +374,10 @@
                             (#(template/render % file-vars))
                             (sibling-url asset-url))
      :checksum-path (when (map? checksum)
-                      (mapv #(if (string? %) (template/render % file-vars) %) (:hash checksum)))
+                      (mapv #(cond (string? %) (template/render % file-vars)
+                                   (map? %) (update-vals % (fn [v] (template/render v file-vars)))
+                                   :else %)
+                            (:hash checksum)))
      :signature (when-let [{:keys [bundle] :as sig} signature]
                   (-> sig
                       (assoc :bundle-url (sibling-url asset-url (template/render bundle file-vars)))

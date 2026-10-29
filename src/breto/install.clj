@@ -4,6 +4,7 @@
 (ns breto.install
   (:require [babashka.fs :as fs]
             [breto.archive :as archive]
+            [breto.cargo :as cargo]
             [breto.checksum :as checksum]
             [breto.github :as github]
             [breto.golang :as golang]
@@ -270,7 +271,7 @@
   itself was installed before any cosign could check it, and :hash-recorded?
   :upstream or :download when an installed version without a recorded hash
   got upstream's, or, when upstream publishes none, that of a fresh download. Failures carry the stage and release they happened in."
-  [config io pkg {:keys [version activate? verify? expect-sha256 expect-sum exclude-newer go uv npm] :or {activate? true verify? true}}]
+  [config io pkg {:keys [version activate? verify? expect-sha256 expect-sum exclude-newer go uv npm cargo] :or {activate? true verify? true}}]
   (let [context {:package (:name pkg) :repo (package/repo pkg) :source (:source pkg)}
         release (staged io :resolve context #(resolve-release pkg io version))
         version (:version release)
@@ -319,7 +320,11 @@
                        (when-not built
                          (staged io :unpack context
                            #(archive/unpack! file (:archive artifact) (:asset artifact) unpacked (:strip pkg))))
-                       (let [inner (get-in artifact [:signature :of :file])
+                       (let [built (or built
+                                       (when (= :cargo (package/source-kind pkg))
+                                         (staged io :build context
+                                           #(cargo/build! io pkg release unpacked work cargo context))))
+                             inner (get-in artifact [:signature :of :file])
                              file-signature (when (and verify? inner (not built))
                                               (verify-signature! config io pkg artifact
                                                                  (with-stage :signature context #(tree-file! pkg artifact unpacked inner))

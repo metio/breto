@@ -67,3 +67,11 @@
     (is (nil? (checksum/json-expected text [:short])))
     (is (nil? (checksum/json-expected text ["0.16.0" "x86_64-linux" "shasum"])))
     (is (nil? (checksum/json-expected text ["0.17.0" "x86_64-linux"])))))
+
+(deftest json-lines-are-a-list-and-selectors-pick-an-element
+  (let [text (str "{\"vers\": \"1.0.0\", \"cksum\": \"" (apply str (repeat 64 "a")) "\"}\n"
+                  "{\"vers\": \"1.1.0\", \"cksum\": \"" sha256-of-hello "\"}\n")]
+    (is (= sha256-of-hello (checksum/json-expected text [{"vers" "1.1.0"} "cksum"])))
+    (is (= sha256-of-hello (checksum/json-expected text [{:vers "1.1.0"} :cksum])))
+    (is (= sha256-of-hello (checksum/json-expected text [1 "cksum"])))
+    (is (nil? (checksum/json-expected text [{"vers" "2.0.0"} "cksum"])))))

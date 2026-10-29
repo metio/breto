@@ -302,6 +302,7 @@ A tool that ships support files next to its binary uses the tree layout, and `:l
 | `{:pypi "reuse"}` | The version PyPI reports as latest for the project. breto installs it with uv into a virtual environment of its own; see [Python packages](#python-packages). `:asset` and `:url` are filled in, and `:bins` defaults to the package name in the environment's `bin`. |
 | `{:go "golang.org/x/vuln" :package "golang.org/x/vuln/cmd/govulncheck"}` | The version the Go module proxy reports as latest for the module. breto builds `:package`, which defaults to the module itself, with `go install`; see [Go modules](#go-modules). `:asset` and `:url` are filled in. |
 | `{:npm "prettier"}` | The version the npm registry tags as latest for the package, which may be scoped, such as `@biomejs/biome`. breto installs it with npm into a directory of its own; see [npm packages](#npm-packages). `:asset` and `:url` are filled in, and `:bins` defaults to the package name in `node_modules/.bin`. |
+| `{:cargo "ripgrep"}` | The newest version of the crate on crates.io that is neither yanked nor a pre-release, from the crates.io index. breto downloads the crate, checks it against the index, and builds it with cargo; see [Cargo crates](#cargo-crates). `:asset`, `:url` and `:checksum` are filled in, and `:bins` defaults to the package name in `bin`. |
 
 A tag is a release of the package when it starts with `:tag-prefix`. A repository that releases several components under one name each, such as `cli/v0.18.1` beside `helm/v9.0.0`, needs only the prefix of its own: when the release GitHub or GitLab marks as latest belongs to another component, breto takes the newest listed release with the package's prefix, which costs one request listing the releases. A repository that changed its naming scheme keeps the old prefix in a `:history` entry, and a tag then counts when its prefix is the one that applies to the version it names:
 
@@ -356,6 +357,12 @@ The resolution depends on a cut-off: npm considers only versions published befor
 {"prettier@3.9.10" {:sha256 "…" :asset "package-lock.json" :exclude-newer "2026-10-29T10:12:45Z"}}
 ```
 
+### Cargo crates
+
+A package with a `:cargo` source is built from its crate on crates.io with the `cargo` proxy of the installed `rustup` package, which any batch installs first. breto downloads the `.crate` file, checks it against the checksum the crates.io index lists, and unpacks it, so a lock file records the hash of the crate like that of any other asset. `cargo install --locked` then builds it with the dependencies the crate's own `Cargo.lock` pins, which cargo checks against the index, and only the built binaries are kept.
+
+cargo runs with the toolchain `rustup default` selects and reads the user's cargo configuration. Building needs a C linker such as `cc`, and some crates need further system libraries.
+
 ### Rust
 
 `rustup` links the rustup binary as `rustup`, `cargo`, `rustc`, `rustfmt`, `rust-analyzer`, `cargo-clippy` and the other commands it proxies. Each proxy runs the toolchain the nearest `rust-toolchain.toml` names, else the one `rustup default` chose, and rustup installs a missing toolchain on first use. Toolchains live in `~/.rustup` and are downloaded and checked by rustup, outside of breto's store and lock files. breto updates rustup itself, so `rustup self update` is not needed. Linking a Rust program needs a C linker such as `cc`.
@@ -364,7 +371,7 @@ The resolution depends on a cut-off: npm considers only versions published befor
 
 A download from a GitHub release is checked against the sha256 digest GitHub recorded for the asset. Assets uploaded before GitHub began recording digests carry none; for those, and for downloads from other hosts, breto uses the file named by `:checksum`. A checksum file can list many assets in `sha256sum` format or hold a single hash. The algorithm follows from the length of the hash.
 
-Some projects publish their hashes in a JSON index instead. `{:json URL :hash [path]}` reads the hash at a path of keys and indices, whose strings are templates, so Zig's index gives the hash of each release:
+Some projects publish their hashes in a JSON index instead. `{:json URL :hash [path]}` reads the hash at a path of keys, indices and field selectors, whose strings are templates, so Zig's index gives the hash of each release. A selector such as `{"vers" "{version}"}` picks the first element of a list whose fields have those values, and a document of one JSON value per line, such as the crates.io index, is the list of them:
 
 ```clojure
 :checksum {:json "https://ziglang.org/download/index.json" :hash ["{version}" "x86_64-linux" "shasum"]}

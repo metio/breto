@@ -57,14 +57,27 @@
                (when (and (= 1 (count lines)) (hex? h))
                  (str/lower-case h)))))))
 
+(defn- key-name [k]
+  (if (keyword? k) (name k) k))
+
 (defn json-expected
-  "The hash at `path` in the JSON document `text`, or nil. Strings and
-  keywords in `path` are keys, integers are indices."
+  "The hash at `path` in the JSON document `text`, or nil. A document of
+  several values, one per line as in JSON Lines, is the list of them. Strings
+  and keywords in `path` are keys, integers are indices, and a map selects
+  the first element of a list whose fields have the values it names."
   [text path]
-  (let [step (fn [node k] (if (nat-int? k)
-                            (when (sequential? node) (get (vec node) k))
-                            (when (map? node) (get node (if (keyword? k) (name k) k)))))
-        value (reduce step (json/parse-string text) path)]
+  (let [values (vec (json/parsed-seq (java.io.StringReader. text)))
+        doc (if (= 1 (count values)) (first values) values)
+        step (fn [node k]
+               (cond (nat-int? k) (when (sequential? node) (get (vec node) k))
+                     (map? k) (when (sequential? node)
+                                (some (fn [element]
+                                        (when (and (map? element)
+                                                   (every? (fn [[f v]] (= v (get element (key-name f)))) k))
+                                          element))
+                                      node))
+                     :else (when (map? node) (get node (key-name k)))))
+        value (reduce step doc path)]
     (when (and (string? value) (hex? value))
       (str/lower-case value))))
 

@@ -59,7 +59,7 @@
   (format "%d:%02d" (quot seconds 60) (rem seconds 60)))
 
 (def ^:private stage-label
-  {:resolve "resolving" :download "downloading" :verify "verifying" :unpack "unpacking"
+  {:resolve "resolving" :download "downloading" :verify "verifying" :unpack "unpacking" :build "building"
    :place "placing" :activate "activating" :check "checking" :signature "checking the signature"})
 
 (defn status-line
