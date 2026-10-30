@@ -18,7 +18,7 @@ jobs:
     timeout-minutes: 330
     steps:
       - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7
-      - uses: metio/breto@d333d47e385c6178e8f5380a07d65a018fa9d293 # 2026.10.30074227
+      - uses: metio/breto@8770afbc98d14728fea7802284c5ea4cf253242e # 2026.10.30075053
         with:
           registries: github:metio/toolchains
       - name: Check every definition against its latest release on every platform

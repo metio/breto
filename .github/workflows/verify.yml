@@ -13,7 +13,7 @@ jobs:
     timeout-minutes: 15
     steps:
       - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7
-      - uses: metio/breto@d333d47e385c6178e8f5380a07d65a018fa9d293 # 2026.10.30074227
+      - uses: metio/breto@8770afbc98d14728fea7802284c5ea4cf253242e # 2026.10.30075053
         with:
           registries: github:metio/toolchains
       - run: bb test
@@ -22,7 +22,7 @@ jobs:
     timeout-minutes: 15
     steps:
       - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7
-      - uses: metio/breto@d333d47e385c6178e8f5380a07d65a018fa9d293 # 2026.10.30074227
+      - uses: metio/breto@8770afbc98d14728fea7802284c5ea4cf253242e # 2026.10.30075053
         with:
           registries: github:metio/toolchains
       - run: reuse lint
@@ -31,7 +31,7 @@ jobs:
     timeout-minutes: 15
     steps:
       - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7
-      - uses: metio/breto@d333d47e385c6178e8f5380a07d65a018fa9d293 # 2026.10.30074227
+      - uses: metio/breto@8770afbc98d14728fea7802284c5ea4cf253242e # 2026.10.30075053
         with:
           registries: github:metio/toolchains
       - run: yamllint .
@@ -40,7 +40,7 @@ jobs:
     timeout-minutes: 15
     steps:
       - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7
-      - uses: metio/breto@d333d47e385c6178e8f5380a07d65a018fa9d293 # 2026.10.30074227
+      - uses: metio/breto@8770afbc98d14728fea7802284c5ea4cf253242e # 2026.10.30075053
         with:
           registries: github:metio/toolchains
       - run: actionlint
@@ -49,7 +49,7 @@ jobs:
     timeout-minutes: 15
     steps:
       - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7
-      - uses: metio/breto@d333d47e385c6178e8f5380a07d65a018fa9d293 # 2026.10.30074227
+      - uses: metio/breto@8770afbc98d14728fea7802284c5ea4cf253242e # 2026.10.30075053
         with:
           registries: github:metio/toolchains
       - run: markdownlint-cli2 "**/*.md"
@@ -58,7 +58,7 @@ jobs:
     timeout-minutes: 15
     steps:
       - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7
-      - uses: metio/breto@d333d47e385c6178e8f5380a07d65a018fa9d293 # 2026.10.30074227
+      - uses: metio/breto@8770afbc98d14728fea7802284c5ea4cf253242e # 2026.10.30075053
         with:
           registries: github:metio/toolchains
       - run: typos
