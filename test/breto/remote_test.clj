@@ -31,7 +31,8 @@
                 (pr-str (s/everywhere {:source {:github "acme/tool"} :asset "tool" :bins {"tool" "tool"}})))
         archive (s/path "files" "toolchains-2026.1.1.tar.gz")
         _ (fs/create-dirs (s/path "files"))
-        _ (process/shell {:dir tree} "tar" "--create" "--gzip" "--file" archive "@lint.edn" "tool.edn")
+        _ (process/shell {:dir tree :extra-env {"GZIP" "-n"}} "tar" "--create" "--gzip" "--mtime=@0" "--owner=0" "--group=0"
+                         "--numeric-owner" "--file" archive "@lint.edn" "tool.edn")
         sums (s/file! "SHA256SUMS" (str (s/sha256 archive) "  toolchains-2026.1.1.tar.gz\n"))
         bundle (s/file! "bundle" "{}")
         binary (s/file! "tool" "#!/bin/sh\necho tool\n")]
