@@ -4,4 +4,7 @@
 
 {:description "Another upload hub that supports clipboard. It works well with Typora, Snipaste, VSCode",
  :source {:github "pluveto/upgit"}
- :platforms {"linux-x86_64" {:asset "upgit_linux_amd64"}}}
+ :platforms {"linux-x86_64" {:asset "upgit_linux_amd64.zip" :bins {"upgit" "upgit"}}
+             "linux-aarch64" {:asset "upgit_linux_arm64.zip" :bins {"upgit" "upgit"}}
+             "darwin-x86_64" {:asset "upgit_macos_amd64.zip" :bins {"upgit" "upgit"}}
+             "darwin-aarch64" {:asset "upgit_macos_arm64.zip" :bins {"upgit" "upgit"}}}}

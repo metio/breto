@@ -7,4 +7,6 @@
  :checksum "{asset}.sha256"
  :bins {"nub" "bin/nub", "nubr" "bin/nub", "nubx" "bin/nub"}
  :platforms {"linux-x86_64" {:asset "nub-linux-x64-musl.tar.gz"}
-             "linux-aarch64" {:asset "nub-linux-arm64-musl.tar.gz"}}}
+             "linux-aarch64" {:asset "nub-linux-arm64-musl.tar.gz"}
+             "darwin-x86_64" {:asset "nub-darwin-x64.tar.gz"}
+             "darwin-aarch64" {:asset "nub-darwin-arm64.tar.gz"}}}

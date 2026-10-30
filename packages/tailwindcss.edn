@@ -6,4 +6,6 @@
  :source {:github "tailwindlabs/tailwindcss"}
  :checksum "sha256sums.txt"
  :platforms {"linux-x86_64" {:asset "tailwindcss-linux-x64-musl"}
-             "linux-aarch64" {:asset "tailwindcss-linux-arm64-musl"}}}
+             "linux-aarch64" {:asset "tailwindcss-linux-arm64-musl"}
+             "darwin-x86_64" {:asset "tailwindcss-macos-x64"}
+             "darwin-aarch64" {:asset "tailwindcss-macos-arm64"}}}

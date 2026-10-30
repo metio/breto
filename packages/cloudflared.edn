@@ -6,4 +6,6 @@
  :source {:github "cloudflare/cloudflared"}
  :tag-prefix ""
  :platforms {"linux-x86_64" {:asset "cloudflared-linux-amd64"}
-             "linux-aarch64" {:asset "cloudflared-linux-arm64"}}}
+             "linux-aarch64" {:asset "cloudflared-linux-arm64"}
+             "darwin-x86_64" {:asset "cloudflared-darwin-amd64.tgz" :bins {"cloudflared" "cloudflared"}}
+             "darwin-aarch64" {:asset "cloudflared-darwin-arm64.tgz" :bins {"cloudflared" "cloudflared"}}}}

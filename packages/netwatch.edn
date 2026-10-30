@@ -4,4 +4,7 @@
 
 {:description "Real-time network diagnostics in your terminal. One command, zero config, instant visibility",
  :source {:github "matthart1983/netwatch"}
- :platforms {"linux-x86_64" {:asset "netwatch-linux-x86_64-static.tar.gz" :bins {"netwatch" "netwatch-linux-x86_64-static"}}}}
+ :platforms {"linux-x86_64" {:asset "netwatch-linux-x86_64.tar.gz" :bins {"netwatch" "netwatch-linux-x86_64"}}
+             "linux-aarch64" {:asset "netwatch-linux-aarch64.tar.gz" :bins {"netwatch" "netwatch-linux-aarch64"}}
+             "darwin-x86_64" {:asset "netwatch-macos-x86_64.tar.gz" :bins {"netwatch" "netwatch-macos-x86_64"}}
+             "darwin-aarch64" {:asset "netwatch-macos-aarch64.tar.gz" :bins {"netwatch" "netwatch-macos-aarch64"}}}}

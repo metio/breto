@@ -6,4 +6,6 @@
  :source {:github "pnpm/pnpm"}
  :bins {"pn" "pnpm", "pnpm" "pnpm", "pnpx" "pnpm", "pnx" "pnpm"}
  :platforms {"linux-x86_64" {:asset "pnpm-linux-x64-musl.tar.gz"}
-             "linux-aarch64" {:asset "pnpm-linux-arm64-musl.tar.gz"}}}
+             "linux-aarch64" {:asset "pnpm-linux-arm64-musl.tar.gz"}
+             "darwin-x86_64" {:asset "pnpm-darwin-x64.tar.gz"}
+             "darwin-aarch64" {:asset "pnpm-darwin-arm64.tar.gz"}}}

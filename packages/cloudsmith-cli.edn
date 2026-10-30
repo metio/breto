@@ -7,4 +7,6 @@
  :checksum "{asset}.sha256"
  :bins {"cloudsmith" "cloudsmith/cloudsmith"}
  :platforms {"linux-x86_64" {:asset "cloudsmith-{version}-linux-x86_64-gnu.tar.gz"}
-             "linux-aarch64" {:asset "cloudsmith-{version}-linux-aarch64-gnu.tar.gz"}}}
+             "linux-aarch64" {:asset "cloudsmith-{version}-linux-aarch64-gnu.tar.gz"}
+             "darwin-x86_64" {:asset "cloudsmith-{version}-macos-x86_64.tar.gz"}
+             "darwin-aarch64" {:asset "cloudsmith-{version}-macos-arm64.tar.gz"}}}

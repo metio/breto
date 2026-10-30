@@ -5,4 +5,5 @@
 {:description "A static analysis tool for securing Go code",
  :source {:github "praetorian-inc/gokart"}
  :checksum "gokart_{version}_checksums.txt"
- :platforms {"linux-x86_64" {:asset "gokart_{version}_linux_x86_64.tar.gz"}}}
+ :platforms {"linux-x86_64" {:asset "gokart_{version}_linux_x86_64.tar.gz"}
+             "darwin-x86_64" {:asset "gokart_{version}_darwin_macOS_x86_64.tar.gz"}}}

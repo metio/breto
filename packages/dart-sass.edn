@@ -7,4 +7,6 @@
  :tag-prefix ""
  :bins {"sass" "dart-sass/sass"}
  :platforms {"linux-x86_64" {:asset "dart-sass-{tag}-linux-x64-musl.tar.gz"}
-             "linux-aarch64" {:asset "dart-sass-{tag}-linux-arm64-musl.tar.gz"}}}
+             "linux-aarch64" {:asset "dart-sass-{tag}-linux-arm64-musl.tar.gz"}
+             "darwin-x86_64" {:asset "dart-sass-{tag}-macos-x64.tar.gz"}
+             "darwin-aarch64" {:asset "dart-sass-{tag}-macos-arm64.tar.gz"}}}

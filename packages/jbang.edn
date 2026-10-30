@@ -6,4 +6,7 @@
  :source {:github "jbangdev/jbang"}
  :checksum "{asset}.sha256"
  :bins {"jbang" "jbang/bin/jbang"}
- :platforms {"linux-x86_64" {:asset "jbang.zip"}}}
+ :platforms {"linux-x86_64" {:asset "jbang.zip"}
+             "linux-aarch64" {:asset "jbang.zip"}
+             "darwin-x86_64" {:asset "jbang.zip"}
+             "darwin-aarch64" {:asset "jbang.zip"}}}

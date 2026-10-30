@@ -6,4 +6,6 @@
  :source {:github "phrase/phrase-cli"}
  :tag-prefix ""
  :platforms {"linux-x86_64" {:asset "phrase_linux_amd64.tar.gz" :bins {"phrase" "phrase_linux_amd64"}}
-             "linux-aarch64" {:asset "phrase_linux_arm64.tar.gz" :bins {"phrase" "phrase_linux_arm64"}}}}
+             "linux-aarch64" {:asset "phrase_linux_arm64.tar.gz" :bins {"phrase" "phrase_linux_arm64"}}
+             "darwin-x86_64" {:asset "phrase_macosx_amd64.tar.gz" :bins {"phrase" "phrase"}}
+             "darwin-aarch64" {:asset "phrase_macosx_arm64.tar.gz" :bins {"phrase" "phrase"}}}}

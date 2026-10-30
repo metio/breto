@@ -5,4 +5,5 @@
 {:description "A dotfile manager and templater written in rust",
  :source {:github "SuperCuber/dotter"}
  :platforms {"linux-x86_64" {:asset "dotter-linux-x64-musl"}
-             "linux-aarch64" {:asset "dotter-linux-arm64-musl"}}}
+             "linux-aarch64" {:asset "dotter-linux-arm64-musl"}
+             "darwin-aarch64" {:asset "dotter-macos-arm64.arm"}}}

@@ -6,4 +6,5 @@
  :checksum "{asset}.sha256"
  :platforms {"linux-x86_64" {:asset "opa_linux_amd64_static"}
              "linux-aarch64" {:asset "opa_linux_arm64_static"}
+             "darwin-x86_64" {:asset "opa_darwin_amd64"}
              "darwin-aarch64" {:asset "opa_darwin_arm64_static"}}}

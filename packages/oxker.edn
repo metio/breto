@@ -5,4 +5,5 @@
 {:description "A simple tui to view & control docker containers",
  :source {:github "mrjackwills/oxker"}
  :platforms {"linux-x86_64" {:asset "oxker_linux_x86_64.tar.gz"}
-             "linux-aarch64" {:asset "oxker_linux_aarch64.tar.gz"}}}
+             "linux-aarch64" {:asset "oxker_linux_aarch64.tar.gz"}
+             "darwin-aarch64" {:asset "oxker_apple_darwin_aarch64.tar.gz"}}}

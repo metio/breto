@@ -4,4 +4,6 @@
 {:description "The JVM dependency resolver and application launcher, which builds the launchers of Scala and Java tools for breto"
  :source {:github "coursier/coursier"}
  :platforms {"linux-x86_64" {:asset "cs-x86_64-pc-linux.gz" :bins {"cs" "cs-x86_64-pc-linux" "coursier" "cs-x86_64-pc-linux"}}
-             "linux-aarch64" {:asset "cs-aarch64-pc-linux.gz" :bins {"cs" "cs-aarch64-pc-linux" "coursier" "cs-aarch64-pc-linux"}}}}
+             "linux-aarch64" {:asset "cs-aarch64-pc-linux.gz" :bins {"cs" "cs-aarch64-pc-linux" "coursier" "cs-aarch64-pc-linux"}}
+             "darwin-x86_64" {:asset "cs-x86_64-apple-darwin.gz" :bins {"cs" "cs-x86_64-apple-darwin" "coursier" "cs-x86_64-apple-darwin"}}
+             "darwin-aarch64" {:asset "cs-aarch64-apple-darwin.gz" :bins {"cs" "cs-aarch64-apple-darwin" "coursier" "cs-aarch64-apple-darwin"}}}}

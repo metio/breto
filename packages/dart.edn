@@ -9,4 +9,7 @@
  :strip 1
  :layout :tree
  :bins {"dart" "bin/dart" "dartaotruntime" "bin/dartaotruntime"}
- :platforms {"linux-x86_64" {:asset "dartsdk-linux-x64-release.zip"}}}
+ :platforms {"linux-x86_64" {:asset "dartsdk-linux-x64-release.zip"}
+             "linux-aarch64" {:asset "dartsdk-linux-arm64-release.zip"}
+             "darwin-x86_64" {:asset "dartsdk-macos-x64-release.zip"}
+             "darwin-aarch64" {:asset "dartsdk-macos-arm64-release.zip"}}}

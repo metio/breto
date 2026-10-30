@@ -5,4 +5,7 @@
 {:description "In ur kubernetes, buildin ur imagez",
  :source {:github "rancher/kim"}
  :checksum "sha256sum.txt"
- :platforms {"linux-x86_64" {:asset "kim-linux-amd64"}}}
+ :platforms {"linux-x86_64" {:asset "kim-linux-amd64"}
+             "linux-aarch64" {:asset "kim-linux-arm64"}
+             "darwin-x86_64" {:asset "kim-darwin-amd64"}
+             "darwin-aarch64" {:asset "kim-darwin-arm64"}}}

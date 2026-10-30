@@ -9,4 +9,7 @@
  :strip 1
  :layout :tree
  :bins {"gradle" "bin/gradle"}
- :platforms {"linux-x86_64" {:asset "gradle-{version}-bin.zip"}}}
+ :platforms {"linux-x86_64" {:asset "gradle-{version}-bin.zip"}
+             "linux-aarch64" {:asset "gradle-{version}-bin.zip"}
+             "darwin-x86_64" {:asset "gradle-{version}-bin.zip"}
+             "darwin-aarch64" {:asset "gradle-{version}-bin.zip"}}}

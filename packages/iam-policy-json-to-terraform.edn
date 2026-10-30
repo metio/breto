@@ -6,4 +6,6 @@
  :source {:github "flosell/iam-policy-json-to-terraform"}
  :tag-prefix ""
  :platforms {"linux-x86_64" {:asset "iam-policy-json-to-terraform_amd64"}
-             "linux-aarch64" {:asset "iam-policy-json-to-terraform_arm64"}}}
+             "linux-aarch64" {:asset "iam-policy-json-to-terraform_arm64"}
+             "darwin-x86_64" {:asset "iam-policy-json-to-terraform_darwin"}
+             "darwin-aarch64" {:asset "iam-policy-json-to-terraform_darwin_arm"}}}

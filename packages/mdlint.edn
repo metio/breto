@@ -6,4 +6,6 @@
  :source {:github "swanysimon/mdlint"}
  :checksum "{asset}.sha256"
  :platforms {"linux-x86_64" {:asset "mdlint-linux-x86_64-musl.tar.gz"}
-             "linux-aarch64" {:asset "mdlint-linux-aarch64-musl.tar.gz"}}}
+             "linux-aarch64" {:asset "mdlint-linux-aarch64-musl.tar.gz"}
+             "darwin-x86_64" {:asset "mdlint-macos-x86_64.tar.gz"}
+             "darwin-aarch64" {:asset "mdlint-macos-aarch64.tar.gz"}}}

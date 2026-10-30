@@ -7,4 +7,5 @@
  :tag-prefix ""
  :bins {"dcm" "dcm"}
  :platforms {"linux-x86_64" {:asset "dcm-linux-x64-release.zip"}
-             "darwin-x86_64" {:asset "dcm-macos-x64-release.zip"}}}
+             "darwin-x86_64" {:asset "dcm-macos-x64-release.zip"}
+             "darwin-aarch64" {:asset "dcm-macos-arm-release.zip"}}}

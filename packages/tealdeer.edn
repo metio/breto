@@ -7,4 +7,6 @@
  :checksum "{asset}.sha256"
  :bins {"tldr" "{asset}"}
  :platforms {"linux-x86_64" {:asset "tealdeer-linux-x86_64-musl"}
-             "linux-aarch64" {:asset "tealdeer-linux-aarch64-musl"}}}
+             "linux-aarch64" {:asset "tealdeer-linux-aarch64-musl"}
+             "darwin-x86_64" {:asset "tealdeer-macos-x86_64"}
+             "darwin-aarch64" {:asset "tealdeer-macos-aarch64"}}}

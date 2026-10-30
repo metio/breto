@@ -5,4 +5,5 @@
 {:description "Executes commands for you",
  :source {:github "wtetsu/gaze"}
  :platforms {"linux-x86_64" {:asset "gaze_linux_{tag}.zip" :bins {"gaze" "gaze_linux_{tag}/gaze"}}
+             "darwin-x86_64" {:asset "gaze_macos_amd_{tag}.zip" :bins {"gaze" "gaze_macos_amd_{tag}/gaze"}}
              "darwin-aarch64" {:asset "gaze_macos_arm_{tag}.zip" :bins {"gaze" "gaze_macos_arm_{tag}/gaze"}}}}

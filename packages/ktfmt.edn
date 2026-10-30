@@ -4,4 +4,7 @@
 
 {:description "A program that reformats Kotlin source code to comply with the common community standard for Kotlin code conventions",
  :source {:github "Kotlin/ktfmt"}
- :platforms {"linux-x86_64" {:asset "ktfmt-{version}-with-dependencies.jar"}}}
+ :platforms {"linux-x86_64" {:asset "ktfmt-{version}-with-dependencies.jar"}
+             "linux-aarch64" {:asset "ktfmt-{version}-with-dependencies.jar"}
+             "darwin-x86_64" {:asset "ktfmt-{version}-with-dependencies.jar"}
+             "darwin-aarch64" {:asset "ktfmt-{version}-with-dependencies.jar"}}}

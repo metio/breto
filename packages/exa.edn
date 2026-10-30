@@ -6,4 +6,5 @@
  :source {:github "ogham/exa"}
  :bins {"exa" "bin/exa"}
  :superseded-by "eza"
- :platforms {"linux-x86_64" {:asset "exa-linux-x86_64-musl-{tag}.zip"}}}
+ :platforms {"linux-x86_64" {:asset "exa-linux-x86_64-musl-{tag}.zip"}
+             "darwin-x86_64" {:asset "exa-macos-x86_64-{tag}.zip"}}}

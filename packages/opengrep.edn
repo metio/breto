@@ -5,4 +5,6 @@
 {:description "Static code analysis engine to find security issues in code",
  :source {:github "opengrep/opengrep"}
  :platforms {"linux-x86_64" {:asset "opengrep_manylinux_x86"}
-             "linux-aarch64" {:asset "opengrep_manylinux_aarch64"}}}
+             "linux-aarch64" {:asset "opengrep_manylinux_aarch64"}
+             "darwin-x86_64" {:asset "opengrep_osx_x86"}
+             "darwin-aarch64" {:asset "opengrep_osx_arm64"}}}

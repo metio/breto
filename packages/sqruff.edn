@@ -6,4 +6,6 @@
  :source {:github "quarylabs/sqruff"}
  :checksum "{asset}.sha256"
  :platforms {"linux-x86_64" {:asset "sqruff-linux-x86_64-musl.tar.gz"}
-             "linux-aarch64" {:asset "sqruff-linux-aarch64-musl.tar.gz"}}}
+             "linux-aarch64" {:asset "sqruff-linux-aarch64-musl.tar.gz"}
+             "darwin-x86_64" {:asset "sqruff-darwin-x86_64.tar.gz"}
+             "darwin-aarch64" {:asset "sqruff-darwin-aarch64.tar.gz"}}}

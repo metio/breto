@@ -5,4 +5,6 @@
 {:description "A Lua code formatter",
  :source {:github "JohnnyMorganz/StyLua"}
  :platforms {"linux-x86_64" {:asset "stylua-linux-x86_64-musl.zip"}
-             "linux-aarch64" {:asset "stylua-linux-aarch64-musl.zip"}}}
+             "linux-aarch64" {:asset "stylua-linux-aarch64-musl.zip"}
+             "darwin-x86_64" {:asset "stylua-macos-x86_64.zip"}
+             "darwin-aarch64" {:asset "stylua-macos-aarch64.zip"}}}

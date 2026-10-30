@@ -3,4 +3,7 @@
 
 {:description "Scala CLI, the command that compiles, runs, tests and packages Scala code"
  :source {:github "VirtusLab/scala-cli"}
- :platforms {"linux-x86_64" {:asset "scala-cli-x86_64-pc-linux-static.gz"}}}
+ :platforms {"linux-x86_64" {:asset "scala-cli-x86_64-pc-linux-static.gz"}
+             "linux-aarch64" {:asset "scala-cli-aarch64-pc-linux.gz"}
+             "darwin-x86_64" {:asset "scala-cli-x86_64-apple-darwin.gz"}
+             "darwin-aarch64" {:asset "scala-cli-aarch64-apple-darwin.gz"}}}

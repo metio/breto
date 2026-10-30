@@ -6,4 +6,6 @@
  :source {:github "jonaslu/ain"}
  :checksum "checksums.txt"
  :platforms {"linux-x86_64" {:asset "ain_{version}_linux_x86_64.tar.gz" :bins {"ain" "ain_{version}_linux_x86_64/ain"}}
-             "linux-aarch64" {:asset "ain_{version}_linux_arm64.tar.gz" :bins {"ain" "ain_{version}_linux_arm64/ain"}}}}
+             "linux-aarch64" {:asset "ain_{version}_linux_arm64.tar.gz" :bins {"ain" "ain_{version}_linux_arm64/ain"}}
+             "darwin-x86_64" {:asset "ain_{version}_mac_os_x86_64.tar.gz" :bins {"ain" "ain_{version}_mac_os_x86_64/ain"}}
+             "darwin-aarch64" {:asset "ain_{version}_mac_os_arm64.tar.gz" :bins {"ain" "ain_{version}_mac_os_arm64/ain"}}}}

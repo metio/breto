@@ -5,4 +5,6 @@
 {:source {:github "so-dang-cool/yn"}
  :bins {"Yn" "Yn", "yN" "yN"}
  :platforms {"linux-x86_64" {:asset "yn-x86_64-linux-gnu.tgz"}
-             "linux-aarch64" {:asset "yn-aarch64-linux-gnu.tgz"}}}
+             "linux-aarch64" {:asset "yn-aarch64-linux-gnu.tgz"}
+             "darwin-x86_64" {:asset "yn-x86_64-macos-none.tgz"}
+             "darwin-aarch64" {:asset "yn-aarch64-macos-none.tgz"}}}

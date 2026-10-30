@@ -6,4 +6,6 @@
  :source {:github "stripe/stripe-cli"}
  :bins {"stripe" "stripe"}
  :platforms {"linux-x86_64" {:asset "stripe_{version}_linux_x86_64.tar.gz" :checksum "stripe-linux-checksums.txt"}
-             "linux-aarch64" {:asset "stripe_{version}_linux_arm64.tar.gz" :checksum "stripe-linux-checksums.txt"}}}
+             "linux-aarch64" {:asset "stripe_{version}_linux_arm64.tar.gz" :checksum "stripe-linux-checksums.txt"}
+             "darwin-x86_64" {:asset "stripe_{version}_mac-os_x86_64.tar.gz"}
+             "darwin-aarch64" {:asset "stripe_{version}_mac-os_arm64.tar.gz"}}}

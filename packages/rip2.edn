@@ -5,4 +5,6 @@
  :source {:github "MilesCranmer/rip2"}
  :bins {"rip" "rip"}
  :platforms {"linux-x86_64" {:asset "rip-Linux-x86_64-musl.tar.gz"}
-             "linux-aarch64" {:asset "rip-Linux-aarch64-musl.tar.gz"}}}
+             "linux-aarch64" {:asset "rip-Linux-aarch64-musl.tar.gz"}
+             "darwin-x86_64" {:asset "rip-macOS-Darwin-x86_64.tar.gz"}
+             "darwin-aarch64" {:asset "rip-macOS-Darwin-aarch64.tar.gz"}}}

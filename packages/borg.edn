@@ -6,4 +6,6 @@
  :source {:github "borgbackup/borg"}
  :tag-prefix ""
  :platforms {"linux-x86_64" {:asset "borg-linux-glibc235-x86_64-gh"}
-             "linux-aarch64" {:asset "borg-linux-glibc235-arm64-gh"}}}
+             "linux-aarch64" {:asset "borg-linux-glibc235-arm64-gh"}
+             "darwin-x86_64" {:asset "borg-macos-15-x86_64-gh"}
+             "darwin-aarch64" {:asset "borg-macos-15-arm64-gh"}}}

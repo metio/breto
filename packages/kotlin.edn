@@ -7,4 +7,7 @@
  :strip 1
  :layout :tree
  :bins {"kotlin" "bin/kotlin" "kotlinc" "bin/kotlinc" "kotlinc-jvm" "bin/kotlinc-jvm" "kapt" "bin/kapt"}
- :platforms {"linux-x86_64" {:asset "kotlin-compiler-{version}.zip"}}}
+ :platforms {"linux-x86_64" {:asset "kotlin-compiler-{version}.zip"}
+             "linux-aarch64" {:asset "kotlin-compiler-{version}.zip"}
+             "darwin-x86_64" {:asset "kotlin-compiler-{version}.zip"}
+             "darwin-aarch64" {:asset "kotlin-compiler-{version}.zip"}}}

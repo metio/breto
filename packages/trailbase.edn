@@ -6,4 +6,6 @@
  :source {:github "trailbaseio/trailbase"}
  :bins {"trail" "trail"}
  :platforms {"linux-x86_64" {:asset "trailbase_{tag}_x86_64_linux.zip"}
-             "linux-aarch64" {:asset "trailbase_{tag}_aarch64_linux.zip"}}}
+             "linux-aarch64" {:asset "trailbase_{tag}_aarch64_linux.zip"}
+             "darwin-x86_64" {:asset "trailbase_{tag}_x86_64_apple_darwin.zip"}
+             "darwin-aarch64" {:asset "trailbase_{tag}_aarch64_apple_darwin.zip"}}}

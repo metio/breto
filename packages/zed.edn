@@ -6,4 +6,6 @@
  :source {:github "authzed/zed"}
  :checksum "checksums.txt"
  :platforms {"linux-x86_64" {:asset "zed_{version}_linux_amd64_gnu.tar.gz"}
-             "linux-aarch64" {:asset "zed_{version}_linux_arm64_gnu.tar.gz"}}}
+             "linux-aarch64" {:asset "zed_{version}_linux_arm64_gnu.tar.gz"}
+             "darwin-x86_64" {:asset "zed_{version}_darwin_amd64.tar.gz"}
+             "darwin-aarch64" {:asset "zed_{version}_darwin_arm64.tar.gz"}}}

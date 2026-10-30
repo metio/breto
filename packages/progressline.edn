@@ -6,4 +6,6 @@
  :source {:github "kattouf/ProgressLine"}
  :tag-prefix ""
  :platforms {"linux-x86_64" {:asset "progressline-{tag}-x86_64-unknown-linux-gnu.zip"}
-             "linux-aarch64" {:asset "progressline-{tag}-aarch64-unknown-linux-gnu.zip"}}}
+             "linux-aarch64" {:asset "progressline-{tag}-aarch64-unknown-linux-gnu.zip"}
+             "darwin-x86_64" {:asset "progressline-{tag}-x86_64-apple-macosx.zip"}
+             "darwin-aarch64" {:asset "progressline-{tag}-arm64-apple-macosx.zip"}}}

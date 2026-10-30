@@ -10,4 +10,7 @@
  :checksum "{asset}.sha256"
  :layout :tree
  :bins {"jdtls" "bin/jdtls"}
- :platforms {"linux-x86_64" {:asset "jdt-language-server-{version}-{build}.tar.gz"}}}
+ :platforms {"linux-x86_64" {:asset "jdt-language-server-{version}-{build}.tar.gz"}
+             "linux-aarch64" {:asset "jdt-language-server-{version}-{build}.tar.gz"}
+             "darwin-x86_64" {:asset "jdt-language-server-{version}-{build}.tar.gz"}
+             "darwin-aarch64" {:asset "jdt-language-server-{version}-{build}.tar.gz"}}}

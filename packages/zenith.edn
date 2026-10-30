@@ -7,4 +7,6 @@
  :tag-prefix ""
  :checksum "{asset}.sha256"
  :platforms {"linux-x86_64" {:asset "zenith-Linux-gnu-x86_64.tar.gz"}
-             "linux-aarch64" {:asset "zenith-Linux-musl-arm64.tar.gz"}}}
+             "linux-aarch64" {:asset "zenith-Linux-musl-arm64.tar.gz"}
+             "darwin-x86_64" {:asset "zenith-macOS-x86_64.tar.gz"}
+             "darwin-aarch64" {:asset "zenith-macOS-arm64.tar.gz"}}}

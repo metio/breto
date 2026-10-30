@@ -9,4 +9,5 @@
  :bins {"v" "v"}
  :platforms {"linux-x86_64" {:asset "v_linux.zip"}
              "linux-aarch64" {:asset "v_linux_arm64.zip"}
+             "darwin-x86_64" {:asset "v_macos_x86_64.zip"}
              "darwin-aarch64" {:asset "v_macos_arm64.zip"}}}
