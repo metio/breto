@@ -31,15 +31,24 @@
   (fs/create-dirs (path name "src"))
   (spit (path name ".breto.edn") content))
 
+(defn- outside-projects
+  "The environment of this process without the variables of a project it may
+  run in, such as the one the breto action sets up in CI, and with HOOK
+  naming the hook. The shells start in the test root, since this repository
+  is a project of its own."
+  []
+  (-> (into {} (remove #(str/starts-with? (key %) "BRETO_")) (System/getenv))
+      (assoc "HOOK" (str (fs/absolutize "shell/env-hook.bash")))))
+
 (defn- session
   "Runs `steps`, shell lines, in one bash that sourced the hook, calling the
   hook after each like a prompt would, and returns what the last one printed."
   [& steps]
   (let [script (str "PATH=" (path "fake") ":/usr/bin:/bin\n"
-                    "source shell/env-hook.bash\n"
+                    "source \"$HOOK\"\n"
                     (str/join "\n" (map #(str % "\n__breto_env") steps))
                     "\necho \"PATH=$PATH|PROJECT=$BRETO_PROJECT\"\n")]
-    (str/trim (:out (process/shell {:out :string :err :string} "bash" "--norc" "-c" script)))))
+    (str/trim (:out (process/shell {:dir (path) :env (outside-projects) :out :string :err :string} "bash" "--norc" "-c" script)))))
 
 (defn- calls []
   (if (fs/exists? (path "calls")) (str/split-lines (slurp (path "calls"))) []))
@@ -107,8 +116,8 @@
 
 (deftest sourcing-twice-hooks-once
   (is (= "__breto_env;x"
-         (str/trim (:out (process/shell {:out :string} "bash" "--norc" "-c"
-                                        "PROMPT_COMMAND=x; source shell/env-hook.bash; source shell/env-hook.bash; echo \"$PROMPT_COMMAND\""))))))
+         (str/trim (:out (process/shell {:dir (path) :env (outside-projects) :out :string} "bash" "--norc" "-c"
+                                        "PROMPT_COMMAND=x; source \"$HOOK\"; source \"$HOOK\"; echo \"$PROMPT_COMMAND\""))))))
 
 (deftest editing-a-group-file-runs-env-again
   (fake-breto!)
@@ -122,8 +131,8 @@
   (fake-breto!)
   (project! "app" "{:packages [\"kind\"]}")
   (is (= "unset"
-         (str/trim (:out (process/shell {:out :string :err :string} "bash" "--norc" "-c"
-                                        (str "PATH=" (path "fake") ":/usr/bin:/bin\nsource shell/env-hook.bash\n"
+         (str/trim (:out (process/shell {:dir (path) :env (outside-projects) :out :string :err :string} "bash" "--norc" "-c"
+                                        (str "PATH=" (path "fake") ":/usr/bin:/bin\nsource \"$HOOK\"\n"
                                              "cd " (path "app") "\n__breto_env\ncd " (path) "\n__breto_env\n"
                                              "echo \"${BRETO_ENV_FILES-unset}\"")))))))
 
@@ -151,8 +160,8 @@
 (deftest the-hook-runs-under-nounset
   (fake-breto!)
   (project! "app" "{:fail true}")
-  (let [{:keys [err]} (process/shell {:out :string :err :string :continue true} "bash" "--norc" "-c"
-                                     (str "PATH=" (path "fake") ":/usr/bin:/bin\nsource shell/env-hook.bash\nset -u\n"
+  (let [{:keys [err]} (process/shell {:dir (path) :env (outside-projects) :out :string :err :string :continue true} "bash" "--norc" "-c"
+                                     (str "PATH=" (path "fake") ":/usr/bin:/bin\nsource \"$HOOK\"\nset -u\n"
                                           "__breto_env\ncd " (path "app") "\n__breto_env\n__breto_env\ncd " (path) "\n__breto_env\n"))]
     (is (not (str/includes? err "unbound variable")) err)))
 
@@ -160,8 +169,8 @@
   (fake-breto!)
   (project! "app" "{:fail true}")
   (is (= "unpredictable"
-         (str/trim (:out (process/shell {:out :string :err :string} "bash" "--norc" "-c"
-                                        (str "unset XDG_RUNTIME_DIR\nPATH=" (path "fake") ":/usr/bin:/bin\nsource shell/env-hook.bash\n"
+         (str/trim (:out (process/shell {:dir (path) :env (outside-projects) :out :string :err :string} "bash" "--norc" "-c"
+                                        (str "unset XDG_RUNTIME_DIR\nPATH=" (path "fake") ":/usr/bin:/bin\nsource \"$HOOK\"\n"
                                              "cd " (path "app") "\n__breto_env\n"
                                              "[ -n \"$__breto_stamp\" ] && [ \"$__breto_stamp\" != /tmp/breto-hook-$$ ] && echo unpredictable")))))))
 
@@ -184,4 +193,4 @@
                     "cd " (path "app" "src") "\n__breto_env\n"
                     "echo \"PROJECT=$BRETO_PROJECT\"\n")]
     (is (= (str "PROJECT=" (path "app"))
-           (str/trim (:out (process/shell {:out :string :err :string} "bash" "--norc" "-c" script)))))))
+           (str/trim (:out (process/shell {:dir (path) :env (outside-projects) :out :string :err :string} "bash" "--norc" "-c" script)))))))

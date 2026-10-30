@@ -97,7 +97,10 @@
   ([config args] (breto! config args {}))
   ([config args overrides]
    (spit (path "config.edn") (pr-str (merge {:store (path "store") :bin-dir (path "bin")
-                                             :registries [(path "packages")]}
+                                             :registries [(path "packages")]
+                                             :env-dir (path "envs") :python-dir (path "python") :man-dir (path "man")
+                                             :completion-dirs {:bash (path "completions" "bash") :zsh (path "completions" "zsh")
+                                                               :fish (path "completions" "fish")}}
                                             config)))
    (let [out (java.io.StringWriter.)
          events (atom [])
