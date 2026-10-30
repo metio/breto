@@ -702,7 +702,7 @@
     (throw (ex-info "lock needs one registry directory" {:breto/problem :usage})))
   (let [dir (str (fs/canonicalize dir))
         path (str (fs/path dir registry/lock-file-name))
-        own (filter (fn [[_ {:keys [files]}]] (some #(= dir (str (fs/canonicalize (fs/parent %)))) files)) groups)
+        own (filter (fn [[_ {:keys [files]}]] (some #(when-let [parent (fs/parent %)] (= dir (str (fs/canonicalize parent)))) files)) groups)
         specs (filterv #(second (batch/split-spec %)) (registry/expand groups (map key own)))
         platforms (lock-platforms ctx)
         here (platform/current config)

@@ -18,7 +18,8 @@
             [breto.registry :as registry]
             [breto.report :as report]
             [breto.store :as store]
-            [breto.token :as token]))
+            [breto.token :as token]
+            [clojure.stacktrace :as stacktrace]))
 
 (def ^:private usage
   "Usage: breto <command> [args] [--config FILE] [--platform PLATFORM] [--debug]
@@ -240,6 +241,7 @@ Every failure is explained with what to do; --debug adds each request and stack 
                         (println (str "[ERROR] " message))
                         (when-not (= message summary) (println (str "  " summary)))
                         (doseq [f facts] (println (str "  · " f)))
-                        (doseq [a advice] (println (str "  - " a)))))
+                        (doseq [a advice] (println (str "  - " a)))
+                        (when (some #{"--debug" "-d"} args) (stacktrace/print-cause-trace e))))
                     1))]
     (System/exit (if (pos? code) 1 0))))

@@ -4,6 +4,7 @@
 (ns breto.lock-test
   (:require [babashka.fs :as fs]
             [breto.lockfile :as lockfile]
+            [breto.registry :as registry]
             [breto.support :as s :refer [path]]
             [clojure.string :as str]
             [clojure.test :refer [deftest is testing use-fixtures]]))
@@ -101,3 +102,12 @@
           {:keys [code out]} (breto! io "lock" (path "shared"))]
       (is (= 1 code) out)
       (is (= before (slurp (path "shared" "breto.lock")))))))
+
+(deftest lock-passes-over-the-groups-built-into-breto
+  (let [{:keys [io hash]} (world)]
+    (group! ["alpha@0.9.0"])
+    (with-redefs [registry/builtin (constantly {"@built-in.edn" (pr-str {:members ["alpha@1.0.0"]})})]
+      (let [{:keys [code out]} (breto! io "lock" (path "shared"))]
+        (is (= 0 code) out)))
+    (is (= {"alpha@0.9.0" {:sha256 (hash "0.9.0") :asset "alpha"}}
+           (:entries (lockfile/read-lock (path "shared" "breto.lock")))))))
