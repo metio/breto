@@ -4,4 +4,4 @@
 
 {:description "High-velocity, monorepo-scale workflow for Git",
  :source {:github "arxanas/git-branchless"}
- :asset "git-branchless-{tag}-x86_64-unknown-linux-musl.tar.gz"}
+ :platforms {"linux-x86_64" {:asset "git-branchless-{tag}-x86_64-unknown-linux-musl.tar.gz"}}}

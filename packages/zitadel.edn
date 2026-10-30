@@ -4,6 +4,6 @@
 
 {:description "ZITADEL - The best of Auth0 and Keycloak combined. Built for the serverless era",
  :source {:github "zitadel/zitadel"}
- :asset "zitadel-linux-amd64.tar.gz"
  :checksum "checksums.txt"
- :bins {"zitadel" "zitadel-linux-amd64/zitadel"}}
+ :bins {"zitadel" "zitadel-linux-amd64/zitadel"}
+ :platforms {"linux-x86_64" {:asset "zitadel-linux-amd64.tar.gz"}}}

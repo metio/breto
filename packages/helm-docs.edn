@@ -4,5 +4,5 @@
 
 {:description "A tool for automatically generating markdown documentation for helm charts",
  :source {:github "norwoodj/helm-docs"}
- :asset "helm-docs_{version}_Linux_x86_64.tar.gz"
- :checksum "checksums.txt"}
+ :checksum "checksums.txt"
+ :platforms {"linux-x86_64" {:asset "helm-docs_{version}_Linux_x86_64.tar.gz"}}}

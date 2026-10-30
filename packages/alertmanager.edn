@@ -4,6 +4,6 @@
 
 {:description "Prometheus Alertmanager",
  :source {:github "prometheus/alertmanager"}
- :asset "alertmanager-{version}.linux-amd64.tar.gz"
  :checksum "sha256sums.txt"
- :bins {"alertmanager" "alertmanager-{version}.linux-amd64/alertmanager", "amtool" "alertmanager-{version}.linux-amd64/amtool"}}
+ :bins {"alertmanager" "alertmanager-{version}.linux-amd64/alertmanager", "amtool" "alertmanager-{version}.linux-amd64/amtool"}
+ :platforms {"linux-x86_64" {:asset "alertmanager-{version}.linux-amd64.tar.gz"}}}

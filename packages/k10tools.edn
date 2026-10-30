@@ -5,5 +5,5 @@
 {:description "Used to distribute external tools",
  :source {:github "kastenhq/external-tools"}
  :tag-prefix ""
- :asset "k10tools_{tag}_linux_amd64.tar.gz"
- :checksum "checksums.txt"}
+ :checksum "checksums.txt"
+ :platforms {"linux-x86_64" {:asset "k10tools_{tag}_linux_amd64.tar.gz"}}}

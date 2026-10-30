@@ -4,6 +4,6 @@
 
 {:description "Local authentication proxy for Kubernetes Dashboard (kubectl auth-proxy)",
  :source {:github "int128/kauthproxy"}
- :asset "kauthproxy_linux_amd64.zip"
  :checksum "{asset}.sha256"
- :bins {"kauthproxy" "kauthproxy", "kubectl-auth_proxy" "kauthproxy"}}
+ :bins {"kauthproxy" "kauthproxy", "kubectl-auth_proxy" "kauthproxy"}
+ :platforms {"linux-x86_64" {:asset "kauthproxy_linux_amd64.zip"}}}

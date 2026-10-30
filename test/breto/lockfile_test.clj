@@ -5,6 +5,7 @@
   (:require [babashka.fs :as fs]
             [breto.diagnose :as diagnose]
             [breto.lockfile :as lockfile]
+            [breto.platform :as platform]
             [breto.store :as store]
             [breto.support :as s :refer [path]]
             [clojure.string :as str]
@@ -56,7 +57,7 @@
   (let [{:keys [binary io]} (kind-world)]
     (spit (path "breto.lock") ";; header\n{}\n")
     (s/breto! {:packages ["kind" "absent"] :lockfile (path "breto.lock")} ["update"] {:io io})
-    (is (= (str ";; header\n{\"kind\" {:version \"0.33.0\" :sha256 \"" (s/sha256 binary) "\" :asset \"kind-linux-amd64\"}}\n")
+    (is (= (str ";; header\n{\"kind\" {:version \"0.33.0\" :platforms {\"" (platform/detect) "\" {:sha256 \"" (s/sha256 binary) "\" :asset \"kind-linux-amd64\"}}}}\n")
            (slurp (path "breto.lock"))))))
 
 (defn- forget-hash!

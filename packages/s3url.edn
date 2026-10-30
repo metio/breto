@@ -4,5 +4,5 @@
 
 {:description "Generate S3 object pre-signed URL in one command",
  :source {:github "dtan4/s3url"}
- :asset "s3url_Linux_x86_64.tar.gz"
- :checksum "checksums.txt"}
+ :checksum "checksums.txt"
+ :platforms {"linux-x86_64" {:asset "s3url_Linux_x86_64.tar.gz"}}}

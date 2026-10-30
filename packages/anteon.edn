@@ -4,6 +4,6 @@
 
 {:description "Anteon (formerly Ddosify) - Effortless Kubernetes Monitoring and Performance Testing. Available on CLI, Self-Hosted, and Cloud",
  :source {:github "getanteon/anteon"}
- :asset "ddosify_{version}_linux_amd64.tar.gz"
  :checksum "checksums.txt"
- :bins {"ddosify" "ddosify"}}
+ :bins {"ddosify" "ddosify"}
+ :platforms {"linux-x86_64" {:asset "ddosify_{version}_linux_amd64.tar.gz"}}}

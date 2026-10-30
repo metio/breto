@@ -4,5 +4,5 @@
 
 {:description "one CLI to format your repo",
  :source {:github "numtide/treefmt"}
- :asset "treefmt_{version}_linux_amd64.tar.gz"
- :checksum "treefmt_{version}_checksums.txt"}
+ :checksum "treefmt_{version}_checksums.txt"
+ :platforms {"linux-x86_64" {:asset "treefmt_{version}_linux_amd64.tar.gz"}}}

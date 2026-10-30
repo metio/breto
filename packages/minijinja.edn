@@ -5,6 +5,6 @@
 {:description "MiniJinja is a powerful but minimal dependency template engine for Rust compatible with Jinja/Jinja2",
  :source {:github "mitsuhiko/minijinja"}
  :tag-prefix ""
- :asset "minijinja-cli-x86_64-unknown-linux-musl.tar.xz"
  :checksum "{asset}.sha256"
- :bins {"minijinja-cli" "minijinja-cli-x86_64-unknown-linux-musl/minijinja-cli"}}
+ :bins {"minijinja-cli" "minijinja-cli-x86_64-unknown-linux-musl/minijinja-cli"}
+ :platforms {"linux-x86_64" {:asset "minijinja-cli-x86_64-unknown-linux-musl.tar.xz"}}}

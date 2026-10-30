@@ -4,5 +4,5 @@
 
 {:description "A command-line fuzzy finder",
  :source {:github "junegunn/fzf"}
- :asset "fzf-{version}-linux_amd64.tar.gz"
- :checksum "fzf_{version}_checksums.txt"}
+ :checksum "fzf_{version}_checksums.txt"
+ :platforms {"linux-x86_64" {:asset "fzf-{version}-linux_amd64.tar.gz"}}}

@@ -4,5 +4,5 @@
 
 {:description "Package for downloading things from a string URL using a variety of protocols",
  :source {:github "hashicorp/go-getter"}
- :asset "go-getter_{version}_linux_amd64.zip"
- :checksum "go-getter_{version}_SHA256SUMS"}
+ :checksum "go-getter_{version}_SHA256SUMS"
+ :platforms {"linux-x86_64" {:asset "go-getter_{version}_linux_amd64.zip"}}}

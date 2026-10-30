@@ -4,5 +4,5 @@
 
 {:description "Key remapper for X11 and Wayland (for GNOME Wayland)",
  :source {:github "xremap/xremap"}
- :asset "xremap-linux-x86_64-gnome.zip"
- :bins {"xremap" "xremap"}}
+ :bins {"xremap" "xremap"}
+ :platforms {"linux-x86_64" {:asset "xremap-linux-x86_64-gnome.zip"}}}

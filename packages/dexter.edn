@@ -4,6 +4,6 @@
 
 {:description "A fast, full-featured Elixir LSP optimized for large codebases",
  :source {:github "remoteoss/dexter"}
- :asset "dexter_Linux_x86_64.tar.gz"
  :checksum "checksums.txt"
- :bins {"dexter" "dexter_Linux_x86_64/dexter"}}
+ :bins {"dexter" "dexter_Linux_x86_64/dexter"}
+ :platforms {"linux-x86_64" {:asset "dexter_Linux_x86_64.tar.gz"}}}

@@ -4,5 +4,5 @@
 
 {:description "Command line invoice generator",
  :source {:github "maaslalani/invoice"}
- :asset "invoice_{version}_linux_amd64.tar.gz"
- :checksum "invoice_{version}_checksums.txt"}
+ :checksum "invoice_{version}_checksums.txt"
+ :platforms {"linux-x86_64" {:asset "invoice_{version}_linux_amd64.tar.gz"}}}

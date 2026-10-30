@@ -4,5 +4,5 @@
 
 {:description "Flexible HTTP command line stress tester for websites and web services",
  :source {:github "bengadbois/pewpew"}
- :asset "pewpew_{version}_linux_amd64.tar.gz"
- :checksum "checksums.txt"}
+ :checksum "checksums.txt"
+ :platforms {"linux-x86_64" {:asset "pewpew_{version}_linux_amd64.tar.gz"}}}

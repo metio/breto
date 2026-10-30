@@ -4,4 +4,4 @@
 
 {:description "Parse TODO and FIXME comments from code",
  :source {:github "ianlewis/todos"}
- :asset "todos-linux-amd64"}
+ :platforms {"linux-x86_64" {:asset "todos-linux-amd64"}}}

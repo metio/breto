@@ -4,5 +4,5 @@
 
 {:description "Switch between kubeconfigs and avoid unintentional operation on your production clusters",
  :source {:github "mumoshu/config-registry"}
- :asset "config-registry_{tag}_linux_amd64.tar.gz"
- :checksum "checksums.txt"}
+ :checksum "checksums.txt"
+ :platforms {"linux-x86_64" {:asset "config-registry_{tag}_linux_amd64.tar.gz"}}}

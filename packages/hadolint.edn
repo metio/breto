@@ -4,5 +4,5 @@
 
 {:description "Dockerfile linter, validate inline bash, written in Haskell",
  :source {:github "hadolint/hadolint"}
- :asset "hadolint-linux-x86_64"
- :checksum "checksums.sha256"}
+ :checksum "checksums.sha256"
+ :platforms {"linux-x86_64" {:asset "hadolint-linux-x86_64"}}}

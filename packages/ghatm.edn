@@ -4,5 +4,5 @@
 
 {:description "Set timeout-minutes to all GitHub Actions jobs",
  :source {:github "suzuki-shunsuke/ghatm"}
- :asset "ghatm_linux_amd64.tar.gz"
- :checksum "ghatm_{version}_checksums.txt"}
+ :checksum "ghatm_{version}_checksums.txt"
+ :platforms {"linux-x86_64" {:asset "ghatm_linux_amd64.tar.gz"}}}

@@ -4,5 +4,5 @@
 
 {:description "AI powered Kubernetes Assistant",
  :source {:github "GoogleCloudPlatform/kubectl-ai"}
- :asset "kubectl-ai_Linux_x86_64.tar.gz"
- :checksum "kubectl-ai_{version}_checksums.txt"}
+ :checksum "kubectl-ai_{version}_checksums.txt"
+ :platforms {"linux-x86_64" {:asset "kubectl-ai_Linux_x86_64.tar.gz"}}}

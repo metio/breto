@@ -4,5 +4,5 @@
 
 {:description "CLI tool to get CI related information",
  :source {:github "suzuki-shunsuke/ci-info"}
- :asset "ci-info_{version}_linux_amd64.tar.gz"
- :checksum "ci-info_{version}_checksums.txt"}
+ :checksum "ci-info_{version}_checksums.txt"
+ :platforms {"linux-x86_64" {:asset "ci-info_{version}_linux_amd64.tar.gz"}}}

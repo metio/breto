@@ -4,5 +4,5 @@
 
 {:description "An extremely fast Haskell package and project manager, written in Rust",
  :source {:github "arcanist-sh/hx"}
- :asset "hx-{tag}-x86_64-unknown-linux-musl.tar.gz"
- :checksum "{asset}.sha256"}
+ :checksum "{asset}.sha256"
+ :platforms {"linux-x86_64" {:asset "hx-{tag}-x86_64-unknown-linux-musl.tar.gz"}}}

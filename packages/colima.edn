@@ -4,5 +4,5 @@
 
 {:description "Container runtimes on macOS (and Linux) with minimal setup",
  :source {:github "abiosoft/colima"}
- :asset "colima-Linux-x86_64"
- :checksum "colima-Linux-x86_64.sha256sum"}
+ :checksum "colima-Linux-x86_64.sha256sum"
+ :platforms {"linux-x86_64" {:asset "colima-Linux-x86_64"}}}

@@ -4,4 +4,4 @@
 
 {:description "CLI for actuated",
  :source {:github "self-actuated/actuated-cli"}
- :asset "actuated-cli"}
+ :platforms {"linux-x86_64" {:asset "actuated-cli"}}}

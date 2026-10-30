@@ -4,4 +4,4 @@
 
 {:description "Jump helps you navigate faster by learning your habits",
  :source {:github "gsamokovarov/jump"}
- :asset "jump_linux_amd64_binary"}
+ :platforms {"linux-x86_64" {:asset "jump_linux_amd64_binary"}}}

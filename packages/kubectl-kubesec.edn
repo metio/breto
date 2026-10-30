@@ -4,6 +4,6 @@
 
 {:description "Security risk analysis for Kubernetes resources",
  :source {:github "controlplaneio/kubectl-kubesec"}
- :asset "kubectl-kubesec_linux_amd64.tar.gz"
  :checksum "kubectl-kubesec_checksums.txt"
- :bins {"kubectl-kubesec_scan" "kubectl-scan"}}
+ :bins {"kubectl-kubesec_scan" "kubectl-scan"}
+ :platforms {"linux-x86_64" {:asset "kubectl-kubesec_linux_amd64.tar.gz"}}}

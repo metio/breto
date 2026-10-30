@@ -4,5 +4,5 @@
 
 {:description "jwt cli",
  :source {:github "pete911/jwt"}
- :asset "jwt_{version}_linux_amd64.tar.gz"
- :checksum "checksums.txt"}
+ :checksum "checksums.txt"
+ :platforms {"linux-x86_64" {:asset "jwt_{version}_linux_amd64.tar.gz"}}}

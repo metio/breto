@@ -3,5 +3,5 @@
 
 {:description "Like jq, but for HTML",
  :source {:github "mgdm/htmlq"},
- :asset "htmlq-x86_64-linux.tar.gz",
- :history [{:before "0.4.1" :verify false}]}
+ :history [{:before "0.4.1" :verify false}]
+ :platforms {"linux-x86_64" {:asset "htmlq-x86_64-linux.tar.gz"}}}

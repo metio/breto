@@ -4,4 +4,4 @@
 
 {:description "Lore is a next-generation, open source version control system",
  :source {:github "EpicGames/lore"}
- :asset "lore-{tag}-x86_64-unknown-linux-gnu.tar.gz"}
+ :platforms {"linux-x86_64" {:asset "lore-{tag}-x86_64-unknown-linux-gnu.tar.gz"}}}

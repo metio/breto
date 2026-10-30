@@ -4,5 +4,5 @@
 
 {:description "Browsable CRD docs and IDE validation schemas, straight from your Kubernetes cluster",
  :source {:github "sholdee/crd-schema-publisher"}
- :asset "crd-schema-publisher-linux-amd64"
- :checksum "checksums-sha256.txt"}
+ :checksum "checksums-sha256.txt"
+ :platforms {"linux-x86_64" {:asset "crd-schema-publisher-linux-amd64"}}}

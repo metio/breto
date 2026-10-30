@@ -4,6 +4,6 @@
 
 {:description "Redli - A humane alternative to the Redis-cli and TLS",
  :source {:github "IBM-Cloud/redli"}
- :asset "redli_{version}_linux_amd64.tar.gz"
  :checksum "redli_{version}_checksums.txt"
- :bins {"redli" "redli_linux_amd64"}}
+ :bins {"redli" "redli_linux_amd64"}
+ :platforms {"linux-x86_64" {:asset "redli_{version}_linux_amd64.tar.gz"}}}

@@ -4,5 +4,5 @@
 
 {:description "The official command line interface for the DigitalOcean API",
  :source {:github "digitalocean/doctl"}
- :asset "doctl-{version}-linux-amd64.tar.gz"
- :checksum "doctl-{version}-checksums.sha256"}
+ :checksum "doctl-{version}-checksums.sha256"
+ :platforms {"linux-x86_64" {:asset "doctl-{version}-linux-amd64.tar.gz"}}}

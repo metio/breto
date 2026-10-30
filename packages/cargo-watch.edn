@@ -4,6 +4,6 @@
 
 {:description "Watches over your Cargo project's source",
  :source {:github "watchexec/cargo-watch"}
- :asset "cargo-watch-{tag}-x86_64-unknown-linux-musl.tar.xz"
  :checksum "SHA512SUMS"
- :bins {"cargo-watch" "cargo-watch-{tag}-x86_64-unknown-linux-musl/cargo-watch"}}
+ :bins {"cargo-watch" "cargo-watch-{tag}-x86_64-unknown-linux-musl/cargo-watch"}
+ :platforms {"linux-x86_64" {:asset "cargo-watch-{tag}-x86_64-unknown-linux-musl.tar.xz"}}}

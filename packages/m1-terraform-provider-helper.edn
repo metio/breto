@@ -4,5 +4,5 @@
 
 {:description "CLI to support with downloading and compiling terraform providers for Mac with M1 chip",
  :source {:github "kreuzwerker/m1-terraform-provider-helper"}
- :asset "m1-terraform-provider-helper_{version}_linux_amd64.tar.gz"
- :checksum "checksums.txt"}
+ :checksum "checksums.txt"
+ :platforms {"linux-x86_64" {:asset "m1-terraform-provider-helper_{version}_linux_amd64.tar.gz"}}}

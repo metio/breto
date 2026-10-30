@@ -4,5 +4,5 @@
 
 {:description "Scans Software Bill of Materials (SBOMs) for security vulnerabilities",
  :source {:github "devops-kung-fu/bomber"}
- :asset "bomber_{version}_linux_amd64.tar.gz"
- :checksum "checksums.txt"}
+ :checksum "checksums.txt"
+ :platforms {"linux-x86_64" {:asset "bomber_{version}_linux_amd64.tar.gz"}}}

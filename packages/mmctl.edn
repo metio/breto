@@ -4,4 +4,4 @@
 
 {:description "A remote CLI tool for Mattermost",
  :source {:github "mattermost/mmctl"}
- :asset "linux_amd64.tar"}
+ :platforms {"linux-x86_64" {:asset "linux_amd64.tar"}}}

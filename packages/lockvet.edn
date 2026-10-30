@@ -4,6 +4,6 @@
 
 {:description "Explain any lockfile change before you merge it — bumps, breaking jumps, new vulns, release ages & deprecations across 30 lockfile formats + SBOMs. CLI, GitHub Action, browser playground, and MCP server so AI assistants can vet PRs too",
  :source {:github "matteo-sung/lockvet"}
- :asset "lockvet_{tag}_linux_amd64.tar.gz"
  :checksum "checksums.txt"
- :bins {"lockvet" "lockvet_{tag}_linux_amd64/lockvet"}}
+ :bins {"lockvet" "lockvet_{tag}_linux_amd64/lockvet"}
+ :platforms {"linux-x86_64" {:asset "lockvet_{tag}_linux_amd64.tar.gz"}}}

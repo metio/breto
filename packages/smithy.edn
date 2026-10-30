@@ -5,6 +5,6 @@
 {:description "Smithy is a protocol-agnostic interface definition language and set of tools for generating clients, servers, and documentation for any programming language",
  :source {:github "smithy-lang/smithy"}
  :tag-prefix ""
- :asset "smithy-cli-linux-x86_64.zip"
  :checksum "{asset}.sha256"
- :bins {"smithy" "smithy-cli-linux-x86_64/bin/smithy"}}
+ :bins {"smithy" "smithy-cli-linux-x86_64/bin/smithy"}
+ :platforms {"linux-x86_64" {:asset "smithy-cli-linux-x86_64.zip"}}}

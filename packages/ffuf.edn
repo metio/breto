@@ -4,5 +4,5 @@
 
 {:description "Fast web fuzzer written in Go",
  :source {:github "ffuf/ffuf"}
- :asset "ffuf_{version}_linux_amd64.tar.gz"
- :checksum "ffuf_{version}_checksums.txt"}
+ :checksum "ffuf_{version}_checksums.txt"
+ :platforms {"linux-x86_64" {:asset "ffuf_{version}_linux_amd64.tar.gz"}}}

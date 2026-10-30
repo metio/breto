@@ -4,5 +4,5 @@
 
 {:description "A development workflow tool for working with AWS CloudFormation",
  :source {:github "aws-cloudformation/rain"}
- :asset "rain-{tag}_linux-amd64.zip"
- :bins {"rain" "rain-{tag}_linux-amd64/rain"}}
+ :bins {"rain" "rain-{tag}_linux-amd64/rain"}
+ :platforms {"linux-x86_64" {:asset "rain-{tag}_linux-amd64.zip"}}}

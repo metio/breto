@@ -5,5 +5,5 @@
 {:description "A syntax-highlighting pager for git, diff, grep, and blame output",
  :source {:github "dandavison/delta"}
  :tag-prefix ""
- :asset "delta-{tag}-x86_64-unknown-linux-musl.tar.gz"
- :bins {"delta" "delta-{tag}-x86_64-unknown-linux-musl/delta"}}
+ :bins {"delta" "delta-{tag}-x86_64-unknown-linux-musl/delta"}
+ :platforms {"linux-x86_64" {:asset "delta-{tag}-x86_64-unknown-linux-musl.tar.gz"}}}

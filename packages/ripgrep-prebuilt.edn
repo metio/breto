@@ -4,5 +4,5 @@
 
 {:description "Builds ripgrep on Azure Pipelines for multiple platforms and makes the binaries available as Github releases",
  :source {:github "microsoft/ripgrep-prebuilt"}
- :asset "ripgrep-{tag}-x86_64-unknown-linux-musl.tar.gz"
- :bins {"rg" "rg"}}
+ :bins {"rg" "rg"}
+ :platforms {"linux-x86_64" {:asset "ripgrep-{tag}-x86_64-unknown-linux-musl.tar.gz"}}}

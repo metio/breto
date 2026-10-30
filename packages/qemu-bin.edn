@@ -4,6 +4,6 @@
 
 {:description "Prebuilt binaries of `qemu` built with zig cc",
  :source {:github "takumin/qemu-bin"}
- :asset "qemu-x86_64-linux-gnu.tar.gz"
  :checksum "SHA256SUMS"
- :bins {"qemu-edid" "bin/qemu-edid", "qemu-img" "bin/qemu-img", "qemu-io" "bin/qemu-io", "qemu-nbd" "bin/qemu-nbd", "qemu-pr-helper" "bin/qemu-pr-helper", "qemu-storage-daemon" "bin/qemu-storage-daemon", "qemu-system-aarch64" "bin/qemu-system-aarch64", "qemu-system-x86_64" "bin/qemu-system-x86_64", "qemu-vmsr-helper" "bin/qemu-vmsr-helper"}}
+ :bins {"qemu-edid" "bin/qemu-edid", "qemu-img" "bin/qemu-img", "qemu-io" "bin/qemu-io", "qemu-nbd" "bin/qemu-nbd", "qemu-pr-helper" "bin/qemu-pr-helper", "qemu-storage-daemon" "bin/qemu-storage-daemon", "qemu-system-aarch64" "bin/qemu-system-aarch64", "qemu-system-x86_64" "bin/qemu-system-x86_64", "qemu-vmsr-helper" "bin/qemu-vmsr-helper"}
+ :platforms {"linux-x86_64" {:asset "qemu-x86_64-linux-gnu.tar.gz"}}}

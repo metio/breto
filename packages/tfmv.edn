@@ -4,5 +4,5 @@
 
 {:description "CLI to rename Terraform resources and modules and generate moved blocks",
  :source {:github "suzuki-shunsuke/tfmv"}
- :asset "tfmv_linux_amd64.tar.gz"
- :checksum "tfmv_{version}_checksums.txt"}
+ :checksum "tfmv_{version}_checksums.txt"
+ :platforms {"linux-x86_64" {:asset "tfmv_linux_amd64.tar.gz"}}}

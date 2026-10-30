@@ -3,8 +3,8 @@
 
 {:description "CLI to manage contacts.",
  :source {:github "pimalaya/cardamum"},
- :asset "cardamum.x86_64-linux.tgz",
  :man ["share/man/*.1.gz"],
  :completions {:bash "share/completions/cardamum.bash",
                :zsh "share/completions/_cardamum",
-               :fish "share/completions/cardamum.fish"}}
+               :fish "share/completions/cardamum.fish"}
+ :platforms {"linux-x86_64" {:asset "cardamum.x86_64-linux.tgz"}}}

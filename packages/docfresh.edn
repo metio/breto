@@ -4,5 +4,5 @@
 
 {:description "Make document maintainable, reusable, and testable",
  :source {:github "suzuki-shunsuke/docfresh"}
- :asset "docfresh_linux_amd64.tar.gz"
- :checksum "docfresh_checksums.txt"}
+ :checksum "docfresh_checksums.txt"
+ :platforms {"linux-x86_64" {:asset "docfresh_linux_amd64.tar.gz"}}}

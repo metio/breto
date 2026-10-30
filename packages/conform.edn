@@ -4,5 +4,5 @@
 
 {:description "Policy enforcement for your pipelines",
  :source {:github "siderolabs/conform"}
- :asset "conform-linux-amd64"
- :checksum "sha512sum.txt"}
+ :checksum "sha512sum.txt"
+ :platforms {"linux-x86_64" {:asset "conform-linux-amd64"}}}

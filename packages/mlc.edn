@@ -4,4 +4,4 @@
 
 {:description "Check for broken links in markup files",
  :source {:github "becheran/mlc"}
- :asset "mlc-x86_64-linux"}
+ :platforms {"linux-x86_64" {:asset "mlc-x86_64-linux"}}}

@@ -3,9 +3,9 @@
 
 {:description "CLI tool and library for generating a Software Bill of Materials from container images and filesystems",
  :source {:github "anchore/syft"},
- :asset "syft_{version}_linux_amd64.tar.gz",
  :checksum "syft_{version}_checksums.txt",
  :signature {:bundle "syft_{version}_checksums.txt.sigstore.json",
              :identity "https://github.com/anchore/syft/.github/workflows/release.yaml@refs/heads/main",
              :issuer "https://token.actions.githubusercontent.com",
-             :of :checksum}}
+             :of :checksum}
+ :platforms {"linux-x86_64" {:asset "syft_{version}_linux_amd64.tar.gz"}}}

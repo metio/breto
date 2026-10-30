@@ -4,5 +4,5 @@
 
 {:description "dfg - Generates dockerfiles based on various input channels",
  :source {:github "ozankasikci/dockerfile-generator"}
- :asset "dfg_{tag}_linux_amd64"
- :bins {"dfg" "{asset}"}}
+ :bins {"dfg" "{asset}"}
+ :platforms {"linux-x86_64" {:asset "dfg_{tag}_linux_amd64"}}}

@@ -4,4 +4,4 @@
 {:description "Language server for Zig"
  :source {:github "zigtools/zls"}
  :tag-prefix ""
- :asset "zls-x86_64-linux.tar.xz"}
+ :platforms {"linux-x86_64" {:asset "zls-x86_64-linux.tar.xz"}}}

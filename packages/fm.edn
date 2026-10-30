@@ -4,5 +4,5 @@
 
 {:description "A terminal based file manager",
  :source {:github "mistakenelf/fm"}
- :asset "fm_{version}_linux_amd64.tar.gz"
- :checksum "fm_{version}_checksums.txt"}
+ :checksum "fm_{version}_checksums.txt"
+ :platforms {"linux-x86_64" {:asset "fm_{version}_linux_amd64.tar.gz"}}}

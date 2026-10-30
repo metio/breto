@@ -4,5 +4,5 @@
 
 {:description "Restish is a CLI for interacting with REST-ish HTTP APIs with some nice features built-in",
  :source {:github "rest-sh/restish"}
- :asset "restish-{version}-linux-amd64.tar.gz"
- :checksum "checksums.txt"}
+ :checksum "checksums.txt"
+ :platforms {"linux-x86_64" {:asset "restish-{version}-linux-amd64.tar.gz"}}}

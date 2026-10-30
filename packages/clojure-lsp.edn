@@ -4,5 +4,5 @@
 {:description "Language server for Clojure"
  :source {:github "clojure-lsp/clojure-lsp"}
  :tag-prefix ""
- :asset "clojure-lsp-native-static-linux-amd64.zip"
- :checksum "{asset}.sha256"}
+ :checksum "{asset}.sha256"
+ :platforms {"linux-x86_64" {:asset "clojure-lsp-native-static-linux-amd64.zip"}}}

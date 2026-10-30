@@ -4,5 +4,5 @@
 
 {:description "The 1.x line is frozen - features and bugfixes now happen on https://github.com/yarnpkg/berry",
  :source {:github "yarnpkg/yarn"}
- :asset "yarn-{tag}.tar.gz"
- :bins {"yarn" "yarn-{tag}/bin/yarn"}}
+ :bins {"yarn" "yarn-{tag}/bin/yarn"}
+ :platforms {"linux-x86_64" {:asset "yarn-{tag}.tar.gz"}}}

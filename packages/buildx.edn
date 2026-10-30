@@ -4,6 +4,6 @@
 
 {:description "Docker CLI plugin for extended build capabilities with BuildKit",
  :source {:github "docker/buildx"}
- :asset "buildx-{tag}.linux-amd64"
  :checksum "checksums.txt"
- :bins {"docker-cli-plugin-docker-buildx" "{asset}"}}
+ :bins {"docker-cli-plugin-docker-buildx" "{asset}"}
+ :platforms {"linux-x86_64" {:asset "buildx-{tag}.linux-amd64"}}}

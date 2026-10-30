@@ -4,5 +4,5 @@
 
 {:description "Command line tool and Go library for CODEOWNERS files",
  :source {:github "hmarr/codeowners"}
- :asset "codeowners_{version}_linux_amd64.tar.gz"
- :checksum "checksums.txt"}
+ :checksum "checksums.txt"
+ :platforms {"linux-x86_64" {:asset "codeowners_{version}_linux_amd64.tar.gz"}}}

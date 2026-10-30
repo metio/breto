@@ -4,5 +4,5 @@
 
 {:description "rgo is a CLI to release a Homebrew-tap recipe, Scoop App Manifest, and a winget manifest built with GoReleaser",
  :source {:github "suzuki-shunsuke/rgo"}
- :asset "rgo_linux_amd64.tar.gz"
- :checksum "rgo_{version}_checksums.txt"}
+ :checksum "rgo_{version}_checksums.txt"
+ :platforms {"linux-x86_64" {:asset "rgo_linux_amd64.tar.gz"}}}

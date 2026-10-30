@@ -4,5 +4,5 @@
 
 {:description "A security layer for Git repositories",
  :source {:github "gittuf/gittuf"}
- :asset "gittuf_{version}_linux_amd64"
- :checksum "checksums.txt"}
+ :checksum "checksums.txt"
+ :platforms {"linux-x86_64" {:asset "gittuf_{version}_linux_amd64"}}}

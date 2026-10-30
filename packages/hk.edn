@@ -4,4 +4,4 @@
 
 {:description "git hook and pre-commit lint manager",
  :source {:github "jdx/hk"}
- :asset "hk-x86_64-unknown-linux-gnu.tar.gz"}
+ :platforms {"linux-x86_64" {:asset "hk-x86_64-unknown-linux-gnu.tar.gz"}}}

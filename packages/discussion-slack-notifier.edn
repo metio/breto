@@ -4,5 +4,5 @@
 
 {:description "Notify GitHub Discussions events to Slack with GitHub Actions",
  :source {:github "suzuki-shunsuke/discussion-slack-notifier"}
- :asset "discussion-slack-notifier_linux_amd64.tar.gz"
- :checksum "discussion-slack-notifier_{version}_checksums.txt"}
+ :checksum "discussion-slack-notifier_{version}_checksums.txt"
+ :platforms {"linux-x86_64" {:asset "discussion-slack-notifier_linux_amd64.tar.gz"}}}

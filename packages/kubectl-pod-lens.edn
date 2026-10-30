@@ -4,6 +4,6 @@
 
 {:description "kubectl plugin for show pod-related resources",
  :source {:github "sunny0826/kubectl-pod-lens"}
- :asset "pod-lens_linux_amd64.tar.gz"
  :checksum "pod-lens_{version}_checksums.txt"
- :bins {"kubectl-pod_lens" "pod-lens", "pod-lens" "pod-lens"}}
+ :bins {"kubectl-pod_lens" "pod-lens", "pod-lens" "pod-lens"}
+ :platforms {"linux-x86_64" {:asset "pod-lens_linux_amd64.tar.gz"}}}

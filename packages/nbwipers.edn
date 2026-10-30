@@ -4,5 +4,5 @@
 
 {:description "nbwipers is a command line tool to wipe clean jupyter notebooks, written in Rust",
  :source {:github "felixgwilliams/nbwipers"}
- :asset "nbwipers-x86_64-unknown-linux-gnu.tar.gz"
- :checksum "{asset}.sha256"}
+ :checksum "{asset}.sha256"
+ :platforms {"linux-x86_64" {:asset "nbwipers-x86_64-unknown-linux-gnu.tar.gz"}}}

@@ -4,5 +4,5 @@
 
 {:description "Enforce git message commit consistency",
  :source {:github "antham/gommit"}
- :asset "gommit_{version}_linux_amd64.tar.gz"
- :checksum "gommit_{version}_checksums.txt"}
+ :checksum "gommit_{version}_checksums.txt"
+ :platforms {"linux-x86_64" {:asset "gommit_{version}_linux_amd64.tar.gz"}}}

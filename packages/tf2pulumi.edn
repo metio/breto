@@ -4,5 +4,5 @@
 
 {:description "A tool to convert Terraform projects to Pulumi TypeScript programs",
  :source {:github "pulumi/tf2pulumi"}
- :asset "tf2pulumi-{tag}-linux-x64.tar.gz"
- :checksum "tf2pulumi_{version}_checksums.txt"}
+ :checksum "tf2pulumi_{version}_checksums.txt"
+ :platforms {"linux-x86_64" {:asset "tf2pulumi-{tag}-linux-x64.tar.gz"}}}

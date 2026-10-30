@@ -5,5 +5,5 @@
 {:description "Easily check your clusters for use of deprecated APIs",
  :source {:github "doitintl/kube-no-trouble"}
  :tag-prefix ""
- :asset "kubent-{tag}-linux-amd64.tar.gz"
- :bins {"kubent" "kubent"}}
+ :bins {"kubent" "kubent"}
+ :platforms {"linux-x86_64" {:asset "kubent-{tag}-linux-amd64.tar.gz"}}}

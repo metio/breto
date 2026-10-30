@@ -4,5 +4,5 @@
 
 {:description "Trigram-indexed grep with a client/server architecture for fast regex search in large codebases locally",
  :source {:github "microsoft/tgrep"}
- :asset "tgrep-{tag}-x86_64-unknown-linux-musl.tar.gz"
- :checksum "checksums.txt"}
+ :checksum "checksums.txt"
+ :platforms {"linux-x86_64" {:asset "tgrep-{tag}-x86_64-unknown-linux-musl.tar.gz"}}}

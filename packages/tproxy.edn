@@ -4,4 +4,4 @@
 
 {:description "A cli tool to proxy and analyze TCP connections",
  :source {:github "kevwan/tproxy"}
- :asset "tproxy-{tag}-linux-amd64.tar.gz"}
+ :platforms {"linux-x86_64" {:asset "tproxy-{tag}-linux-amd64.tar.gz"}}}

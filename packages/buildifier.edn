@@ -4,4 +4,4 @@
 
 {:description "Format BUILD, BUILD.bazel and BUCK files in a standard way",
  :source {:github "bazel-contrib/buildtools"}
- :asset "buildifier-linux-amd64"}
+ :platforms {"linux-x86_64" {:asset "buildifier-linux-amd64"}}}

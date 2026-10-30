@@ -4,5 +4,5 @@
 
 {:description "Kubernetes focused container assessment tool for penetration testing",
  :source {:github "quarkslab/kdigger"}
- :asset "kdigger-linux-amd64"
- :checksum "{asset}.sha256"}
+ :checksum "{asset}.sha256"
+ :platforms {"linux-x86_64" {:asset "kdigger-linux-amd64"}}}

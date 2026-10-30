@@ -4,4 +4,4 @@
 
 {:description "Sync data between persistence engines, like ETL only not stodgy",
  :source {:github "compose/transporter"}
- :asset "transporter-{version}-linux-amd64"}
+ :platforms {"linux-x86_64" {:asset "transporter-{version}-linux-amd64"}}}

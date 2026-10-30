@@ -4,5 +4,5 @@
 
 {:description "A program which ensures source code files have copyright license headers by scanning directory patterns recursively",
  :source {:github "google/addlicense"}
- :asset "addlicense_{tag}_Linux_x86_64.tar.gz"
- :checksum "checksums.txt"}
+ :checksum "checksums.txt"
+ :platforms {"linux-x86_64" {:asset "addlicense_{tag}_Linux_x86_64.tar.gz"}}}

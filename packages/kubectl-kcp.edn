@@ -4,5 +4,5 @@
 
 {:description "kubectl plugins for kcp",
  :source {:github "kcp-dev/kcp"}
- :asset "kubectl-kcp-plugin_{version}_linux_amd64.tar.gz"
- :bins {"kubectl-kcp" "bin/kubectl-kcp"}}
+ :bins {"kubectl-kcp" "bin/kubectl-kcp"}
+ :platforms {"linux-x86_64" {:asset "kubectl-kcp-plugin_{version}_linux_amd64.tar.gz"}}}

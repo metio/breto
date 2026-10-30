@@ -4,5 +4,5 @@
 
 {:description "The Charm Tool and Library",
  :source {:github "charmbracelet/charm"}
- :asset "charm_{version}_Linux_x86_64.tar.gz"
- :checksum "checksums.txt"}
+ :checksum "checksums.txt"
+ :platforms {"linux-x86_64" {:asset "charm_{version}_Linux_x86_64.tar.gz"}}}

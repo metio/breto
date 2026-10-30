@@ -4,5 +4,5 @@
 
 {:description "Delve into game deals from your terminal",
  :source {:github "kurama/dealve-tui"}
- :asset "dealve-linux-x86_64"
- :bins {"dealve" "{asset}"}}
+ :bins {"dealve" "{asset}"}
+ :platforms {"linux-x86_64" {:asset "dealve-linux-x86_64"}}}

@@ -4,5 +4,5 @@
 
 {:description "tail -f experience for Kubernetes Pods",
  :source {:github "dtan4/k8stail"}
- :asset "k8stail_Linux_x86_64.tar.gz"
- :checksum "checksums.txt"}
+ :checksum "checksums.txt"
+ :platforms {"linux-x86_64" {:asset "k8stail_Linux_x86_64.tar.gz"}}}

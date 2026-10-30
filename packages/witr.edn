@@ -4,5 +4,5 @@
 
 {:description "Why is this running",
  :source {:github "pranshuparmar/witr"}
- :asset "witr-linux-amd64"
- :checksum "SHA256SUMS"}
+ :checksum "SHA256SUMS"
+ :platforms {"linux-x86_64" {:asset "witr-linux-amd64"}}}

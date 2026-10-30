@@ -4,6 +4,6 @@
 
 {:description "A pluggable linter and fixer to enforce Protocol Buffer style and conventions",
  :source {:github "yoheimuta/protolint"}
- :asset "protolint_{version}_linux_amd64.tar.gz"
  :checksum "checksums.txt"
- :bins {"protoc-gen-protolint" "protoc-gen-protolint", "protolint" "protolint"}}
+ :bins {"protoc-gen-protolint" "protoc-gen-protolint", "protolint" "protolint"}
+ :platforms {"linux-x86_64" {:asset "protolint_{version}_linux_amd64.tar.gz"}}}

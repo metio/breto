@@ -4,5 +4,5 @@
 
 {:description "Run commands like linters and formatters on staged git files",
  :source {:github "abemedia/stagelint"}
- :asset "stagelint-{version}-x86_64-unknown-linux-musl.tar.gz"
- :checksum "checksums.txt"}
+ :checksum "checksums.txt"
+ :platforms {"linux-x86_64" {:asset "stagelint-{version}-x86_64-unknown-linux-musl.tar.gz"}}}

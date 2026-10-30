@@ -4,4 +4,4 @@
 
 {:description "Wasm component-native RPC framework",
  :source {:github "bytecodealliance/wrpc"}
- :asset "wit-bindgen-wrpc-x86_64-unknown-linux-musl"}
+ :platforms {"linux-x86_64" {:asset "wit-bindgen-wrpc-x86_64-unknown-linux-musl"}}}

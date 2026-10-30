@@ -5,5 +5,5 @@
 {:description "Prevent cloud misconfigurations and find vulnerabilities during build-time in infrastructure as code, container images and open source packages with Checkov by Bridgecrew",
  :source {:github "bridgecrewio/checkov"}
  :tag-prefix ""
- :asset "checkov_linux_X86_64.zip"
- :bins {"checkov" "dist/checkov"}}
+ :bins {"checkov" "dist/checkov"}
+ :platforms {"linux-x86_64" {:asset "checkov_linux_X86_64.zip"}}}

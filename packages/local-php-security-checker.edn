@@ -4,5 +4,5 @@
 
 {:description "PHP security vulnerabilities checker",
  :source {:github "fabpot/local-php-security-checker"}
- :asset "local-php-security-checker_linux_amd64"
- :checksum "checksums.txt"}
+ :checksum "checksums.txt"
+ :platforms {"linux-x86_64" {:asset "local-php-security-checker_linux_amd64"}}}

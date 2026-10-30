@@ -4,5 +4,5 @@
 
 {:description "Test command results and embed them into document",
  :source {:github "suzuki-shunsuke/yodoc"}
- :asset "yodoc_linux_amd64.tar.gz"
- :checksum "yodoc_{version}_checksums.txt"}
+ :checksum "yodoc_{version}_checksums.txt"
+ :platforms {"linux-x86_64" {:asset "yodoc_linux_amd64.tar.gz"}}}

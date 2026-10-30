@@ -4,5 +4,5 @@
 
 {:description "DDEV: a local web development environment system for PHP",
  :source {:github "ddev/ddev"}
- :asset "ddev_linux-amd64.{tag}.tar.gz"
- :checksum "checksums.txt"}
+ :checksum "checksums.txt"
+ :platforms {"linux-x86_64" {:asset "ddev_linux-amd64.{tag}.tar.gz"}}}

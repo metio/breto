@@ -4,5 +4,5 @@
 
 {:description "CLI tool which enables you to login and retrieve AWS temporary credentials using a SAML IDP",
  :source {:github "Versent/saml2aws"}
- :asset "saml2aws_{version}_linux_amd64.tar.gz"
- :checksum "saml2aws_{version}_checksums.txt"}
+ :checksum "saml2aws_{version}_checksums.txt"
+ :platforms {"linux-x86_64" {:asset "saml2aws_{version}_linux_amd64.tar.gz"}}}

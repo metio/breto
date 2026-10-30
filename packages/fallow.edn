@@ -4,4 +4,4 @@
 
 {:description "Codebase intelligence for TypeScript and JavaScript. Free static layer: unused code, duplication, circular deps, complexity hotspots, architecture boundaries. Optional paid runtime layer: hot-path review and cold-path deletion evidence from real production traffic. Rust-native, sub-second, zero-config framework support",
  :source {:github "fallow-rs/fallow"}
- :asset "fallow-x86_64-unknown-linux-musl.tar.gz"}
+ :platforms {"linux-x86_64" {:asset "fallow-x86_64-unknown-linux-musl.tar.gz"}}}

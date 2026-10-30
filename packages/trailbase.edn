@@ -4,5 +4,5 @@
 
 {:description "An open, sub-millisecond, single-executable Firebase alternative with type-safe APIs, built-in WebAssembly runtime, realtime subscriptions, auth, MCP and admin UI built on Rust, SQLite (PG) & Wasmtime",
  :source {:github "trailbaseio/trailbase"}
- :asset "trailbase_{tag}_x86_64_linux.zip"
- :bins {"trail" "trail"}}
+ :bins {"trail" "trail"}
+ :platforms {"linux-x86_64" {:asset "trailbase_{tag}_x86_64_linux.zip"}}}

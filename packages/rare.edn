@@ -5,5 +5,5 @@
 {:description "Create console histograms, bar graphs, tables, heatmaps and more in realtime using regex and expressions",
  :source {:github "zix99/rare"}
  :tag-prefix ""
- :asset "rare_{tag}_Linux_x86_64.tar.gz"
- :checksum "checksums.txt"}
+ :checksum "checksums.txt"
+ :platforms {"linux-x86_64" {:asset "rare_{tag}_Linux_x86_64.tar.gz"}}}

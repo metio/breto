@@ -4,6 +4,6 @@
 
 {:description "Open-source Kubernetes application platform that powers Namespace's developer-optimized compute platform",
  :source {:github "namespacelabs/foundation"}
- :asset "nsc_{version}_linux_amd64.tar.gz"
  :checksum "checksums.txt"
- :bins {"bazel-credential-nsc" "bazel-credential-nsc", "docker-credential-nsc" "docker-credential-nsc", "nsc" "nsc"}}
+ :bins {"bazel-credential-nsc" "bazel-credential-nsc", "docker-credential-nsc" "docker-credential-nsc", "nsc" "nsc"}
+ :platforms {"linux-x86_64" {:asset "nsc_{version}_linux_amd64.tar.gz"}}}

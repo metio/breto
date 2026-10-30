@@ -4,5 +4,5 @@
 
 {:description "Cfnctl brings the Terraform cli experience to AWS Cloudformation :cloud:",
  :source {:github "rogerwelin/cfnctl"}
- :asset "cfnctl_Linux_x86_64.tar.gz"
- :checksum "checksums.txt"}
+ :checksum "checksums.txt"
+ :platforms {"linux-x86_64" {:asset "cfnctl_Linux_x86_64.tar.gz"}}}

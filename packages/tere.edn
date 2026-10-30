@@ -4,4 +4,4 @@
 
 {:description "Terminal file explorer",
  :source {:github "mgunyho/tere"}
- :asset "tere-{version}-x86_64-unknown-linux-musl.zip"}
+ :platforms {"linux-x86_64" {:asset "tere-{version}-x86_64-unknown-linux-musl.zip"}}}

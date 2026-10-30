@@ -3,5 +3,5 @@
 
 {:description "Checks that a Kubernetes cluster meets the requirements of an application before installing it"
  :source {:github "replicatedhq/troubleshoot"}
- :asset "preflight_linux_amd64.tar.gz"
- :checksum "troubleshoot_{version}_checksums.txt"}
+ :checksum "troubleshoot_{version}_checksums.txt"
+ :platforms {"linux-x86_64" {:asset "preflight_linux_amd64.tar.gz"}}}

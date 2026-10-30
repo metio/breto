@@ -4,5 +4,5 @@
 
 {:description "A (TUI/CLI) markdown navigator with tree-based structural navigation",
  :source {:github "Epistates/treemd"}
- :asset "treemd-x86_64-unknown-linux-musl.tar.gz"
- :bins {"treemd" "treemd-x86_64-unknown-linux-musl"}}
+ :bins {"treemd" "treemd-x86_64-unknown-linux-musl"}
+ :platforms {"linux-x86_64" {:asset "treemd-x86_64-unknown-linux-musl.tar.gz"}}}

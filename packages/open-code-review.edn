@@ -4,6 +4,6 @@
 
 {:description "Open-source & free — Battle-tested at Alibaba's scale. Hybrid architecture code review tool: deterministic pipelines + LLM Agent, precise line-level comments, built-in fine-tuned ruleset (NPE, thread-safety, XSS, SQL injection), OpenAI & Anthropic compatible",
  :source {:github "alibaba/open-code-review"}
- :asset "opencodereview-linux-amd64"
  :checksum "sha256sum.txt"
- :bins {"ocr" "{asset}"}}
+ :bins {"ocr" "{asset}"}
+ :platforms {"linux-x86_64" {:asset "opencodereview-linux-amd64"}}}

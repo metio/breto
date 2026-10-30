@@ -4,4 +4,4 @@
 
 {:description "A tool for generating files and folders ("boilerplate") from a set of templates",
  :source {:github "gruntwork-io/boilerplate"}
- :asset "boilerplate_linux_amd64"}
+ :platforms {"linux-x86_64" {:asset "boilerplate_linux_amd64"}}}

@@ -4,5 +4,5 @@
 
 {:description "TUI な Twitter クライアント",
  :source {:github "arrow2nd/nekome"}
- :asset "nekome_Linux_x86_64.tar.gz"
- :checksum "checksums.txt"}
+ :checksum "checksums.txt"
+ :platforms {"linux-x86_64" {:asset "nekome_Linux_x86_64.tar.gz"}}}

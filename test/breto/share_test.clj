@@ -3,6 +3,7 @@
 
 (ns breto.share-test
   (:require [babashka.fs :as fs]
+            [breto.support :as s]
             [breto.sealed :as sealed]
             [babashka.process :as process]
             [breto.install :as install]
@@ -69,7 +70,7 @@
       run-hook (assoc :run-hook run-hook))))
 
 (defn- tool [extra]
-  (package/normalize (merge {:name "tool" :source {:github "acme/tool"}
+  (s/normalize (merge {:name "tool" :source {:github "acme/tool"}
                              :asset "tool-{version}.tar.gz" :strip 1 :verify false
                              :bins {"tool" "bin/tool"}}
                             extra)))
@@ -196,7 +197,7 @@
   (is (nil? (share/man-section "README.md"))))
 
 (deftest invalid-definitions-are-named
-  (let [problems #(try (package/normalize (merge {:name "tool" :source {:github "acme/tool"} :asset "t"
+  (let [problems #(try (s/normalize (merge {:name "tool" :source {:github "acme/tool"} :asset "t"
                                                   :bins {"tool" "t"}}
                                                  %))
                        nil

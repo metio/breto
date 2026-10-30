@@ -4,5 +4,5 @@
 
 {:description "Wrap up your bash scripts into a modern CLI today. Graduate to a full-blown golang app tomorrow",
  :source {:github "mumoshu/variant"}
- :asset "variant_{version}_linux_amd64.tar.gz"
- :checksum "variant_{version}_checksums.txt"}
+ :checksum "variant_{version}_checksums.txt"
+ :platforms {"linux-x86_64" {:asset "variant_{version}_linux_amd64.tar.gz"}}}

@@ -4,6 +4,6 @@
 
 {:description "CLI to develop aqua Registry",
  :source {:github "aquaproj/registry-tool"}
- :asset "argd_linux_amd64.tar.gz"
  :checksum "argd_checksums.txt"
- :bins {"argd" "argd"}}
+ :bins {"argd" "argd"}
+ :platforms {"linux-x86_64" {:asset "argd_linux_amd64.tar.gz"}}}

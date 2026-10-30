@@ -4,4 +4,4 @@
 
 {:description "A framework for managing and maintaining multi-language pre-commit hooks",
  :source {:github "pre-commit/pre-commit"}
- :asset "pre-commit-{version}.pyz"}
+ :platforms {"linux-x86_64" {:asset "pre-commit-{version}.pyz"}}}

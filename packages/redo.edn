@@ -4,5 +4,5 @@
 
 {:description "Redo is the ultimate tool to create reusable functions from your history in an interactive way",
  :source {:github "barthr/redo"}
- :asset "redo_{version}_Linux_x86_64.tar.gz"
- :checksum "checksums.txt"}
+ :checksum "checksums.txt"
+ :platforms {"linux-x86_64" {:asset "redo_{version}_Linux_x86_64.tar.gz"}}}

@@ -4,6 +4,6 @@
 
 {:description "The Full-Stack Web Framework for Go",
  :source {:github "livebud/bud"}
- :asset "bud_{tag}_linux_amd64.tar.gz"
  :checksum "checksums.txt"
- :bins {"bud" "bud_{tag}_linux_amd64/bud"}}
+ :bins {"bud" "bud_{tag}_linux_amd64/bud"}
+ :platforms {"linux-x86_64" {:asset "bud_{tag}_linux_amd64.tar.gz"}}}

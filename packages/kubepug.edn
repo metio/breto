@@ -3,5 +3,5 @@
 
 {:description "Kubernetes PreUpGrade (Checker).",
  :source {:github "rikatz/kubepug"},
- :asset "kubepug_linux_amd64.tar.gz",
- :checksum "kubepug_{version}_checksums.txt"}
+ :checksum "kubepug_{version}_checksums.txt"
+ :platforms {"linux-x86_64" {:asset "kubepug_linux_amd64.tar.gz"}}}

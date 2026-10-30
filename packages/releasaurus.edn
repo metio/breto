@@ -4,4 +4,4 @@
 
 {:description "A comprehensive release automation tool that streamlines the software release process across multiple programming languages and forge platforms",
  :source {:github "robgonnella/releasaurus"}
- :asset "releasaurus-{tag}-x86_64-unknown-linux-musl.tgz"}
+ :platforms {"linux-x86_64" {:asset "releasaurus-{tag}-x86_64-unknown-linux-musl.tgz"}}}

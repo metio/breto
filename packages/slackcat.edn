@@ -5,5 +5,5 @@
 {:description "CLI utility to post files and command output to slack",
  :source {:github "bcicen/slackcat"}
  :tag-prefix ""
- :asset "slackcat-{tag}-linux-amd64"
- :checksum "sha256sums.txt"}
+ :checksum "sha256sums.txt"
+ :platforms {"linux-x86_64" {:asset "slackcat-{tag}-linux-amd64"}}}

@@ -4,4 +4,4 @@
 
 {:description "The last text sorting tool you'll ever need",
  :source {:github "houseabsolute/omegasort"}
- :asset "omegasort-Linux-x86_64-musl.tar.gz"}
+ :platforms {"linux-x86_64" {:asset "omegasort-Linux-x86_64-musl.tar.gz"}}}

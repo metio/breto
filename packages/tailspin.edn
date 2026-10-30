@@ -5,5 +5,5 @@
 {:description "A log file highlighter",
  :source {:github "bensadeh/tailspin"}
  :tag-prefix ""
- :asset "tailspin-x86_64-unknown-linux-musl.tar.gz"
- :bins {"tspin" "tspin"}}
+ :bins {"tspin" "tspin"}
+ :platforms {"linux-x86_64" {:asset "tailspin-x86_64-unknown-linux-musl.tar.gz"}}}

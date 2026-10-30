@@ -3,5 +3,5 @@
 ;; SPDX-License-Identifier: MIT
 
 {:source {:github "soh335/shukujitsu"}
- :asset "shukujitsu_{version}_linux_amd64.tar.gz"
- :checksum "checksums.txt"}
+ :checksum "checksums.txt"
+ :platforms {"linux-x86_64" {:asset "shukujitsu_{version}_linux_amd64.tar.gz"}}}

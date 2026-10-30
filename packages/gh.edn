@@ -3,9 +3,9 @@
 
 {:description "GitHub's official command line tool",
  :source {:github "cli/cli"}
- :asset "gh_{version}_linux_amd64.tar.gz"
  :checksum "gh_{version}_checksums.txt"
  :strip 1
  :bins {"gh" "bin/gh"}
  :man ["share/man/man1/*.1"]
- :completions {:bash {:args ["completion" "--shell" "bash"]}}}
+ :completions {:bash {:args ["completion" "--shell" "bash"]}}
+ :platforms {"linux-x86_64" {:asset "gh_{version}_linux_amd64.tar.gz"}}}

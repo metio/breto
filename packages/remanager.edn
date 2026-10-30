@@ -4,4 +4,4 @@
 
 {:description "Linux, MacOS, and Windows desktop app for managing mods on reMarkable tablets",
  :source {:github "rmitchellscott/reManager"}
- :asset "reManager-linux-amd64.tar.gz"}
+ :platforms {"linux-x86_64" {:asset "reManager-linux-amd64.tar.gz"}}}

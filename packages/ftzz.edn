@@ -5,4 +5,4 @@
 {:description "File Tree Fuzzer creates a pseudo-random directory hierarchy filled with some number of files",
  :source {:github "SUPERCILEX/ftzz"}
  :tag-prefix ""
- :asset "x86_64-unknown-linux-musl-ftzz"}
+ :platforms {"linux-x86_64" {:asset "x86_64-unknown-linux-musl-ftzz"}}}

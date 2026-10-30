@@ -4,4 +4,4 @@
 
 {:description "Fly through your shell history. Great Scott",
  :source {:github "cantino/mcfly"}
- :asset "mcfly-{tag}-x86_64-unknown-linux-musl.tar.gz"}
+ :platforms {"linux-x86_64" {:asset "mcfly-{tag}-x86_64-unknown-linux-musl.tar.gz"}}}

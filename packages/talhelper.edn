@@ -4,5 +4,5 @@
 
 {:description "A tool to help creating Talos kubernetes cluster",
  :source {:github "budimanjojo/talhelper"}
- :asset "talhelper_linux_amd64.tar.gz"
- :checksum "checksums.txt"}
+ :checksum "checksums.txt"
+ :platforms {"linux-x86_64" {:asset "talhelper_linux_amd64.tar.gz"}}}

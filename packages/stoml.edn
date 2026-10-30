@@ -4,4 +4,4 @@
 
 {:description "Simple TOML parser for Bash",
  :source {:github "freshautomations/stoml"}
- :asset "stoml_linux_amd64"}
+ :platforms {"linux-x86_64" {:asset "stoml_linux_amd64"}}}

@@ -4,4 +4,4 @@
 
 {:description "Create `.gitignore` files using one or more templates from TopTal, GitHub or your own collection",
  :source {:github "reemus-dev/gitnr"}
- :asset "gitnr-linux-amd64"}
+ :platforms {"linux-x86_64" {:asset "gitnr-linux-amd64"}}}

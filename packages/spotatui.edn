@@ -4,5 +4,5 @@
 
 {:description "A fully standalone Spotify client for the terminal. Native streaming included, no daemon required",
  :source {:github "LargeModGames/spotatui"}
- :asset "spotatui-linux-x86_64.tar.gz"
- :checksum "{asset}.sha256"}
+ :checksum "{asset}.sha256"
+ :platforms {"linux-x86_64" {:asset "spotatui-linux-x86_64.tar.gz"}}}

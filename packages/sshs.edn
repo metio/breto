@@ -5,4 +5,4 @@
 {:description "Terminal user interface for SSH",
  :source {:github "quantumsheep/sshs"}
  :tag-prefix ""
- :asset "sshs-linux-amd64"}
+ :platforms {"linux-x86_64" {:asset "sshs-linux-amd64"}}}

@@ -4,5 +4,5 @@
 
 {:description "a better dotenv–from the creator of `dotenv`",
  :source {:github "dotenvx/dotenvx"}
- :asset "dotenvx-{version}-linux-amd64.tar.gz"
- :checksum "checksums.txt"}
+ :checksum "checksums.txt"
+ :platforms {"linux-x86_64" {:asset "dotenvx-{version}-linux-amd64.tar.gz"}}}

@@ -4,4 +4,4 @@
 
 {:description "Tool to validate GitHub Action and Workflow YAML files",
  :source {:github "mpalmer/action-validator"}
- :asset "action-validator_linux_amd64"}
+ :platforms {"linux-x86_64" {:asset "action-validator_linux_amd64"}}}

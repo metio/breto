@@ -4,5 +4,5 @@
 
 {:description "Tiny utility which detects unused variables in your terraform modules",
  :source {:github "sylwit/terraform-cleaner"}
- :asset "terraform-cleaner_{version}_linux_amd64.tar.gz"
- :checksum "checksums.txt"}
+ :checksum "checksums.txt"
+ :platforms {"linux-x86_64" {:asset "terraform-cleaner_{version}_linux_amd64.tar.gz"}}}

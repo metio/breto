@@ -3,6 +3,6 @@
 
 {:description "Manage your dotfiles across multiple diverse machines, securely",
  :source {:github "twpayne/chezmoi"},
- :asset "chezmoi_{version}_linux_amd64.tar.gz",
  :checksum "chezmoi_{version}_checksums.txt",
- :completions {:bash {:args ["completion" "bash"]}}}
+ :completions {:bash {:args ["completion" "bash"]}}
+ :platforms {"linux-x86_64" {:asset "chezmoi_{version}_linux_amd64.tar.gz"}}}

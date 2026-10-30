@@ -4,5 +4,5 @@
 
 {:description "Lint commit messages  with conventional commit messages",
  :source {:github "KeisukeYamashita/commitlint-rs"}
- :asset "commitlint-{tag}-x86_64-unknown-linux-gnu.tar.gz"
- :bins {"commitlint" "commitlint"}}
+ :bins {"commitlint" "commitlint"}
+ :platforms {"linux-x86_64" {:asset "commitlint-{tag}-x86_64-unknown-linux-gnu.tar.gz"}}}

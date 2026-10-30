@@ -4,5 +4,5 @@
 
 {:description "A vulnerability scanner for container images and filesystems",
  :source {:github "anchore/grype"}
- :asset "grype_{version}_linux_amd64.tar.gz"
- :checksum "grype_{version}_checksums.txt"}
+ :checksum "grype_{version}_checksums.txt"
+ :platforms {"linux-x86_64" {:asset "grype_{version}_linux_amd64.tar.gz"}}}

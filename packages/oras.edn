@@ -3,5 +3,5 @@
 
 {:description "ORAS CLI",
  :source {:github "oras-project/oras"},
- :asset "oras_{version}_linux_amd64.tar.gz",
- :checksum "oras_{version}_checksums.txt"}
+ :checksum "oras_{version}_checksums.txt"
+ :platforms {"linux-x86_64" {:asset "oras_{version}_linux_amd64.tar.gz"}}}

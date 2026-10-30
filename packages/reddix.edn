@@ -4,6 +4,6 @@
 
 {:description "Reddix – Reddit, refined for the terminal",
  :source {:github "ck-zhang/reddix"}
- :asset "reddix-x86_64-unknown-linux-gnu.tar.xz"
  :checksum "{asset}.sha256"
- :bins {"reddix" "reddix-x86_64-unknown-linux-gnu/reddix"}}
+ :bins {"reddix" "reddix-x86_64-unknown-linux-gnu/reddix"}
+ :platforms {"linux-x86_64" {:asset "reddix-x86_64-unknown-linux-gnu.tar.xz"}}}

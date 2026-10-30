@@ -4,6 +4,6 @@
 
 {:description "KubeClarity is a tool for detection and management of Software Bill Of Materials (SBOM) and vulnerabilities of container images and filesystems",
  :source {:github "openclarity/kubeclarity"}
- :asset "kubeclarity-cli-{version}-linux-amd64.tar.gz"
  :checksum "checksums.txt"
- :bins {"kubeclarity-cli" "kubeclarity-cli"}}
+ :bins {"kubeclarity-cli" "kubeclarity-cli"}
+ :platforms {"linux-x86_64" {:asset "kubeclarity-cli-{version}-linux-amd64.tar.gz"}}}

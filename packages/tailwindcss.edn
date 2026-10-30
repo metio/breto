@@ -4,5 +4,5 @@
 
 {:description "A utility-first CSS framework for rapid UI development",
  :source {:github "tailwindlabs/tailwindcss"}
- :asset "tailwindcss-linux-x64-musl"
- :checksum "sha256sums.txt"}
+ :checksum "sha256sums.txt"
+ :platforms {"linux-x86_64" {:asset "tailwindcss-linux-x64-musl"}}}

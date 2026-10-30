@@ -5,5 +5,5 @@
 {:description "Pluggable and configurable code formatting platform written in Rust",
  :source {:github "dprint/dprint"}
  :tag-prefix ""
- :asset "dprint-x86_64-unknown-linux-musl.zip"
- :checksum "SHASUMS256.txt"}
+ :checksum "SHASUMS256.txt"
+ :platforms {"linux-x86_64" {:asset "dprint-x86_64-unknown-linux-musl.zip"}}}

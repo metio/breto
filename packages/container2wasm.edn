@@ -4,6 +4,6 @@
 
 {:description "Container to WASM converter",
  :source {:github "container2wasm/container2wasm"}
- :asset "container2wasm-{tag}-linux-amd64.tar.gz"
  :checksum "SHA256SUMS"
- :bins {"c2w" "c2w"}}
+ :bins {"c2w" "c2w"}
+ :platforms {"linux-x86_64" {:asset "container2wasm-{tag}-linux-amd64.tar.gz"}}}

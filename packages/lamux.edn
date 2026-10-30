@@ -4,5 +4,5 @@
 
 {:description "Lamux is a HTTP multiplexer for AWS Lambda Function aliases",
  :source {:github "fujiwara/lamux"}
- :asset "lamux_{version}_linux_amd64.tar.gz"
- :checksum "checksums.txt"}
+ :checksum "checksums.txt"
+ :platforms {"linux-x86_64" {:asset "lamux_{version}_linux_amd64.tar.gz"}}}

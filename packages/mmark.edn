@@ -4,4 +4,4 @@
 
 {:description "A powerful markdown processor in Go geared towards the IETF",
  :source {:github "mmarkdown/mmark"}
- :asset "mmark_{version}_linux_amd64.tgz"}
+ :platforms {"linux-x86_64" {:asset "mmark_{version}_linux_amd64.tgz"}}}

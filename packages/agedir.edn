@@ -4,5 +4,5 @@
 
 {:description "A CLI tool to bulk-encrypt, decrypt, and place multiple secret files across a project using age encryption and a simple YAML mapping config",
  :source {:github "asmz/agedir"}
- :asset "agedir_{version}_linux_amd64.tar.gz"
- :checksum "checksums.txt"}
+ :checksum "checksums.txt"
+ :platforms {"linux-x86_64" {:asset "agedir_{version}_linux_amd64.tar.gz"}}}

@@ -4,5 +4,5 @@
 
 {:description "Generate HTTP load and plot the results in real-time",
  :source {:github "nakabonne/ali"}
- :asset "ali_{version}_linux_amd64.tar.gz"
- :checksum "checksums.txt"}
+ :checksum "checksums.txt"
+ :platforms {"linux-x86_64" {:asset "ali_{version}_linux_amd64.tar.gz"}}}

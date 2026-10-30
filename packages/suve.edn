@@ -4,5 +4,5 @@
 
 {:description "Git-like CLI/TUI/GUI for AWS Parameter Store / Secrets Manager, Google Cloud Secret Manager, and Azure Key Vault / App Configuration",
  :source {:github "mpyw/suve"}
- :asset "suve-cli_{version}_linux_amd64.tar.gz"
- :checksum "checksums.txt"}
+ :checksum "checksums.txt"
+ :platforms {"linux-x86_64" {:asset "suve-cli_{version}_linux_amd64.tar.gz"}}}

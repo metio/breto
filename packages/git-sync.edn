@@ -4,5 +4,5 @@
 
 {:description "Mirror git refs from a source remote to a target remote without a local checkout. Packfiles stream directly over Smart HTTP and an in-memory object store",
  :source {:github "entireio/git-sync"}
- :asset "git-sync_{version}_linux_amd64.tar.gz"
- :checksum "checksums.txt"}
+ :checksum "checksums.txt"
+ :platforms {"linux-x86_64" {:asset "git-sync_{version}_linux_amd64.tar.gz"}}}

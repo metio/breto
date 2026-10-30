@@ -4,4 +4,4 @@
 
 {:description "A dotfile manager and templater written in rust",
  :source {:github "SuperCuber/dotter"}
- :asset "dotter-linux-x64-musl"}
+ :platforms {"linux-x86_64" {:asset "dotter-linux-x64-musl"}}}

@@ -4,5 +4,5 @@
 
 {:description "Rendered display of markdown on terminal",
  :source {:github "noborus/mdviewer"}
- :asset "mdviewer_{version}_linux_amd64.zip"
- :checksum "mdviewer_{version}_checksums.txt"}
+ :checksum "mdviewer_{version}_checksums.txt"
+ :platforms {"linux-x86_64" {:asset "mdviewer_{version}_linux_amd64.zip"}}}

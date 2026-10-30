@@ -4,5 +4,5 @@
 
 {:description "Task runner that helps you easily manage and invoke small scripts and wrappers",
  :source {:github "TekWizely/run"}
- :asset "run_{version}_linux_amd64.tar.gz"
- :checksum "checksums.txt"}
+ :checksum "checksums.txt"
+ :platforms {"linux-x86_64" {:asset "run_{version}_linux_amd64.tar.gz"}}}

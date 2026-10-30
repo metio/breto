@@ -4,5 +4,5 @@
 
 {:description "Safe, stable, reproducible projects",
  :source {:github "yarnpkg/zpm"}
- :asset "yarn-x86_64-unknown-linux-musl.zip"
- :bins {"yarn" "yarn"}}
+ :bins {"yarn" "yarn"}
+ :platforms {"linux-x86_64" {:asset "yarn-x86_64-unknown-linux-musl.zip"}}}

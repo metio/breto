@@ -4,5 +4,5 @@
 
 {:description "Pull Request Manager for Maintainers",
  :source {:github "ldez/prm"}
- :asset "prm_{tag}_linux_amd64.tar.gz"
- :checksum "prm_{version}_checksums.txt"}
+ :checksum "prm_{version}_checksums.txt"
+ :platforms {"linux-x86_64" {:asset "prm_{tag}_linux_amd64.tar.gz"}}}

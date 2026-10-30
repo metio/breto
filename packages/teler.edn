@@ -4,5 +4,5 @@
 
 {:description "Real-time HTTP Intrusion Detection",
  :source {:github "teler-sh/teler"}
- :asset "teler_{version}_linux_amd64.tar.gz"
- :checksum "teler_checksums.txt"}
+ :checksum "teler_checksums.txt"
+ :platforms {"linux-x86_64" {:asset "teler_{version}_linux_amd64.tar.gz"}}}

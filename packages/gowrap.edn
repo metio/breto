@@ -4,5 +4,5 @@
 
 {:description "GoWrap is a command line tool for generating decorators for Go interfaces",
  :source {:github "hexdigest/gowrap"}
- :asset "gowrap_{version}_linux_amd64.tar.gz"
- :checksum "checksums.txt"}
+ :checksum "checksums.txt"
+ :platforms {"linux-x86_64" {:asset "gowrap_{version}_linux_amd64.tar.gz"}}}

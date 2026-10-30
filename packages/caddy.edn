@@ -4,5 +4,5 @@
 
 {:description "Fast, multi-platform web server with automatic HTTPS",
  :source {:github "caddyserver/caddy"}
- :asset "caddy_{version}_linux_amd64.tar.gz"
- :checksum "caddy_{version}_checksums.txt"}
+ :checksum "caddy_{version}_checksums.txt"
+ :platforms {"linux-x86_64" {:asset "caddy_{version}_linux_amd64.tar.gz"}}}

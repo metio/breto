@@ -4,5 +4,5 @@
 
 {:description "Generate Terraform moved blocks automatically for painless refactoring",
  :source {:github "busser/tfautomv"}
- :asset "tfautomv_{version}_linux_amd64.tar.gz"
- :checksum "checksums.txt"}
+ :checksum "checksums.txt"
+ :platforms {"linux-x86_64" {:asset "tfautomv_{version}_linux_amd64.tar.gz"}}}

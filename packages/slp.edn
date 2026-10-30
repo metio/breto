@@ -4,5 +4,5 @@
 
 {:description "SlowLog Profiler for MySQL and PostgreSQL",
  :source {:github "tkuchiki/slp"}
- :asset "slp_linux_amd64.zip"
- :checksum "slp_{tag}_checksums.txt"}
+ :checksum "slp_{tag}_checksums.txt"
+ :platforms {"linux-x86_64" {:asset "slp_linux_amd64.zip"}}}

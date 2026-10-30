@@ -4,5 +4,5 @@
 
 {:description "Simple command-line snippet manager",
  :source {:github "knqyf263/pet"}
- :asset "pet_{version}_linux_amd64.tar.gz"
- :checksum "pet_{version}_checksums.txt"}
+ :checksum "pet_{version}_checksums.txt"
+ :platforms {"linux-x86_64" {:asset "pet_{version}_linux_amd64.tar.gz"}}}

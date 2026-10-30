@@ -4,4 +4,4 @@
 
 {:description "Auto SSH port-forwarding agent which gets forwarding configs from URL",
  :source {:github "cnosuke/kushi"}
- :asset "kushi-linux-amd64.zip"}
+ :platforms {"linux-x86_64" {:asset "kushi-linux-amd64.zip"}}}

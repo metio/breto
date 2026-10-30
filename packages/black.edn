@@ -5,4 +5,4 @@
 {:description "The uncompromising Python code formatter",
  :source {:github "psf/black"}
  :tag-prefix ""
- :asset "black_linux"}
+ :platforms {"linux-x86_64" {:asset "black_linux"}}}

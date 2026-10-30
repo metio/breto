@@ -4,5 +4,5 @@
 
 {:description "vsh - HashiCorp Vault interactive shell and cli tool",
  :source {:github "fishi0x01/vsh"}
- :asset "vsh_linux_amd64"
- :checksum "SHA256SUM"}
+ :checksum "SHA256SUM"
+ :platforms {"linux-x86_64" {:asset "vsh_linux_amd64"}}}

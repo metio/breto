@@ -4,5 +4,5 @@
 
 {:description "json incremental digger",
  :source {:github "simeji/jid"}
- :asset "jid_linux_amd64.zip"
- :checksum "checksums.txt"}
+ :checksum "checksums.txt"
+ :platforms {"linux-x86_64" {:asset "jid_linux_amd64.zip"}}}

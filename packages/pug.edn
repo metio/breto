@@ -4,5 +4,5 @@
 
 {:description "Drive terraform at terminal velocity",
  :source {:github "leg100/pug"}
- :asset "pug_{version}_linux_amd64.zip"
- :checksum "pug_{version}_checksums.txt"}
+ :checksum "pug_{version}_checksums.txt"
+ :platforms {"linux-x86_64" {:asset "pug_{version}_linux_amd64.zip"}}}

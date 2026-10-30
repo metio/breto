@@ -4,5 +4,5 @@
 
 {:description "Encryption for Git users",
  :source {:github "uw-labs/strongbox"}
- :asset "strongbox_{version}_linux_amd64"
- :checksum "strongbox_{version}_checksums.txt"}
+ :checksum "strongbox_{version}_checksums.txt"
+ :platforms {"linux-x86_64" {:asset "strongbox_{version}_linux_amd64"}}}

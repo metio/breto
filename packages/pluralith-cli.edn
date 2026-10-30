@@ -4,6 +4,6 @@
 
 {:description "A tool for Terraform state visualisation and automated generation of infrastructure documentation",
  :source {:github "Pluralith/pluralith-cli"}
- :asset "pluralith_cli_tap_linux_amd64_{tag}.tar.gz"
  :checksum "pluralith_checksums_{tag}.txt"
- :bins {"pluralith" "linux/pluralith"}}
+ :bins {"pluralith" "linux/pluralith"}
+ :platforms {"linux-x86_64" {:asset "pluralith_cli_tap_linux_amd64_{tag}.tar.gz"}}}

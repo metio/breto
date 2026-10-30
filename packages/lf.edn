@@ -5,4 +5,4 @@
 {:description "Terminal file manager",
  :source {:github "gokcehan/lf"}
  :tag-prefix ""
- :asset "lf-linux-amd64.tar.gz"}
+ :platforms {"linux-x86_64" {:asset "lf-linux-amd64.tar.gz"}}}

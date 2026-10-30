@@ -4,5 +4,5 @@
 
 {:description "Foundry is a blazing fast, portable and modular toolkit for Ethereum application development written in Rust",
  :source {:github "foundry-rs/foundry"}
- :asset "foundry_{tag}_linux_amd64.tar.gz"
- :bins {"anvil" "anvil", "cast" "cast", "chisel" "chisel", "forge" "forge"}}
+ :bins {"anvil" "anvil", "cast" "cast", "chisel" "chisel", "forge" "forge"}
+ :platforms {"linux-x86_64" {:asset "foundry_{tag}_linux_amd64.tar.gz"}}}

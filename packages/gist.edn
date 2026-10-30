@@ -4,5 +4,5 @@
 
 {:description "A simple gist editor for CLI",
  :source {:github "babarot/gist"}
- :asset "gist_linux_x86_64.tar.gz"
- :checksum "gist_{version}_checksums.txt"}
+ :checksum "gist_{version}_checksums.txt"
+ :platforms {"linux-x86_64" {:asset "gist_linux_x86_64.tar.gz"}}}

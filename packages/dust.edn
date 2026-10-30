@@ -4,5 +4,5 @@
 
 {:description "A more intuitive version of du in rust",
  :source {:github "bootandy/dust"}
- :asset "dust-{tag}-x86_64-unknown-linux-musl.tar.gz"
- :bins {"dust" "dust-{tag}-x86_64-unknown-linux-musl/dust"}}
+ :bins {"dust" "dust-{tag}-x86_64-unknown-linux-musl/dust"}
+ :platforms {"linux-x86_64" {:asset "dust-{tag}-x86_64-unknown-linux-musl.tar.gz"}}}

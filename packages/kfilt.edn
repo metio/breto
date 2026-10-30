@@ -4,5 +4,5 @@
 
 {:description "kfilt can filter Kubernetes resources",
  :source {:github "ryane/kfilt"}
- :asset "kfilt_linux_amd64"
- :checksum "checksums.txt"}
+ :checksum "checksums.txt"
+ :platforms {"linux-x86_64" {:asset "kfilt_linux_amd64"}}}

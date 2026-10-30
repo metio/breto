@@ -4,5 +4,5 @@
 
 {:description "CLI tool to help you manage repositories",
  :source {:github "alajmo/mani"}
- :asset "mani_{version}_linux_amd64.tar.gz"
- :checksum "checksums.txt"}
+ :checksum "checksums.txt"
+ :platforms {"linux-x86_64" {:asset "mani_{version}_linux_amd64.tar.gz"}}}

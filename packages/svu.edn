@@ -4,5 +4,5 @@
 
 {:description "semantic version utility",
  :source {:github "caarlos0/svu"}
- :asset "svu_{version}_linux_amd64.tar.gz"
- :checksum "checksums.txt"}
+ :checksum "checksums.txt"
+ :platforms {"linux-x86_64" {:asset "svu_{version}_linux_amd64.tar.gz"}}}

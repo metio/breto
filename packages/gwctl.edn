@@ -4,5 +4,5 @@
 
 {:description "gwctl is a command-line tool for managing and understanding Gateway API resources in your Kubernetes cluster",
  :source {:github "kubernetes-sigs/gwctl"}
- :asset "gwctl_Linux_x86_64.tar.gz"
- :checksum "gwctl_{version}_checksums.txt"}
+ :checksum "gwctl_{version}_checksums.txt"
+ :platforms {"linux-x86_64" {:asset "gwctl_Linux_x86_64.tar.gz"}}}

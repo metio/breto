@@ -4,4 +4,4 @@
 
 {:description "Verify proper golang import directives, beyond the capability of gofmt and goimports",
  :source {:github "pavius/impi"}
- :asset "impi-{tag}-linux-amd64"}
+ :platforms {"linux-x86_64" {:asset "impi-{tag}-linux-amd64"}}}

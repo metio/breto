@@ -4,5 +4,5 @@
 
 {:description "rustic - fast, encrypted, and deduplicated backups powered by Rust",
  :source {:github "rustic-rs/rustic"}
- :asset "rustic-{tag}-x86_64-unknown-linux-musl.tar.gz"
- :checksum "{asset}.sha256"}
+ :checksum "{asset}.sha256"
+ :platforms {"linux-x86_64" {:asset "rustic-{tag}-x86_64-unknown-linux-musl.tar.gz"}}}

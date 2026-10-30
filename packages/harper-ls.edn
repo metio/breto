@@ -4,4 +4,4 @@
 
 {:description "The Grammar Checker for Developers",
  :source {:github "Automattic/harper"}
- :asset "harper-ls-x86_64-unknown-linux-gnu.tar.gz"}
+ :platforms {"linux-x86_64" {:asset "harper-ls-x86_64-unknown-linux-gnu.tar.gz"}}}

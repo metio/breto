@@ -4,6 +4,6 @@
 
 {:description "get to your bookmarks in a flash",
  :source {:github "dhth/bmm"}
- :asset "bmm-x86_64-unknown-linux-musl.tar.xz"
  :checksum "{asset}.sha256"
- :bins {"bmm" "bmm-x86_64-unknown-linux-musl/bmm"}}
+ :bins {"bmm" "bmm-x86_64-unknown-linux-musl/bmm"}
+ :platforms {"linux-x86_64" {:asset "bmm-x86_64-unknown-linux-musl.tar.xz"}}}

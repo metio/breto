@@ -4,5 +4,5 @@
 
 {:description "The command that searches the current directory or parent directories for a specific file and returns the closest path",
  :source {:github "corrupt952/closest"}
- :asset "closest_{version}_linux_amd64.tar.gz"
- :checksum "closest_{version}_checksums.txt"}
+ :checksum "closest_{version}_checksums.txt"
+ :platforms {"linux-x86_64" {:asset "closest_{version}_linux_amd64.tar.gz"}}}

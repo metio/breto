@@ -4,5 +4,5 @@
 
 {:description "tffmtmd formats HCL source code block in Markdown. detects fenced code & formats code",
  :source {:github "fukubaka0825/tffmtmd"}
- :asset "tffmtmd_{version}_linux_amd64.tar.gz"
- :checksum "tffmtmd_{version}_checksums.txt"}
+ :checksum "tffmtmd_{version}_checksums.txt"
+ :platforms {"linux-x86_64" {:asset "tffmtmd_{version}_linux_amd64.tar.gz"}}}

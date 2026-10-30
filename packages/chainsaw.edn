@@ -3,8 +3,8 @@
 
 {:description "Declarative K8s e2e testing",
  :source {:github "kyverno/chainsaw"},
- :asset "chainsaw_linux_amd64.tar.gz",
  :checksum "checksums.txt",
  :signature {:bundle "{asset}.sigstore.json",
              :identity "https://github.com/kyverno/chainsaw/.github/workflows/release.yaml@refs/tags/{tag}",
-             :issuer "https://token.actions.githubusercontent.com"}}
+             :issuer "https://token.actions.githubusercontent.com"}
+ :platforms {"linux-x86_64" {:asset "chainsaw_linux_amd64.tar.gz"}}}

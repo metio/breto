@@ -355,42 +355,45 @@
 
 (defn supported-platforms
   "The platforms `definition` has releases for: every one for a source that
-  builds on the machine itself, Linux for ghcup, else linux-x86_64, which its
-  top level describes, and those its :platforms names."
+  builds on the machine itself, the Linux ones for ghcup, else those its
+  :platforms names."
   [{:keys [platforms] :as definition}]
   (let [kind (source-kind definition)]
     (cond (neutral-kinds kind) (sort platform/known)
           (= :ghcup kind) (sort (filter #(= "linux" (platform/os-of %)) platform/known))
-          :else (sort (distinct (cons platform/default (keys platforms)))))))
+          :else (sort (keys platforms)))))
 
 (defn normalize
   "Validates a definition for `platform` and resolves its `:history`. The top
-  level describes current releases on linux-x86_64, and the :platforms entry
-  of `platform` overrides keys on top of it. Each history entry overrides
-  keys for every version older than its `:before`, on top of the entries
-  with later boundaries; the history of the platform entry applies over that
-  of the top level. Each entry is stored as the complete definition that
+  level holds what every platform shares, and the :platforms entry of
+  `platform` overrides keys on top of it. Each history entry overrides keys
+  for every version older than its `:before`, on top of the entries with
+  later boundaries; the history of the platform entry applies over that of
+  the top level. Each entry is stored as the complete definition that
   applies below its boundary. A definition without releases for `platform`
-  is resolved as for linux-x86_64 and marked :unsupported."
-  ([definition] (normalize definition platform/default))
-  ([{:keys [history platforms] :as definition} platform]
-   (check-platforms! definition)
-   (let [supported (supported-platforms definition)
-         entry (get platforms platform)
-         base (dissoc definition :history :platforms)
-         over (dissoc entry :history)
-         layered (concat (map #(vector :base %) history) (map #(vector :platform %) (:history entry)))
-         entries (sort-by (comp :before second) #(version/compare-versions %2 %1) layered)
-         steps (rest (reductions (fn [[b p] [layer e]]
-                                   (if (= :base layer) [(merge b (dissoc e :before)) p] [b (merge p (dissoc e :before))]))
-                                 [base over] entries))]
-     (cond-> (assoc (complete (merge base over) platform)
-                    :history (mapv (fn [[_ e] [b p]] {:before (:before e) :package (complete (merge b p) platform)})
-                                   entries steps)
-                    :platform platform
-                    :supported (vec supported)
-                    ::definition definition)
-       (not (some #{platform} supported)) (assoc :unsupported true)))))
+  is marked :unsupported and keeps only its shared keys."
+  [{:keys [history platforms] :as definition} platform]
+  (check-platforms! definition)
+  (let [supported (supported-platforms definition)
+        base (dissoc definition :history :platforms)]
+    (when (and (empty? supported) (not (neutral-kinds (source-kind definition))))
+      (invalid! definition (str ":platforms names no platform; list each of "
+                                (str/join ", " (sort platform/known)) " the package has releases for")))
+    (if-not (some #{platform} supported)
+      (assoc base :platform platform :supported (vec supported) :unsupported true :history [] ::definition definition)
+      (let [entry (get platforms platform)
+            over (dissoc entry :history)
+            layered (concat (map #(vector :base %) history) (map #(vector :platform %) (:history entry)))
+            entries (sort-by (comp :before second) #(version/compare-versions %2 %1) layered)
+            steps (rest (reductions (fn [[b p] [layer e]]
+                                      (if (= :base layer) [(merge b (dissoc e :before)) p] [b (merge p (dissoc e :before))]))
+                                    [base over] entries))]
+        (assoc (complete (merge base over) platform)
+               :history (mapv (fn [[_ e] [b p]] {:before (:before e) :package (complete (merge b p) platform)})
+                              entries steps)
+               :platform platform
+               :supported (vec supported)
+               ::definition definition)))))
 
 (defn for-platform
   "`pkg` resolved for `platform` instead of the one it was loaded for."

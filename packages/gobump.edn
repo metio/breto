@@ -4,5 +4,5 @@
 
 {:description "Bumps up Go program version",
  :source {:github "x-motemen/gobump"}
- :asset "gobump_{tag}_linux_amd64.tar.gz"
- :bins {"gobump" "gobump_{tag}_linux_amd64/gobump"}}
+ :bins {"gobump" "gobump_{tag}_linux_amd64/gobump"}
+ :platforms {"linux-x86_64" {:asset "gobump_{tag}_linux_amd64.tar.gz"}}}

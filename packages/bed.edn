@@ -4,5 +4,5 @@
 
 {:description "Binary editor written in Go",
  :source {:github "itchyny/bed"}
- :asset "bed_{tag}_linux_amd64.tar.gz"
- :bins {"bed" "bed_{tag}_linux_amd64/bed"}}
+ :bins {"bed" "bed_{tag}_linux_amd64/bed"}
+ :platforms {"linux-x86_64" {:asset "bed_{tag}_linux_amd64.tar.gz"}}}

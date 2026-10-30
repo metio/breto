@@ -4,5 +4,5 @@
 
 {:source {:github "technicalpickles/envsense"}
  :tag-prefix ""
- :asset "envsense-{tag}-x86_64-unknown-linux-gnu"
- :checksum "{asset}.sha256"}
+ :checksum "{asset}.sha256"
+ :platforms {"linux-x86_64" {:asset "envsense-{tag}-x86_64-unknown-linux-gnu"}}}

@@ -4,5 +4,5 @@
 
 {:description "A simple HTTPS server for local development. Implemented in Rust",
  :source {:github "kettle11/devserver"}
- :asset "devserver-x86_64-unknown-linux-gnu.tar.gz"
- :checksum "devserver-x86_64-unknown-linux-gnu.sha512"}
+ :checksum "devserver-x86_64-unknown-linux-gnu.sha512"
+ :platforms {"linux-x86_64" {:asset "devserver-x86_64-unknown-linux-gnu.tar.gz"}}}

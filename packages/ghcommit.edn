@@ -4,5 +4,5 @@
 
 {:description "Use GitHub's GraphQL API to commit files to a GitHub repository",
  :source {:github "planetscale/ghcommit"}
- :asset "ghcommit_linux_amd64.tar.gz"
- :checksum "checksums.txt"}
+ :checksum "checksums.txt"
+ :platforms {"linux-x86_64" {:asset "ghcommit_linux_amd64.tar.gz"}}}

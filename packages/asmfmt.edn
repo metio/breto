@@ -4,5 +4,5 @@
 
 {:description "Go Assembler Formatter",
  :source {:github "klauspost/asmfmt"}
- :asset "asmfmt-Linux_x86_64_{version}.tar.gz"
- :checksum "checksums.txt"}
+ :checksum "checksums.txt"
+ :platforms {"linux-x86_64" {:asset "asmfmt-Linux_x86_64_{version}.tar.gz"}}}

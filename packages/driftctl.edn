@@ -4,5 +4,5 @@
 
 {:description "Detect, track and alert on infrastructure drift",
  :source {:github "snyk/driftctl"}
- :asset "driftctl_linux_amd64"
- :checksum "driftctl_SHA256SUMS"}
+ :checksum "driftctl_SHA256SUMS"
+ :platforms {"linux-x86_64" {:asset "driftctl_linux_amd64"}}}

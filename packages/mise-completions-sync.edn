@@ -4,5 +4,5 @@
 
 {:description "Automatically sync shell completions for tools managed by mise",
  :source {:github "alltuner/mise-completions-sync"}
- :asset "mise-completions-sync-x86_64-unknown-linux-gnu.tar.gz"
- :bins {"misecompsync" "misecompsync"}}
+ :bins {"misecompsync" "misecompsync"}
+ :platforms {"linux-x86_64" {:asset "mise-completions-sync-x86_64-unknown-linux-gnu.tar.gz"}}}

@@ -4,5 +4,5 @@
 
 {:description "A frontend-independent IDE \"smartness\" server for Elixir. Implements the \"Language Server Protocol\" standard and provides debugger support via the \"Debug Adapter Protocol\"",
  :source {:github "elixir-lsp/elixir-ls"}
- :asset "elixir-ls-{tag}.zip"
- :bins {"elixir-debug-adapter" "debug_adapter.sh", "elixir-ls" "language_server.sh"}}
+ :bins {"elixir-debug-adapter" "debug_adapter.sh", "elixir-ls" "language_server.sh"}
+ :platforms {"linux-x86_64" {:asset "elixir-ls-{tag}.zip"}}}

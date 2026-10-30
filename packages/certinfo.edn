@@ -4,5 +4,5 @@
 
 {:description "print x509 certificate info",
  :source {:github "pete911/certinfo"}
- :asset "certinfo_{version}_linux_amd64.tar.gz"
- :checksum "checksums.txt"}
+ :checksum "checksums.txt"
+ :platforms {"linux-x86_64" {:asset "certinfo_{version}_linux_amd64.tar.gz"}}}

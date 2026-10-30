@@ -4,5 +4,5 @@
 
 {:description "Read your tfstate or HCL to generate a graph specific for each provider, showing only the resources that are most important/relevant",
  :source {:github "cycloidio/inframap"}
- :asset "inframap-linux-amd64.tar.gz"
- :bins {"inframap" "inframap-linux-amd64"}}
+ :bins {"inframap" "inframap-linux-amd64"}
+ :platforms {"linux-x86_64" {:asset "inframap-linux-amd64.tar.gz"}}}

@@ -4,5 +4,5 @@
 
 {:description "Database migrations. CLI and Golang library",
  :source {:github "golang-migrate/migrate"}
- :asset "migrate.linux-amd64.tar.gz"
- :checksum "sha256sum.txt"}
+ :checksum "sha256sum.txt"
+ :platforms {"linux-x86_64" {:asset "migrate.linux-amd64.tar.gz"}}}

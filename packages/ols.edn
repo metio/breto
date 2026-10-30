@@ -4,6 +4,6 @@
 {:description "Language server for Odin, with the odinfmt formatter"
  :source {:github "DanielGavin/ols"}
  :tag-prefix "dev-"
- :asset "ols-x86_64-unknown-linux-gnu.zip"
  :layout :tree
- :bins {"ols" "ols-x86_64-unknown-linux-gnu" "odinfmt" "odinfmt-x86_64-unknown-linux-gnu"}}
+ :bins {"ols" "ols-x86_64-unknown-linux-gnu" "odinfmt" "odinfmt-x86_64-unknown-linux-gnu"}
+ :platforms {"linux-x86_64" {:asset "ols-x86_64-unknown-linux-gnu.zip"}}}

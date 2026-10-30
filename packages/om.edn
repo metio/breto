@@ -5,5 +5,5 @@
 {:description "General command line utility for working with VMware Tanzu Operations Manager",
  :source {:github "pivotal-cf/om"}
  :tag-prefix ""
- :asset "om-linux-amd64-{tag}.tar.gz"
- :checksum "checksums.txt"}
+ :checksum "checksums.txt"
+ :platforms {"linux-x86_64" {:asset "om-linux-amd64-{tag}.tar.gz"}}}

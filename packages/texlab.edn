@@ -3,4 +3,4 @@
 
 {:description "Language server for LaTeX"
  :source {:github "latex-lsp/texlab"}
- :asset "texlab-x86_64-linux.tar.gz"}
+ :platforms {"linux-x86_64" {:asset "texlab-x86_64-linux.tar.gz"}}}

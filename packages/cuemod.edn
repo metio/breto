@@ -4,5 +4,5 @@
 
 {:description "experimental cuelang mod tool",
  :source {:github "octohelm/cuemod"}
- :asset "cuem_linux_amd64.tar.gz"
- :bins {"cuem" "cuem"}}
+ :bins {"cuem" "cuem"}
+ :platforms {"linux-x86_64" {:asset "cuem_linux_amd64.tar.gz"}}}

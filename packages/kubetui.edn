@@ -4,4 +4,4 @@
 
 {:description "An intuitive Terminal User Interface (TUI) tool for real-time monitoring and exploration of Kubernetes resources",
  :source {:github "sarub0b0/kubetui"}
- :asset "kubetui-x86_64-unknown-linux-musl"}
+ :platforms {"linux-x86_64" {:asset "kubetui-x86_64-unknown-linux-musl"}}}

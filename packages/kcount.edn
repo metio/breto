@@ -4,5 +4,5 @@
 
 {:description "Count Kubernetes objects across namespaces and clusters",
  :source {:github "pan-net-security/kcount"}
- :asset "kcount_{version}_Linux_x86_64.tar.gz"
- :checksum "checksums.txt"}
+ :checksum "checksums.txt"
+ :platforms {"linux-x86_64" {:asset "kcount_{version}_Linux_x86_64.tar.gz"}}}

@@ -4,5 +4,5 @@
 
 {:description "Pure Go implementation of jq",
  :source {:github "itchyny/gojq"}
- :asset "gojq_{tag}_linux_amd64.tar.gz"
- :bins {"gojq" "gojq_{tag}_linux_amd64/gojq"}}
+ :bins {"gojq" "gojq_{tag}_linux_amd64/gojq"}
+ :platforms {"linux-x86_64" {:asset "gojq_{tag}_linux_amd64.tar.gz"}}}

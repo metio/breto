@@ -4,5 +4,5 @@
 
 {:description "Per-process network monitoring for your terminal with deep packet inspection. Cross-platform, sandboxed",
  :source {:github "domcyrus/rustnet"}
- :asset "rustnet-{tag}-x86_64-unknown-linux-musl.tar.gz"
- :bins {"rustnet" "rustnet-{tag}-x86_64-unknown-linux-musl/rustnet"}}
+ :bins {"rustnet" "rustnet-{tag}-x86_64-unknown-linux-musl/rustnet"}
+ :platforms {"linux-x86_64" {:asset "rustnet-{tag}-x86_64-unknown-linux-musl.tar.gz"}}}

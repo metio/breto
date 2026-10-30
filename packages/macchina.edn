@@ -4,4 +4,4 @@
 
 {:description "A system information frontend with an emphasis on performance",
  :source {:github "Macchina-CLI/macchina"}
- :asset "macchina-{tag}-linux-gnu-x86_64.tar.gz"}
+ :platforms {"linux-x86_64" {:asset "macchina-{tag}-linux-gnu-x86_64.tar.gz"}}}

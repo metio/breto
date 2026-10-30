@@ -4,5 +4,5 @@
 
 {:description "A Stable & Secure Tunnel based on KCP with N:M multiplexing and FEC. Available for ARM, MIPS, 386 and AMD64",
  :source {:github "xtaci/kcptun"}
- :asset "kcptun-linux-amd64-{version}.tar.gz"
- :bins {"kcptun-client" "client_linux_amd64", "kcptun-server" "server_linux_amd64"}}
+ :bins {"kcptun-client" "client_linux_amd64", "kcptun-server" "server_linux_amd64"}
+ :platforms {"linux-x86_64" {:asset "kcptun-linux-amd64-{version}.tar.gz"}}}

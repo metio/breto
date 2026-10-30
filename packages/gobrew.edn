@@ -4,5 +4,5 @@
 
 {:description "Go version manager, written in Go. Super simple tool to install and manage Go versions. Install go without root. Gobrew doesn't require shell rehash",
  :source {:github "kevincobain2000/gobrew"}
- :asset "gobrew-linux-amd64"
- :checksum "gobrew_{version}_checksums.txt"}
+ :checksum "gobrew_{version}_checksums.txt"
+ :platforms {"linux-x86_64" {:asset "gobrew-linux-amd64"}}}

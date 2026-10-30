@@ -4,6 +4,6 @@
 
 {:description "The CNCF sandbox for observability visualisation. Already supports Prometheus, Tempo, Loki and Pyroscope - more data sources to come",
  :source {:github "perses/perses"}
- :asset "perses_{version}_linux_amd64.tar.gz"
  :checksum "perses_{version}_checksums.txt"
- :bins {"percli" "percli", "perses" "perses"}}
+ :bins {"percli" "percli", "perses" "perses"}
+ :platforms {"linux-x86_64" {:asset "perses_{version}_linux_amd64.tar.gz"}}}

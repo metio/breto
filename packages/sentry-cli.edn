@@ -5,4 +5,4 @@
 {:description "A command line utility to work with Sentry",
  :source {:github "getsentry/sentry-cli"}
  :tag-prefix ""
- :asset "sentry-cli-Linux-x86_64"}
+ :platforms {"linux-x86_64" {:asset "sentry-cli-Linux-x86_64"}}}

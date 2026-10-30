@@ -4,6 +4,6 @@
 
 {:description "Software Supply Chain Transparency Log",
  :source {:github "sigstore/rekor"}
- :asset "rekor-cli-linux-amd64"
  :checksum "rekor_checksums.txt"
- :bins {"rekor-cli" "{asset}"}}
+ :bins {"rekor-cli" "{asset}"}
+ :platforms {"linux-x86_64" {:asset "rekor-cli-linux-amd64"}}}

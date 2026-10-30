@@ -5,5 +5,5 @@
 {:description "CLI to manage Eclipse Che server and workspaces",
  :source {:github "che-incubator/chectl"}
  :tag-prefix ""
- :asset "chectl-linux-x64.tar.gz"
- :bins {"chectl" "chectl/bin/chectl"}}
+ :bins {"chectl" "chectl/bin/chectl"}
+ :platforms {"linux-x86_64" {:asset "chectl-linux-x64.tar.gz"}}}

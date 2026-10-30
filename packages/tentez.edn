@@ -4,4 +4,4 @@
 
 {:description "Tentez helps you switching traffic",
  :source {:github "FeLvi-zzz/tentez"}
- :asset "tentez-linux-amd64"}
+ :platforms {"linux-x86_64" {:asset "tentez-linux-amd64"}}}

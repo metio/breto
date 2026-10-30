@@ -5,5 +5,5 @@
 {:description "The kubectx for operators",
  :source {:github "danielfoehrKn/kubeswitch"}
  :tag-prefix ""
- :asset "switch.sh"
- :bins {"kubeswitch.sh" "{asset}"}}
+ :bins {"kubeswitch.sh" "{asset}"}
+ :platforms {"linux-x86_64" {:asset "switch.sh"}}}

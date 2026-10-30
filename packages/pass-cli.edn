@@ -4,5 +4,5 @@
 
 {:source {:github "protonpass/pass-cli"}
  :tag-prefix ""
- :asset "pass-cli-linux-x86_64"
- :checksum "{asset}.sha256"}
+ :checksum "{asset}.sha256"
+ :platforms {"linux-x86_64" {:asset "pass-cli-linux-x86_64"}}}

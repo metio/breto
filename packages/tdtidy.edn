@@ -4,5 +4,5 @@
 
 {:description "A command line tool for managing ECS task definitions. `tdtidy` can deregister and delete old task definitions",
  :source {:github "manabusakai/tdtidy"}
- :asset "tdtidy_{version}_linux_amd64.tar.gz"
- :checksum "checksums.txt"}
+ :checksum "checksums.txt"
+ :platforms {"linux-x86_64" {:asset "tdtidy_{version}_linux_amd64.tar.gz"}}}

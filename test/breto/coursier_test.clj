@@ -105,17 +105,17 @@
 
 (deftest maven-releases-are-the-final-versions-of-the-metadata
   (let [io (world)
-        pkg (package/normalize {:name "metals" :source {:coursier "org.scalameta:metals_2.13"}})]
+        pkg (s/normalize {:name "metals" :source {:coursier "org.scalameta:metals_2.13"}})]
     (is (= "1.6.9" (:version (source/latest pkg io))))
     (is (= "1.6.8" (:version (source/newest (assoc pkg :skip ["1.6.9"]) io))))))
 
 (deftest coursier-definitions-name-the-pom-and-the-launcher
-  (let [pkg (package/normalize {:name "metals" :source {:coursier "org.scalameta:metals_2.13"}})]
+  (let [pkg (s/normalize {:name "metals" :source {:coursier "org.scalameta:metals_2.13"}})]
     (is (= {"metals" "bin/metals"} (:bins pkg)))
     (is (= "https://repo1.maven.org/maven2/org/scalameta/metals_2.13/1.6.9/metals_2.13-1.6.9.pom"
            (:url (package/artifact pkg {:tag "1.6.9" :version "1.6.9"})))))
   (is (= ["1.0" "1.2.3"] (coursier/release-versions "<version>1.0</version><version> 1.2.3 </version><version>1.3-RC1</version>")))
   (doseq [source [{:coursier "metals"} {:coursier "a:b" :main "1x"} {:coursier "a:b" :java-opts "-Xss4m"}]]
     (is (thrown-with-msg? clojure.lang.ExceptionInfo #"names a module on Maven Central"
-                          (package/normalize {:name "x" :source source}))
+                          (s/normalize {:name "x" :source source}))
         (pr-str source))))

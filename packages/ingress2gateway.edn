@@ -3,5 +3,5 @@
 
 {:description "Convert Ingress resources to Gateway API resources",
  :source {:github "kubernetes-sigs/ingress2gateway"},
- :asset "ingress2gateway_Linux_x86_64.tar.gz",
- :checksum "checksums.txt"}
+ :checksum "checksums.txt"
+ :platforms {"linux-x86_64" {:asset "ingress2gateway_Linux_x86_64.tar.gz"}}}

@@ -4,5 +4,5 @@
 
 {:description "A CLI tool that helps define common code or configuration snippets once, and sync it to multiple projects",
  :source {:github "ilaif/goplicate"}
- :asset "goplicate_{version}_Linux_x86_64.tar.gz"
- :checksum "checksums.txt"}
+ :checksum "checksums.txt"
+ :platforms {"linux-x86_64" {:asset "goplicate_{version}_Linux_x86_64.tar.gz"}}}

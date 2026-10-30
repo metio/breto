@@ -4,6 +4,6 @@
 
 {:description "MCP server for spreadsheet analysis and editing. Slim, token-efficient tool surface designed for LLM agents",
  :source {:github "PSU3D0/agent-spreadsheet"}
- :asset "agent-spreadsheet-linux-x86_64.tar.gz"
  :checksum "SHA256SUMS"
- :bins {"agent-spreadsheet" "agent-spreadsheet", "asp" "asp"}}
+ :bins {"agent-spreadsheet" "agent-spreadsheet", "asp" "asp"}
+ :platforms {"linux-x86_64" {:asset "agent-spreadsheet-linux-x86_64.tar.gz"}}}

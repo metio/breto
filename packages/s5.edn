@@ -4,5 +4,5 @@
 
 {:description "Safely Store Super Sensitive Stuff",
  :source {:github "mvisonneau/s5"}
- :asset "s5_{tag}_linux_amd64.tar.gz"
- :checksum "s5_{tag}_sha512sums.txt"}
+ :checksum "s5_{tag}_sha512sums.txt"
+ :platforms {"linux-x86_64" {:asset "s5_{tag}_linux_amd64.tar.gz"}}}

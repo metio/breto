@@ -4,5 +4,5 @@
 
 {:description "A snake game written in Go",
  :source {:github "liweiyi88/gosnakego"}
- :asset "gosnakego_{version}_linux_amd64.tar.gz"
- :checksum "gosnakego_{version}_checksums.txt"}
+ :checksum "gosnakego_{version}_checksums.txt"
+ :platforms {"linux-x86_64" {:asset "gosnakego_{version}_linux_amd64.tar.gz"}}}

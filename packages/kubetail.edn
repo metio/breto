@@ -4,5 +4,5 @@
 {:description "Real-time logging dashboard for Kubernetes, in the terminal or the browser"
  :source {:github "kubetail-org/kubetail"}
  :tag-prefix "cli/v"
- :asset "kubetail-linux-amd64.tar.gz"
- :checksum "SHA256SUMS"}
+ :checksum "SHA256SUMS"
+ :platforms {"linux-x86_64" {:asset "kubetail-linux-amd64.tar.gz"}}}

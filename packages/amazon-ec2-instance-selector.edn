@@ -4,5 +4,5 @@
 
 {:description "A CLI tool and go library which recommends instance types based on resource criteria like vcpus and memory",
  :source {:github "aws/amazon-ec2-instance-selector"}
- :asset "ec2-instance-selector-linux-amd64.tar.gz"
- :bins {"ec2-instance-selector" "ec2-instance-selector"}}
+ :bins {"ec2-instance-selector" "ec2-instance-selector"}
+ :platforms {"linux-x86_64" {:asset "ec2-instance-selector-linux-amd64.tar.gz"}}}

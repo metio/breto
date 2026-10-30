@@ -4,5 +4,5 @@
 
 {:description "A small Go program for better `vim --startuptime` alternative",
  :source {:github "rhysd/vim-startuptime"}
- :asset "vim-startuptime_{version}_linux_amd64.tar.gz"
- :checksum "vim-startuptime_{version}_checksums.txt"}
+ :checksum "vim-startuptime_{version}_checksums.txt"
+ :platforms {"linux-x86_64" {:asset "vim-startuptime_{version}_linux_amd64.tar.gz"}}}

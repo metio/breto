@@ -4,5 +4,5 @@
 
 {:description "Safely manage multiple Kubernetes clusters by defining safe contexts and protected commands",
  :source {:github "Telemaco019/kubesafe"}
- :asset "kubesafe_Linux_x86_64.tar.gz"
- :checksum "kubesafe_{version}_checksums.txt"}
+ :checksum "kubesafe_{version}_checksums.txt"
+ :platforms {"linux-x86_64" {:asset "kubesafe_Linux_x86_64.tar.gz"}}}

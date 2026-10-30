@@ -4,5 +4,5 @@
 
 {:description "Library for encoding and decoding AVIF files",
  :source {:github "AOMediaCodec/libavif"}
- :asset "linux-artifacts.zip"
- :bins {"avifdec" "avifdec", "avifenc" "avifenc", "avifgainmaputil" "avifgainmaputil"}}
+ :bins {"avifdec" "avifdec", "avifenc" "avifenc", "avifgainmaputil" "avifgainmaputil"}
+ :platforms {"linux-x86_64" {:asset "linux-artifacts.zip"}}}

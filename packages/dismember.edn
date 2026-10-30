@@ -4,5 +4,5 @@
 
 {:description "Scan memory for secrets and more. Maybe eventually a full /proc toolkit",
  :source {:github "liamg/dismember"}
- :asset "dismember-linux-amd64"
- :checksum "dismember_{version}_checksums.txt"}
+ :checksum "dismember_{version}_checksums.txt"
+ :platforms {"linux-x86_64" {:asset "dismember-linux-amd64"}}}

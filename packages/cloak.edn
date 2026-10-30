@@ -4,4 +4,4 @@
 
 {:description "Secrets automation for developers",
  :source {:github "purton-tech/cloak"}
- :asset "cloak-linux"}
+ :platforms {"linux-x86_64" {:asset "cloak-linux"}}}

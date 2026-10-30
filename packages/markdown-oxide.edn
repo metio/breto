@@ -4,5 +4,5 @@
 
 {:description "PKM Markdown Language Server",
  :source {:github "Feel-ix-343/markdown-oxide"}
- :asset "markdown-oxide-{tag}-x86_64-unknown-linux-gnu.tar.gz"
- :bins {"markdown-oxide" "markdown-oxide-{tag}-x86_64-unknown-linux-gnu/markdown-oxide"}}
+ :bins {"markdown-oxide" "markdown-oxide-{tag}-x86_64-unknown-linux-gnu/markdown-oxide"}
+ :platforms {"linux-x86_64" {:asset "markdown-oxide-{tag}-x86_64-unknown-linux-gnu.tar.gz"}}}

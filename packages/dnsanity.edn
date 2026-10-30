@@ -4,4 +4,4 @@
 
 {:description "High-performance DNS validator using template-based verification",
  :source {:github "nil0x42/dnsanity"}
- :asset "dnsanity-linux-x64-{tag}"}
+ :platforms {"linux-x86_64" {:asset "dnsanity-linux-x64-{tag}"}}}

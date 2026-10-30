@@ -4,6 +4,6 @@
 
 {:description "A highly customizable Changelog Generator that follows Conventional Commit specifications",
  :source {:github "orhun/git-cliff"}
- :asset "git-cliff-{version}-x86_64-unknown-linux-musl.tar.gz"
  :checksum "{asset}.sha512"
- :bins {"git-cliff" "git-cliff-{version}/git-cliff"}}
+ :bins {"git-cliff" "git-cliff-{version}/git-cliff"}
+ :platforms {"linux-x86_64" {:asset "git-cliff-{version}-x86_64-unknown-linux-musl.tar.gz"}}}

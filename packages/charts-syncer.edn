@@ -4,5 +4,5 @@
 
 {:description "Tool for synchronizing Helm Chart repositories",
  :source {:github "bitnami/charts-syncer"}
- :asset "charts-syncer_{version}_linux_x86_64.tar.gz"
- :checksum "checksums.txt"}
+ :checksum "checksums.txt"
+ :platforms {"linux-x86_64" {:asset "charts-syncer_{version}_linux_x86_64.tar.gz"}}}

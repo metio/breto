@@ -4,5 +4,5 @@
 
 {:description "A Golang Tool to discover unused Kubernetes Resources",
  :source {:github "yonahd/kor"}
- :asset "kor_Linux_x86_64.tar.gz"
- :checksum "kor_{version}_checksums.txt"}
+ :checksum "kor_{version}_checksums.txt"
+ :platforms {"linux-x86_64" {:asset "kor_Linux_x86_64.tar.gz"}}}

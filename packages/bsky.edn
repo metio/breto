@@ -4,4 +4,4 @@
 
 {:description "A cli application for bluesky social",
  :source {:github "mattn/bsky"}
- :asset "bsky-linux-{version}.zip"}
+ :platforms {"linux-x86_64" {:asset "bsky-linux-{version}.zip"}}}

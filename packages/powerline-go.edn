@@ -4,5 +4,5 @@
 
 {:description "A beautiful and useful low-latency prompt for your shell, written in go",
  :source {:github "justjanne/powerline-go"}
- :asset "powerline-go-linux-amd64"
- :checksum "checksums.txt"}
+ :checksum "checksums.txt"
+ :platforms {"linux-x86_64" {:asset "powerline-go-linux-amd64"}}}

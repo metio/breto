@@ -4,5 +4,5 @@
 
 {:description "Seed your development database with real data",
  :source {:github "Qovery/Replibyte"}
- :asset "replibyte_{tag}_x86_64-unknown-linux-musl.tar.gz"
- :checksum "replibyte_{tag}_x86_64-unknown-linux-musl.tar.gz.sha256sum"}
+ :checksum "replibyte_{tag}_x86_64-unknown-linux-musl.tar.gz.sha256sum"
+ :platforms {"linux-x86_64" {:asset "replibyte_{tag}_x86_64-unknown-linux-musl.tar.gz"}}}

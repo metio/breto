@@ -4,5 +4,5 @@
 
 {:description "Jujutsu UI (jjui) is a Text User Interface (TUI) designed for interacting with the Jujutsu version control system",
  :source {:github "idursun/jjui"}
- :asset "jjui-{version}-linux-amd64.zip"
- :bins {"jjui" "jjui-{version}-linux-amd64"}}
+ :bins {"jjui" "jjui-{version}-linux-amd64"}
+ :platforms {"linux-x86_64" {:asset "jjui-{version}-linux-amd64.zip"}}}

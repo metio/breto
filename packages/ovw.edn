@@ -4,5 +4,5 @@
 
 {:description "A terminal overview for your local projects",
  :source {:github "roie/ovw"}
- :asset "ovw_{version}_linux_amd64.tar.gz"
- :checksum "checksums.txt"}
+ :checksum "checksums.txt"
+ :platforms {"linux-x86_64" {:asset "ovw_{version}_linux_amd64.tar.gz"}}}

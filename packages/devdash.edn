@@ -4,5 +4,5 @@
 
 {:description "Highly Configurable Terminal Dashboard for Developers and Creators",
  :source {:github "Phantas0s/devdash"}
- :asset "devdash_{version}_Linux_x86_64.tar.gz"
- :checksum "checksums.txt"}
+ :checksum "checksums.txt"
+ :platforms {"linux-x86_64" {:asset "devdash_{version}_Linux_x86_64.tar.gz"}}}

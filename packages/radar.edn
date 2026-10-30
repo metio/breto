@@ -4,6 +4,6 @@
 
 {:description "The missing open-source Kubernetes UI with a built-in MCP server for AI agents. See what's broken, why, and what changed. Issues, Topology, event timeline, Helm, GitOps, live service traffic, and cluster audits - all in one Go binary",
  :source {:github "skyhook-io/radar"}
- :asset "radar_{tag}_linux_amd64.tar.gz"
  :checksum "checksums.txt"
- :bins {"kubectl-radar" "kubectl-radar", "radar" "kubectl-radar"}}
+ :bins {"kubectl-radar" "kubectl-radar", "radar" "kubectl-radar"}
+ :platforms {"linux-x86_64" {:asset "radar_{tag}_linux_amd64.tar.gz"}}}

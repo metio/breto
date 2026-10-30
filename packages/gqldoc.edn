@@ -4,5 +4,5 @@
 
 {:description "The easiest way to make API documents for GraphQL",
  :source {:github "Code-Hex/gqldoc"}
- :asset "gqldoc_{version}_Linux_x86_64.tar.gz"
- :checksum "checksums.txt"}
+ :checksum "checksums.txt"
+ :platforms {"linux-x86_64" {:asset "gqldoc_{version}_Linux_x86_64.tar.gz"}}}

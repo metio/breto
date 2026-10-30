@@ -4,6 +4,6 @@
 
 {:description "Self-Hosted Platform for Secure Execution of Untrusted User/AI Code",
  :source {:github "superradcompany/microsandbox"}
- :asset "microsandbox-linux-x86_64.tar.gz"
  :checksum "checksums.sha256"
- :bins {"msb" "msb"}}
+ :bins {"msb" "msb"}
+ :platforms {"linux-x86_64" {:asset "microsandbox-linux-x86_64.tar.gz"}}}

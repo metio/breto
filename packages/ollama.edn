@@ -3,7 +3,7 @@
 
 {:description "Runs large language models locally"
  :source {:github "ollama/ollama"}
- :asset "ollama-linux-amd64.tar.zst"
  :checksum "sha256sum.txt"
  :layout :tree
- :bins {"ollama" "bin/ollama"}}
+ :bins {"ollama" "bin/ollama"}
+ :platforms {"linux-x86_64" {:asset "ollama-linux-amd64.tar.zst"}}}

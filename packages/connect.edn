@@ -4,6 +4,6 @@
 
 {:description "Fancy stream processing made operationally mundane",
  :source {:github "redpanda-data/connect"}
- :asset "redpanda-connect_{version}_linux_amd64.tar.gz"
  :checksum "{asset}.sha256"
- :bins {"redpanda-connect" "redpanda-connect"}}
+ :bins {"redpanda-connect" "redpanda-connect"}
+ :platforms {"linux-x86_64" {:asset "redpanda-connect_{version}_linux_amd64.tar.gz"}}}

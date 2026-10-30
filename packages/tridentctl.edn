@@ -4,5 +4,5 @@
 
 {:description "Storage orchestrator for containers",
  :source {:github "NetApp/trident"}
- :asset "trident-installer-{version}.tar.gz"
- :bins {"tridentctl" "trident-installer/tridentctl"}}
+ :bins {"tridentctl" "trident-installer/tridentctl"}
+ :platforms {"linux-x86_64" {:asset "trident-installer-{version}.tar.gz"}}}

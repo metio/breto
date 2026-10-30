@@ -4,4 +4,4 @@
 
 {:description "Reformats Java source code to comply with Google Java Style",
  :source {:github "google/google-java-format"}
- :asset "google-java-format_linux-x86-64"}
+ :platforms {"linux-x86_64" {:asset "google-java-format_linux-x86-64"}}}

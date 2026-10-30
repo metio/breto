@@ -4,5 +4,5 @@
 
 {:description "User-mode networking for unprivileged network namespaces",
  :source {:github "rootless-containers/slirp4netns"}
- :asset "slirp4netns-x86_64"
- :checksum "SHA256SUMS"}
+ :checksum "SHA256SUMS"
+ :platforms {"linux-x86_64" {:asset "slirp4netns-x86_64"}}}

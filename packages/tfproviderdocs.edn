@@ -4,5 +4,5 @@
 
 {:description "Terraform Provider Documentation Tool",
  :source {:github "bflad/tfproviderdocs"}
- :asset "tfproviderdocs_{version}_linux_amd64.tar.gz"
- :checksum "tfproviderdocs_{version}_checksums.txt"}
+ :checksum "tfproviderdocs_{version}_checksums.txt"
+ :platforms {"linux-x86_64" {:asset "tfproviderdocs_{version}_linux_amd64.tar.gz"}}}

@@ -3,4 +3,4 @@
 
 {:description "The slightly more awesome standard unix password manager for teams",
  :source {:github "gopasspw/gopass"},
- :asset "gopass-{version}-linux-amd64.tar.gz"}
+ :platforms {"linux-x86_64" {:asset "gopass-{version}-linux-amd64.tar.gz"}}}

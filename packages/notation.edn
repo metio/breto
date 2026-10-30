@@ -4,5 +4,5 @@
 
 {:description "A CLI tool to sign and verify artifacts",
  :source {:github "notaryproject/notation"}
- :asset "notation_{version}_linux_amd64.tar.gz"
- :checksum "notation_{version}_checksums.txt"}
+ :checksum "notation_{version}_checksums.txt"
+ :platforms {"linux-x86_64" {:asset "notation_{version}_linux_amd64.tar.gz"}}}

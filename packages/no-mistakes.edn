@@ -4,5 +4,5 @@
 
 {:description "git push no-mistakes",
  :source {:github "kunchenguid/no-mistakes"}
- :asset "no-mistakes-{tag}-linux-amd64.tar.gz"
- :checksum "checksums.txt"}
+ :checksum "checksums.txt"
+ :platforms {"linux-x86_64" {:asset "no-mistakes-{tag}-linux-amd64.tar.gz"}}}

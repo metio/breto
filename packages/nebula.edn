@@ -4,5 +4,5 @@
 
 {:description "A scalable overlay networking tool with a focus on performance, simplicity and security",
  :source {:github "slackhq/nebula"}
- :asset "nebula-linux-amd64.tar.gz"
- :bins {"nebula" "nebula", "nebula-cert" "nebula-cert"}}
+ :bins {"nebula" "nebula", "nebula-cert" "nebula-cert"}
+ :platforms {"linux-x86_64" {:asset "nebula-linux-amd64.tar.gz"}}}

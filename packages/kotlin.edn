@@ -3,8 +3,8 @@
 
 {:description "The Kotlin compiler for the JVM, which runs on the java found through JAVA_HOME or PATH"
  :source {:github "JetBrains/kotlin"}
- :asset "kotlin-compiler-{version}.zip"
  :checksum "{asset}.sha256"
  :strip 1
  :layout :tree
- :bins {"kotlin" "bin/kotlin" "kotlinc" "bin/kotlinc" "kotlinc-jvm" "bin/kotlinc-jvm" "kapt" "bin/kapt"}}
+ :bins {"kotlin" "bin/kotlin" "kotlinc" "bin/kotlinc" "kotlinc-jvm" "bin/kotlinc-jvm" "kapt" "bin/kapt"}
+ :platforms {"linux-x86_64" {:asset "kotlin-compiler-{version}.zip"}}}

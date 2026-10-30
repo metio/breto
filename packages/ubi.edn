@@ -4,5 +4,5 @@
 
 {:description "The Universal Binary Installer",
  :source {:github "houseabsolute/ubi"}
- :asset "ubi-Linux-musl-x86_64.tar.gz"
- :checksum "{asset}.sha256"}
+ :checksum "{asset}.sha256"
+ :platforms {"linux-x86_64" {:asset "ubi-Linux-musl-x86_64.tar.gz"}}}

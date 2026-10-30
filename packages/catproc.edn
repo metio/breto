@@ -4,5 +4,5 @@
 
 {:description "Print the output of a running process",
  :source {:github "yujqiao/catproc"}
- :asset "catp-x86_64-unknown-linux-musl.zip"
- :bins {"catp" "catp"}}
+ :bins {"catp" "catp"}
+ :platforms {"linux-x86_64" {:asset "catp-x86_64-unknown-linux-musl.zip"}}}

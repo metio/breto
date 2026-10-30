@@ -4,5 +4,5 @@
 
 {:description "A TUI playground to experiment with jq",
  :source {:github "noahgorstein/jqp"}
- :asset "jqp_Linux_x86_64.tar.gz"
- :checksum "checksums.txt"}
+ :checksum "checksums.txt"
+ :platforms {"linux-x86_64" {:asset "jqp_Linux_x86_64.tar.gz"}}}

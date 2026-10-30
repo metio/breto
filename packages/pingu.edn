@@ -4,5 +4,5 @@
 
 {:description "ping command but with pingu",
  :source {:github "sheepla/pingu"}
- :asset "pingu_{version}_Linux_x86_64.tar.gz"
- :checksum "checksums.txt"}
+ :checksum "checksums.txt"
+ :platforms {"linux-x86_64" {:asset "pingu_{version}_Linux_x86_64.tar.gz"}}}

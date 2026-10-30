@@ -4,4 +4,4 @@
 
 {:description "Tinymist [ˈtaɪni mɪst] is an integrated language service for Typst [taɪpst]",
  :source {:github "Myriad-Dreamin/tinymist"}
- :asset "tinymist-linux-x64"}
+ :platforms {"linux-x86_64" {:asset "tinymist-linux-x64"}}}

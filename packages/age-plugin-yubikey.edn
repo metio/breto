@@ -3,7 +3,7 @@
 
 {:description "YubiKey plugin for age",
  :source {:github "str4d/age-plugin-yubikey"},
- :asset "age-plugin-yubikey-{tag}-x86_64-linux.tar.gz",
  :strip 1
  :skip ["0.5.1"]
- :history [{:before "0.5.1" :verify false}]}
+ :history [{:before "0.5.1" :verify false}]
+ :platforms {"linux-x86_64" {:asset "age-plugin-yubikey-{tag}-x86_64-linux.tar.gz"}}}

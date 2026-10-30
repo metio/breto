@@ -112,13 +112,13 @@
                           (str "{\"versions\":{\"2.5.0\":{},\"2.6.0\":{\"deprecated\":\"broken\"},"
                                "\"2.6.3\":{},\"2.6.4\":{},\"3.0.0-beta.1\":{}}}")}
                       (atom []))
-        pkg (package/normalize {:name "biome" :source {:npm "@biomejs/biome"} :skip ["2.6.4"]})]
+        pkg (s/normalize {:name "biome" :source {:npm "@biomejs/biome"} :skip ["2.6.4"]})]
     (is (= {:tag "2.6.4" :version "2.6.4"} (select-keys (source/latest pkg io) [:tag :version])))
     (testing "skipping the latest falls back to the newest final release that is not deprecated"
       (is (= "2.6.3" (:version (source/newest pkg io)))))))
 
 (deftest npm-definitions-default-to-the-command-of-the-package-name
-  (let [pkg (package/normalize {:name "prettier" :source {:npm "prettier"}})]
+  (let [pkg (s/normalize {:name "prettier" :source {:npm "prettier"}})]
     (is (= :tree (:layout pkg)))
     (is (= {"prettier" "node_modules/.bin/prettier"} (:bins pkg)))
     (is (= "https://registry.npmjs.org/prettier/3.9.10"
@@ -127,5 +127,5 @@
 (deftest npm-names-are-checked
   (doseq [name ["Prettier" "@scope" "@/x" "a b" "../x"]]
     (is (thrown-with-msg? clojure.lang.ExceptionInfo #"names a package on the npm registry"
-                          (package/normalize {:name "x" :source {:npm name}}))
+                          (s/normalize {:name "x" :source {:npm name}}))
         name)))

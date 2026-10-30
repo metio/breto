@@ -4,5 +4,5 @@
 
 {:description "Live reload for Go apps",
  :source {:github "air-verse/air"}
- :asset "air_{version}_linux_amd64.tar.gz"
- :checksum "air_{version}_checksums.txt"}
+ :checksum "air_{version}_checksums.txt"
+ :platforms {"linux-x86_64" {:asset "air_{version}_linux_amd64.tar.gz"}}}

@@ -163,3 +163,24 @@
     (testing "an unknown command names the project's commands"
       (is (thrown-with-msg? clojure.lang.ExceptionInfo #"no command nope"
                             (breto! io ["run" "--dir" (path "app") "nope"]))))))
+
+(deftest packages-without-a-release-for-the-platform-are-left-out-with-a-warning
+  (let [io (world)]
+    (s/define! "beta" {:source {:github "acme/beta"} :verify false :platforms {"darwin-x86_64" {:asset "beta"}}})
+    (group! "@tools" {:members ["alpha" "beta"]})
+    (write! "app" ".breto.edn" {:packages ["@tools"]})
+    (testing "a project gets the tools there are, and a warning about the others"
+      (let [{:keys [code out err]} (breto! io ["env" "--dir" (path "app") "--platform" "linux-aarch64"])
+            bin (second (re-find #"export BRETO_ENV_BIN='([^']*)'" out))]
+        (is (= 0 code) err)
+        (is (str/includes? err "[WARN] beta has no release for linux-aarch64, so it is skipped; it has releases for darwin-x86_64"))
+        (is (fs/exists? (fs/path bin "alpha")))
+        (is (not (fs/exists? (fs/path bin "beta"))))))
+    (testing "a group named on the command line skips them too"
+      (let [{:keys [code err]} (breto! io ["install" "@tools" "--platform" "linux-aarch64"])]
+        (is (= 0 code) err)
+        (is (str/includes? err "[WARN] beta has no release for linux-aarch64"))))
+    (testing "a package named on its own fails"
+      (let [{:keys [code out]} (breto! io ["install" "beta" "--platform" "linux-aarch64"])]
+        (is (= 1 code))
+        (is (str/includes? out "beta has no release for linux-aarch64"))))))

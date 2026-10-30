@@ -4,5 +4,5 @@
 
 {:description "Command line tool to help you use conventional commit messages (https://www.conventionalcommits.org)",
  :source {:github "liamg/comet"}
- :asset "comet-linux-amd64"
- :checksum "comet_{version}_checksums.txt"}
+ :checksum "comet_{version}_checksums.txt"
+ :platforms {"linux-x86_64" {:asset "comet-linux-amd64"}}}

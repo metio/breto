@@ -4,4 +4,4 @@
 
 {:description "Command that sends a prompt to OpenAI and returns a reply",
  :source {:github "ryoppippi/zigchat"}
- :asset "zigchat-x86_64-linux.tar.gz"}
+ :platforms {"linux-x86_64" {:asset "zigchat-x86_64-linux.tar.gz"}}}

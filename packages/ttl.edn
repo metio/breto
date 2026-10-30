@@ -4,5 +4,5 @@
 
 {:description "Fast, modern traceroute with real-time TUI, per-hop stats, ASN/geo lookup, ECMP detection, and MPLS label parsing. A better mtr",
  :source {:github "lance0/ttl"}
- :asset "ttl-x86_64-unknown-linux-musl.tar.gz"
- :checksum "SHA256SUMS"}
+ :checksum "SHA256SUMS"
+ :platforms {"linux-x86_64" {:asset "ttl-x86_64-unknown-linux-musl.tar.gz"}}}

@@ -4,6 +4,6 @@
 
 {:description "Cloudsmith Command Line Interface (CLI)",
  :source {:github "cloudsmith-io/cloudsmith-cli"}
- :asset "cloudsmith-{version}-linux-x86_64-gnu.tar.gz"
  :checksum "{asset}.sha256"
- :bins {"cloudsmith" "cloudsmith/cloudsmith"}}
+ :bins {"cloudsmith" "cloudsmith/cloudsmith"}
+ :platforms {"linux-x86_64" {:asset "cloudsmith-{version}-linux-x86_64-gnu.tar.gz"}}}

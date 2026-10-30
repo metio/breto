@@ -5,5 +5,5 @@
 {:description "VirusTotal Command Line Interface",
  :source {:github "VirusTotal/vt-cli"}
  :tag-prefix ""
- :asset "Linux64.zip"
- :bins {"vt" "vt"}}
+ :bins {"vt" "vt"}
+ :platforms {"linux-x86_64" {:asset "Linux64.zip"}}}

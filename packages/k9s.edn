@@ -4,5 +4,5 @@
 
 {:description "Kubernetes CLI To Manage Your Clusters In Style",
  :source {:github "derailed/k9s"}
- :asset "k9s_Linux_amd64.tar.gz"
- :checksum "checksums.sha256"}
+ :checksum "checksums.sha256"
+ :platforms {"linux-x86_64" {:asset "k9s_Linux_amd64.tar.gz"}}}

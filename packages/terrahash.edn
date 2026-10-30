@@ -4,5 +4,5 @@
 
 {:description "Create and store a hash of the Terraform modules used by your configuration",
  :source {:github "ned1313/terrahash"}
- :asset "terrahash_Linux_x86_64.tar.gz"
- :checksum "terrahash_{version}_checksums.txt"}
+ :checksum "terrahash_{version}_checksums.txt"
+ :platforms {"linux-x86_64" {:asset "terrahash_Linux_x86_64.tar.gz"}}}

@@ -4,4 +4,4 @@
 
 {:description "A Fibonacci CLI",
  :source {:github "so-dang-cool/fib"}
- :asset "fib-x86_64-linux.tgz"}
+ :platforms {"linux-x86_64" {:asset "fib-x86_64-linux.tgz"}}}

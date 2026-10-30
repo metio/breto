@@ -4,5 +4,5 @@
 
 {:description "Download files, folders, and release assets from a specific git commit, branch, or tag of public and private GitHub repos",
  :source {:github "gruntwork-io/fetch"}
- :asset "fetch_linux_amd64"
- :checksum "SHA256SUMS"}
+ :checksum "SHA256SUMS"
+ :platforms {"linux-x86_64" {:asset "fetch_linux_amd64"}}}

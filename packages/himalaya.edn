@@ -4,8 +4,8 @@
 
 {:description "CLI to manage emails",
  :source {:github "pimalaya/himalaya"}
- :asset "himalaya.x86_64-linux.tgz",
  :man ["share/man/*.1.gz"],
  :completions {:bash "share/completions/himalaya.bash",
                :zsh "share/completions/_himalaya",
-               :fish "share/completions/himalaya.fish"}}
+               :fish "share/completions/himalaya.fish"}
+ :platforms {"linux-x86_64" {:asset "himalaya.x86_64-linux.tgz"}}}

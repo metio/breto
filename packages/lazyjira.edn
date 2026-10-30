@@ -4,5 +4,5 @@
 
 {:description "Lazygit but for Jira",
  :source {:github "textfuel/lazyjira"}
- :asset "lazyjira_linux_amd64.tar.gz"
- :checksum "lazyjira_{version}_checksums.txt"}
+ :checksum "lazyjira_{version}_checksums.txt"
+ :platforms {"linux-x86_64" {:asset "lazyjira_linux_amd64.tar.gz"}}}

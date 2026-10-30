@@ -4,4 +4,4 @@
 
 {:description "xargs + awk with pattern matching support. `ls *.bak | rargs -p '(.*)\\.bak' mv {0} {1}`",
  :source {:github "lotabout/rargs"}
- :asset "rargs-{tag}-x86_64-unknown-linux-musl.tar.gz"}
+ :platforms {"linux-x86_64" {:asset "rargs-{tag}-x86_64-unknown-linux-musl.tar.gz"}}}

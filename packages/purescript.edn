@@ -3,6 +3,6 @@
 
 {:description "The PureScript compiler"
  :source {:github "purescript/purescript"}
- :asset "linux64.tar.gz"
  :strip 1
- :bins {"purs" "purs"}}
+ :bins {"purs" "purs"}
+ :platforms {"linux-x86_64" {:asset "linux64.tar.gz"}}}

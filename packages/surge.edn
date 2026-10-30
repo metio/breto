@@ -4,5 +4,5 @@
 
 {:description "Blazing fast TUI download manager built in Go for power users",
  :source {:github "SurgeDM/Surge"}
- :asset "Surge_{version}_linux_amd64.tar.gz"
- :checksum "Surge_{version}_checksums.txt"}
+ :checksum "Surge_{version}_checksums.txt"
+ :platforms {"linux-x86_64" {:asset "Surge_{version}_linux_amd64.tar.gz"}}}

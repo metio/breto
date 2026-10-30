@@ -4,5 +4,5 @@
 
 {:description "TUI explorer application for Amazon S3 (AWS S3)",
  :source {:github "lusingander/stu"}
- :asset "stu-{version}-x86_64-unknown-linux-musl.tar.gz"
- :checksum "checksum.txt"}
+ :checksum "checksum.txt"
+ :platforms {"linux-x86_64" {:asset "stu-{version}-x86_64-unknown-linux-musl.tar.gz"}}}

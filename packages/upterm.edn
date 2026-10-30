@@ -3,5 +3,5 @@
 
 {:description "Secure Terminal Sharing",
  :source {:github "owenthereal/upterm"},
- :asset "upterm_linux_amd64.tar.gz",
- :checksum "checksums.txt"}
+ :checksum "checksums.txt"
+ :platforms {"linux-x86_64" {:asset "upterm_linux_amd64.tar.gz"}}}

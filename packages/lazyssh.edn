@@ -4,5 +4,5 @@
 
 {:description "A terminal-based SSH manager inspired by lazydocker and k9s - Written in go",
  :source {:github "Adembc/lazyssh"}
- :asset "lazyssh_Linux_x86_64.tar.gz"
- :checksum "checksums.txt"}
+ :checksum "checksums.txt"
+ :platforms {"linux-x86_64" {:asset "lazyssh_Linux_x86_64.tar.gz"}}}

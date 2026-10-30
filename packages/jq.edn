@@ -4,6 +4,6 @@
 {:description "Command-line JSON processor"
  :source {:github "jqlang/jq"}
  :tag-prefix "jq-"
- :asset "jq-linux-amd64"
  :checksum "sha256sum.txt"
- :bins {"jq" "jq-linux-amd64"}}
+ :bins {"jq" "jq-linux-amd64"}
+ :platforms {"linux-x86_64" {:asset "jq-linux-amd64"}}}

@@ -3,7 +3,7 @@
 
 {:description "CLI password manager using age.",
  :source {:github "metio/pasejo"},
- :asset "pasejo-x86_64-unknown-linux-gnu.tar.gz",
  :tag-prefix "",
  :checksum "SHA256SUMS",
- :completions {:bash {:env {"COMPLETE" "bash"}}}}
+ :completions {:bash {:env {"COMPLETE" "bash"}}}
+ :platforms {"linux-x86_64" {:asset "pasejo-x86_64-unknown-linux-gnu.tar.gz"}}}

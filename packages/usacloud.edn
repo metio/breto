@@ -4,5 +4,5 @@
 
 {:description "CLI client for the Sakura Cloud",
  :source {:github "sacloud/usacloud"}
- :asset "usacloud_linux-amd64.zip"
- :checksum "usacloud_SHA256SUMS"}
+ :checksum "usacloud_SHA256SUMS"
+ :platforms {"linux-x86_64" {:asset "usacloud_linux-amd64.zip"}}}

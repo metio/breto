@@ -5,5 +5,5 @@
 {:description "An interactive replacer for ripgrep that makes it easy to find and replace across files on the command line",
  :source {:github "acheronfail/repgrep"}
  :tag-prefix ""
- :asset "repgrep-{tag}-x86_64-unknown-linux-musl.tar.gz"
- :bins {"rgr" "repgrep-{tag}-x86_64-unknown-linux-musl/rgr"}}
+ :bins {"rgr" "repgrep-{tag}-x86_64-unknown-linux-musl/rgr"}
+ :platforms {"linux-x86_64" {:asset "repgrep-{tag}-x86_64-unknown-linux-musl.tar.gz"}}}

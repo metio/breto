@@ -5,5 +5,5 @@
 {:description "A CLI that creates reproducible Kubernetes environments for development and testing",
  :source {:github "Getdeck/getdeck"}
  :tag-prefix ""
- :asset "deck-{tag}-linux-amd64.zip"
- :bins {"deck" "deck"}}
+ :bins {"deck" "deck"}
+ :platforms {"linux-x86_64" {:asset "deck-{tag}-linux-amd64.zip"}}}

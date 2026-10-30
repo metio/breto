@@ -5,5 +5,5 @@
 {:description "A process manager & log viewer for dev",
  :source {:github "deref/exo"}
  :tag-prefix ""
- :asset "exo_standalone_{tag}_linux_amd64.tar.gz"
- :checksum "checksums.txt"}
+ :checksum "checksums.txt"
+ :platforms {"linux-x86_64" {:asset "exo_standalone_{tag}_linux_amd64.tar.gz"}}}

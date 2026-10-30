@@ -4,5 +4,5 @@
 
 {:description "~6x faster, stricter, configurable, extensible, and beautiful drop-in replacement for golint",
  :source {:github "revive-lint/revive"}
- :asset "revive_linux_amd64.tar.gz"
- :checksum "checksums.txt"}
+ :checksum "checksums.txt"
+ :platforms {"linux-x86_64" {:asset "revive_linux_amd64.tar.gz"}}}

@@ -4,4 +4,4 @@
 
 {:description "jf %q \"JSON Formatted\"",
  :source {:github "sayanarijit/jf"}
- :asset "jf-x86_64-unknown-linux-musl.tar.gz"}
+ :platforms {"linux-x86_64" {:asset "jf-x86_64-unknown-linux-musl.tar.gz"}}}

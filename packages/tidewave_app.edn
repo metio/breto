@@ -4,5 +4,5 @@
 
 {:description "Tidewave is the coding agent for full-stack web app development",
  :source {:github "tidewave-ai/tidewave_app"}
- :asset "tidewave-cli-x86_64-unknown-linux-musl"
- :bins {"tidewave" "{asset}"}}
+ :bins {"tidewave" "{asset}"}
+ :platforms {"linux-x86_64" {:asset "tidewave-cli-x86_64-unknown-linux-musl"}}}

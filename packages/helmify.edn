@@ -4,5 +4,5 @@
 
 {:description "Creates Helm chart from Kubernetes yaml",
  :source {:github "arttor/helmify"}
- :asset "helmify_Linux_x86_64.tar.gz"
- :checksum "checksums.txt"}
+ :checksum "checksums.txt"
+ :platforms {"linux-x86_64" {:asset "helmify_Linux_x86_64.tar.gz"}}}

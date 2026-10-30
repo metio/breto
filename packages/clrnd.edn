@@ -4,5 +4,5 @@
 
 {:description "a command-line tool for deploying services to Google Cloud Run",
  :source {:github "masasuzu/clrnd"}
- :asset "clrnd_{version}_linux_amd64.tar.gz"
- :checksum "checksums.txt"}
+ :checksum "checksums.txt"
+ :platforms {"linux-x86_64" {:asset "clrnd_{version}_linux_amd64.tar.gz"}}}

@@ -5,5 +5,5 @@
 {:description "hwatch: alternative watch command with history, diff view, JSONL logging, and change hooks. since 2018",
  :source {:github "blacknon/hwatch"}
  :tag-prefix ""
- :asset "hwatch-{tag}.x86_64-unknown-linux-musl.tar.gz"
- :bins {"hwatch" "bin/hwatch"}}
+ :bins {"hwatch" "bin/hwatch"}
+ :platforms {"linux-x86_64" {:asset "hwatch-{tag}.x86_64-unknown-linux-musl.tar.gz"}}}

@@ -4,5 +4,5 @@
 
 {:description "Tests CLI behavior from plain YAML: exit codes, output, files, snapshots, and interactive terminals (PTY/TUI)",
  :source {:github "nao1215/atago"}
- :asset "atago_{version}_linux_amd64.tar.gz"
- :checksum "checksums.txt"}
+ :checksum "checksums.txt"
+ :platforms {"linux-x86_64" {:asset "atago_{version}_linux_amd64.tar.gz"}}}

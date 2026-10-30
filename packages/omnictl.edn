@@ -4,5 +4,5 @@
 
 {:description "SaaS-simple deployment of Kubernetes - on your own hardware",
  :source {:github "siderolabs/omni"}
- :asset "omnictl-linux-amd64"
- :checksum "sha256sum.txt"}
+ :checksum "sha256sum.txt"
+ :platforms {"linux-x86_64" {:asset "omnictl-linux-amd64"}}}

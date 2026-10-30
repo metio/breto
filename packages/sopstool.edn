@@ -4,5 +4,5 @@
 
 {:description "SOPS multi-file wrapper",
  :source {:github "ibotta/sopstool"}
- :asset "sopstool_linux_amd64.tar.gz"
- :checksum "sopstool_checksums.txt"}
+ :checksum "sopstool_checksums.txt"
+ :platforms {"linux-x86_64" {:asset "sopstool_linux_amd64.tar.gz"}}}

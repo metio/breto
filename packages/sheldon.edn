@@ -5,4 +5,4 @@
 {:description "Fast, configurable, shell plugin manager",
  :source {:github "rossmacarthur/sheldon"}
  :tag-prefix ""
- :asset "sheldon-{tag}-x86_64-unknown-linux-musl.tar.gz"}
+ :platforms {"linux-x86_64" {:asset "sheldon-{tag}-x86_64-unknown-linux-musl.tar.gz"}}}

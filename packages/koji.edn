@@ -4,4 +4,4 @@
 
 {:description "An interactive CLI for creating conventional commits",
  :source {:github "cococonscious/koji"}
- :asset "koji-x86_64-unknown-linux-gnu.tar.gz"}
+ :platforms {"linux-x86_64" {:asset "koji-x86_64-unknown-linux-gnu.tar.gz"}}}

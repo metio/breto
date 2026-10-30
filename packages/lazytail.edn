@@ -4,4 +4,4 @@
 
 {:description "Log viewer for app development",
  :source {:github "raaymax/lazytail"}
- :asset "lazytail-linux-x86_64.tar.gz"}
+ :platforms {"linux-x86_64" {:asset "lazytail-linux-x86_64.tar.gz"}}}

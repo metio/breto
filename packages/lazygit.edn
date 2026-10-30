@@ -4,5 +4,5 @@
 
 {:description "simple terminal UI for git commands",
  :source {:github "jesseduffield/lazygit"}
- :asset "lazygit_{version}_linux_x86_64.tar.gz"
- :checksum "checksums.txt"}
+ :checksum "checksums.txt"
+ :platforms {"linux-x86_64" {:asset "lazygit_{version}_linux_x86_64.tar.gz"}}}

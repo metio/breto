@@ -4,5 +4,5 @@
 
 {:description "New  wave for @helm",
  :source {:github "helmwave/helmwave"}
- :asset "helmwave_{version}_linux_amd64.tar.gz"
- :checksum "checksums.txt"}
+ :checksum "checksums.txt"
+ :platforms {"linux-x86_64" {:asset "helmwave_{version}_linux_amd64.tar.gz"}}}

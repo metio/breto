@@ -4,4 +4,4 @@
 
 {:description "Idempotent schema management for Microsoft SQL Server",
  :source {:github "sqldef/sqldef"}
- :asset "mssqldef_linux_amd64.tar.gz"}
+ :platforms {"linux-x86_64" {:asset "mssqldef_linux_amd64.tar.gz"}}}

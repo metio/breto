@@ -4,6 +4,6 @@
 
 {:description "A stupid simple S3 downloader CLI tool with supporting AWS Access Key",
  :source {:github "livesense-inc/go-aws-s3get"}
- :asset "s3get-linux-x86_64"
  :checksum "s3get_{version}_checksums.txt"
- :bins {"s3get" "{asset}"}}
+ :bins {"s3get" "{asset}"}
+ :platforms {"linux-x86_64" {:asset "s3get-linux-x86_64"}}}

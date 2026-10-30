@@ -4,5 +4,5 @@
 
 {:description "Embedded no-code VM executing human-like language to manipulate data and process cryptographic operations",
  :source {:github "dyne/zenroom"}
- :asset "zenroom-linux.zip"
- :bins {"zencode-exec" "zenroom-x86_64-linux/zencode-exec", "zenroom" "zenroom-x86_64-linux/zenroom"}}
+ :bins {"zencode-exec" "zenroom-x86_64-linux/zencode-exec", "zenroom" "zenroom-x86_64-linux/zenroom"}
+ :platforms {"linux-x86_64" {:asset "zenroom-linux.zip"}}}

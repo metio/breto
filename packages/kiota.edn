@@ -4,4 +4,4 @@
 
 {:description "OpenAPI based HTTP Client code generator",
  :source {:github "microsoft/kiota"}
- :asset "linux-x64.zip"}
+ :platforms {"linux-x86_64" {:asset "linux-x64.zip"}}}

@@ -4,6 +4,6 @@
 
 {:description "A distribution of yamllint that can be used with go run",
  :source {:github "wasilibs/go-yamllint"}
- :asset "go-yamllint_{version}_linux_amd64.tar.gz"
  :checksum "checksums.txt"
- :bins {"yamllint" "yamllint"}}
+ :bins {"yamllint" "yamllint"}
+ :platforms {"linux-x86_64" {:asset "go-yamllint_{version}_linux_amd64.tar.gz"}}}

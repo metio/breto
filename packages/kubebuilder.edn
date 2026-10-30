@@ -4,5 +4,5 @@
 
 {:description "Kubebuilder - SDK for building Kubernetes APIs using CRDs",
  :source {:github "kubernetes-sigs/kubebuilder"}
- :asset "kubebuilder_linux_amd64"
- :checksum "checksums.txt"}
+ :checksum "checksums.txt"
+ :platforms {"linux-x86_64" {:asset "kubebuilder_linux_amd64"}}}

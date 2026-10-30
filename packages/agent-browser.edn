@@ -4,4 +4,4 @@
 
 {:description "Browser automation CLI for AI agents",
  :source {:github "vercel-labs/agent-browser"}
- :asset "agent-browser-linux-musl-x64"}
+ :platforms {"linux-x86_64" {:asset "agent-browser-linux-musl-x64"}}}

@@ -4,5 +4,5 @@
 
 {:description "OWASP dependency-check is a software composition analysis utility that detects publicly disclosed vulnerabilities in application dependencies",
  :source {:github "dependency-check/DependencyCheck"}
- :asset "dependency-check-{version}-release.zip"
- :bins {"dependency-check" "dependency-check/bin/dependency-check.sh"}}
+ :bins {"dependency-check" "dependency-check/bin/dependency-check.sh"}
+ :platforms {"linux-x86_64" {:asset "dependency-check-{version}-release.zip"}}}

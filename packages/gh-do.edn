@@ -4,5 +4,5 @@
 
 {:description "gh-do is a tool to do anything using GitHub credentials",
  :source {:github "k1LoW/gh-do"}
- :asset "gh-do_{tag}_linux_amd64.tar.gz"
- :checksum "checksums.txt"}
+ :checksum "checksums.txt"
+ :platforms {"linux-x86_64" {:asset "gh-do_{tag}_linux_amd64.tar.gz"}}}

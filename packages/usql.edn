@@ -4,4 +4,4 @@
 
 {:description "Universal command-line interface for SQL databases",
  :source {:github "xo/usql"}
- :asset "usql-{version}-linux-amd64.tar.bz2"}
+ :platforms {"linux-x86_64" {:asset "usql-{version}-linux-amd64.tar.bz2"}}}

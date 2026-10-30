@@ -4,5 +4,5 @@
 
 {:description "Simple and flexible tool for managing secrets",
  :source {:github "getsops/sops"}
- :asset "sops-{tag}.linux.amd64"
- :checksum "sops-{tag}.checksums.txt"}
+ :checksum "sops-{tag}.checksums.txt"
+ :platforms {"linux-x86_64" {:asset "sops-{tag}.linux.amd64"}}}

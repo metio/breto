@@ -4,5 +4,5 @@
 
 {:description "Build and deploy Go applications on Kubernetes",
  :source {:github "ko-build/ko"}
- :asset "ko_{version}_Linux_x86_64.tar.gz"
- :checksum "checksums.txt"}
+ :checksum "checksums.txt"
+ :platforms {"linux-x86_64" {:asset "ko_{version}_Linux_x86_64.tar.gz"}}}

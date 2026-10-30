@@ -111,22 +111,22 @@
                                "\"6.1.0\":[{\"yanked\":false}],\"6.2.0\":[{\"yanked\":false}],"
                                "\"6.3.0rc1\":[{\"yanked\":false}],\"6.0.0\":[{\"yanked\":true}],\"5.0.0\":[]}}")}
                       (atom []))
-        pkg (package/normalize {:name "reuse" :source {:pypi "reuse"} :skip ["6.2.0"]})]
+        pkg (s/normalize {:name "reuse" :source {:pypi "reuse"} :skip ["6.2.0"]})]
     (is (= {:tag "6.2.0" :version "6.2.0"} (select-keys (source/latest pkg io) [:tag :version])))
     (testing "skipping the latest falls back to the newest published final release"
       (is (= "6.1.0" (:version (source/newest pkg io)))))))
 
 (deftest text-sources-can-match-the-tag
   (let [io (s/fake-io {} {"https://static.rust-lang.org/rustup/release-stable.toml" "schema-version = '1'\nversion = '1.29.2'\n"} (atom []))
-        pkg (package/normalize {:name "rustup" :tag-prefix "" :asset "rustup-init" :url "https://example.org/{version}/{asset}"
+        pkg (s/normalize {:name "rustup" :tag-prefix "" :asset "rustup-init" :url "https://example.org/{version}/{asset}"
                                 :source {:text "https://static.rust-lang.org/rustup/release-stable.toml"
                                          :match "(?m)^version = '([^']+)'"}})]
     (is (= "1.29.2" (:version (source/latest pkg io))))
     (is (thrown-with-msg? clojure.lang.ExceptionInfo #"is a regular expression for a :text source"
-                          (package/normalize {:name "x" :source {:github "a/b" :match "x"} :asset "x"})))))
+                          (s/normalize {:name "x" :source {:github "a/b" :match "x"} :asset "x"})))))
 
 (deftest the-rustup-definition-links-every-proxy-to-one-binary
-  (let [pkg (package/normalize (assoc (read-string (slurp "packages/rustup.edn")) :name "rustup"))
+  (let [pkg (s/normalize (assoc (read-string (slurp "packages/rustup.edn")) :name "rustup"))
         paths (package/bin-paths pkg (package/artifact pkg {:tag "1.29.2" :version "1.29.2"}))]
     (is (= #{"rustup" "rustc" "cargo" "rustfmt" "rust-analyzer" "cargo-clippy" "clippy-driver"}
            (set (filter #{"rustup" "rustc" "cargo" "rustfmt" "rust-analyzer" "cargo-clippy" "clippy-driver"} (keys paths)))))

@@ -4,4 +4,4 @@
 {:description "The Elm compiler"
  :source {:github "elm/compiler"}
  :tag-prefix ""
- :asset "elm-{version}-linux-x64.gz"}
+ :platforms {"linux-x86_64" {:asset "elm-{version}-linux-x64.gz"}}}

@@ -4,5 +4,5 @@
 
 {:description "A tool for securing CI/CD workflows with version pinning",
  :source {:github "sethvargo/ratchet"}
- :asset "ratchet_{version}_linux_amd64.tar.gz"
- :checksum "ratchet_{version}_SHA512SUMS"}
+ :checksum "ratchet_{version}_SHA512SUMS"
+ :platforms {"linux-x86_64" {:asset "ratchet_{version}_linux_amd64.tar.gz"}}}

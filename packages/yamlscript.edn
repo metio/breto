@@ -5,5 +5,5 @@
 {:description "Programming in YAML",
  :source {:github "yaml/yamlscript"}
  :tag-prefix ""
- :asset "ys-{tag}-linux-x64.tar.xz"
- :bins {"ys" "ys-{tag}-linux-x64/ys"}}
+ :bins {"ys" "ys-{tag}-linux-x64/ys"}
+ :platforms {"linux-x86_64" {:asset "ys-{tag}-linux-x64.tar.xz"}}}

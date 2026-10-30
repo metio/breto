@@ -4,11 +4,11 @@
 {:description "The Crystal programming language and its shards dependency manager, bundled with the libraries its compiler links against"
  :source {:github "crystal-lang/crystal"}
  :tag-prefix ""
- :asset "crystal-{version}-1-linux-x86_64-bundled.tar.gz"
  :strip 2
  :layout :tree
  :bins {"crystal" "bin/crystal" "shards" "bin/shards"}
  :man ["share/man/man1/*.1.gz"]
  :completions {:bash "share/bash-completion/completions/crystal"
                :zsh "share/zsh/site-functions/_crystal"
-               :fish "share/fish/vendor_completions.d/crystal.fish"}}
+               :fish "share/fish/vendor_completions.d/crystal.fish"}
+ :platforms {"linux-x86_64" {:asset "crystal-{version}-1-linux-x86_64-bundled.tar.gz"}}}

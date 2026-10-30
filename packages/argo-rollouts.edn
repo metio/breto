@@ -4,6 +4,6 @@
 
 {:description "Progressive Delivery for Kubernetes",
  :source {:github "argoproj/argo-rollouts"}
- :asset "kubectl-argo-rollouts-linux-amd64"
  :checksum "argo-rollouts-checksums.txt"
- :bins {"kubectl-argo-rollouts" "{asset}"}}
+ :bins {"kubectl-argo-rollouts" "{asset}"}
+ :platforms {"linux-x86_64" {:asset "kubectl-argo-rollouts-linux-amd64"}}}

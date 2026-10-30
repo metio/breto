@@ -90,3 +90,19 @@
                                       (github-world [["tool-1.2.3-linux.tar.gz" "sha256:abc"] "SHA256SUMS.sigstore.json"]))]
     (is (= 1 code) out)
     (is (str/includes? out "checksum file the package names does not exist"))))
+
+(deftest platforms-checks-the-asset-of-each-platform
+  (s/define! "tool" {:source {:github "acme/tool"}
+                     :platforms {"linux-x86_64" {:asset "tool-{version}-linux.tar.gz"}
+                                 "darwin-aarch64" {:asset "tool-{version}-darwin-arm64.tar.gz"}}})
+  (s/define! "other" {:source {:github "acme/other"} :platforms {"linux-x86_64" {:asset "other"}}})
+  (let [texts (github-world [["tool-1.2.3-linux.tar.gz" "sha256:abc"]])
+        check! #(s/breto! {:packages ["tool"]} (into ["check"] %) {:io (s/fake-io {} texts (atom []))})]
+    (let [{:keys [code out]} (check! ["--platforms" "linux-x86_64,darwin-aarch64"])]
+      (is (= 1 code))
+      (is (str/includes? out "Checking darwin-aarch64:"))
+      (is (str/includes? out "has no asset named tool-1.2.3-darwin-arm64.tar.gz")))
+    (is (= 0 (:code (check! ["--platforms" "linux-x86_64"]))))
+    (let [{:keys [code out]} (check! ["--platforms" "darwin-aarch64" "other"])]
+      (is (= 1 code))
+      (is (str/includes? out "other has no release for darwin-aarch64")))))

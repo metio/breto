@@ -4,5 +4,5 @@
 
 {:description "A task runner / simpler Make alternative written in Go",
  :source {:github "go-task/task"}
- :asset "task_linux_amd64.tar.gz"
- :checksum "task_checksums.txt"}
+ :checksum "task_checksums.txt"
+ :platforms {"linux-x86_64" {:asset "task_linux_amd64.tar.gz"}}}

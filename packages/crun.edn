@@ -5,4 +5,4 @@
 {:description "A fast and lightweight fully featured OCI runtime and C library for running containers",
  :source {:github "containers/crun"}
  :tag-prefix ""
- :asset "crun-{tag}-linux-amd64"}
+ :platforms {"linux-x86_64" {:asset "crun-{tag}-linux-amd64"}}}

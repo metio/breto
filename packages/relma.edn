@@ -4,4 +4,4 @@
 
 {:description "GitHub Releases Management cli",
  :source {:github "jiro4989/relma"}
- :asset "relma-linux-amd64.tar.gz"}
+ :platforms {"linux-x86_64" {:asset "relma-linux-amd64.tar.gz"}}}

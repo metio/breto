@@ -4,5 +4,5 @@
 
 {:description "functions to calculate JSON objects differences with gojq filter",
  :source {:github "aereal/jsondiff"}
- :asset "jsondiff_{version}_linux_amd64.tar.gz"
- :checksum "jsondiff_{version}_checksums.txt"}
+ :checksum "jsondiff_{version}_checksums.txt"
+ :platforms {"linux-x86_64" {:asset "jsondiff_{version}_linux_amd64.tar.gz"}}}

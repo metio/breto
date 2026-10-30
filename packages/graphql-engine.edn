@@ -4,5 +4,5 @@
 
 {:description "Hasura GraphQL Engine CLI",
  :source {:github "hasura/graphql-engine"}
- :asset "cli-hasura-linux-amd64"
- :bins {"hasura" "{asset}"}}
+ :bins {"hasura" "{asset}"}
+ :platforms {"linux-x86_64" {:asset "cli-hasura-linux-amd64"}}}

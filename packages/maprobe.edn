@@ -4,5 +4,5 @@
 
 {:description "Mackerel external probe agent",
  :source {:github "fujiwara/maprobe"}
- :asset "maprobe_{version}_linux_amd64.tar.gz"
- :checksum "checksums.txt"}
+ :checksum "checksums.txt"
+ :platforms {"linux-x86_64" {:asset "maprobe_{version}_linux_amd64.tar.gz"}}}

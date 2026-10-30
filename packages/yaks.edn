@@ -4,4 +4,4 @@
 
 {:description "YAKS is a platform to enable Cloud Native BDD testing on Kubernetes",
  :source {:github "citrusframework/yaks"}
- :asset "yaks-{version}-linux-64bit.tar.gz"}
+ :platforms {"linux-x86_64" {:asset "yaks-{version}-linux-64bit.tar.gz"}}}

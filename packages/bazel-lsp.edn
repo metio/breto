@@ -4,4 +4,4 @@
 
 {:description "A language server implementation for Bazel",
  :source {:github "cameron-martin/bazel-lsp"}
- :asset "bazel-lsp-{version}-linux-amd64"}
+ :platforms {"linux-x86_64" {:asset "bazel-lsp-{version}-linux-amd64"}}}

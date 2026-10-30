@@ -4,5 +4,5 @@
 
 {:description "Like cURL, but for gRPC: Command-line tool for interacting with gRPC servers",
  :source {:github "fullstorydev/grpcurl"}
- :asset "grpcurl_{version}_linux_x86_64.tar.gz"
- :checksum "grpcurl_{version}_checksums.txt"}
+ :checksum "grpcurl_{version}_checksums.txt"
+ :platforms {"linux-x86_64" {:asset "grpcurl_{version}_linux_x86_64.tar.gz"}}}

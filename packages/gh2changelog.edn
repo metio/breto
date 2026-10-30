@@ -3,6 +3,6 @@
 ;; SPDX-License-Identifier: MIT
 
 {:source {:github "Songmu/gh2changelog"}
- :asset "gh2changelog_{tag}_linux_amd64.tar.gz"
  :checksum "SHA256SUMS"
- :bins {"gh2changelog" "gh2changelog_{tag}_linux_amd64/gh2changelog"}}
+ :bins {"gh2changelog" "gh2changelog_{tag}_linux_amd64/gh2changelog"}
+ :platforms {"linux-x86_64" {:asset "gh2changelog_{tag}_linux_amd64.tar.gz"}}}

@@ -4,6 +4,6 @@
 
 {:description "Command Line Interface for Scaleway",
  :source {:github "scaleway/scaleway-cli"}
- :asset "scaleway-cli_{version}_linux_amd64"
  :checksum "SHA256SUMS"
- :bins {"scw" "{asset}"}}
+ :bins {"scw" "{asset}"}
+ :platforms {"linux-x86_64" {:asset "scaleway-cli_{version}_linux_amd64"}}}

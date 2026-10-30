@@ -3,5 +3,5 @@
 
 {:description "Fast, secure, efficient backup program"
  :source {:github "restic/restic"}
- :asset "restic_{version}_linux_amd64.bz2"
- :checksum "SHA256SUMS"}
+ :checksum "SHA256SUMS"
+ :platforms {"linux-x86_64" {:asset "restic_{version}_linux_amd64.bz2"}}}

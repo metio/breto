@@ -5,6 +5,6 @@
 {:description "A snapshot testing library for rust",
  :source {:github "mitsuhiko/insta"}
  :tag-prefix ""
- :asset "cargo-insta-x86_64-unknown-linux-musl.tar.xz"
  :checksum "{asset}.sha256"
- :bins {"cargo-insta" "cargo-insta-x86_64-unknown-linux-musl/cargo-insta"}}
+ :bins {"cargo-insta" "cargo-insta-x86_64-unknown-linux-musl/cargo-insta"}
+ :platforms {"linux-x86_64" {:asset "cargo-insta-x86_64-unknown-linux-musl.tar.xz"}}}

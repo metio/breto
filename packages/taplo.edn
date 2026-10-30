@@ -4,5 +4,5 @@
 {:description "TOML toolkit with a formatter, linter and language server"
  :source {:github "tamasfe/taplo"}
  :tag-prefix ""
- :asset "taplo-linux-x86_64.gz"
- :history [{:before "0.10.1" :verify false}]}
+ :history [{:before "0.10.1" :verify false}]
+ :platforms {"linux-x86_64" {:asset "taplo-linux-x86_64.gz"}}}

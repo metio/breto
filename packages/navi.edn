@@ -4,4 +4,4 @@
 
 {:description "An interactive cheatsheet tool for the command-line",
  :source {:github "denisidoro/navi"}
- :asset "navi-{tag}-x86_64-unknown-linux-musl.tar.gz"}
+ :platforms {"linux-x86_64" {:asset "navi-{tag}-x86_64-unknown-linux-musl.tar.gz"}}}

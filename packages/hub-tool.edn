@@ -4,5 +4,5 @@
 
 {:description "Docker Hub experimental CLI tool",
  :source {:github "docker/hub-tool"}
- :asset "hub-tool-linux-amd64.tar.gz"
- :bins {"hub-tool" "hub-tool/hub-tool"}}
+ :bins {"hub-tool" "hub-tool/hub-tool"}
+ :platforms {"linux-x86_64" {:asset "hub-tool-linux-amd64.tar.gz"}}}

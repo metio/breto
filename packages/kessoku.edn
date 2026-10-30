@@ -4,5 +4,5 @@
 
 {:description "Next-generation google/wire with parallel dependency injection for Go",
  :source {:github "mazrean/kessoku"}
- :asset "kessoku_Linux_x86_64.tar.gz"
- :checksum "checksums.txt"}
+ :checksum "checksums.txt"
+ :platforms {"linux-x86_64" {:asset "kessoku_Linux_x86_64.tar.gz"}}}

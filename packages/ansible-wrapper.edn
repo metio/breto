@@ -3,7 +3,6 @@
 
 {:description "Wrapper around various Ansible commands to automatically manage dependencies",
  :source {:github "metio/ansible-wrapper"}
- :asset "ansible-wrapper-x86_64-unknown-linux-gnu.tar.gz"
  :tag-prefix ""
  :checksum "SHA256SUMS"
  :bins {"ansible-wrapper" "ansible-wrapper"
@@ -11,4 +10,5 @@
         "ansible-doc" "ansible-wrapper"
         "ansible-galaxy" "ansible-wrapper"
         "ansible-playbook" "ansible-wrapper"
-        "ansible-vault" "ansible-wrapper"}}
+        "ansible-vault" "ansible-wrapper"}
+ :platforms {"linux-x86_64" {:asset "ansible-wrapper-x86_64-unknown-linux-gnu.tar.gz"}}}

@@ -4,5 +4,5 @@
 
 {:description "A Declarative Dependency Management tool",
  :source {:github "updatecli/updatecli"}
- :asset "updatecli_Linux_x86_64.tar.gz"
- :checksum "checksums.txt"}
+ :checksum "checksums.txt"
+ :platforms {"linux-x86_64" {:asset "updatecli_Linux_x86_64.tar.gz"}}}

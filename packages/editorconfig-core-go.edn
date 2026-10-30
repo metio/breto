@@ -4,6 +4,6 @@
 
 {:description "EditorConfig Core written in Go",
  :source {:github "editorconfig/editorconfig-core-go"}
- :asset "editorconfig-core-go_{version}_linux_amd64.tar.gz"
  :checksum "checksums.txt"
- :bins {"editorconfig" "editorconfig"}}
+ :bins {"editorconfig" "editorconfig"}
+ :platforms {"linux-x86_64" {:asset "editorconfig-core-go_{version}_linux_amd64.tar.gz"}}}

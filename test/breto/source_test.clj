@@ -10,7 +10,7 @@
             [clojure.test :refer [deftest is testing]]))
 
 (def ^:private idea
-  (package/normalize {:name "jetbrains-idea"
+  (s/normalize {:name "jetbrains-idea"
                       :source {:json "https://example.com/releases" :version [:IIU 0 :version]}
                       :tag-prefix "" :asset "idea-{version}.tar.gz" :url "https://example.com/{asset}"}))
 
@@ -25,7 +25,7 @@
          (source/latest idea (serving "{\"IIU\":[{\"version\":\"2026.2.3\",\"build\":\"262.1\"}]}")))))
 
 (deftest numbers-and-string-keys-work-too
-  (let [pkg (package/normalize {:name "x" :source {:json "https://example.com/releases" :version ["latest" "build"]}
+  (let [pkg (s/normalize {:name "x" :source {:json "https://example.com/releases" :version ["latest" "build"]}
                                 :tag-prefix "" :asset "x" :url "https://example.com/{asset}"})]
     (is (= "262" (:version (source/latest pkg (serving "{\"latest\":{\"build\":262}}")))))))
 
@@ -53,12 +53,12 @@
 
 (deftest json-sources-need-a-version-path-and-a-url
   (is (thrown? clojure.lang.ExceptionInfo
-               (package/normalize {:name "x" :source {:json "https://example.com"} :asset "x" :url "u"})))
+               (s/normalize {:name "x" :source {:json "https://example.com"} :asset "x" :url "u"})))
   (is (thrown? clojure.lang.ExceptionInfo
-               (package/normalize {:name "x" :source {:json "https://example.com" :version [:a]} :asset "x"}))))
+               (s/normalize {:name "x" :source {:json "https://example.com" :version [:a]} :asset "x"}))))
 
 (defn- rolling [extra]
-  (package/normalize (merge {:name "nightly" :source {:github "acme/nightly" :tag "nightly"}
+  (s/normalize (merge {:name "nightly" :source {:github "acme/nightly" :tag "nightly"}
                              :asset "nightly-{version}.tar.gz"}
                             extra)))
 
@@ -82,12 +82,12 @@
          (:breto/problem (problem #(rolling {:asset "nightly-{version}-{major}.zip" :vars {:major {:match "^\\d+"}}}))))))
 
 (deftest a-text-match-whose-group-is-empty-finds-no-release
-  (let [pkg (package/normalize {:name "x" :source {:text "https://example.com/v" :match "version (\\d[\\d.]*)|latest"}
+  (let [pkg (s/normalize {:name "x" :source {:text "https://example.com/v" :match "version (\\d[\\d.]*)|latest"}
                                 :tag-prefix "" :asset "x" :url "https://example.com/{asset}"})]
     (is (= :no-release (:breto/problem (problem #(source/latest pkg {:get-text (constantly "latest")})))))))
 
 (deftest fractional-json-numbers-are-refused
-  (let [pkg (package/normalize {:name "x" :source {:json "https://example.com/releases" :version ["v"]}
+  (let [pkg (s/normalize {:name "x" :source {:json "https://example.com/releases" :version ["v"]}
                                 :tag-prefix "" :asset "x" :url "https://example.com/{asset}"})]
     (is (= :json-path (:breto/problem (problem #(source/latest pkg (serving "{\"v\":1.10}"))))))))
 
@@ -103,7 +103,7 @@
    :github-token (constantly nil)})
 
 (defn- mono [extra]
-  (package/normalize (merge {:name "tool" :source {:github "acme/mono"} :tag-prefix "cli/v" :asset "tool"} extra)))
+  (s/normalize (merge {:name "tool" :source {:github "acme/mono"} :tag-prefix "cli/v" :asset "tool"} extra)))
 
 (deftest a-latest-release-of-another-component-falls-back-to-the-newest-with-the-prefix
   (is (= {:tag "cli/v1.2.0" :version "1.2.0"}
@@ -128,9 +128,9 @@
   (let [io (s/fake-io {} {"https://example.org/milestones/"
                           "<a href='milestones/0.2.0'/><a href='milestones/1.10.0'/><a href='milestones/1.63.0'/><a href='milestones/1.9.0'/>"}
                       (atom []))
-        pkg (package/normalize {:name "jdtls" :tag-prefix "" :asset "x" :url "https://example.org/{version}/{asset}"
+        pkg (s/normalize {:name "jdtls" :tag-prefix "" :asset "x" :url "https://example.org/{version}/{asset}"
                                 :source {:text "https://example.org/milestones/" :match "milestones/(\\d+\\.\\d+\\.\\d+)" :newest true}})]
     (is (= "1.63.0" (:version (source/latest pkg io))))
     (is (= "1.10.0" (:version (source/newest (assoc pkg :skip ["1.63.0"]) io))))
     (is (thrown-with-msg? clojure.lang.ExceptionInfo #":newest true"
-                          (package/normalize (assoc-in pkg [:source :newest] "yes"))))))
+                          (s/normalize (assoc-in pkg [:source :newest] "yes"))))))

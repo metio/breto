@@ -4,5 +4,5 @@
 
 {:description "GitOps on Autopilot Mode",
  :source {:github "controlplaneio-fluxcd/flux-operator"}
- :asset "flux-operator-mcp_{version}_linux_amd64.tar.gz"
- :checksum "flux-operator_{version}_checksums.txt"}
+ :checksum "flux-operator_{version}_checksums.txt"
+ :platforms {"linux-x86_64" {:asset "flux-operator-mcp_{version}_linux_amd64.tar.gz"}}}

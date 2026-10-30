@@ -4,5 +4,5 @@
 
 {:description "A flexible commandline tool for template rendering. Supports lots of local and remote datasources",
  :source {:github "hairyhenderson/gomplate"}
- :asset "gomplate_linux-amd64"
- :checksum "checksums-{tag}_sha512.txt"}
+ :checksum "checksums-{tag}_sha512.txt"
+ :platforms {"linux-x86_64" {:asset "gomplate_linux-amd64"}}}

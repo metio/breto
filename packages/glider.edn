@@ -4,6 +4,6 @@
 
 {:description "glider is a forward proxy with multiple protocols support, and also a dns/dhcp server with ipset management features(like dnsmasq)",
  :source {:github "nadoo/glider"}
- :asset "glider_{version}_linux_amd64.tar.gz"
  :checksum "glider_{version}_checksums.txt"
- :bins {"glider" "glider_{version}_linux_amd64/glider"}}
+ :bins {"glider" "glider_{version}_linux_amd64/glider"}
+ :platforms {"linux-x86_64" {:asset "glider_{version}_linux_amd64.tar.gz"}}}

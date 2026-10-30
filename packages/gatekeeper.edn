@@ -4,6 +4,6 @@
 
 {:description "Gatekeeper - Policy Controller for Kubernetes",
  :source {:github "open-policy-agent/gatekeeper"}
- :asset "gator-{tag}-linux-amd64.tar.gz"
  :checksum "sha256sums.txt"
- :bins {"gator" "gator"}}
+ :bins {"gator" "gator"}
+ :platforms {"linux-x86_64" {:asset "gator-{tag}-linux-amd64.tar.gz"}}}

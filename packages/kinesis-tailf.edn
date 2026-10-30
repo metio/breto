@@ -4,5 +4,5 @@
 
 {:description "tail -f command for Amazon Kinesis Stream",
  :source {:github "fujiwara/kinesis-tailf"}
- :asset "kinesis-tailf_{version}_linux_amd64.tar.gz"
- :checksum "checksums.txt"}
+ :checksum "checksums.txt"
+ :platforms {"linux-x86_64" {:asset "kinesis-tailf_{version}_linux_amd64.tar.gz"}}}

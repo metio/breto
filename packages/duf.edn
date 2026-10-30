@@ -4,5 +4,5 @@
 
 {:description "Disk Usage/Free Utility - a better 'df' alternative",
  :source {:github "muesli/duf"}
- :asset "duf_{version}_linux_x86_64.tar.gz"
- :checksum "checksums.txt"}
+ :checksum "checksums.txt"
+ :platforms {"linux-x86_64" {:asset "duf_{version}_linux_x86_64.tar.gz"}}}

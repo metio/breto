@@ -4,4 +4,4 @@
 
 {:description "A terminal based graphical activity monitor inspired by gtop and vtop",
  :source {:github "xxxserxxx/gotop"}
- :asset "gotop_{tag}_linux_amd64.tgz"}
+ :platforms {"linux-x86_64" {:asset "gotop_{tag}_linux_amd64.tgz"}}}

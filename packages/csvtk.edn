@@ -4,4 +4,4 @@
 
 {:description "A cross-platform, efficient and practical CSV/TSV toolkit in Golang",
  :source {:github "shenwei356/csvtk"}
- :asset "csvtk_linux_amd64.tar.gz"}
+ :platforms {"linux-x86_64" {:asset "csvtk_linux_amd64.tar.gz"}}}

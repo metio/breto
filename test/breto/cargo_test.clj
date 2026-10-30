@@ -101,7 +101,7 @@
 
 (deftest cargo-releases-come-from-the-sparse-index
   (let [io (world nil)
-        pkg (package/normalize {:name "ripgrep" :source {:cargo "ripgrep"}})]
+        pkg (s/normalize {:name "ripgrep" :source {:cargo "ripgrep"}})]
     (testing "the newest version that is neither yanked nor a pre-release"
       (is (= {:tag "15.2.0" :version "15.2.0"} (select-keys (source/latest pkg io) [:tag :version]))))
     (testing "skipping it falls back to the one before"
@@ -115,7 +115,7 @@
   (is (= "https://index.crates.io/se/rd/serde_json" (cargo/index-url "Serde_JSON"))))
 
 (deftest cargo-definitions-fill-in-the-crate
-  (let [pkg (package/normalize {:name "bat" :source {:cargo "bat"}})
+  (let [pkg (s/normalize {:name "bat" :source {:cargo "bat"}})
         artifact (package/artifact pkg {:tag "0.26.1" :version "0.26.1"})]
     (is (= {"bat" "bin/bat"} (:bins pkg)))
     (is (= "bat-0.26.1.crate" (:asset artifact)))
@@ -124,4 +124,4 @@
     (is (= "https://index.crates.io/3/b/bat" (:checksum-url artifact)))
     (is (= [{"vers" "0.26.1"} "cksum"] (:checksum-path artifact))))
   (is (thrown-with-msg? clojure.lang.ExceptionInfo #"names a crate on crates.io"
-                        (package/normalize {:name "x" :source {:cargo "../x"}}))))
+                        (s/normalize {:name "x" :source {:cargo "../x"}}))))

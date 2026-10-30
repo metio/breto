@@ -4,5 +4,5 @@
 
 {:description "Retrieve semvers from git tags",
  :source {:github "Songmu/gitsemvers"}
- :asset "gitsemvers_{tag}_linux_amd64.tar.gz"
- :bins {"git-semvers" "gitsemvers_{tag}_linux_amd64/git-semvers"}}
+ :bins {"git-semvers" "gitsemvers_{tag}_linux_amd64/git-semvers"}
+ :platforms {"linux-x86_64" {:asset "gitsemvers_{tag}_linux_amd64.tar.gz"}}}

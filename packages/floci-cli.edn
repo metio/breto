@@ -5,6 +5,6 @@
 {:description "Official command-line interface for Floci",
  :source {:github "floci-io/floci-cli"}
  :tag-prefix ""
- :asset "floci-linux-amd64"
  :checksum "sha256sums.txt"
- :bins {"floci" "{asset}"}}
+ :bins {"floci" "{asset}"}
+ :platforms {"linux-x86_64" {:asset "floci-linux-amd64"}}}

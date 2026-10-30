@@ -4,5 +4,5 @@
 
 {:description "Continuous Benchmark for Go Project",
  :source {:github "knqyf263/cob"}
- :asset "cob_{version}_Linux-64bit.tar.gz"
- :checksum "cob_{version}_checksums.txt"}
+ :checksum "cob_{version}_checksums.txt"
+ :platforms {"linux-x86_64" {:asset "cob_{version}_Linux-64bit.tar.gz"}}}

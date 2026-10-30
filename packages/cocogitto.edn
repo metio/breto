@@ -5,5 +5,5 @@
 {:description "The Conventional Commits toolbox",
  :source {:github "cocogitto/cocogitto"}
  :tag-prefix ""
- :asset "cocogitto-{tag}-x86_64-unknown-linux-musl.tar.gz"
- :bins {"cog" "x86_64-unknown-linux-musl/cog"}}
+ :bins {"cog" "x86_64-unknown-linux-musl/cog"}
+ :platforms {"linux-x86_64" {:asset "cocogitto-{tag}-x86_64-unknown-linux-musl.tar.gz"}}}

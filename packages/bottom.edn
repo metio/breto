@@ -4,6 +4,6 @@
 {:description "A graphical process and system monitor for the terminal"
  :source {:github "ClementTsang/bottom"}
  :tag-prefix ""
- :asset "bottom_x86_64-unknown-linux-musl.tar.gz"
  :bins {"btm" "btm"}
- :completions {:bash "completion/btm.bash"}}
+ :completions {:bash "completion/btm.bash"}
+ :platforms {"linux-x86_64" {:asset "bottom_x86_64-unknown-linux-musl.tar.gz"}}}

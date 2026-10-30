@@ -4,6 +4,6 @@
 
 {:description "The Modern Application Deployment System Based on OAM",
  :source {:github "kubevela/kubevela"}
- :asset "kubectl-vela-{tag}-linux-amd64.tar.gz"
  :checksum "sha256sums.txt"
- :bins {"kubectl-vela" "linux-amd64/kubectl-vela"}}
+ :bins {"kubectl-vela" "linux-amd64/kubectl-vela"}
+ :platforms {"linux-x86_64" {:asset "kubectl-vela-{tag}-linux-amd64.tar.gz"}}}

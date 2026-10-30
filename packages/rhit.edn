@@ -4,5 +4,5 @@
 
 {:description "A nginx log explorer",
  :source {:github "Canop/rhit"}
- :asset "rhit_{version}.zip"
- :bins {"rhit" "build/x86_64-unknown-linux-gnu/rhit"}}
+ :bins {"rhit" "build/x86_64-unknown-linux-gnu/rhit"}
+ :platforms {"linux-x86_64" {:asset "rhit_{version}.zip"}}}

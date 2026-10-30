@@ -4,6 +4,6 @@
 
 {:description "Prebuilt binaries of `passt` built with zig cc",
  :source {:github "takumin/passt-bin"}
- :asset "passt-x86_64-linux-gnu.tar.gz"
  :checksum "SHA256SUMS"
- :bins {"passt" "bin/passt", "passt-repair" "bin/passt-repair", "pasta" "bin/pasta", "pesto" "bin/pesto"}}
+ :bins {"passt" "bin/passt", "passt-repair" "bin/passt-repair", "pasta" "bin/pasta", "pesto" "bin/pesto"}
+ :platforms {"linux-x86_64" {:asset "passt-x86_64-linux-gnu.tar.gz"}}}

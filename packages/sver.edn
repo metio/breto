@@ -4,5 +4,5 @@
 
 {:description "Version generator based on source code",
  :source {:github "mitoma/sver"}
- :asset "sver_{tag}_linux_amd64.zip"
- :checksum "SHASUMS256.txt"}
+ :checksum "SHASUMS256.txt"
+ :platforms {"linux-x86_64" {:asset "sver_{tag}_linux_amd64.zip"}}}

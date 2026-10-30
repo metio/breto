@@ -4,5 +4,5 @@
 
 {:description "gRPC to JSON proxy generator following the gRPC HTTP spec",
  :source {:github "grpc-ecosystem/grpc-gateway"}
- :asset "protoc-gen-openapiv2-{tag}-linux-x86_64"
- :checksum "grpc-gateway_{version}_checksums.txt"}
+ :checksum "grpc-gateway_{version}_checksums.txt"
+ :platforms {"linux-x86_64" {:asset "protoc-gen-openapiv2-{tag}-linux-x86_64"}}}

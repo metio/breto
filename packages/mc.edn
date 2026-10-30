@@ -5,5 +5,5 @@
 {:description "Unix like utilities for object store",
  :source {:github "minio/mc"}
  :tag-prefix ""
- :asset "mc.linux-amd64.{tag}"
- :checksum "{asset}.sha256sum"}
+ :checksum "{asset}.sha256sum"
+ :platforms {"linux-x86_64" {:asset "mc.linux-amd64.{tag}"}}}

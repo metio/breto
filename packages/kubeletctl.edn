@@ -4,4 +4,4 @@
 
 {:description "A client for kubelet",
  :source {:github "cyberark/kubeletctl"}
- :asset "kubeletctl_linux_amd64"}
+ :platforms {"linux-x86_64" {:asset "kubeletctl_linux_amd64"}}}

@@ -4,5 +4,5 @@
 
 {:description "Easily create and use bundles for air-gapped environments",
  :source {:github "mesosphere/mindthegap"}
- :asset "mindthegap_{tag}_linux_amd64.tar.gz"
- :checksum "checksums.txt"}
+ :checksum "checksums.txt"
+ :platforms {"linux-x86_64" {:asset "mindthegap_{tag}_linux_amd64.tar.gz"}}}

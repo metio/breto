@@ -4,5 +4,5 @@
 
 {:description "Validate your Kubernetes configuration files, supports multiple Kubernetes versions",
  :source {:github "instrumenta/kubeval"}
- :asset "kubeval-linux-amd64.tar.gz"
- :checksum "checksums.txt"}
+ :checksum "checksums.txt"
+ :platforms {"linux-x86_64" {:asset "kubeval-linux-amd64.tar.gz"}}}

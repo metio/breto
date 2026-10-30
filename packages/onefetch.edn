@@ -5,4 +5,4 @@
 {:description "Command-line Git information tool",
  :source {:github "o2sh/onefetch"}
  :tag-prefix ""
- :asset "onefetch-linux.tar.gz"}
+ :platforms {"linux-x86_64" {:asset "onefetch-linux.tar.gz"}}}

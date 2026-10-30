@@ -4,5 +4,5 @@
 
 {:description "Reads from existing public and private cloud providers (reverse Terraform) and generates your infrastructure as code on Terraform configuration",
  :source {:github "cycloidio/terracognita"}
- :asset "terracognita-linux-amd64.tar.gz"
- :bins {"terracognita" "terracognita-linux-amd64"}}
+ :bins {"terracognita" "terracognita-linux-amd64"}
+ :platforms {"linux-x86_64" {:asset "terracognita-linux-amd64.tar.gz"}}}

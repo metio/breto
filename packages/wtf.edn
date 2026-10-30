@@ -4,6 +4,6 @@
 
 {:description "The personal information dashboard for your terminal",
  :source {:github "wtfutil/wtf"}
- :asset "wtf_{version}_linux_amd64.tar.gz"
  :checksum "wtf_{version}_checksums.txt"
- :bins {"wtfutil" "wtfutil"}}
+ :bins {"wtfutil" "wtfutil"}
+ :platforms {"linux-x86_64" {:asset "wtf_{version}_linux_amd64.tar.gz"}}}

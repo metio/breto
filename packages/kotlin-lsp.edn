@@ -4,9 +4,9 @@
 {:description "JetBrains' language server for Kotlin, with its own Java runtime"
  :source {:github "Kotlin/kotlin-lsp"}
  :tag-prefix "kotlin-lsp/v"
- :asset "kotlin-server-{version}.tar.gz"
  :url "https://download.jetbrains.com/language-server/kotlin-server/{version}/{asset}"
  :checksum "{asset}.sha256"
  :strip 1
  :layout :tree
- :bins {"kotlin-lsp" "bin/intellij-server"}}
+ :bins {"kotlin-lsp" "bin/intellij-server"}
+ :platforms {"linux-x86_64" {:asset "kotlin-server-{version}.tar.gz"}}}

@@ -4,6 +4,6 @@
 
 {:description "CLI tool for directly patching container images using reports from vulnerability scanners",
  :source {:github "project-copacetic/copacetic"}
- :asset "copa_{version}_linux_amd64.tar.gz"
  :checksum "copacetic_checksums.txt"
- :bins {"copa" "copa"}}
+ :bins {"copa" "copa"}
+ :platforms {"linux-x86_64" {:asset "copa_{version}_linux_amd64.tar.gz"}}}

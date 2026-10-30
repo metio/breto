@@ -4,4 +4,4 @@
 
 {:description "A day 0 tool for getting your app on k8s fast",
  :source {:github "Azure/draft"}
- :asset "draft-linux-amd64"}
+ :platforms {"linux-x86_64" {:asset "draft-linux-amd64"}}}

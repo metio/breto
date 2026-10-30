@@ -4,5 +4,5 @@
 
 {:description "CLI tool for spawning and running containers according to the OCI specification",
  :source {:github "opencontainers/runc"}
- :asset "runc.amd64"
- :checksum "runc.sha256sum"}
+ :checksum "runc.sha256sum"
+ :platforms {"linux-x86_64" {:asset "runc.amd64"}}}

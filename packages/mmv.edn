@@ -4,5 +4,5 @@
 
 {:description "rename multiple files with editor",
  :source {:github "itchyny/mmv"}
- :asset "mmv_{tag}_linux_amd64.tar.gz"
- :bins {"mmv" "mmv_{tag}_linux_amd64/mmv"}}
+ :bins {"mmv" "mmv_{tag}_linux_amd64/mmv"}
+ :platforms {"linux-x86_64" {:asset "mmv_{tag}_linux_amd64.tar.gz"}}}

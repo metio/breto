@@ -48,7 +48,7 @@
              (atom [])))
 
 (deftest vars-derive-placeholders-from-the-version
-  (let [pkg (package/normalize (assoc definition :name "jdk"))]
+  (let [pkg (s/normalize (assoc definition :name "jdk"))]
     (is (= {:feature "27" :file-version "27.0.1.0.2_1"}
            (select-keys (package/template-vars pkg {:tag "jdk-27.0.1.0.2+1" :version "27.0.1.0.2+1"})
                         [:feature :file-version])))
@@ -61,7 +61,7 @@
                    {:bin-dir "../bin"}
                    {:env {"PATH" "{home}/bin"}}
                    {:env {"BRETO_PROJECT" "x"}}]]
-        (is (thrown? Exception (package/normalize (merge (assoc definition :name "jdk") bad))) (pr-str bad))))))
+        (is (thrown? Exception (s/normalize (merge (assoc definition :name "jdk") bad))) (pr-str bad))))))
 
 (deftest bin-dir-links-every-command-of-the-active-version
   (let [io (world)

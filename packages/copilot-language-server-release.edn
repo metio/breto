@@ -5,5 +5,5 @@
 {:description "The Copilot Language Server enables any editor or IDE to integrate with GitHub Copilot via the language server protocol",
  :source {:github "github/copilot-language-server-release"}
  :tag-prefix ""
- :asset "copilot-language-server-linux-x64-{tag}.zip"
- :bins {"copilot-language-server" "copilot-language-server"}}
+ :bins {"copilot-language-server" "copilot-language-server"}
+ :platforms {"linux-x86_64" {:asset "copilot-language-server-linux-x64-{tag}.zip"}}}

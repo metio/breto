@@ -6,8 +6,8 @@
  :tag-prefix ""
  :vars {:build {:text "https://download.eclipse.org/jdtls/milestones/{version}/latest.txt"
                 :match "jdt-language-server-[^-]+-(\\d+)\\.tar\\.gz"}}
- :asset "jdt-language-server-{version}-{build}.tar.gz"
  :url "https://download.eclipse.org/jdtls/milestones/{version}/{asset}"
  :checksum "{asset}.sha256"
  :layout :tree
- :bins {"jdtls" "bin/jdtls"}}
+ :bins {"jdtls" "bin/jdtls"}
+ :platforms {"linux-x86_64" {:asset "jdt-language-server-{version}-{build}.tar.gz"}}}

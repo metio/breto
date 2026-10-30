@@ -4,5 +4,5 @@
 
 {:description "The GitHub CODEOWNERS file validator",
  :source {:github "mszostok/codeowners-validator"}
- :asset "codeowners-validator_{version}_Linux_x86_64.tar.gz"
- :checksum "checksums.txt"}
+ :checksum "checksums.txt"
+ :platforms {"linux-x86_64" {:asset "codeowners-validator_{version}_Linux_x86_64.tar.gz"}}}

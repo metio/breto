@@ -3,6 +3,7 @@
 
 (ns breto.uninstall-test
   (:require [babashka.fs :as fs]
+            [breto.support :as s]
             [breto.sealed :as sealed]
             [breto.batch :as batch]
             [breto.filelock]
@@ -25,7 +26,7 @@
 
 (defn- define! [name definition]
   (fs/create-dirs (path "packages"))
-  (spit (path "packages" (str name ".edn")) (pr-str definition)))
+  (spit (path "packages" (str name ".edn")) (pr-str (s/everywhere definition))))
 
 (defn- install!
   "Lays out an installed and activated version of `name` with `bins`."

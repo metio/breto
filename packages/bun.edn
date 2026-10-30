@@ -4,7 +4,7 @@
 {:description "JavaScript runtime, package manager, bundler and test runner"
  :source {:github "oven-sh/bun"}
  :tag-prefix "bun-v"
- :asset "bun-linux-x64.zip"
  :checksum "SHASUMS256.txt"
  :strip 1
- :bins {"bun" "bun" "bunx" "bun"}}
+ :bins {"bun" "bun" "bunx" "bun"}
+ :platforms {"linux-x86_64" {:asset "bun-linux-x64.zip"}}}

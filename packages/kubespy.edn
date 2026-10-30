@@ -4,5 +4,5 @@
 
 {:description "Tools for observing Kubernetes resources in real time, powered by Pulumi",
  :source {:github "pulumi/kubespy"}
- :asset "kubespy-{tag}-linux-amd64.tar.gz"
- :checksum "checksums.txt"}
+ :checksum "checksums.txt"
+ :platforms {"linux-x86_64" {:asset "kubespy-{tag}-linux-amd64.tar.gz"}}}

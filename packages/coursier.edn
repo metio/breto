@@ -3,6 +3,6 @@
 
 {:description "The JVM dependency resolver and application launcher, which builds the launchers of Scala and Java tools for breto"
  :source {:github "coursier/coursier"}
- :asset "cs-x86_64-pc-linux.gz"
  :bins {"cs" "cs-x86_64-pc-linux"
-        "coursier" "cs-x86_64-pc-linux"}}
+        "coursier" "cs-x86_64-pc-linux"}
+ :platforms {"linux-x86_64" {:asset "cs-x86_64-pc-linux.gz"}}}

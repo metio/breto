@@ -4,4 +4,4 @@
 
 {:description "Configuration Management for Localhost / dotfiles",
  :source {:github "comtrya/comtrya"}
- :asset "comtrya-x86_64-unknown-linux-musl"}
+ :platforms {"linux-x86_64" {:asset "comtrya-x86_64-unknown-linux-musl"}}}

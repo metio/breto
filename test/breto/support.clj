@@ -7,6 +7,9 @@
   (:require [babashka.fs :as fs]
             [breto.checksum :as checksum]
             [breto.main :as main]
+            [breto.package :as package]
+            [breto.platform :as platform]
+            [breto.registry :as registry]
             [breto.report :as report]
             [breto.sealed :as sealed]))
 
@@ -22,11 +25,33 @@
 (defn path [& parts]
   (str (apply fs/path *root* parts)))
 
+(defn everywhere
+  "`definition` with an entry for every platform when it downloads a release
+  and lists none, so a test definition serves whichever platform runs the
+  tests."
+  [definition]
+  (let [kind (package/source-kind definition)]
+    (if (or (:platforms definition) (package/neutral-kinds kind) (= :ghcup kind))
+      definition
+      (assoc definition :platforms (zipmap platform/known (repeat {}))))))
+
+(defn normalize
+  "The test definition resolved for `platform`, by default the one running
+  the tests."
+  ([definition] (normalize definition (platform/detect)))
+  ([definition platform] (package/normalize (everywhere definition) platform)))
+
+(defn load-registry
+  "The definitions of `dirs` and `builtin` resolved for the platform running
+  the tests."
+  ([dirs] (load-registry nil dirs))
+  ([builtin dirs] (registry/load-registry builtin dirs (platform/detect))))
+
 (defn define!
   "Writes the definition of package `name` into the test registry."
   [name definition]
   (fs/create-dirs (path "packages"))
-  (spit (path "packages" (str name ".edn")) (pr-str definition)))
+  (spit (path "packages" (str name ".edn")) (pr-str (everywhere definition))))
 
 (defn file!
   "Writes `content` to a file under the test root and returns its path."

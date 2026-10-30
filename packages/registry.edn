@@ -4,5 +4,5 @@
 
 {:description "The toolkit to pack, ship, store, and deliver container content",
  :source {:github "distribution/distribution"}
- :asset "registry_{version}_linux_amd64.tar.gz"
- :checksum "{asset}.sha256"}
+ :checksum "{asset}.sha256"
+ :platforms {"linux-x86_64" {:asset "registry_{version}_linux_amd64.tar.gz"}}}

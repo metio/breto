@@ -4,5 +4,5 @@
 
 {:description "Stop your running resources of Amazon ECS easily",
  :source {:github "t-kikuc/ecstop"}
- :asset "ecstop_{version}_Linux_x86_64.tar.gz"
- :checksum "ecstop_{version}_checksums.txt"}
+ :checksum "ecstop_{version}_checksums.txt"
+ :platforms {"linux-x86_64" {:asset "ecstop_{version}_Linux_x86_64.tar.gz"}}}

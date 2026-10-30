@@ -4,5 +4,5 @@
 
 {:description "Apache Camel K is a lightweight integration platform, born on Kubernetes, with serverless superpowers",
  :source {:github "apache/camel-k"}
- :asset "camel-k-client-{version}-linux-amd64.tar.gz"
- :bins {"kamel" "kamel"}}
+ :bins {"kamel" "kamel"}
+ :platforms {"linux-x86_64" {:asset "camel-k-client-{version}-linux-amd64.tar.gz"}}}

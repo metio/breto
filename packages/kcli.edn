@@ -5,5 +5,5 @@
 {:description "A kafka command line browser",
  :source {:github "cswank/kcli"}
  :tag-prefix ""
- :asset "kcli_{tag}_Linux_x86_64.tar.gz"
- :checksum "checksums.txt"}
+ :checksum "checksums.txt"
+ :platforms {"linux-x86_64" {:asset "kcli_{tag}_Linux_x86_64.tar.gz"}}}

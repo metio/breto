@@ -4,5 +4,5 @@
 
 {:description "Update outdated Go dependencies interactively",
  :source {:github "oligot/go-mod-upgrade"}
- :asset "go-mod-upgrade_linux_amd64.tar.gz"
- :checksum "checksums.txt"}
+ :checksum "checksums.txt"
+ :platforms {"linux-x86_64" {:asset "go-mod-upgrade_linux_amd64.tar.gz"}}}

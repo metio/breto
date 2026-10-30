@@ -4,5 +4,5 @@
 
 {:description "fill-in your command and execute",
  :source {:github "itchyny/fillin"}
- :asset "fillin_{tag}_linux_amd64.tar.gz"
- :bins {"fillin" "fillin_{tag}_linux_amd64/fillin"}}
+ :bins {"fillin" "fillin_{tag}_linux_amd64/fillin"}
+ :platforms {"linux-x86_64" {:asset "fillin_{tag}_linux_amd64.tar.gz"}}}

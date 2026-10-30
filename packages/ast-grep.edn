@@ -3,6 +3,6 @@
 
 {:description "A CLI tool for code structural search, lint and rewriting. Written in Rust",
  :source {:github "ast-grep/ast-grep"},
- :asset "app-x86_64-unknown-linux-gnu.zip",
  :tag-prefix "",
- :bins {"sg" "sg"}}
+ :bins {"sg" "sg"}
+ :platforms {"linux-x86_64" {:asset "app-x86_64-unknown-linux-gnu.zip"}}}

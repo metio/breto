@@ -3,4 +3,4 @@
 ;; SPDX-License-Identifier: MIT
 
 {:source {:github "callumalpass/mdbase-lsp"}
- :asset "mdbase-lsp-linux-x64.tar.gz"}
+ :platforms {"linux-x86_64" {:asset "mdbase-lsp-linux-x64.tar.gz"}}}

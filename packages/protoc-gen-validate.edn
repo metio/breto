@@ -4,6 +4,6 @@
 
 {:description "Protocol Buffer Validation - Being replaced by github.com/bufbuild/protovalidate",
  :source {:github "bufbuild/protoc-gen-validate"}
- :asset "protoc-gen-validate_{version}_linux_amd64.tar.gz"
  :checksum "protoc-gen-validate_{version}_checksums.txt"
- :bins {"protoc-gen-validate" "protoc-gen-validate", "protoc-gen-validate-cpp" "protoc-gen-validate-cpp", "protoc-gen-validate-go" "protoc-gen-validate-go", "protoc-gen-validate-java" "protoc-gen-validate-java"}}
+ :bins {"protoc-gen-validate" "protoc-gen-validate", "protoc-gen-validate-cpp" "protoc-gen-validate-cpp", "protoc-gen-validate-go" "protoc-gen-validate-go", "protoc-gen-validate-java" "protoc-gen-validate-java"}
+ :platforms {"linux-x86_64" {:asset "protoc-gen-validate_{version}_linux_amd64.tar.gz"}}}

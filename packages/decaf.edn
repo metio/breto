@@ -5,4 +5,4 @@
 {:description "Calm & reliable automated deployments. No more coffee breaks to deploy your code",
  :source {:github "levibostian/decaf"}
  :tag-prefix ""
- :asset "bin-x86_64-Linux"}
+ :platforms {"linux-x86_64" {:asset "bin-x86_64-Linux"}}}

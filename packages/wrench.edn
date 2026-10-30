@@ -4,5 +4,5 @@
 
 {:description "wrench - Schema management tool for Cloud Spanner -",
  :source {:github "cloudspannerecosystem/wrench"}
- :asset "wrench-{version}-linux-amd64.tar.gz"
- :checksum "checksums.txt"}
+ :checksum "checksums.txt"
+ :platforms {"linux-x86_64" {:asset "wrench-{version}-linux-amd64.tar.gz"}}}

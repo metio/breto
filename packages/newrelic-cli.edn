@@ -4,6 +4,6 @@
 
 {:description "The New Relic Command Line Interface",
  :source {:github "newrelic/newrelic-cli"}
- :asset "newrelic-cli_{version}_Linux_x86_64.tar.gz"
  :checksum "newrelic-cli_{version}_checksums.txt"
- :bins {"newrelic" "newrelic"}}
+ :bins {"newrelic" "newrelic"}
+ :platforms {"linux-x86_64" {:asset "newrelic-cli_{version}_Linux_x86_64.tar.gz"}}}

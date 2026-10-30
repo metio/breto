@@ -5,5 +5,5 @@
 {:description "SSH CA Client/Server",
  :source {:github "aakso/ssh-inscribe"}
  :tag-prefix ""
- :asset "sshi-linux-x86_64"
- :checksum "checksums.txt"}
+ :checksum "checksums.txt"
+ :platforms {"linux-x86_64" {:asset "sshi-linux-x86_64"}}}

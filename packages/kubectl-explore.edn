@@ -4,5 +4,5 @@
 
 {:description "A better kubectl explain with the fuzzy finder",
  :source {:github "keisku/kubectl-explore"}
- :asset "kubectl-explore_{tag}_linux_amd64.tar.gz"
- :checksum "kubectl-explore_{version}_checksums.txt"}
+ :checksum "kubectl-explore_{version}_checksums.txt"
+ :platforms {"linux-x86_64" {:asset "kubectl-explore_{tag}_linux_amd64.tar.gz"}}}

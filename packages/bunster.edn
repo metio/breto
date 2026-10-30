@@ -4,5 +4,5 @@
 
 {:description "Compile shell scripts to static binaries",
  :source {:github "yassinebenaid/bunster"}
- :asset "bunster_linux-amd64.tar.gz"
- :checksum "checksums.txt"}
+ :checksum "checksums.txt"
+ :platforms {"linux-x86_64" {:asset "bunster_linux-amd64.tar.gz"}}}

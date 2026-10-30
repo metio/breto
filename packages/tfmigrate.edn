@@ -4,5 +4,5 @@
 
 {:description "A Terraform / OpenTofu state migration tool for GitOps",
  :source {:github "minamijoyo/tfmigrate"}
- :asset "tfmigrate_{version}_linux_amd64.tar.gz"
- :checksum "tfmigrate_{version}_checksums.txt"}
+ :checksum "tfmigrate_{version}_checksums.txt"
+ :platforms {"linux-x86_64" {:asset "tfmigrate_{version}_linux_amd64.tar.gz"}}}

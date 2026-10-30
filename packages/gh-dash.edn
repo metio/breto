@@ -4,5 +4,5 @@
 
 {:description "A beautiful CLI dashboard for GitHub",
  :source {:github "dlvhdr/gh-dash"}
- :asset "gh-dash_{tag}_linux-amd64"
- :checksum "checksums.txt"}
+ :checksum "checksums.txt"
+ :platforms {"linux-x86_64" {:asset "gh-dash_{tag}_linux-amd64"}}}

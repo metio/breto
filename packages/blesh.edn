@@ -6,4 +6,5 @@
  :asset "ble-nightly-{version}.tar.xz"
  :strip 1
  :layout :tree
- :bins {}}
+ :bins {}
+ :platforms {"darwin-aarch64" {} "darwin-x86_64" {} "linux-aarch64" {} "linux-x86_64" {}}}

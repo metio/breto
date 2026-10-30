@@ -4,6 +4,6 @@
 
 {:description "create and update Homebrew third party Formulae",
  :source {:github "Songmu/maltmill"}
- :asset "maltmill_{tag}_linux_amd64.tar.gz"
  :checksum "SHA256SUMS"
- :bins {"maltmill" "maltmill_{tag}_linux_amd64/maltmill"}}
+ :bins {"maltmill" "maltmill_{tag}_linux_amd64/maltmill"}
+ :platforms {"linux-x86_64" {:asset "maltmill_{tag}_linux_amd64.tar.gz"}}}

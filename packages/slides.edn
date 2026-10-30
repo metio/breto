@@ -4,5 +4,5 @@
 
 {:description "Terminal based presentation tool",
  :source {:github "maaslalani/slides"}
- :asset "slides_{version}_linux_amd64.tar.gz"
- :checksum "slides_{version}_checksums.txt"}
+ :checksum "slides_{version}_checksums.txt"
+ :platforms {"linux-x86_64" {:asset "slides_{version}_linux_amd64.tar.gz"}}}

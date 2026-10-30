@@ -4,5 +4,5 @@
 
 {:description "Declarative pure-SQL schema management for MySQL and MariaDB (Community Edition)",
  :source {:github "skeema/skeema"}
- :asset "skeema_{version}_linux_amd64.tar.gz"
- :checksum "skeema_checksums_{version}.txt"}
+ :checksum "skeema_checksums_{version}.txt"
+ :platforms {"linux-x86_64" {:asset "skeema_{version}_linux_amd64.tar.gz"}}}

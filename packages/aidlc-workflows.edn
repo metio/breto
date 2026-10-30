@@ -4,6 +4,6 @@
 
 {:description "AI-Driven Life Cycle (AI-DLC) adaptive workflow steering rules for AI coding agents",
  :source {:github "awslabs/aidlc-workflows"}
- :asset "aidlc-linux-x64"
  :checksum "checksums.txt"
- :bins {"aidlc" "{asset}"}}
+ :bins {"aidlc" "{asset}"}
+ :platforms {"linux-x86_64" {:asset "aidlc-linux-x64"}}}

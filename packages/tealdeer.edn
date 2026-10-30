@@ -4,6 +4,6 @@
 
 {:description "A very fast implementation of tldr in Rust",
  :source {:github "tealdeer-rs/tealdeer"}
- :asset "tealdeer-linux-x86_64-musl"
  :checksum "{asset}.sha256"
- :bins {"tldr" "{asset}"}}
+ :bins {"tldr" "{asset}"}
+ :platforms {"linux-x86_64" {:asset "tealdeer-linux-x86_64-musl"}}}

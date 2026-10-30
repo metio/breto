@@ -4,5 +4,5 @@
 
 {:description "go test output for humans",
  :source {:github "GoTestTools/gotestfmt"}
- :asset "gotestfmt_{version}_linux_amd64.tar.gz"
- :checksum "gotestfmt_{version}_checksums.txt"}
+ :checksum "gotestfmt_{version}_checksums.txt"
+ :platforms {"linux-x86_64" {:asset "gotestfmt_{version}_linux_amd64.tar.gz"}}}

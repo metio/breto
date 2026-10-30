@@ -4,6 +4,6 @@
 
 {:description "The fast all-in-one Node.js toolkit",
  :source {:github "nubjs/nub"}
- :asset "nub-linux-x64-musl.tar.gz"
  :checksum "{asset}.sha256"
- :bins {"nub" "bin/nub", "nubr" "bin/nub", "nubx" "bin/nub"}}
+ :bins {"nub" "bin/nub", "nubr" "bin/nub", "nubx" "bin/nub"}
+ :platforms {"linux-x86_64" {:asset "nub-linux-x64-musl.tar.gz"}}}

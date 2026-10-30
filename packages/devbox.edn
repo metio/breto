@@ -5,5 +5,5 @@
 {:description "Instant, easy, and predictable development environments",
  :source {:github "jetify-com/devbox"}
  :tag-prefix ""
- :asset "devbox_{tag}_linux_amd64.tar.gz"
- :checksum "checksums.txt"}
+ :checksum "checksums.txt"
+ :platforms {"linux-x86_64" {:asset "devbox_{tag}_linux_amd64.tar.gz"}}}

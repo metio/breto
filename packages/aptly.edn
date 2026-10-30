@@ -4,5 +4,5 @@
 
 {:description "aptly - Debian repository management tool",
  :source {:github "aptly-dev/aptly"}
- :asset "aptly_{version}_linux_amd64.zip"
- :bins {"aptly" "aptly_{version}_linux_amd64/aptly"}}
+ :bins {"aptly" "aptly_{version}_linux_amd64/aptly"}
+ :platforms {"linux-x86_64" {:asset "aptly_{version}_linux_amd64.zip"}}}

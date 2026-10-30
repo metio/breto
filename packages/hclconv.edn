@@ -4,5 +4,5 @@
 
 {:description "Simple tool to convert JSON files to HCL2 files and vice versa",
  :source {:github "relusc/hclconv"}
- :asset "hclconv_linux_amd64_{tag}.tar.gz"
- :checksum "hclconv_{version}_checksums.txt"}
+ :checksum "hclconv_{version}_checksums.txt"
+ :platforms {"linux-x86_64" {:asset "hclconv_linux_amd64_{tag}.tar.gz"}}}

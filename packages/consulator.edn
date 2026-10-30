@@ -5,4 +5,4 @@
 {:description "Import and synchronize your Consul KV data from JSON and YAML",
  :source {:github "lewispeckover/consulator"}
  :tag-prefix ""
- :asset "consulator_{tag}_linux_amd64"}
+ :platforms {"linux-x86_64" {:asset "consulator_{tag}_linux_amd64"}}}

@@ -4,5 +4,5 @@
 
 {:description "CLI for building apps using Cloud Native Buildpacks",
  :source {:github "buildpacks/pack"}
- :asset "pack-{tag}-linux.tgz"
- :checksum "{asset}.sha256"}
+ :checksum "{asset}.sha256"
+ :platforms {"linux-x86_64" {:asset "pack-{tag}-linux.tgz"}}}

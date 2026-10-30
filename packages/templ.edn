@@ -4,5 +4,5 @@
 
 {:description "A language for writing HTML user interfaces in Go",
  :source {:github "a-h/templ"}
- :asset "templ_Linux_x86_64.tar.gz"
- :checksum "checksums.txt"}
+ :checksum "checksums.txt"
+ :platforms {"linux-x86_64" {:asset "templ_Linux_x86_64.tar.gz"}}}

@@ -4,5 +4,5 @@
 
 {:description "A CLI interface for Marp and Marpit based converters",
  :source {:github "marp-team/marp-cli"}
- :asset "marp-cli-{tag}-linux.tar.gz"
- :bins {"marp" "marp"}}
+ :bins {"marp" "marp"}
+ :platforms {"linux-x86_64" {:asset "marp-cli-{tag}-linux.tar.gz"}}}

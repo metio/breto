@@ -4,5 +4,5 @@
 
 {:description "k9s like CLI for AWS and GCP",
  :source {:github "one2nc/cloudlens"}
- :asset "cloudlens_{version}_linux_amd64.tar.gz"
- :checksum "checksums.txt"}
+ :checksum "checksums.txt"
+ :platforms {"linux-x86_64" {:asset "cloudlens_{version}_linux_amd64.tar.gz"}}}

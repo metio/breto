@@ -4,5 +4,5 @@
 
 {:description "Check if version of go directive in go.mod is oldstable",
  :source {:github "k1LoW/oldstable"}
- :asset "oldstable_{tag}_linux_amd64.tar.gz"
- :checksum "checksums.txt"}
+ :checksum "checksums.txt"
+ :platforms {"linux-x86_64" {:asset "oldstable_{tag}_linux_amd64.tar.gz"}}}

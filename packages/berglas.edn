@@ -4,5 +4,5 @@
 
 {:description "A tool for managing secrets on Google Cloud",
  :source {:github "GoogleCloudPlatform/berglas"}
- :asset "berglas_{version}_linux_amd64.tar.gz"
- :checksum "berglas_{version}_SHA512SUMS"}
+ :checksum "berglas_{version}_SHA512SUMS"
+ :platforms {"linux-x86_64" {:asset "berglas_{version}_linux_amd64.tar.gz"}}}

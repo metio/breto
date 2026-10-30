@@ -4,4 +4,4 @@
 
 {:description "Go support for Google's protocol buffers",
  :source {:github "protocolbuffers/protobuf-go"}
- :asset "protoc-gen-go.{tag}.linux.amd64.tar.gz"}
+ :platforms {"linux-x86_64" {:asset "protoc-gen-go.{tag}.linux.amd64.tar.gz"}}}

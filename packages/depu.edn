@@ -4,5 +4,5 @@
 
 {:description "A tool to check  available updates of packages in go.mod",
  :source {:github "kevwan/depu"}
- :asset "depu_{version}_linux_amd64.tar.gz"
- :checksum "depu_{version}_checksums.txt"}
+ :checksum "depu_{version}_checksums.txt"
+ :platforms {"linux-x86_64" {:asset "depu_{version}_linux_amd64.tar.gz"}}}

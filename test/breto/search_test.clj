@@ -131,19 +131,19 @@
     (s/define! "yq" {:source {:github "mikefarah/yq"} :asset "yq_linux_amd64"})
     (fs/create-dirs overlay)
     (testing "a key-by-key override keeps the source"
-      (spit (path "overlay" "yq.edn") (pr-str {:asset "yq_linux_arm64"}))
-      (is (= {:github "mikefarah/yq"} (:source (get (registry/load-registry [(path "packages") overlay]) "yq")))))
+      (spit (path "overlay" "yq.edn") (pr-str {:checksum "checksums"}))
+      (is (= {:github "mikefarah/yq"} (:source (get (s/load-registry [(path "packages") overlay]) "yq")))))
     (testing "another project under the same name"
-      (spit (path "overlay" "yq.edn") (pr-str {:source {:github "kislyuk/yq"} :asset "yq"}))
-      (let [data (try (registry/load-registry [(path "packages") overlay]) nil
+      (spit (path "overlay" "yq.edn") (pr-str (s/everywhere {:source {:github "kislyuk/yq"} :asset "yq"})))
+      (let [data (try (s/load-registry [(path "packages") overlay]) nil
                       (catch clojure.lang.ExceptionInfo e (ex-data e)))]
         (is (= :invalid-package (:breto/problem data)))
         (is (= [(path "packages" "yq.edn") (path "overlay" "yq.edn")] (:files data)))
         (is (str/includes? (first (:problems data)) ":replace true"))))
     (testing "a replacement stands alone"
-      (spit (path "overlay" "yq.edn") (pr-str {:replace true :source {:github "kislyuk/yq"} :asset "yq"
-                                               :bins {"yq" "yq"}}))
-      (let [yq (get (registry/load-registry [(path "packages") overlay]) "yq")]
+      (spit (path "overlay" "yq.edn") (pr-str (s/everywhere {:replace true :source {:github "kislyuk/yq"} :asset "yq"
+                                                             :bins {"yq" "yq"}})))
+      (let [yq (get (s/load-registry [(path "packages") overlay]) "yq")]
         (is (= {:github "kislyuk/yq"} (:source yq)))
         (is (= "yq" (:asset yq)))
         (is (not (contains? yq :replace)))))))

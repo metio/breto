@@ -4,4 +4,4 @@
 
 {:description "Download your Spotify playlists and songs along with album art and metadata (from YouTube if a match is found)",
  :source {:github "spotDL/spotify-downloader"}
- :asset "spotdl-{version}-linux"}
+ :platforms {"linux-x86_64" {:asset "spotdl-{version}-linux"}}}

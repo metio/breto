@@ -4,4 +4,4 @@
 
 {:description "A CLI tool for Kafka",
  :source {:github "xitonix/trubka"}
- :asset "trubka_{version}_linux_amd64.tar.gz"}
+ :platforms {"linux-x86_64" {:asset "trubka_{version}_linux_amd64.tar.gz"}}}

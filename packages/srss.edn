@@ -4,5 +4,5 @@
 
 {:description "A command line RSS/ATOM/JSON feed reader",
  :source {:github "sheepla/srss"}
- :asset "srss_{version}_Linux_x86_64.tar.gz"
- :checksum "checksums.txt"}
+ :checksum "checksums.txt"
+ :platforms {"linux-x86_64" {:asset "srss_{version}_Linux_x86_64.tar.gz"}}}

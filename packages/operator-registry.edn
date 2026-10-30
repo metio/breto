@@ -4,6 +4,6 @@
 
 {:description "Operator Registry runs in a Kubernetes or OpenShift cluster to provide operator catalog data to Operator Lifecycle Manager",
  :source {:github "operator-framework/operator-registry"}
- :asset "linux-amd64-opm"
  :checksum "checksums.txt"
- :bins {"opm" "{asset}"}}
+ :bins {"opm" "{asset}"}
+ :platforms {"linux-x86_64" {:asset "linux-amd64-opm"}}}

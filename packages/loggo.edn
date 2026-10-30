@@ -4,5 +4,5 @@
 
 {:description "A powerful terminal app for structured log streaming",
  :source {:github "aurc/loggo"}
- :asset "loggo_{version}_linux_amd64.tar.gz"
- :checksum "loggo_{version}_checksums.txt"}
+ :checksum "loggo_{version}_checksums.txt"
+ :platforms {"linux-x86_64" {:asset "loggo_{version}_linux_amd64.tar.gz"}}}

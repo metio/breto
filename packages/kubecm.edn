@@ -4,5 +4,5 @@
 
 {:description "Manage your kubeconfig more easily",
  :source {:github "sunny0826/kubecm"}
- :asset "kubecm_{tag}_Linux_x86_64.tar.gz"
- :checksum "checksums.txt"}
+ :checksum "checksums.txt"
+ :platforms {"linux-x86_64" {:asset "kubecm_{tag}_Linux_x86_64.tar.gz"}}}

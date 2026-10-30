@@ -4,5 +4,5 @@
 
 {:description "Private key usage verification",
  :source {:github "trufflesecurity/driftwood"}
- :asset "driftwood_{version}_linux_amd64.tar.gz"
- :checksum "driftwood_{version}_checksums.txt"}
+ :checksum "driftwood_{version}_checksums.txt"
+ :platforms {"linux-x86_64" {:asset "driftwood_{version}_linux_amd64.tar.gz"}}}

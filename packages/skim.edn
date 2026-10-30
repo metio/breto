@@ -3,8 +3,8 @@
 
 {:description "Fuzzy Finder in rust",
  :source {:github "skim-rs/skim"},
- :asset "skim-x86_64-unknown-linux-musl.tar.xz",
  :checksum "{asset}.sha256",
  :strip 1,
  :bins {"sk" "sk"},
- :man ["man/man1/*.1"]}
+ :man ["man/man1/*.1"]
+ :platforms {"linux-x86_64" {:asset "skim-x86_64-unknown-linux-musl.tar.xz"}}}

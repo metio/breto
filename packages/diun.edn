@@ -4,5 +4,5 @@
 
 {:description "Receive notifications when an image is updated on a Docker registry",
  :source {:github "crazy-max/diun"}
- :asset "diun_{version}_linux_amd64.tar.gz"
- :checksum "checksums.txt"}
+ :checksum "checksums.txt"
+ :platforms {"linux-x86_64" {:asset "diun_{version}_linux_amd64.tar.gz"}}}

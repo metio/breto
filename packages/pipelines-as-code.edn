@@ -4,6 +4,6 @@
 
 {:description "Pipelines-as-Code for Tekton",
  :source {:github "tektoncd/pipelines-as-code"}
- :asset "tkn-pac_{version}_linux_x86_64.tar.gz"
  :checksum "checksums.txt"
- :bins {"tkn-pac" "tkn-pac"}}
+ :bins {"tkn-pac" "tkn-pac"}
+ :platforms {"linux-x86_64" {:asset "tkn-pac_{version}_linux_x86_64.tar.gz"}}}

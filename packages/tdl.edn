@@ -4,5 +4,5 @@
 
 {:description "A Telegram toolkit written in Golang",
  :source {:github "iyear/tdl"}
- :asset "tdl_Linux_64bit.tar.gz"
- :checksum "tdl_checksums.txt"}
+ :checksum "tdl_checksums.txt"
+ :platforms {"linux-x86_64" {:asset "tdl_Linux_64bit.tar.gz"}}}

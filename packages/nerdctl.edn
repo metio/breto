@@ -4,5 +4,5 @@
 
 {:description "contaiNERD CTL - Docker-compatible CLI for containerd, with support for Compose, Rootless, eStargz, OCIcrypt, IPFS,",
  :source {:github "containerd/nerdctl"}
- :asset "nerdctl-{version}-linux-amd64.tar.gz"
- :checksum "SHA256SUMS"}
+ :checksum "SHA256SUMS"
+ :platforms {"linux-x86_64" {:asset "nerdctl-{version}-linux-amd64.tar.gz"}}}

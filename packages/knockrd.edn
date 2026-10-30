@@ -4,5 +4,5 @@
 
 {:description "HTTP knocker daemon",
  :source {:github "fujiwara/knockrd"}
- :asset "knockrd_{version}_linux_amd64.tar.gz"
- :checksum "checksums.txt"}
+ :checksum "checksums.txt"
+ :platforms {"linux-x86_64" {:asset "knockrd_{version}_linux_amd64.tar.gz"}}}

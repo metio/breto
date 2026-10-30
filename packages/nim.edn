@@ -4,9 +4,9 @@
 {:description "The Nim programming language with its nimble package manager and tools"
  :source {:text "https://nim-lang.org/channels/stable"}
  :tag-prefix ""
- :asset "nim-{version}-linux_x64.tar.xz"
  :url "https://nim-lang.org/download/{asset}"
  :checksum "{asset}.sha256"
  :strip 1
  :layout :tree
- :bin-dir "bin"}
+ :bin-dir "bin"
+ :platforms {"linux-x86_64" {:asset "nim-{version}-linux_x64.tar.xz"}}}

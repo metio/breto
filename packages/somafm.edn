@@ -4,4 +4,4 @@
 
 {:description "CLI application to listen to SomaFM stations",
  :source {:github "nicarl/somafm"}
- :asset "somafm-{tag}-linux-amd64"}
+ :platforms {"linux-x86_64" {:asset "somafm-{tag}-linux-amd64"}}}

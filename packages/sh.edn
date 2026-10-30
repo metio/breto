@@ -4,5 +4,5 @@
 
 {:description "A shell parser, formatter, and interpreter with bash and zsh support; includes shfmt",
  :source {:github "mvdan/sh"}
- :asset "shfmt_{tag}_linux_amd64"
- :bins {"shfmt" "{asset}"}}
+ :bins {"shfmt" "{asset}"}
+ :platforms {"linux-x86_64" {:asset "shfmt_{tag}_linux_amd64"}}}

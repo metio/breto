@@ -4,4 +4,4 @@
 
 {:description "A better xdg-utils",
  :source {:github "chmln/handlr"}
- :asset "handlr"}
+ :platforms {"linux-x86_64" {:asset "handlr"}}}

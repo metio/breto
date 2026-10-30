@@ -4,6 +4,6 @@
 
 {:description "All-in-one auditing toolkit for identifying common security issues in managed Kubernetes environments. Currently supports Amazon EKS",
  :source {:github "DataDog/managed-kubernetes-auditing-toolkit"}
- :asset "managed-kubernetes-auditing-toolkit_Linux_x86_64.tar.gz"
  :checksum "checksums.txt"
- :bins {"mkat" "mkat"}}
+ :bins {"mkat" "mkat"}
+ :platforms {"linux-x86_64" {:asset "managed-kubernetes-auditing-toolkit_Linux_x86_64.tar.gz"}}}

@@ -4,5 +4,5 @@
 
 {:description "Tunnel all your traffic over Websocket or HTTP2 - Bypass firewalls/DPI",
  :source {:github "erebe/wstunnel"}
- :asset "wstunnel_{version}_linux_amd64.tar.gz"
- :checksum "checksums.txt"}
+ :checksum "checksums.txt"
+ :platforms {"linux-x86_64" {:asset "wstunnel_{version}_linux_amd64.tar.gz"}}}

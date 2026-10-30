@@ -3,5 +3,5 @@
 
 {:description "Kubernetes object analysis with recommendations for improved reliability and security. kube-score actively prevents downtime and bugs in your Kubernetes YAML and Charts. Static code analysis for Kubernetes",
  :source {:github "zegl/kube-score"},
- :asset "kube-score_{version}_linux_amd64.tar.gz",
- :checksum "checksums.txt"}
+ :checksum "checksums.txt"
+ :platforms {"linux-x86_64" {:asset "kube-score_{version}_linux_amd64.tar.gz"}}}

@@ -4,5 +4,5 @@
 
 {:description "Deliver Go binaries as fast and easily as possible",
  :source {:github "goreleaser/goreleaser"}
- :asset "goreleaser_Linux_x86_64.tar.gz"
- :checksum "checksums.txt"}
+ :checksum "checksums.txt"
+ :platforms {"linux-x86_64" {:asset "goreleaser_Linux_x86_64.tar.gz"}}}

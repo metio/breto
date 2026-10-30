@@ -3,5 +3,5 @@
 
 {:description "Kubernetes IN Docker - local clusters for testing Kubernetes",
  :source {:github "kubernetes-sigs/kind"}
- :asset "kind-linux-amd64"
- :checksum "{asset}.sha256sum"}
+ :checksum "{asset}.sha256sum"
+ :platforms {"linux-x86_64" {:asset "kind-linux-amd64"}}}

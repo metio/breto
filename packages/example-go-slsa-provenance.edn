@@ -4,5 +4,5 @@
 
 {:description "Example Go Application with SLSA Provenance",
  :source {:github "aquaproj/example-go-slsa-provenance"}
- :asset "example-go-slsa-provenance_linux_amd64.tar.gz"
- :checksum "example-go-slsa-provenance_{version}_checksums.txt"}
+ :checksum "example-go-slsa-provenance_{version}_checksums.txt"
+ :platforms {"linux-x86_64" {:asset "example-go-slsa-provenance_linux_amd64.tar.gz"}}}

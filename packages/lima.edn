@@ -4,6 +4,6 @@
 
 {:description "Linux virtual machines, with a focus on running containers",
  :source {:github "lima-vm/lima"}
- :asset "lima-{version}-Linux-x86_64.tar.gz"
  :checksum "SHA256SUMS"
- :bins {"lima" "bin/lima", "limactl" "bin/limactl"}}
+ :bins {"lima" "bin/lima", "limactl" "bin/limactl"}
+ :platforms {"linux-x86_64" {:asset "lima-{version}-Linux-x86_64.tar.gz"}}}

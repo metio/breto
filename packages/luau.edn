@@ -5,5 +5,5 @@
 {:description "A fast, small, safe, gradually typed embeddable scripting language derived from Lua",
  :source {:github "luau-lang/luau"}
  :tag-prefix ""
- :asset "luau-ubuntu.zip"
- :bins {"luau" "luau", "luau-analyze" "luau-analyze", "luau-ast" "luau-ast", "luau-compile" "luau-compile"}}
+ :bins {"luau" "luau", "luau-analyze" "luau-analyze", "luau-ast" "luau-ast", "luau-compile" "luau-compile"}
+ :platforms {"linux-x86_64" {:asset "luau-ubuntu.zip"}}}

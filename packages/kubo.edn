@@ -4,6 +4,6 @@
 
 {:description "IPFS is a global, versioned, peer-to-peer filesystem",
  :source {:github "ipfs/kubo"}
- :asset "kubo_{tag}_linux-amd64.tar.gz"
  :checksum "{asset}.sha512"
- :bins {"ipfs" "kubo/ipfs"}}
+ :bins {"ipfs" "kubo/ipfs"}
+ :platforms {"linux-x86_64" {:asset "kubo_{tag}_linux-amd64.tar.gz"}}}

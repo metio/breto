@@ -4,5 +4,5 @@
 
 {:description "A Kubernetes cluster resource sanitizer",
  :source {:github "derailed/popeye"}
- :asset "popeye_linux_amd64.tar.gz"
- :checksum "checksums.sha256"}
+ :checksum "checksums.sha256"
+ :platforms {"linux-x86_64" {:asset "popeye_linux_amd64.tar.gz"}}}

@@ -3,5 +3,5 @@
 ;; SPDX-License-Identifier: MIT
 
 {:source {:github "Mic-U/ecsher"}
- :asset "ecsher_Linux_x86_64.tar.gz"
- :checksum "checksums.txt"}
+ :checksum "checksums.txt"
+ :platforms {"linux-x86_64" {:asset "ecsher_Linux_x86_64.tar.gz"}}}

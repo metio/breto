@@ -4,4 +4,4 @@
 
 {:description "A distributed SQLite server with MySQL wire compatible interface",
  :source {:github "maxpert/marmot"}
- :asset "marmot-{tag}-linux-amd64-static.tar.gz"}
+ :platforms {"linux-x86_64" {:asset "marmot-{tag}-linux-amd64-static.tar.gz"}}}

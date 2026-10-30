@@ -4,5 +4,5 @@
 
 {:description "A hackable, minimal, fast TUI file explorer",
  :source {:github "sayanarijit/xplr"}
- :asset "xplr-linux.tar.gz"
- :checksum "xplr-linux.sha256"}
+ :checksum "xplr-linux.sha256"
+ :platforms {"linux-x86_64" {:asset "xplr-linux.tar.gz"}}}

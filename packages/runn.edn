@@ -4,5 +4,5 @@
 
 {:description "runn is a package/tool for running operations following a scenario",
  :source {:github "k1LoW/runn"}
- :asset "runn_{tag}_linux_amd64.tar.gz"
- :checksum "checksums.txt"}
+ :checksum "checksums.txt"
+ :platforms {"linux-x86_64" {:asset "runn_{tag}_linux_amd64.tar.gz"}}}

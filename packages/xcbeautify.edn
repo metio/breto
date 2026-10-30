@@ -5,4 +5,4 @@
 {:description "A little beautifier tool for xcodebuild",
  :source {:github "cpisciotta/xcbeautify"}
  :tag-prefix ""
- :asset "xcbeautify-{tag}-x86_64-unknown-linux-gnu.tar.xz"}
+ :platforms {"linux-x86_64" {:asset "xcbeautify-{tag}-x86_64-unknown-linux-gnu.tar.xz"}}}

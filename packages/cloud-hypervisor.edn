@@ -4,4 +4,4 @@
 
 {:description "Cloud Hypervisor is an open source Virtual Machine Monitor (VMM) that runs on top of KVM hypervisor and Microsoft Hypervisor (MSHV)",
  :source {:github "cloud-hypervisor/cloud-hypervisor"}
- :asset "cloud-hypervisor-static"}
+ :platforms {"linux-x86_64" {:asset "cloud-hypervisor-static"}}}

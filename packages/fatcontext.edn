@@ -4,5 +4,5 @@
 
 {:description "detects nested contexts in loops",
  :source {:github "Crocmagnon/fatcontext"}
- :asset "fatcontext_Linux_x86_64.tar.gz"
- :checksum "fatcontext_{version}_checksums.txt"}
+ :checksum "fatcontext_{version}_checksums.txt"
+ :platforms {"linux-x86_64" {:asset "fatcontext_Linux_x86_64.tar.gz"}}}

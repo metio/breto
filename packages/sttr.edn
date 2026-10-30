@@ -4,5 +4,5 @@
 
 {:description "cross-platform, cli app to perform various operations on string",
  :source {:github "abhimanyu003/sttr"}
- :asset "sttr_Linux_x86_64.tar.gz"
- :checksum "sttr_{version}_checksums.txt"}
+ :checksum "sttr_{version}_checksums.txt"
+ :platforms {"linux-x86_64" {:asset "sttr_Linux_x86_64.tar.gz"}}}

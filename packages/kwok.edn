@@ -2,4 +2,5 @@
 ;; SPDX-License-Identifier: 0BSD
 
 {:description "Kubernetes WithOut Kubelet -  Simulates thousands of Nodes and Clusters",
- :source {:github "kubernetes-sigs/kwok"}, :asset "kwok-linux-amd64"}
+ :source {:github "kubernetes-sigs/kwok"}
+ :platforms {"linux-x86_64" {:asset "kwok-linux-amd64"}}}

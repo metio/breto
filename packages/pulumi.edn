@@ -4,6 +4,6 @@
 
 {:description "Pulumi - Infrastructure as Code in any programming language",
  :source {:github "pulumi/pulumi"}
- :asset "pulumi-{tag}-linux-x64.tar.gz"
  :checksum "SHA512SUMS"
- :bins {"pulumi" "pulumi/pulumi"}}
+ :bins {"pulumi" "pulumi/pulumi"}
+ :platforms {"linux-x86_64" {:asset "pulumi-{tag}-linux-x64.tar.gz"}}}

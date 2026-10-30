@@ -4,4 +4,4 @@
 
 {:description "A user-friendly launcher for Bazel",
  :source {:github "bazelbuild/bazelisk"}
- :asset "bazelisk-linux-amd64"}
+ :platforms {"linux-x86_64" {:asset "bazelisk-linux-amd64"}}}

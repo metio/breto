@@ -5,6 +5,6 @@
 {:description "Rust reimplementation of nixfmt with byte-identical output",
  :source {:github "Mic92/nixfmt-rs"}
  :tag-prefix ""
- :asset "nixfmt-x86_64-linux"
  :checksum "SHA256SUMS"
- :bins {"nixfmt" "{asset}"}}
+ :bins {"nixfmt" "{asset}"}
+ :platforms {"linux-x86_64" {:asset "nixfmt-x86_64-linux"}}}

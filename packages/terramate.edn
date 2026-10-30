@@ -4,6 +4,6 @@
 
 {:description "Open-source Infrastructure as Code (IaC) orchestration platform: GitOps workflows, orchestration, code generation, observability, drift detection, asset management, policies, Slack notifications, and more. Integrates with Terraform, OpenTofu, Terragrunt, Kubernetes, GitHub Actions, GitLab CI/CD, BitBucket Pipelines, and any other CI/CD platform",
  :source {:github "terramate-io/terramate"}
- :asset "terramate_{version}_linux_x86_64.tar.gz"
  :checksum "checksums.txt"
- :bins {"terramate" "terramate", "terramate-ls" "terramate-ls"}}
+ :bins {"terramate" "terramate", "terramate-ls" "terramate-ls"}
+ :platforms {"linux-x86_64" {:asset "terramate_{version}_linux_x86_64.tar.gz"}}}

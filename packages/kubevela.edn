@@ -4,6 +4,6 @@
 
 {:description "The Modern Application Platform",
  :source {:github "kubevela/kubevela"}
- :asset "vela-{tag}-linux-amd64.tar.gz"
  :checksum "sha256sums.txt"
- :bins {"vela" "linux-amd64/vela"}}
+ :bins {"vela" "linux-amd64/vela"}
+ :platforms {"linux-x86_64" {:asset "vela-{tag}-linux-amd64.tar.gz"}}}

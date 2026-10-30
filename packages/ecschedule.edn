@@ -4,6 +4,6 @@
 
 {:description "ecschedule is a tool to manage ECS Scheduled Tasks",
  :source {:github "Songmu/ecschedule"}
- :asset "ecschedule_{tag}_linux_amd64.tar.gz"
  :checksum "SHA256SUMS"
- :bins {"ecschedule" "ecschedule_{tag}_linux_amd64/ecschedule"}}
+ :bins {"ecschedule" "ecschedule_{tag}_linux_amd64/ecschedule"}
+ :platforms {"linux-x86_64" {:asset "ecschedule_{tag}_linux_amd64.tar.gz"}}}

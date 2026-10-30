@@ -4,4 +4,4 @@
 
 {:description "Cargo subcommand to easily use LLVM source-based code coverage (-C instrument-coverage)",
  :source {:github "taiki-e/cargo-llvm-cov"}
- :asset "cargo-llvm-cov-x86_64-unknown-linux-musl.tar.gz"}
+ :platforms {"linux-x86_64" {:asset "cargo-llvm-cov-x86_64-unknown-linux-musl.tar.gz"}}}

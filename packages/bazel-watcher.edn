@@ -4,5 +4,5 @@
 
 {:description "Tools for building Bazel targets when source files change",
  :source {:github "bazelbuild/bazel-watcher"}
- :asset "ibazel_linux_amd64"
- :bins {"ibazel" "{asset}"}}
+ :bins {"ibazel" "{asset}"}
+ :platforms {"linux-x86_64" {:asset "ibazel_linux_amd64"}}}

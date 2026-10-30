@@ -4,6 +4,6 @@
 
 {:description "A modern reimplementation of git-flow in Go that offers greater flexibility while maintaining backward compatibility with the original git-flow and git-flow-avh",
  :source {:github "gittower/git-flow-next"}
- :asset "git-flow-next-{tag}-linux-amd64.tar.gz"
  :checksum "git-flow-next-{tag}-checksums.txt"
- :bins {"git-flow" "git-flow"}}
+ :bins {"git-flow" "git-flow"}
+ :platforms {"linux-x86_64" {:asset "git-flow-next-{tag}-linux-amd64.tar.gz"}}}

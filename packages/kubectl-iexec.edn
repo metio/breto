@@ -5,5 +5,5 @@
 {:description "Kubectl plugin to interactively exec into a pod",
  :source {:github "gabeduke/kubectl-iexec"}
  :tag-prefix ""
- :asset "kubectl-iexec_{tag}_Linux_x86_64.tar.gz"
- :checksum "checksums.txt"}
+ :checksum "checksums.txt"
+ :platforms {"linux-x86_64" {:asset "kubectl-iexec_{tag}_Linux_x86_64.tar.gz"}}}

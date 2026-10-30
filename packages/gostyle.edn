@@ -4,5 +4,5 @@
 
 {:description "gostyle is a set of analyzers for coding styles",
  :source {:github "k1LoW/gostyle"}
- :asset "gostyle_{tag}_linux_amd64.tar.gz"
- :checksum "checksums.txt"}
+ :checksum "checksums.txt"
+ :platforms {"linux-x86_64" {:asset "gostyle_{tag}_linux_amd64.tar.gz"}}}

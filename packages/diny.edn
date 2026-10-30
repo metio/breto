@@ -4,5 +4,5 @@
 
 {:description "generate git commit messages",
  :source {:github "dinoDanic/diny"}
- :asset "diny_Linux_x86_64.tar.gz"
- :checksum "diny_{version}_checksums.txt"}
+ :checksum "diny_{version}_checksums.txt"
+ :platforms {"linux-x86_64" {:asset "diny_Linux_x86_64.tar.gz"}}}

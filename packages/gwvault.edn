@@ -4,6 +4,6 @@
 
 {:description "ansible-vault CLI reimplemented in go",
  :source {:github "GoodwayGroup/gwvault"}
- :asset "gwvault_{version}_linux_amd64.tar.gz"
  :checksum "checksums.txt"
- :bins {"gwvault" "gwvault_{version}_linux_amd64/gwvault"}}
+ :bins {"gwvault" "gwvault_{version}_linux_amd64/gwvault"}
+ :platforms {"linux-x86_64" {:asset "gwvault_{version}_linux_amd64.tar.gz"}}}

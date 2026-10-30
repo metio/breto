@@ -5,4 +5,4 @@
 {:description "CLI client for Terraform enterprise",
  :source {:github "rgreinho/tfe-cli"}
  :tag-prefix ""
- :asset "tfe-cli-{tag}-linux-amd64"}
+ :platforms {"linux-x86_64" {:asset "tfe-cli-{tag}-linux-amd64"}}}

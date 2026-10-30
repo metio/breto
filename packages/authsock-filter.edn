@@ -4,4 +4,4 @@
 
 {:description "SSH agent proxy with filtering and logging",
  :source {:github "kawaz/authsock-filter"}
- :asset "authsock-filter-x86_64-unknown-linux-gnu.tar.gz"}
+ :platforms {"linux-x86_64" {:asset "authsock-filter-x86_64-unknown-linux-gnu.tar.gz"}}}

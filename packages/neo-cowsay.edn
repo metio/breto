@@ -4,6 +4,6 @@
 
 {:description "Cowsay reborn in Go",
  :source {:github "Code-Hex/Neo-cowsay"}
- :asset "cowsay_{version}_Linux_x86_64.tar.gz"
  :checksum "cowsay_checksums.txt"
- :bins {"cowsay" "cowsay", "cowthink" "cowthink"}}
+ :bins {"cowsay" "cowsay", "cowthink" "cowthink"}
+ :platforms {"linux-x86_64" {:asset "cowsay_{version}_Linux_x86_64.tar.gz"}}}

@@ -4,5 +4,5 @@
 
 {:description "A blazing fast, Rust-based workspace manager for your temporary experiments",
  :source {:github "tassiovirginio/try-rs"}
- :asset "try-rs-{tag}-linux-x86_64.tar.gz"
- :checksum "{asset}.sha256"}
+ :checksum "{asset}.sha256"
+ :platforms {"linux-x86_64" {:asset "try-rs-{tag}-linux-x86_64.tar.gz"}}}

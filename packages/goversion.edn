@@ -4,5 +4,5 @@
 
 {:description "Easily switch between multiple Go versions",
  :source {:github "go-simpler/goversion"}
- :asset "goversion_{version}_linux_amd64.tar.gz"
- :checksum "goversion_{version}_checksums.txt"}
+ :checksum "goversion_{version}_checksums.txt"
+ :platforms {"linux-x86_64" {:asset "goversion_{version}_linux_amd64.tar.gz"}}}

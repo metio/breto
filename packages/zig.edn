@@ -4,10 +4,10 @@
 {:description "The Zig programming language and its C and C++ compiler"
  :source {:text "https://ziglang.org/download/index.json" :match "\"(\\d+\\.\\d+\\.\\d+)\":\\s*\\{"}
  :tag-prefix ""
- :asset "zig-x86_64-linux-{version}.tar.xz"
  :url "https://ziglang.org/download/{version}/{asset}"
- :checksum {:json "https://ziglang.org/download/index.json" :hash ["{version}" "x86_64-linux" "shasum"]}
  :strip 1
  :layout :tree
  :bins {"zig" "zig"}
- :history [{:before "0.14.1" :asset "zig-linux-x86_64-{version}.tar.xz"}]}
+ :platforms {"linux-x86_64" {:asset "zig-x86_64-linux-{version}.tar.xz"
+                             :checksum {:json "https://ziglang.org/download/index.json" :hash ["{version}" "x86_64-linux" "shasum"]}
+                             :history [{:before "0.14.1" :asset "zig-linux-x86_64-{version}.tar.xz"}]}}}

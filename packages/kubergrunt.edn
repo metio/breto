@@ -4,5 +4,5 @@
 
 {:description "Kubergrunt is a standalone go binary with a collection of commands to fill in the gaps between Terraform, Helm, and Kubectl. https://www.gruntwork.io",
  :source {:github "gruntwork-io/kubergrunt"}
- :asset "kubergrunt_linux_amd64"
- :checksum "SHA256SUMS"}
+ :checksum "SHA256SUMS"
+ :platforms {"linux-x86_64" {:asset "kubergrunt_linux_amd64"}}}

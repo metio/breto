@@ -4,5 +4,5 @@
 
 {:description "Spell Checker for Code",
  :source {:github "blopker/codebook"}
- :asset "codebook-lsp-x86_64-unknown-linux-musl.tar.gz"
- :bins {"codebook-lsp" "codebook-lsp"}}
+ :bins {"codebook-lsp" "codebook-lsp"}
+ :platforms {"linux-x86_64" {:asset "codebook-lsp-x86_64-unknown-linux-musl.tar.gz"}}}

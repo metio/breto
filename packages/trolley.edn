@@ -4,4 +4,4 @@
 
 {:description "Run terminal apps anywhere",
  :source {:github "weedonandscott/trolley"}
- :asset "trolley-cli-x86_64-linux.tar.xz"}
+ :platforms {"linux-x86_64" {:asset "trolley-cli-x86_64-linux.tar.xz"}}}

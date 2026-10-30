@@ -4,5 +4,5 @@
 
 {:description "Show container images used in the cluster",
  :source {:github "chenjiandongx/kubectl-images"}
- :asset "kubectl-images_linux_amd64.tar.gz"
- :checksum "kubectl-images_{version}_checksums.txt"}
+ :checksum "kubectl-images_{version}_checksums.txt"
+ :platforms {"linux-x86_64" {:asset "kubectl-images_linux_amd64.tar.gz"}}}

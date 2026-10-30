@@ -4,4 +4,4 @@
 
 {:description "Find files (ff) by name, fast",
  :source {:github "vishaltelangre/ff"}
- :asset "find-files-{tag}-x86_64-unknown-linux-musl.tar.gz"}
+ :platforms {"linux-x86_64" {:asset "find-files-{tag}-x86_64-unknown-linux-musl.tar.gz"}}}

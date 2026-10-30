@@ -4,5 +4,5 @@
 
 {:description "CFSSL: Cloudflare's PKI and TLS toolkit",
  :source {:github "cloudflare/cfssl"}
- :asset "cfssl-bundle_{version}_linux_amd64"
- :checksum "cfssl_{version}_checksums.txt"}
+ :checksum "cfssl_{version}_checksums.txt"
+ :platforms {"linux-x86_64" {:asset "cfssl-bundle_{version}_linux_amd64"}}}

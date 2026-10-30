@@ -4,5 +4,5 @@
 
 {:description "s3mover is an agent for moving local files to Amazon S3",
  :source {:github "fujiwara/s3mover"}
- :asset "s3mover_{version}_linux_amd64.tar.gz"
- :checksum "checksums.txt"}
+ :checksum "checksums.txt"
+ :platforms {"linux-x86_64" {:asset "s3mover_{version}_linux_amd64.tar.gz"}}}

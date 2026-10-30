@@ -4,4 +4,4 @@
 
 {:description "dry - A Docker manager for the terminal @",
  :source {:github "moncho/dry"}
- :asset "dry-linux-amd64"}
+ :platforms {"linux-x86_64" {:asset "dry-linux-amd64"}}}

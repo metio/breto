@@ -4,5 +4,5 @@
 
 {:description "EKS cluster upgrade guidance",
  :source {:github "clowdhaus/eksup"}
- :asset "eksup-{tag}-x86_64-unknown-linux-gnu.tar.gz"
- :bins {"eksup" "eksup-{tag}-x86_64-unknown-linux-gnu/eksup"}}
+ :bins {"eksup" "eksup-{tag}-x86_64-unknown-linux-gnu/eksup"}
+ :platforms {"linux-x86_64" {:asset "eksup-{tag}-x86_64-unknown-linux-gnu.tar.gz"}}}

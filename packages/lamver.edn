@@ -4,5 +4,5 @@
 
 {:description "CLI tool to search AWS Lambda runtime and versions across regions",
  :source {:github "go-to-k/lamver"}
- :asset "lamver_{version}_Linux_x86_64.tar.gz"
- :checksum "checksums.txt"}
+ :checksum "checksums.txt"
+ :platforms {"linux-x86_64" {:asset "lamver_{version}_Linux_x86_64.tar.gz"}}}

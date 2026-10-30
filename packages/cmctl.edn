@@ -3,5 +3,5 @@
 
 {:description "the command line utility that makes cert-manager'ing easier",
  :source {:github "cert-manager/cmctl"},
- :asset "cmctl_linux_amd64",
- :checksum "checksums.txt"}
+ :checksum "checksums.txt"
+ :platforms {"linux-x86_64" {:asset "cmctl_linux_amd64"}}}

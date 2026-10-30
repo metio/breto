@@ -4,4 +4,4 @@
 
 {:description "Grab your files periodically from a remote FTP or SFTP server easily",
  :source {:github "crazy-max/ftpgrab"}
- :asset "ftpgrab_{version}_linux_amd64.tar.gz"}
+ :platforms {"linux-x86_64" {:asset "ftpgrab_{version}_linux_amd64.tar.gz"}}}

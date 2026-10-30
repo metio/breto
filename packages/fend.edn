@@ -4,4 +4,4 @@
 
 {:description "Arbitrary-precision unit-aware calculator",
  :source {:github "printfn/fend"}
- :asset "fend-{version}-linux-x86_64-gnu.zip"}
+ :platforms {"linux-x86_64" {:asset "fend-{version}-linux-x86_64-gnu.zip"}}}

@@ -3,6 +3,6 @@
 
 {:description "The minimal, blazing-fast, and infinitely customizable prompt for any shell",
  :source {:github "starship/starship"},
- :asset "starship-x86_64-unknown-linux-gnu.tar.gz",
  :checksum "starship-x86_64-unknown-linux-gnu.tar.gz.sha256",
- :completions {:bash {:args ["completions" "bash"]}}}
+ :completions {:bash {:args ["completions" "bash"]}}
+ :platforms {"linux-x86_64" {:asset "starship-x86_64-unknown-linux-gnu.tar.gz"}}}

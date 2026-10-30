@@ -4,5 +4,5 @@
 
 {:description "Replacement for UNIX rm command",
  :source {:github "babarot/gomi"}
- :asset "gomi_Linux_x86_64.tar.gz"
- :checksum "gomi_{version}_checksums.txt"}
+ :checksum "gomi_{version}_checksums.txt"
+ :platforms {"linux-x86_64" {:asset "gomi_Linux_x86_64.tar.gz"}}}

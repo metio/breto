@@ -4,6 +4,6 @@
 
 {:description "Prometheus rule linter/validator",
  :source {:github "cloudflare/pint"}
- :asset "pint-{version}-linux-amd64.tar.gz"
  :checksum "checksums.txt"
- :bins {"pint" "pint-linux-amd64"}}
+ :bins {"pint" "pint-linux-amd64"}
+ :platforms {"linux-x86_64" {:asset "pint-{version}-linux-amd64.tar.gz"}}}

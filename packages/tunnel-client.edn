@@ -4,5 +4,5 @@
 
 {:description "Customer-run client for Secure MCP Tunnel: connect private or localhost MCP servers to ChatGPT, Codex, the Responses API, and AgentKit without exposing them to the public internet",
  :source {:github "openai/tunnel-client"}
- :asset "tunnel-client-{tag}-linux-amd64.zip"
- :checksum "SHA256SUMS.txt"}
+ :checksum "SHA256SUMS.txt"
+ :platforms {"linux-x86_64" {:asset "tunnel-client-{tag}-linux-amd64.zip"}}}

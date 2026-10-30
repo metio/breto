@@ -4,5 +4,5 @@
 
 {:description "Simple go utility to download HuggingFace Models and Datasets",
  :source {:github "bodaay/HuggingFaceModelDownloader"}
- :asset "hfdownloader_linux_amd64_{tag}"
- :bins {"hfdownloader" "{asset}"}}
+ :bins {"hfdownloader" "{asset}"}
+ :platforms {"linux-x86_64" {:asset "hfdownloader_linux_amd64_{tag}"}}}

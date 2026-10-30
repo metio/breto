@@ -4,5 +4,5 @@
 
 {:description "CLI to create GitHub Issues from GitHub Discussions",
  :source {:github "suzuki-shunsuke/ghd2i"}
- :asset "ghd2i_linux_amd64.tar.gz"
- :checksum "ghd2i_{version}_checksums.txt"}
+ :checksum "ghd2i_{version}_checksums.txt"
+ :platforms {"linux-x86_64" {:asset "ghd2i_linux_amd64.tar.gz"}}}

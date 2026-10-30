@@ -4,6 +4,6 @@
 
 {:description "CLI to install, manage & troubleshoot Kubernetes clusters running Cilium",
  :source {:github "cilium/cilium-cli"}
- :asset "cilium-linux-amd64.tar.gz"
  :checksum "{asset}.sha256sum"
- :bins {"cilium" "cilium"}}
+ :bins {"cilium" "cilium"}
+ :platforms {"linux-x86_64" {:asset "cilium-linux-amd64.tar.gz"}}}

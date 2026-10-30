@@ -3,5 +3,5 @@
 ;; SPDX-License-Identifier: MIT
 
 {:source {:github "kastenhq/kubestr"}
- :asset "kubestr_{version}_Linux_amd64.tar.gz"
- :checksum "checksums.txt"}
+ :checksum "checksums.txt"
+ :platforms {"linux-x86_64" {:asset "kubestr_{version}_Linux_amd64.tar.gz"}}}

@@ -4,5 +4,5 @@
 
 {:description "A new network stack based on gVisor",
  :source {:github "containers/gvisor-tap-vsock"}
- :asset "gvproxy-linux-amd64"
- :checksum "sha256sums"}
+ :checksum "sha256sums"
+ :platforms {"linux-x86_64" {:asset "gvproxy-linux-amd64"}}}

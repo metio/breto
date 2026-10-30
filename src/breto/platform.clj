@@ -3,11 +3,10 @@
 
 (ns breto.platform
   "The operating system and architecture a definition is resolved for, named
-  like linux-x86_64. The top level of a definition describes linux-x86_64;
-  its :platforms entries override keys for the others."
+  like linux-x86_64. The top level of a definition holds what every platform
+  shares, and each :platforms entry names a platform with releases and the
+  keys that differ there."
   (:require [clojure.string :as str]))
-
-(def default "linux-x86_64")
 
 (def known #{"linux-x86_64" "linux-aarch64" "darwin-x86_64" "darwin-aarch64"})
 

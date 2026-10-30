@@ -4,9 +4,9 @@
 {:description "The Dart SDK"
  :source {:json "https://storage.googleapis.com/dart-archive/channels/stable/release/latest/VERSION" :version ["version"]}
  :tag-prefix ""
- :asset "dartsdk-linux-x64-release.zip"
  :url "https://storage.googleapis.com/dart-archive/channels/stable/release/{version}/sdk/{asset}"
  :checksum "{asset}.sha256sum"
  :strip 1
  :layout :tree
- :bins {"dart" "bin/dart" "dartaotruntime" "bin/dartaotruntime"}}
+ :bins {"dart" "bin/dart" "dartaotruntime" "bin/dartaotruntime"}
+ :platforms {"linux-x86_64" {:asset "dartsdk-linux-x64-release.zip"}}}

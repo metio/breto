@@ -5,6 +5,6 @@
 {:description "Store files and directory in an archive. Like tar, but faster and with direct random access",
  :source {:github "jubako/arx"}
  :tag-prefix ""
- :asset "arx-{tag}-linux.tar.gz"
  :checksum "{asset}.sha256"
- :bins {"arx" "arx-{tag}-linux/arx"}}
+ :bins {"arx" "arx-{tag}-linux/arx"}
+ :platforms {"linux-x86_64" {:asset "arx-{tag}-linux.tar.gz"}}}

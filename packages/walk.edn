@@ -4,4 +4,4 @@
 
 {:description "Terminal file manager",
  :source {:github "antonmedv/walk"}
- :asset "walk_linux_amd64"}
+ :platforms {"linux-x86_64" {:asset "walk_linux_amd64"}}}

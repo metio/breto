@@ -4,5 +4,5 @@
 
 {:description "Markdown defined task runner",
  :source {:github "joerdav/xc"}
- :asset "xc_{version}_linux_amd64.tar.gz"
- :checksum "checksums.txt"}
+ :checksum "checksums.txt"
+ :platforms {"linux-x86_64" {:asset "xc_{version}_linux_amd64.tar.gz"}}}

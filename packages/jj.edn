@@ -4,4 +4,4 @@
 
 {:description "A Git-compatible VCS that is both simple and powerful",
  :source {:github "jj-vcs/jj"}
- :asset "jj-{tag}-x86_64-unknown-linux-musl.tar.gz"}
+ :platforms {"linux-x86_64" {:asset "jj-{tag}-x86_64-unknown-linux-musl.tar.gz"}}}

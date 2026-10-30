@@ -4,6 +4,6 @@
 
 {:description "ID generator server",
  :source {:github "kayac/go-katsubushi"}
- :asset "go-katsubushi_{tag}_linux_amd64.tar.gz"
  :checksum "checksums.txt"
- :bins {"katsubushi" "katsubushi"}}
+ :bins {"katsubushi" "katsubushi"}
+ :platforms {"linux-x86_64" {:asset "go-katsubushi_{tag}_linux_amd64.tar.gz"}}}

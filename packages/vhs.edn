@@ -4,6 +4,6 @@
 
 {:description "Your CLI home video recorder",
  :source {:github "charmbracelet/vhs"}
- :asset "vhs_{version}_Linux_x86_64.tar.gz"
  :checksum "checksums.txt"
- :bins {"vhs" "vhs_{version}_Linux_x86_64/vhs"}}
+ :bins {"vhs" "vhs_{version}_Linux_x86_64/vhs"}
+ :platforms {"linux-x86_64" {:asset "vhs_{version}_Linux_x86_64.tar.gz"}}}

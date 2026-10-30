@@ -5,5 +5,5 @@
 {:description "The user-friendly command line shell",
  :source {:github "fish-shell/fish-shell"}
  :tag-prefix ""
- :asset "fish-{tag}-linux-x86_64.tar.xz"
- :bins {"fish" "fish"}}
+ :bins {"fish" "fish"}
+ :platforms {"linux-x86_64" {:asset "fish-{tag}-linux-x86_64.tar.xz"}}}

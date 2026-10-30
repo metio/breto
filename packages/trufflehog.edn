@@ -4,5 +4,5 @@
 
 {:description "Find, verify, and analyze leaked credentials",
  :source {:github "trufflesecurity/trufflehog"}
- :asset "trufflehog_{version}_linux_amd64.tar.gz"
- :checksum "trufflehog_{version}_checksums.txt"}
+ :checksum "trufflehog_{version}_checksums.txt"
+ :platforms {"linux-x86_64" {:asset "trufflehog_{version}_linux_amd64.tar.gz"}}}

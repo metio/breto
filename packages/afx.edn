@@ -4,5 +4,5 @@
 
 {:description "Package manager to provide declaretive way to manage CLI commands and shell plugins as code",
  :source {:github "babarot/afx"}
- :asset "afx_Linux_x86_64.tar.gz"
- :checksum "afx_{version}_checksums.txt"}
+ :checksum "afx_{version}_checksums.txt"
+ :platforms {"linux-x86_64" {:asset "afx_Linux_x86_64.tar.gz"}}}

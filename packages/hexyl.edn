@@ -4,5 +4,5 @@
 
 {:description "A command-line hex viewer",
  :source {:github "sharkdp/hexyl"}
- :asset "hexyl-{tag}-x86_64-unknown-linux-musl.tar.gz"
- :bins {"hexyl" "hexyl-{tag}-x86_64-unknown-linux-musl/hexyl"}}
+ :bins {"hexyl" "hexyl-{tag}-x86_64-unknown-linux-musl/hexyl"}
+ :platforms {"linux-x86_64" {:asset "hexyl-{tag}-x86_64-unknown-linux-musl.tar.gz"}}}

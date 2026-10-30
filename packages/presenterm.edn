@@ -4,6 +4,6 @@
 
 {:description "A markdown terminal slideshow tool",
  :source {:github "mfontanini/presenterm"}
- :asset "presenterm-{version}-x86_64-unknown-linux-musl.tar.gz"
  :checksum "{asset}.sha512"
- :bins {"presenterm" "presenterm-{version}/presenterm"}}
+ :bins {"presenterm" "presenterm-{version}/presenterm"}
+ :platforms {"linux-x86_64" {:asset "presenterm-{version}-x86_64-unknown-linux-musl.tar.gz"}}}

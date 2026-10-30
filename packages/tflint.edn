@@ -4,5 +4,5 @@
 
 {:description "A Pluggable Terraform Linter",
  :source {:github "terraform-linters/tflint"}
- :asset "tflint_linux_amd64.zip"
- :checksum "checksums.txt"}
+ :checksum "checksums.txt"
+ :platforms {"linux-x86_64" {:asset "tflint_linux_amd64.zip"}}}

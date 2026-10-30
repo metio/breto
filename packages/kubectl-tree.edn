@@ -4,5 +4,5 @@
 
 {:description "kubectl plugin to browse Kubernetes object hierarchies as a tree  (star the repo if you are using)",
  :source {:github "ahmetb/kubectl-tree"}
- :asset "kubectl-tree_{tag}_linux_amd64.tar.gz"
- :checksum "kubectl-tree_{version}_checksums.txt"}
+ :checksum "kubectl-tree_{version}_checksums.txt"
+ :platforms {"linux-x86_64" {:asset "kubectl-tree_{tag}_linux_amd64.tar.gz"}}}

@@ -5,5 +5,5 @@
 {:description "Local first semantic and hybrid BM25 grep / search tool for use by AI and humans",
  :source {:github "BeaconBay/ck"}
  :tag-prefix ""
- :asset "ck-{tag}-x86_64-unknown-linux-gnu.tar.gz"
- :checksum "{asset}.sha256"}
+ :checksum "{asset}.sha256"
+ :platforms {"linux-x86_64" {:asset "ck-{tag}-x86_64-unknown-linux-gnu.tar.gz"}}}

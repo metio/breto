@@ -4,4 +4,4 @@
 
 {:description "A cross-platform command-line tool for executing jobs in parallel",
  :source {:github "shenwei356/rush"}
- :asset "rush_linux_amd64.tar.gz"}
+ :platforms {"linux-x86_64" {:asset "rush_linux_amd64.tar.gz"}}}

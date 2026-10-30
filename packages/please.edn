@@ -4,6 +4,6 @@
 
 {:description "High-performance extensible build system for reproducible multi-language builds",
  :source {:github "thought-machine/please"}
- :asset "please_{version}_linux_amd64.tar.gz"
  :checksum "{asset}.sha256"
- :bins {"please" "please/please"}}
+ :bins {"please" "please/please"}
+ :platforms {"linux-x86_64" {:asset "please_{version}_linux_amd64.tar.gz"}}}

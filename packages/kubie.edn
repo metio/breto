@@ -4,4 +4,4 @@
 
 {:description "A more powerful alternative to kubectx and kubens",
  :source {:github "kubie-org/kubie"}
- :asset "kubie-linux-amd64"}
+ :platforms {"linux-x86_64" {:asset "kubie-linux-amd64"}}}

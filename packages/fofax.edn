@@ -4,5 +4,5 @@
 
 {:description "FOFAX是一个基于fofa.info的API命令行查询工具",
  :source {:github "xiecat/fofax"}
- :asset "fofax_{tag}_linux_amd64.tar.gz"
- :checksum "checksums.txt"}
+ :checksum "checksums.txt"
+ :platforms {"linux-x86_64" {:asset "fofax_{tag}_linux_amd64.tar.gz"}}}

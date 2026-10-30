@@ -4,5 +4,5 @@
 
 {:description "Kubescape is an open-source Kubernetes security platform for your IDE, CI/CD pipelines, and clusters. It includes risk analysis, security, compliance, and misconfiguration scanning, saving Kubernetes users and administrators precious time, effort, and resources",
  :source {:github "kubescape/kubescape"}
- :asset "kubescape_{version}_linux_amd64.tar.gz"
- :checksum "checksums.sha256"}
+ :checksum "checksums.sha256"
+ :platforms {"linux-x86_64" {:asset "kubescape_{version}_linux_amd64.tar.gz"}}}

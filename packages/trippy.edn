@@ -5,5 +5,5 @@
 {:description "A network diagnostic tool",
  :source {:github "fujiapple852/trippy"}
  :tag-prefix ""
- :asset "trippy-{tag}-x86_64-unknown-linux-musl.tar.gz"
- :bins {"trip" "trippy-{tag}-x86_64-unknown-linux-musl/trip"}}
+ :bins {"trip" "trippy-{tag}-x86_64-unknown-linux-musl/trip"}
+ :platforms {"linux-x86_64" {:asset "trippy-{tag}-x86_64-unknown-linux-musl.tar.gz"}}}

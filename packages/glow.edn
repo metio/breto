@@ -4,6 +4,6 @@
 
 {:description "Render markdown on the CLI, with pizzazz",
  :source {:github "charmbracelet/glow"}
- :asset "glow_{version}_Linux_x86_64.tar.gz"
  :checksum "checksums.txt"
- :bins {"glow" "glow_{version}_Linux_x86_64/glow"}}
+ :bins {"glow" "glow_{version}_Linux_x86_64/glow"}
+ :platforms {"linux-x86_64" {:asset "glow_{version}_Linux_x86_64.tar.gz"}}}

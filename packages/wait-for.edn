@@ -4,4 +4,4 @@
 
 {:description "./wait-for is a script to wait for another service to become available",
  :source {:github "eficode/wait-for"}
- :asset "wait-for"}
+ :platforms {"linux-x86_64" {:asset "wait-for"}}}

@@ -4,5 +4,5 @@
 
 {:description "CLI to sort GitHub Issue Templates using a text editor",
  :source {:github "suzuki-shunsuke/sort-issue-template"}
- :asset "sort-issue-template_linux_amd64.tar.gz"
- :checksum "sort-issue-template_{version}_checksums.txt"}
+ :checksum "sort-issue-template_{version}_checksums.txt"
+ :platforms {"linux-x86_64" {:asset "sort-issue-template_linux_amd64.tar.gz"}}}

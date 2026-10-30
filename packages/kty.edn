@@ -4,4 +4,4 @@
 
 {:description "The terminal for Kubernetes",
  :source {:github "grampelberg/kty"}
- :asset "kty-{version}-linux-amd64.tar.gz"}
+ :platforms {"linux-x86_64" {:asset "kty-{version}-linux-amd64.tar.gz"}}}

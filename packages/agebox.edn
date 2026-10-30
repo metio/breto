@@ -4,5 +4,5 @@
 
 {:description "Age based repository file encryption gitops tool",
  :source {:github "slok/agebox"}
- :asset "agebox-linux-amd64"
- :checksum "checksums.txt"}
+ :checksum "checksums.txt"
+ :platforms {"linux-x86_64" {:asset "agebox-linux-amd64"}}}

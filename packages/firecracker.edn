@@ -4,6 +4,6 @@
 
 {:description "Secure and fast microVMs for serverless computing",
  :source {:github "firecracker-microvm/firecracker"}
- :asset "firecracker-{tag}-x86_64.tgz"
  :checksum "{asset}.sha256.txt"
- :bins {"firecracker" "release-{tag}-x86_64/firecracker-{tag}-x86_64", "jailer" "release-{tag}-x86_64/jailer-{tag}-x86_64", "rebase-snap" "release-{tag}-x86_64/rebase-snap-{tag}-x86_64", "seccompiler-bin" "release-{tag}-x86_64/seccompiler-bin-{tag}-x86_64"}}
+ :bins {"firecracker" "release-{tag}-x86_64/firecracker-{tag}-x86_64", "jailer" "release-{tag}-x86_64/jailer-{tag}-x86_64", "rebase-snap" "release-{tag}-x86_64/rebase-snap-{tag}-x86_64", "seccompiler-bin" "release-{tag}-x86_64/seccompiler-bin-{tag}-x86_64"}
+ :platforms {"linux-x86_64" {:asset "firecracker-{tag}-x86_64.tgz"}}}

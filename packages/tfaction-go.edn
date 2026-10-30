@@ -4,6 +4,6 @@
 
 {:description "CLI for tfaction",
  :source {:github "suzuki-shunsuke/tfaction-go"}
- :asset "tfaction_linux_amd64.tar.gz"
  :checksum "tfaction_{version}_checksums.txt"
- :bins {"tfaction" "tfaction"}}
+ :bins {"tfaction" "tfaction"}
+ :platforms {"linux-x86_64" {:asset "tfaction_linux_amd64.tar.gz"}}}

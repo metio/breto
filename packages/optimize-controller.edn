@@ -4,6 +4,6 @@
 
 {:description "Release with Confidence",
  :source {:github "thestormforge/optimize-controller"}
- :asset "stormforge-linux-amd64.tar.gz"
  :checksum "checksums.txt"
- :bins {"stormforge" "stormforge"}}
+ :bins {"stormforge" "stormforge"}
+ :platforms {"linux-x86_64" {:asset "stormforge-linux-amd64.tar.gz"}}}

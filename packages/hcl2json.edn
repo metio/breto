@@ -4,5 +4,5 @@
 
 {:description "Convert hcl2 to json",
  :source {:github "tmccombs/hcl2json"}
- :asset "hcl2json_linux_amd64.tar.gz"
- :checksum "hcl2json_{version}_checksums.txt"}
+ :checksum "hcl2json_{version}_checksums.txt"
+ :platforms {"linux-x86_64" {:asset "hcl2json_linux_amd64.tar.gz"}}}

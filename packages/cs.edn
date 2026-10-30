@@ -4,5 +4,5 @@
 
 {:description "Code search tool with CLI, TUI, MCP and HTTP support that requires no indexing",
  :source {:github "boyter/cs"}
- :asset "cs_Linux_x86_64.tar.gz"
- :checksum "checksums.txt"}
+ :checksum "checksums.txt"
+ :platforms {"linux-x86_64" {:asset "cs_Linux_x86_64.tar.gz"}}}

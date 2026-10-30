@@ -4,6 +4,6 @@
 
 {:description "A content addressable archive utility",
  :source {:github "ipld/go-car"}
- :asset "go-car_{version}_linux_amd64.tar.gz"
  :checksum "go-car_{version}_checksums.txt"
- :bins {"car" "car"}}
+ :bins {"car" "car"}
+ :platforms {"linux-x86_64" {:asset "go-car_{version}_linux_amd64.tar.gz"}}}

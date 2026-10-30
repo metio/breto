@@ -4,5 +4,5 @@
 
 {:description "CLI for managing secrets",
  :source {:github "segmentio/chamber"}
- :asset "chamber-{tag}-linux-amd64"
- :checksum "chamber-{tag}.sha256sums"}
+ :checksum "chamber-{tag}.sha256sums"
+ :platforms {"linux-x86_64" {:asset "chamber-{tag}-linux-amd64"}}}

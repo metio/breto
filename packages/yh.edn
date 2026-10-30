@@ -4,4 +4,4 @@
 
 {:description "YAML syntax highlighter to bring colours to kubectl output",
  :source {:github "andreazorzetto/yh"}
- :asset "yh-linux-amd64.zip"}
+ :platforms {"linux-x86_64" {:asset "yh-linux-amd64.zip"}}}

@@ -4,5 +4,5 @@
 
 {:description "The Community Manifest Creator for WinGet",
  :source {:github "russellbanks/Komac"}
- :asset "komac-{version}-x86_64-unknown-linux-gnu.tar.gz"
- :checksum "SHA256SUMS"}
+ :checksum "SHA256SUMS"
+ :platforms {"linux-x86_64" {:asset "komac-{version}-x86_64-unknown-linux-gnu.tar.gz"}}}

@@ -4,4 +4,4 @@
 
 {:description "Git powered terminal-based todo manager -- markdown note page per task. Single binary",
  :source {:github "naggie/dstask"}
- :asset "dstask-import-linux-amd64"}
+ :platforms {"linux-x86_64" {:asset "dstask-import-linux-amd64"}}}

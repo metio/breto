@@ -5,5 +5,5 @@
 {:description "A Djot parser library",
  :source {:github "hellux/jotdown"}
  :tag-prefix ""
- :asset "jotdown-{tag}-x86_64-unknown-linux-gnu.tar.gz"
- :bins {"jotdown" "jotdown-{tag}-x86_64-unknown-linux-gnu/jotdown"}}
+ :bins {"jotdown" "jotdown-{tag}-x86_64-unknown-linux-gnu/jotdown"}
+ :platforms {"linux-x86_64" {:asset "jotdown-{tag}-x86_64-unknown-linux-gnu.tar.gz"}}}

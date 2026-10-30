@@ -4,6 +4,6 @@
 
 {:description "A simple application deployment framework for Kubernetes",
  :source {:github "acorn-io/runtime"}
- :asset "acorn-{tag}-linux-amd64.tar.gz"
  :checksum "checksums.txt"
- :bins {"acorn" "acorn"}}
+ :bins {"acorn" "acorn"}
+ :platforms {"linux-x86_64" {:asset "acorn-{tag}-linux-amd64.tar.gz"}}}

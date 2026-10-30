@@ -5,4 +5,4 @@
 {:description "The Uncompromising Nix Code Formatter",
  :source {:github "kamadorueda/alejandra"}
  :tag-prefix ""
- :asset "alejandra-x86_64-unknown-linux-musl"}
+ :platforms {"linux-x86_64" {:asset "alejandra-x86_64-unknown-linux-musl"}}}

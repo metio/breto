@@ -4,4 +4,4 @@
 
 {:description "Open source APM: OpenTelemetry traces, metrics, and logs",
  :source {:github "uptrace/uptrace"}
- :asset "uptrace_linux_amd64"}
+ :platforms {"linux-x86_64" {:asset "uptrace_linux_amd64"}}}

@@ -4,5 +4,5 @@
 
 {:description "GitHub Actions linter",
  :source {:github "suzuki-shunsuke/ghalint"}
- :asset "ghalint_{version}_linux_amd64.tar.gz"
- :checksum "ghalint_{version}_checksums.txt"}
+ :checksum "ghalint_{version}_checksums.txt"
+ :platforms {"linux-x86_64" {:asset "ghalint_{version}_linux_amd64.tar.gz"}}}

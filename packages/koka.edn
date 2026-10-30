@@ -3,6 +3,6 @@
 
 {:description "The Koka programming language with effect types and handlers"
  :source {:github "koka-lang/koka"}
- :asset "koka-{tag}-linux-x64.tar.gz"
  :layout :tree
- :bins {"koka" "bin/koka"}}
+ :bins {"koka" "bin/koka"}
+ :platforms {"linux-x86_64" {:asset "koka-{tag}-linux-x64.tar.gz"}}}

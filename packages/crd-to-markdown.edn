@@ -4,5 +4,5 @@
 
 {:description "util to generate a markdown file from a Kubernetes CRD go struct definition",
  :source {:github "clamoriniere/crd-to-markdown"}
- :asset "crd-to-markdown_Linux_x86_64"
- :checksum "checksums.txt"}
+ :checksum "checksums.txt"
+ :platforms {"linux-x86_64" {:asset "crd-to-markdown_Linux_x86_64"}}}

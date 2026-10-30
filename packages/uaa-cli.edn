@@ -4,5 +4,5 @@
 
 {:description "CLI for UAA written in Go",
  :source {:github "cloudfoundry/uaa-cli"}
- :asset "uaa-linux-amd64-{version}"
- :bins {"uaa" "{asset}"}}
+ :bins {"uaa" "{asset}"}
+ :platforms {"linux-x86_64" {:asset "uaa-linux-amd64-{version}"}}}

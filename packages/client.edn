@@ -5,6 +5,6 @@
 {:description "Knative developer experience, docs, reference Knative CLI implementation",
  :source {:github "knative/client"}
  :tag-prefix ""
- :asset "kn-linux-amd64"
  :checksum "checksums.txt"
- :bins {"kn" "{asset}"}}
+ :bins {"kn" "{asset}"}
+ :platforms {"linux-x86_64" {:asset "kn-linux-amd64"}}}

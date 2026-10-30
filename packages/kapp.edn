@@ -4,5 +4,5 @@
 
 {:description "kapp is a simple deployment tool focused on the concept of \"Kubernetes application\" — a set of resources with the same label",
  :source {:github "carvel-dev/kapp"}
- :asset "kapp-linux-amd64"
- :checksum "checksums.txt"}
+ :checksum "checksums.txt"
+ :platforms {"linux-x86_64" {:asset "kapp-linux-amd64"}}}

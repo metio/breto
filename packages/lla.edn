@@ -4,5 +4,5 @@
 
 {:description "A modern alternative to ls",
  :source {:github "chaqchase/lla"}
- :asset "lla-linux-amd64"
- :checksum "SHA256SUMS"}
+ :checksum "SHA256SUMS"
+ :platforms {"linux-x86_64" {:asset "lla-linux-amd64"}}}

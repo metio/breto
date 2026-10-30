@@ -3,5 +3,5 @@
 
 {:description "Splits a multi-document Kubernetes YAML file into one file per resource"
  :source {:github "patrickdappollonio/kubectl-slice"}
- :asset "kubectl-slice_linux_x86_64.tar.gz"
- :checksum "checksums.txt"}
+ :checksum "checksums.txt"
+ :platforms {"linux-x86_64" {:asset "kubectl-slice_linux_x86_64.tar.gz"}}}

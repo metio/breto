@@ -4,4 +4,4 @@
 
 {:description "A new network stack based on gVisor",
  :source {:github "containers/gvisor-tap-vsock"}
- :asset "qemu-wrapper"}
+ :platforms {"linux-x86_64" {:asset "qemu-wrapper"}}}

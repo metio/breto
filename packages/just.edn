@@ -5,4 +5,4 @@
 {:description "Just a command runner",
  :source {:github "casey/just"}
  :tag-prefix ""
- :asset "just-{tag}-x86_64-unknown-linux-musl.tar.gz"}
+ :platforms {"linux-x86_64" {:asset "just-{tag}-x86_64-unknown-linux-musl.tar.gz"}}}

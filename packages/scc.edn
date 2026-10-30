@@ -4,5 +4,5 @@
 
 {:description "Sloc, Cloc and Code: scc is a very fast accurate code counter with complexity calculations and COCOMO estimates written in pure Go",
  :source {:github "boyter/scc"}
- :asset "scc_Linux_x86_64.tar.gz"
- :checksum "checksums.txt"}
+ :checksum "checksums.txt"
+ :platforms {"linux-x86_64" {:asset "scc_Linux_x86_64.tar.gz"}}}

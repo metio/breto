@@ -4,5 +4,5 @@
 
 {:description "Generate changelog from git history, tags and merged pull requests",
  :source {:github "Songmu/ghch"}
- :asset "ghch_{tag}_linux_amd64.tar.gz"
- :bins {"ghch" "ghch_{tag}_linux_amd64/ghch"}}
+ :bins {"ghch" "ghch_{tag}_linux_amd64/ghch"}
+ :platforms {"linux-x86_64" {:asset "ghch_{tag}_linux_amd64.tar.gz"}}}

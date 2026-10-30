@@ -21,7 +21,7 @@
 (deftest groups-load-from-at-files-and-are-not-packages
   (s/define! "a" {:source {:github "acme/a"} :asset "a"})
   (group! "packages" "suite" {:members ["a" "b"]})
-  (is (= ["a"] (keys (registry/load-registry [(path "packages")]))))
+  (is (= ["a"] (keys (s/load-registry [(path "packages")]))))
   (is (= {"@suite" {:members ["a" "b"] :files [(path "packages" "@suite.edn")]}}
          (registry/load-groups [(path "packages")]))))
 

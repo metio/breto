@@ -5,5 +5,5 @@
 {:description "A language server that offers Lua language support - programmed in Lua",
  :source {:github "LuaLS/lua-language-server"}
  :tag-prefix ""
- :asset "lua-language-server-{tag}-linux-x64.tar.gz"
- :bins {"lua-language-server" "bin/lua-language-server"}}
+ :bins {"lua-language-server" "bin/lua-language-server"}
+ :platforms {"linux-x86_64" {:asset "lua-language-server-{tag}-linux-x64.tar.gz"}}}

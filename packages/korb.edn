@@ -4,5 +4,5 @@
 
 {:description "Move Kubernetes PVCs between Storage Classes and Namespaces",
  :source {:github "BeryJu/korb"}
- :asset "korb_{version}_linux_amd64.tar.gz"
- :checksum "korb_{version}_SHA256SUMS"}
+ :checksum "korb_{version}_SHA256SUMS"
+ :platforms {"linux-x86_64" {:asset "korb_{version}_linux_amd64.tar.gz"}}}

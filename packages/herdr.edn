@@ -4,4 +4,4 @@
 
 {:description "the runtime your coding agents live on",
  :source {:github "herdrdev/herdr"}
- :asset "herdr-linux-x86_64"}
+ :platforms {"linux-x86_64" {:asset "herdr-linux-x86_64"}}}

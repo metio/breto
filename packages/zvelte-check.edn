@@ -4,5 +4,5 @@
 
 {:description "A fast diagnostic tool for Svelte projects",
  :source {:github "ampcode/zvelte-check"}
- :asset "zvelte-check-linux-x86_64.tar.gz"
- :checksum "checksums.txt"}
+ :checksum "checksums.txt"
+ :platforms {"linux-x86_64" {:asset "zvelte-check-linux-x86_64.tar.gz"}}}

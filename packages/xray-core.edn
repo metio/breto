@@ -4,5 +4,5 @@
 
 {:description "Xray, Penetrates Everything. Also the best v2ray-core",
  :source {:github "XTLS/Xray-core"}
- :asset "Xray-linux-64.zip"
- :bins {"xray" "xray"}}
+ :bins {"xray" "xray"}
+ :platforms {"linux-x86_64" {:asset "Xray-linux-64.zip"}}}

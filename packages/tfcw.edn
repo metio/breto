@@ -4,5 +4,5 @@
 
 {:description "Terraform Cloud Wrapper",
  :source {:github "mvisonneau/tfcw"}
- :asset "tfcw_{tag}_linux_amd64.tar.gz"
- :checksum "tfcw_{tag}_sha512sums.txt"}
+ :checksum "tfcw_{tag}_sha512sums.txt"
+ :platforms {"linux-x86_64" {:asset "tfcw_{tag}_linux_amd64.tar.gz"}}}

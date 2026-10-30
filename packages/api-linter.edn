@@ -4,4 +4,4 @@
 
 {:description "A linter for APIs defined in protocol buffers",
  :source {:github "googleapis/api-linter"}
- :asset "api-linter-{version}-linux-amd64.tar.gz"}
+ :platforms {"linux-x86_64" {:asset "api-linter-{version}-linux-amd64.tar.gz"}}}

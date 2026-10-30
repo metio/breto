@@ -5,4 +5,4 @@
 {:description "unofficial bitwarden cli",
  :source {:github "doy/rbw"}
  :tag-prefix ""
- :asset "rbw_{tag}_linux_amd64.tar.gz"}
+ :platforms {"linux-x86_64" {:asset "rbw_{tag}_linux_amd64.tar.gz"}}}

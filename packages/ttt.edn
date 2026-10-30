@@ -3,5 +3,5 @@
 
 {:description "TTT Editor (Terminal Text Tool): A real alternative to VS Code, Zed, and Sublime that runs in your terminal. A TUI that feels like GUI. Single binary, zero config.",
  :source {:github "eugenioenko/ttt"},
- :asset "ttt-linux-amd64",
- :checksum "checksums.txt"}
+ :checksum "checksums.txt"
+ :platforms {"linux-x86_64" {:asset "ttt-linux-amd64"}}}

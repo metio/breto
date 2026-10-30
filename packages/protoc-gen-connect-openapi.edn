@@ -4,5 +4,5 @@
 
 {:description "Plugin for generating OpenAPIv3 from protobufs matching the Connect RPC interface",
  :source {:github "sudorandom/protoc-gen-connect-openapi"}
- :asset "protoc-gen-connect-openapi_{version}_linux_amd64.tar.gz"
- :checksum "checksums.txt"}
+ :checksum "checksums.txt"
+ :platforms {"linux-x86_64" {:asset "protoc-gen-connect-openapi_{version}_linux_amd64.tar.gz"}}}

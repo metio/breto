@@ -4,5 +4,5 @@
 
 {:description "Manage worktrees without managing worktrees",
  :source {:github "kunchenguid/treehouse"}
- :asset "treehouse-{tag}-linux-amd64.tar.gz"
- :checksum "checksums.txt"}
+ :checksum "checksums.txt"
+ :platforms {"linux-x86_64" {:asset "treehouse-{tag}-linux-amd64.tar.gz"}}}

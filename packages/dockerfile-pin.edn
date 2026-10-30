@@ -4,5 +4,5 @@
 
 {:description "A CLI tool that adds @sha256:<digest> to FROM lines in Dockerfiles and image fields in docker-compose.yml to prevent supply chain attacks",
  :source {:github "azu/dockerfile-pin"}
- :asset "dockerfile-pin_linux_amd64.tar.gz"
- :checksum "checksums.txt"}
+ :checksum "checksums.txt"
+ :platforms {"linux-x86_64" {:asset "dockerfile-pin_linux_amd64.tar.gz"}}}

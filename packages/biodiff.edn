@@ -4,4 +4,4 @@
 
 {:description "Hex diff viewer using alignment algorithms from biology",
  :source {:github "8051Enthusiast/biodiff"}
- :asset "biodiff-linux-{version}.zip"}
+ :platforms {"linux-x86_64" {:asset "biodiff-linux-{version}.zip"}}}

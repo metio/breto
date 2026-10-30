@@ -4,5 +4,5 @@
 
 {:description "Library and various tools for working with project licenses",
  :source {:github "goph/licensei"}
- :asset "licensei_linux_amd64.tar.gz"
- :checksum "checksums.txt"}
+ :checksum "checksums.txt"
+ :platforms {"linux-x86_64" {:asset "licensei_linux_amd64.tar.gz"}}}

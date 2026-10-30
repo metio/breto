@@ -4,4 +4,4 @@
 
 {:description "We all edit",
  :source {:github "microsoft/edit"}
- :asset "edit-{version}-x86_64-linux-gnu.tar.gz"}
+ :platforms {"linux-x86_64" {:asset "edit-{version}-x86_64-linux-gnu.tar.gz"}}}

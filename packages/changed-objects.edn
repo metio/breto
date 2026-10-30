@@ -4,5 +4,5 @@
 
 {:description "Get changed objects in Git commit",
  :source {:github "babarot/changed-objects"}
- :asset "changed-objects_Linux_x86_64.tar.gz"
- :checksum "changed-objects_{version}_checksums.txt"}
+ :checksum "changed-objects_{version}_checksums.txt"
+ :platforms {"linux-x86_64" {:asset "changed-objects_Linux_x86_64.tar.gz"}}}

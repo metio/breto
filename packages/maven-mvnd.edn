@@ -5,5 +5,5 @@
 {:description "Apache Maven Daemon",
  :source {:github "apache/maven-mvnd"}
  :tag-prefix ""
- :asset "maven-mvnd-{tag}-linux-amd64.tar.gz"
- :bins {"mvnd" "maven-mvnd-{tag}-linux-amd64/bin/mvnd"}}
+ :bins {"mvnd" "maven-mvnd-{tag}-linux-amd64/bin/mvnd"}
+ :platforms {"linux-x86_64" {:asset "maven-mvnd-{tag}-linux-amd64.tar.gz"}}}

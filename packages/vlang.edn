@@ -4,7 +4,7 @@
 {:description "The V programming language"
  :source {:github "vlang/v"}
  :tag-prefix ""
- :asset "v_linux.zip"
  :strip 1
  :layout :tree
- :bins {"v" "v"}}
+ :bins {"v" "v"}
+ :platforms {"linux-x86_64" {:asset "v_linux.zip"}}}

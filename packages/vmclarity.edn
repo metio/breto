@@ -4,6 +4,6 @@
 
 {:description "VMClarity is an open source tool for agentless detection and management of Virtual Machine Software Bill Of Materials (SBOM) and security threats such as vulnerabilities, exploits, malware, rootkits, misconfigurations and leaked secrets",
  :source {:github "openclarity/vmclarity"}
- :asset "vmclarity-cli-{tag}-linux-amd64.tar.gz"
  :checksum "{asset}.sha256sum"
- :bins {"vmclarity-cli" "vmclarity-cli"}}
+ :bins {"vmclarity-cli" "vmclarity-cli"}
+ :platforms {"linux-x86_64" {:asset "vmclarity-cli-{tag}-linux-amd64.tar.gz"}}}

@@ -5,5 +5,5 @@
 {:description "Prevent Kubernetes misconfigurations from reaching production (again  )! From code to cloud, Datree provides an E2E policy enforcement solution to run automatic checks for rule violations. See our docs: https://hub.datree.io",
  :source {:github "datreeio/datree"}
  :tag-prefix ""
- :asset "datree-cli_{tag}_Linux_x86_64.zip"
- :checksum "checksums.txt"}
+ :checksum "checksums.txt"
+ :platforms {"linux-x86_64" {:asset "datree-cli_{tag}_Linux_x86_64.zip"}}}

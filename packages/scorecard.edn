@@ -4,5 +4,5 @@
 
 {:description "OpenSSF Scorecard - Security health metrics for Open Source",
  :source {:github "ossf/scorecard"}
- :asset "scorecard_{version}_linux_amd64.tar.gz"
- :checksum "scorecard_checksums.txt"}
+ :checksum "scorecard_checksums.txt"
+ :platforms {"linux-x86_64" {:asset "scorecard_{version}_linux_amd64.tar.gz"}}}

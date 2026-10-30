@@ -4,5 +4,5 @@
 
 {:description "A modern Git CLI tool with both traditional command-line and interactive incremental-search UI",
  :source {:github "bmf-san/ggc"}
- :asset "ggc_{version}_linux_amd64.tar.gz"
- :checksum "checksums.txt"}
+ :checksum "checksums.txt"
+ :platforms {"linux-x86_64" {:asset "ggc_{version}_linux_amd64.tar.gz"}}}

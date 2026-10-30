@@ -3,7 +3,6 @@
 
 {:description "Command line client for public key infrastructure, X.509 and SSH certificates, and step-ca"
  :source {:github "smallstep/cli"}
- :asset "step_linux_{version}_amd64.tar.gz"
  :checksum "checksums.txt"
  :strip 1
  :bins {"step" "bin/step"}
@@ -11,4 +10,5 @@
  :signature {:of :checksum
              :bundle "checksums.txt.sigstore.json"
              :identity "https://github.com/smallstep/workflows/.github/workflows/goreleaser.yml@refs/heads/main"
-             :issuer "https://token.actions.githubusercontent.com"}}
+             :issuer "https://token.actions.githubusercontent.com"}
+ :platforms {"linux-x86_64" {:asset "step_linux_{version}_amd64.tar.gz"}}}

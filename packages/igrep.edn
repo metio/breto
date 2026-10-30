@@ -4,5 +4,5 @@
 
 {:description "Interactive Grep",
  :source {:github "konradsz/igrep"}
- :asset "igrep-{tag}-x86_64-unknown-linux-gnu.tar.gz"
- :bins {"ig" "ig"}}
+ :bins {"ig" "ig"}
+ :platforms {"linux-x86_64" {:asset "igrep-{tag}-x86_64-unknown-linux-gnu.tar.gz"}}}

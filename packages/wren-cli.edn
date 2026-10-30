@@ -5,5 +5,5 @@
 {:description "A command line tool for the Wren programming language",
  :source {:github "wren-lang/wren-cli"}
  :tag-prefix ""
- :asset "wren-cli-linux-{tag}.zip"
- :bins {"wren_cli" "wren-cli-linux-{tag}/wren_cli"}}
+ :bins {"wren_cli" "wren-cli-linux-{tag}/wren_cli"}
+ :platforms {"linux-x86_64" {:asset "wren-cli-linux-{tag}.zip"}}}

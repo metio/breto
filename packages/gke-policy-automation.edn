@@ -4,6 +4,6 @@
 
 {:description "Tool and policy library for reviewing Google Kubernetes Engine clusters against best practices",
  :source {:github "google/gke-policy-automation"}
- :asset "gke-policy-automation_{tag}_linux_amd64.zip"
  :checksum "gke-policy-automation_{tag}_SHA256SUMS"
- :bins {"gke-policy" "gke-policy"}}
+ :bins {"gke-policy" "gke-policy"}
+ :platforms {"linux-x86_64" {:asset "gke-policy-automation_{tag}_linux_amd64.zip"}}}

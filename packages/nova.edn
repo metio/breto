@@ -4,5 +4,5 @@
 
 {:description "Find outdated or deprecated Helm charts running in your cluster",
  :source {:github "FairwindsOps/nova"}
- :asset "nova_{version}_linux_amd64.tar.gz"
- :checksum "checksums.txt"}
+ :checksum "checksums.txt"
+ :platforms {"linux-x86_64" {:asset "nova_{version}_linux_amd64.tar.gz"}}}

@@ -4,5 +4,5 @@
 
 {:description "Render and diff Flux GitOps repositories offline, without a cluster",
  :source {:github "home-operations/flate"}
- :asset "flate_{version}_linux_amd64.tar.gz"
- :checksum "{asset}.sha256"}
+ :checksum "{asset}.sha256"
+ :platforms {"linux-x86_64" {:asset "flate_{version}_linux_amd64.tar.gz"}}}

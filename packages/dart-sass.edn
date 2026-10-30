@@ -5,5 +5,5 @@
 {:description "The reference implementation of Sass, written in Dart",
  :source {:github "sass/dart-sass"}
  :tag-prefix ""
- :asset "dart-sass-{tag}-linux-x64-musl.tar.gz"
- :bins {"sass" "dart-sass/sass"}}
+ :bins {"sass" "dart-sass/sass"}
+ :platforms {"linux-x86_64" {:asset "dart-sass-{tag}-linux-x64-musl.tar.gz"}}}

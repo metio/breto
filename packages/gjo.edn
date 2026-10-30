@@ -5,4 +5,4 @@
 {:description "Small utility to create JSON objects",
  :source {:github "skanehira/gjo"}
  :tag-prefix ""
- :asset "Linux.zip"}
+ :platforms {"linux-x86_64" {:asset "Linux.zip"}}}

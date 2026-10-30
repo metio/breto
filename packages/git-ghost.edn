@@ -4,5 +4,5 @@
 
 {:description "Synchronize your working directory efficiently to a remote place without committing the changes",
  :source {:github "pfnet-research/git-ghost"}
- :asset "git-ghost_{version}_linux_amd64.tar.gz"
- :checksum "git-ghost_{version}_checksums.txt"}
+ :checksum "git-ghost_{version}_checksums.txt"
+ :platforms {"linux-x86_64" {:asset "git-ghost_{version}_linux_amd64.tar.gz"}}}

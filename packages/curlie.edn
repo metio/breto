@@ -4,5 +4,5 @@
 
 {:description "The power of curl, the ease of use of httpie",
  :source {:github "rs/curlie"}
- :asset "curlie_{version}_linux_amd64.tar.gz"
- :checksum "curlie_{version}_checksums.txt"}
+ :checksum "curlie_{version}_checksums.txt"
+ :platforms {"linux-x86_64" {:asset "curlie_{version}_linux_amd64.tar.gz"}}}

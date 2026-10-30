@@ -4,5 +4,5 @@
 
 {:description "Powerpipe: Dashboards for DevOps. Visualize cloud configurations. Assess security posture against a massive library of benchmarks. Build custom dashboards with code",
  :source {:github "turbot/powerpipe"}
- :asset "powerpipe.linux.amd64.tar.gz"
- :checksum "checksums.txt"}
+ :checksum "checksums.txt"
+ :platforms {"linux-x86_64" {:asset "powerpipe.linux.amd64.tar.gz"}}}

@@ -4,5 +4,5 @@
 
 {:description "A new markup-based typesetting system that is powerful and easy to learn",
  :source {:github "typst/typst"}
- :asset "typst-x86_64-unknown-linux-musl.tar.xz"
- :bins {"typst" "typst-x86_64-unknown-linux-musl/typst"}}
+ :bins {"typst" "typst-x86_64-unknown-linux-musl/typst"}
+ :platforms {"linux-x86_64" {:asset "typst-x86_64-unknown-linux-musl.tar.xz"}}}

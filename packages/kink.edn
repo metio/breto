@@ -4,5 +4,5 @@
 
 {:description "KinK is a helper CLI that facilitates to manage KinD clusters as Kubernetes pods. Designed to ease clusters up for fast testing with batteries included in mind",
  :source {:github "Trendyol/kink"}
- :asset "kink_{version}_Linux-x86_64.tar.gz"
- :checksum "kink_checksums.txt"}
+ :checksum "kink_checksums.txt"
+ :platforms {"linux-x86_64" {:asset "kink_{version}_Linux-x86_64.tar.gz"}}}

@@ -4,6 +4,6 @@
 
 {:description "Generate a sample YAML file from a CRD and view it rendered on a nice website",
  :source {:github "Skarlso/crd-to-sample-yaml"}
- :asset "cty_linux_amd64.tar.gz"
  :checksum "cty_checksums.txt"
- :bins {"cty" "cty"}}
+ :bins {"cty" "cty"}
+ :platforms {"linux-x86_64" {:asset "cty_linux_amd64.tar.gz"}}}

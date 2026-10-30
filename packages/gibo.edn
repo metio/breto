@@ -4,5 +4,5 @@
 
 {:description "Easy access to gitignore boilerplates",
  :source {:github "simonwhitaker/gibo"}
- :asset "gibo_Linux_x86_64.tar.gz"
- :checksum "checksums.txt"}
+ :checksum "checksums.txt"
+ :platforms {"linux-x86_64" {:asset "gibo_Linux_x86_64.tar.gz"}}}

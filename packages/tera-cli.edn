@@ -4,6 +4,6 @@
 
 {:description "A command line utility on top of the tera templating engine. Takes json|yaml|toml as input and can merge ENV in. You may see it as envsubst on steroid",
  :source {:github "chevdor/tera-cli"}
- :asset "tera-cli-x86_64-unknown-linux-musl.tar.gz"
  :checksum "tera-cli-x86_64-unknown-linux-musl.sha512"
- :bins {"tera" "tera"}}
+ :bins {"tera" "tera"}
+ :platforms {"linux-x86_64" {:asset "tera-cli-x86_64-unknown-linux-musl.tar.gz"}}}

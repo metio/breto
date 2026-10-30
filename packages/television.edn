@@ -5,6 +5,6 @@
 {:description "The revolution will (not) be televised",
  :source {:github "alexpasmantier/television"}
  :tag-prefix ""
- :asset "tv-{tag}-x86_64-unknown-linux-musl.tar.gz"
  :checksum "tv-{tag}-x86_64-unknown-linux-musl.sha256"
- :bins {"tv" "tv-{tag}-x86_64-unknown-linux-musl/tv"}}
+ :bins {"tv" "tv-{tag}-x86_64-unknown-linux-musl/tv"}
+ :platforms {"linux-x86_64" {:asset "tv-{tag}-x86_64-unknown-linux-musl.tar.gz"}}}

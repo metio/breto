@@ -3,8 +3,8 @@
 
 {:description "manage reproducible build environments.",
  :source {:github "metio/ilo"},
- :asset "ilo-{version}-linux.tar.gz",
  :tag-prefix "",
  :checksum "ilo-{version}-linux.tar.gz.sha512",
  :strip 1,
- :completions {:bash {:args ["generate-completion"]}}}
+ :completions {:bash {:args ["generate-completion"]}}
+ :platforms {"linux-x86_64" {:asset "ilo-{version}-linux.tar.gz"}}}

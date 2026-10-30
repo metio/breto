@@ -4,5 +4,5 @@
 
 {:description "Natural Language Programming",
  :source {:github "gptscript-ai/gptscript"}
- :asset "gptscript-{tag}-linux-amd64.tar.gz"
- :checksum "checksums.txt"}
+ :checksum "checksums.txt"
+ :platforms {"linux-x86_64" {:asset "gptscript-{tag}-linux-amd64.tar.gz"}}}

@@ -4,5 +4,5 @@
 
 {:description "A CLI which automates semver versioning",
  :source {:github "restechnica/semverbot"}
- :asset "sbot-linux-amd64"
- :bins {"sbot" "{asset}"}}
+ :bins {"sbot" "{asset}"}
+ :platforms {"linux-x86_64" {:asset "sbot-linux-amd64"}}}

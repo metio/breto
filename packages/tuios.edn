@@ -4,5 +4,5 @@
 
 {:description "Terminal UI OS (Terminal Multiplexer)",
  :source {:github "Gaurav-Gosain/tuios"}
- :asset "tuios_{version}_Linux_x86_64.tar.gz"
- :checksum "checksums.txt"}
+ :checksum "checksums.txt"
+ :platforms {"linux-x86_64" {:asset "tuios_{version}_Linux_x86_64.tar.gz"}}}

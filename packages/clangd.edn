@@ -4,7 +4,7 @@
 {:description "Language server for C and C++ from the LLVM project"
  :source {:github "clangd/clangd"}
  :tag-prefix ""
- :asset "clangd-linux-{version}.zip"
  :strip 1
  :layout :tree
- :bins {"clangd" "bin/clangd"}}
+ :bins {"clangd" "bin/clangd"}
+ :platforms {"linux-x86_64" {:asset "clangd-linux-{version}.zip"}}}

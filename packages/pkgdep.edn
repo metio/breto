@@ -4,6 +4,6 @@
 
 {:description "pkgdep checks if package dependency follows rule",
  :source {:github "cloverrose/pkgdep"}
- :asset "pkgdep_Linux_x86_64.tar.gz"
  :checksum "pkgdep_{version}_checksums.txt"
- :bins {"pkgdep" "pkgdep_Linux_x86_64/pkgdep"}}
+ :bins {"pkgdep" "pkgdep_Linux_x86_64/pkgdep"}
+ :platforms {"linux-x86_64" {:asset "pkgdep_Linux_x86_64.tar.gz"}}}

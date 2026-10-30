@@ -4,5 +4,5 @@
 
 {:description "Cloud provider for KIND clusters",
  :source {:github "kubernetes-sigs/cloud-provider-kind"}
- :asset "cloud-provider-kind_{version}_linux_amd64.tar.gz"
- :checksum "cloud-provider-kind_{version}_checksums.txt"}
+ :checksum "cloud-provider-kind_{version}_checksums.txt"
+ :platforms {"linux-x86_64" {:asset "cloud-provider-kind_{version}_linux_amd64.tar.gz"}}}

@@ -5,5 +5,5 @@
 {:description "CLI for the Phrase API",
  :source {:github "phrase/phrase-cli"}
  :tag-prefix ""
- :asset "phrase_linux_amd64.tar.gz"
- :bins {"phrase" "phrase_linux_amd64"}}
+ :bins {"phrase" "phrase_linux_amd64"}
+ :platforms {"linux-x86_64" {:asset "phrase_linux_amd64.tar.gz"}}}

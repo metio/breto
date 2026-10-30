@@ -3,4 +3,4 @@
 
 {:description "AI coding agent for the terminal"
  :source {:github "anomalyco/opencode"}
- :asset "opencode-linux-x64.tar.gz"}
+ :platforms {"linux-x86_64" {:asset "opencode-linux-x64.tar.gz"}}}

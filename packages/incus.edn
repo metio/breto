@@ -4,4 +4,4 @@
 
 {:description "Powerful system container and virtual machine manager",
  :source {:github "lxc/incus"}
- :asset "bin.linux.incus.x86_64"}
+ :platforms {"linux-x86_64" {:asset "bin.linux.incus.x86_64"}}}

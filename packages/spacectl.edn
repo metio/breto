@@ -4,5 +4,5 @@
 
 {:description "Spacelift client and CLI",
  :source {:github "spacelift-io/spacectl"}
- :asset "spacectl_{version}_linux_amd64.zip"
- :checksum "spacectl_{version}_SHA256SUMS"}
+ :checksum "spacectl_{version}_SHA256SUMS"
+ :platforms {"linux-x86_64" {:asset "spacectl_{version}_linux_amd64.zip"}}}

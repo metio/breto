@@ -4,4 +4,4 @@
 
 {:description "Unofficial High-Performance Vue.js Toolchain in Rust",
  :source {:github "ubugeeei-prod/vize"}
- :asset "vize-x86_64-unknown-linux-gnu.tar.gz"}
+ :platforms {"linux-x86_64" {:asset "vize-x86_64-unknown-linux-gnu.tar.gz"}}}

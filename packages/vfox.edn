@@ -4,6 +4,6 @@
 
 {:description "A cross-platform and extendable version manager with support for Java, Node.js, Golang, Python, Flutter, .NET & more",
  :source {:github "version-fox/vfox"}
- :asset "vfox_{version}_linux_x86_64.tar.gz"
  :checksum "checksums.txt"
- :bins {"vfox" "vfox_{version}_linux_x86_64/vfox"}}
+ :bins {"vfox" "vfox_{version}_linux_x86_64/vfox"}
+ :platforms {"linux-x86_64" {:asset "vfox_{version}_linux_x86_64.tar.gz"}}}

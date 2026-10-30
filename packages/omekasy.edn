@@ -4,5 +4,5 @@
 
 {:description "Command line application that converts alphanumeric characters to various styles defined in Unicode",
  :source {:github "ikanago/omekasy"}
- :asset "omekasy-{tag}-x86_64-unknown-linux-gnu.tar.gz"
- :bins {"omekasy" "archive/omekasy"}}
+ :bins {"omekasy" "archive/omekasy"}
+ :platforms {"linux-x86_64" {:asset "omekasy-{tag}-x86_64-unknown-linux-gnu.tar.gz"}}}

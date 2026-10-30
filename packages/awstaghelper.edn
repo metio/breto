@@ -5,5 +5,5 @@
 {:description "AWS bulk tagging tool",
  :source {:github "mpostument/awstaghelper"}
  :tag-prefix ""
- :asset "awstaghelper_Linux_x86_64.tar.gz"
- :checksum "checksums.txt"}
+ :checksum "checksums.txt"
+ :platforms {"linux-x86_64" {:asset "awstaghelper_Linux_x86_64.tar.gz"}}}

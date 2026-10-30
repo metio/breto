@@ -4,5 +4,5 @@
 
 {:description "Streaming replication for SQLite",
  :source {:github "benbjohnson/litestream"}
- :asset "litestream-{version}-linux-x86_64.tar.gz"
- :checksum "checksums.txt"}
+ :checksum "checksums.txt"
+ :platforms {"linux-x86_64" {:asset "litestream-{version}-linux-x86_64.tar.gz"}}}

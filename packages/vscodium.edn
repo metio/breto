@@ -4,7 +4,7 @@
 {:description "binary releases of VS Code without MS branding/telemetry/licensing",
  :source {:github "VSCodium/vscodium"}
  :tag-prefix ""
- :asset "VSCodium-linux-x64-{version}.tar.gz"
  :checksum "{asset}.sha256"
  :layout :tree
- :bins {"codium" "codium"}}
+ :bins {"codium" "codium"}
+ :platforms {"linux-x86_64" {:asset "VSCodium-linux-x64-{version}.tar.gz"}}}

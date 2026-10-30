@@ -4,5 +4,5 @@
 
 {:description "CLI tool to post the command execution time as time-series data to DataDog",
  :source {:github "suzuki-shunsuke/dd-time"}
- :asset "dd-time_{version}_linux_amd64.tar.gz"
- :checksum "dd-time_{version}_checksums.txt"}
+ :checksum "dd-time_{version}_checksums.txt"
+ :platforms {"linux-x86_64" {:asset "dd-time_{version}_linux_amd64.tar.gz"}}}

@@ -5,4 +5,4 @@
 {:description "Command-line tool and terminal JSON viewer",
  :source {:github "antonmedv/fx"}
  :tag-prefix ""
- :asset "fx_linux_amd64"}
+ :platforms {"linux-x86_64" {:asset "fx_linux_amd64"}}}

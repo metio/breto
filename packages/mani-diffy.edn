@@ -4,4 +4,4 @@
 
 {:description "mani-diffy walks a hierarchy of Argo CD Application templates, renders Kubernetes manifests from the input templates, and posts the rendered files back for the user to review and validate",
  :source {:github "chime/mani-diffy"}
- :asset "mani-diffy"}
+ :platforms {"linux-x86_64" {:asset "mani-diffy"}}}

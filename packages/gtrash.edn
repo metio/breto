@@ -4,5 +4,5 @@
 
 {:description "A Featureful Trash CLI manager: alternative to rm and trash-cli",
  :source {:github "umlx5h/gtrash"}
- :asset "gtrash_Linux_x86_64.tar.gz"
- :checksum "gtrash_{version}_checksums.txt"}
+ :checksum "gtrash_{version}_checksums.txt"
+ :platforms {"linux-x86_64" {:asset "gtrash_Linux_x86_64.tar.gz"}}}

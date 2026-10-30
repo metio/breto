@@ -15,12 +15,13 @@
 
 (def ^:private definition
   {:source {:github "acme/alpha"}
-   :asset "alpha-linux-amd64"
    :verify false
    :platforms {"darwin-aarch64" {:asset "alpha-darwin-arm64"}
                "linux-aarch64" {:asset "alpha-linux-arm64"
-                                :history [{:before "1.0.0" :asset "alpha-arm64"}]}}
-   :history [{:before "1.0.0" :asset "alpha-amd64"}]})
+                                :history [{:before "1.0.0" :asset "alpha-arm64"}]}
+               "linux-x86_64" {:asset "alpha-linux-amd64"
+                               :history [{:before "1.0.0" :asset "alpha-amd64"}]}}
+   :history [{:before "1.0.0" :strip 1}]})
 
 (deftest the-platform-is-named-after-the-system-and-architecture
   (is (= "linux-x86_64" (platform/detect "Linux" "amd64")))
@@ -29,23 +30,31 @@
   (is (= "darwin-x86_64" (platform/detect "Mac OS X" "x86_64")))
   (is (= "linux-aarch64" (platform/current {:platform "linux-aarch64"}))))
 
-(deftest a-platform-entry-overrides-the-top-level-at-every-version
+(deftest a-platform-entry-overrides-the-shared-keys-at-every-version
   (let [at (fn [platform version]
-             (:asset (package/at (package/normalize (assoc definition :name "alpha") platform) version)))]
-    (is (= "alpha-linux-amd64" (at "linux-x86_64" "1.0.0")))
-    (is (= "alpha-amd64" (at "linux-x86_64" "0.9.0")))
-    (is (= "alpha-darwin-arm64" (at "darwin-aarch64" "1.0.0")))
-    (testing "the platform's own history applies over the top level's"
-      (is (= "alpha-linux-arm64" (at "linux-aarch64" "1.0.0")))
-      (is (= "alpha-arm64" (at "linux-aarch64" "0.9.0"))))
-    (testing "without the platform's history, the top level's history still applies"
-      (is (= "alpha-darwin-arm64" (at "darwin-aarch64" "0.9.0"))))))
+             (package/at (package/normalize (assoc definition :name "alpha") platform) version))]
+    (is (= "alpha-linux-amd64" (:asset (at "linux-x86_64" "1.0.0"))))
+    (is (= "alpha-amd64" (:asset (at "linux-x86_64" "0.9.0"))))
+    (is (= "alpha-darwin-arm64" (:asset (at "darwin-aarch64" "1.0.0"))))
+    (testing "the platform's own history applies over the shared one"
+      (is (= "alpha-linux-arm64" (:asset (at "linux-aarch64" "1.0.0"))))
+      (is (= "alpha-arm64" (:asset (at "linux-aarch64" "0.9.0")))))
+    (testing "the shared history applies to every platform"
+      (is (= "alpha-darwin-arm64" (:asset (at "darwin-aarch64" "0.9.0"))))
+      (is (= 1 (:strip (at "darwin-aarch64" "0.9.0"))))
+      (is (= 1 (:strip (at "linux-x86_64" "0.9.0"))))
+      (is (= 0 (:strip (at "linux-x86_64" "1.0.0")))))))
 
 (deftest a-definition-without-the-platform-is-unsupported-there
   (let [pkg (package/normalize (assoc definition :name "alpha") "darwin-x86_64")]
     (is (:unsupported pkg))
     (is (= ["darwin-aarch64" "linux-aarch64" "linux-x86_64"] (:supported pkg))))
-  (is (not (:unsupported (package/normalize (assoc definition :name "alpha") "linux-x86_64"))))
+  (testing "no platform is assumed: a release download needs a :platforms entry"
+    (is (thrown-with-msg? clojure.lang.ExceptionInfo #":platforms names no platform"
+                          (package/normalize {:name "x" :source {:github "a/x"} :asset "x"} "linux-x86_64")))
+    (is (:unsupported (package/normalize {:name "x" :source {:github "a/x"} :asset "x"
+                                          :platforms {"darwin-aarch64" {}}}
+                                         "linux-x86_64"))))
   (testing "sources built on the machine serve every platform"
     (is (not (:unsupported (package/normalize {:name "x" :source {:npm "x"}} "darwin-x86_64")))))
   (testing "ghcup serves Linux only"
@@ -58,7 +67,7 @@
                      {"linux-aarch64" {:source {:github "other/alpha"}}}
                      {"linux-aarch64" {:history [{:asset "a"}]}}]]
     (is (thrown-with-msg? clojure.lang.ExceptionInfo #"invalid package"
-                          (package/normalize {:name "alpha" :source {:github "acme/alpha"} :platforms platforms}))
+                          (s/normalize {:name "alpha" :source {:github "acme/alpha"} :platforms platforms}))
         (pr-str platforms))))
 
 (deftest an-overlay-adds-platform-entries
@@ -67,7 +76,12 @@
   (spit (path "overlay" "alpha.edn") (pr-str {:platforms {"darwin-x86_64" {:asset "alpha-darwin-amd64"}}}))
   (let [load #(get (registry/load-registry nil [(path "packages") (path "overlay")] %) "alpha")]
     (is (= "alpha-darwin-amd64" (:asset (load "darwin-x86_64"))))
-    (is (= "alpha-darwin-arm64" (:asset (load "darwin-aarch64"))))))
+    (is (= "alpha-darwin-arm64" (:asset (load "darwin-aarch64")))))
+  (testing "an overlay changes single keys of a platform entry"
+    (spit (path "overlay" "alpha.edn") (pr-str {:platforms {"linux-x86_64" {:strip 2}}}))
+    (let [alpha (get (registry/load-registry nil [(path "packages") (path "overlay")] "linux-x86_64") "alpha")]
+      (is (= 2 (:strip alpha)))
+      (is (= "alpha-linux-amd64" (:asset alpha))))))
 
 (defn- world []
   (let [assets (into {} (for [asset ["alpha-linux-amd64" "alpha-darwin-arm64" "alpha-linux-arm64"]]
@@ -109,9 +123,9 @@
     (spit (path "shared" "@tools.edn") (pr-str {:members ["alpha@1.0.0"]}))
     (let [{:keys [code out]} (breto! io "lock" (path "shared") "--platforms" "all" "--platform" "linux-x86_64")]
       (is (= 0 code) out))
-    (is (= {"alpha@1.0.0" {:sha256 (hash "alpha-linux-amd64") :asset "alpha-linux-amd64"
-                           :platforms {"darwin-aarch64" {:sha256 (hash "alpha-darwin-arm64") :asset "alpha-darwin-arm64"}
-                                       "linux-aarch64" {:sha256 (hash "alpha-linux-arm64") :asset "alpha-linux-arm64"}}}}
+    (is (= {"alpha@1.0.0" {:platforms {"darwin-aarch64" {:sha256 (hash "alpha-darwin-arm64") :asset "alpha-darwin-arm64"}
+                                       "linux-aarch64" {:sha256 (hash "alpha-linux-arm64") :asset "alpha-linux-arm64"}
+                                       "linux-x86_64" {:sha256 (hash "alpha-linux-amd64") :asset "alpha-linux-amd64"}}}}
            (:entries (lockfile/read-lock lock-path))))
     (testing "a lock of one platform keeps the hashes of the others"
       (is (= 0 (:code (breto! io "lock" (path "shared") "--check" "--platform" "linux-x86_64")))))
@@ -132,11 +146,18 @@
         entry (-> {:version "1.0.0"}
                   (lockfile/with-hashes linux {:sha256 "aa"})
                   (lockfile/with-hashes mac {:sha256 "bb"}))]
-    (is (= {:version "1.0.0" :sha256 "aa" :platforms {"darwin-aarch64" {:sha256 "bb"}}} entry))
+    (is (= {:version "1.0.0" :platforms {"darwin-aarch64" {:sha256 "bb"} "linux-x86_64" {:sha256 "aa"}}} entry))
     (is (= {:sha256 "bb"} (lockfile/hashes entry mac)))
-    (is (= {:version "1.0.0" :sha256 "aa"} (lockfile/hashes entry linux)))
+    (is (= {:sha256 "aa"} (lockfile/hashes entry linux)))
     (testing "a package built on the machine has one entry for all"
       (is (= {:sha256 "cc"} (lockfile/hashes {:sha256 "cc"} npm))))
     (testing "the rendered entry reads back the same"
       (is (= {"alpha" entry}
-             (:entries (lockfile/parse (lockfile/render {:header "" :entries {"alpha" entry}}))))))))
+             (:entries (lockfile/parse (lockfile/render {:header "" :entries {"alpha" entry}}))))))
+    (testing "hashes at the top level of a lock written before every platform had an entry are linux-x86_64's"
+      (let [legacy {:version "1.0.0" :sha256 "aa" :asset "alpha-linux-amd64" :platforms {"darwin-aarch64" {:sha256 "bb"}}}]
+        (is (= {:sha256 "aa" :asset "alpha-linux-amd64"} (lockfile/hashes legacy linux)))
+        (is (= {:sha256 "bb"} (lockfile/hashes legacy mac)))
+        (is (= {:version "1.0.0" :platforms {"darwin-aarch64" {:sha256 "cc"}
+                                             "linux-x86_64" {:sha256 "aa" :asset "alpha-linux-amd64"}}}
+               (lockfile/with-hashes legacy mac {:sha256 "cc"})))))))

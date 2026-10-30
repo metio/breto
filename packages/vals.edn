@@ -4,5 +4,5 @@
 
 {:description "Helm-like configuration values loader with support for various sources",
  :source {:github "helmfile/vals"}
- :asset "vals_{version}_linux_amd64.tar.gz"
- :checksum "vals_{version}_checksums.txt"}
+ :checksum "vals_{version}_checksums.txt"
+ :platforms {"linux-x86_64" {:asset "vals_{version}_linux_amd64.tar.gz"}}}

@@ -4,5 +4,5 @@
 
 {:description "Go Terminal Feed Reader",
  :source {:github "Lallassu/gorss"}
- :asset "gorss_linux.tar.gz"
- :bins {"gorss" "dist/gorss_linux"}}
+ :bins {"gorss" "dist/gorss_linux"}
+ :platforms {"linux-x86_64" {:asset "gorss_linux.tar.gz"}}}

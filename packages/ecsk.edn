@@ -4,5 +4,5 @@
 
 {:description "CLI tool that you can interactively call Amazon ECS APIs (run-task, execute-command, stop-task), copy files between ECS and local, and view logs",
  :source {:github "yukiarrr/ecsk"}
- :asset "ecsk_Linux_x86_64.tar.gz"
- :checksum "ecsk_{version}_checksums.txt"}
+ :checksum "ecsk_{version}_checksums.txt"
+ :platforms {"linux-x86_64" {:asset "ecsk_Linux_x86_64.tar.gz"}}}

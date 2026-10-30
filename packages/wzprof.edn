@@ -4,5 +4,5 @@
 
 {:description "WebAssembly Profiler based on Wazero",
  :source {:github "dispatchrun/wzprof"}
- :asset "wzprof_{version}_linux_amd64.tar.gz"
- :checksum "wzprof_{version}_checksums.txt"}
+ :checksum "wzprof_{version}_checksums.txt"
+ :platforms {"linux-x86_64" {:asset "wzprof_{version}_linux_amd64.tar.gz"}}}

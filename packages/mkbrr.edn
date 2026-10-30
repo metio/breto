@@ -4,5 +4,5 @@
 
 {:description "mkbrr is a tool to create, modify and inspect torrent files. Fast",
  :source {:github "autobrr/mkbrr"}
- :asset "mkbrr_{version}_linux_x86_64.tar.gz"
- :checksum "mkbrr_{version}_checksums.txt"}
+ :checksum "mkbrr_{version}_checksums.txt"
+ :platforms {"linux-x86_64" {:asset "mkbrr_{version}_linux_x86_64.tar.gz"}}}

@@ -4,5 +4,5 @@
 
 {:description "A CLI command to parse Terraform execution result and notify it to GitHub",
  :source {:github "mercari/tfnotify"}
- :asset "tfnotify_linux_amd64.tar.gz"
- :checksum "tfnotify_{version}_checksums.txt"}
+ :checksum "tfnotify_{version}_checksums.txt"
+ :platforms {"linux-x86_64" {:asset "tfnotify_linux_amd64.tar.gz"}}}

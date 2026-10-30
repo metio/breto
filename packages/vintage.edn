@@ -4,4 +4,4 @@
 
 {:description "VCL Transpiler for Edge Runtime",
  :source {:github "ysugimoto/vintage"}
- :asset "vintage-linux-amd64.tar.gz"}
+ :platforms {"linux-x86_64" {:asset "vintage-linux-amd64.tar.gz"}}}

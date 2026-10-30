@@ -4,6 +4,6 @@
 
 {:description "An HTTP API client for the terminal",
  :source {:github "jonaslu/ain"}
- :asset "ain_{version}_linux_x86_64.tar.gz"
  :checksum "checksums.txt"
- :bins {"ain" "ain_{version}_linux_x86_64/ain"}}
+ :bins {"ain" "ain_{version}_linux_x86_64/ain"}
+ :platforms {"linux-x86_64" {:asset "ain_{version}_linux_x86_64.tar.gz"}}}

@@ -4,6 +4,6 @@
 
 {:description "KOTS provides the framework, tools and integrations that enable the delivery and management of 3rd-party Kubernetes applications, a.k.a. Kubernetes Off-The-Shelf (KOTS) Software",
  :source {:github "replicatedhq/kots"}
- :asset "kots_linux_amd64.tar.gz"
  :checksum "kots_{version}_checksums.txt"
- :bins {"kubectl-kots" "kots"}}
+ :bins {"kubectl-kots" "kots"}
+ :platforms {"linux-x86_64" {:asset "kots_linux_amd64.tar.gz"}}}

@@ -4,6 +4,6 @@
 
 {:description "Terminal image, video, directory, and Markdown viewer",
  :source {:github "Skardyy/mcat"}
- :asset "mcat-{tag}-x86_64-unknown-linux-gnu.tar.xz"
  :checksum "{asset}.sha256"
- :bins {"mcat" "mcat-{tag}-x86_64-unknown-linux-gnu/mcat"}}
+ :bins {"mcat" "mcat-{tag}-x86_64-unknown-linux-gnu/mcat"}
+ :platforms {"linux-x86_64" {:asset "mcat-{tag}-x86_64-unknown-linux-gnu.tar.xz"}}}

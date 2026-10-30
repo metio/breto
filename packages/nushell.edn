@@ -5,5 +5,5 @@
 {:description "A new type of shell",
  :source {:github "nushell/nushell"}
  :tag-prefix ""
- :asset "nu-{tag}-x86_64-unknown-linux-musl.tar.gz"
- :bins {"nu" "nu-{tag}-x86_64-unknown-linux-musl/nu"}}
+ :bins {"nu" "nu-{tag}-x86_64-unknown-linux-musl/nu"}
+ :platforms {"linux-x86_64" {:asset "nu-{tag}-x86_64-unknown-linux-musl.tar.gz"}}}

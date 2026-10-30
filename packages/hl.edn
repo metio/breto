@@ -4,4 +4,4 @@
 
 {:description "A fast and powerful log viewer and processor that translates JSON or logfmt logs into a pretty human-readable format",
  :source {:github "pamburus/hl"}
- :asset "hl-linux-x86_64-gnu.tar.gz"}
+ :platforms {"linux-x86_64" {:asset "hl-linux-x86_64-gnu.tar.gz"}}}

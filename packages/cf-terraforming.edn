@@ -4,5 +4,5 @@
 
 {:description "A command line utility to facilitate terraforming your existing Cloudflare resources",
  :source {:github "cloudflare/cf-terraforming"}
- :asset "cf-terraforming_{version}_linux_amd64.tar.gz"
- :checksum "checksums.txt"}
+ :checksum "checksums.txt"
+ :platforms {"linux-x86_64" {:asset "cf-terraforming_{version}_linux_amd64.tar.gz"}}}

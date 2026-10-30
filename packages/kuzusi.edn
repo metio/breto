@@ -4,4 +4,4 @@
 
 {:description "breakout for terminal",
  :source {:github "kurehajime/kuzusi"}
- :asset "linux_amd64.zip"}
+ :platforms {"linux-x86_64" {:asset "linux_amd64.zip"}}}

@@ -4,5 +4,5 @@
 
 {:description "A tool for exploring files in container image layers",
  :source {:github "knqyf263/sou"}
- :asset "sou_Linux_x86_64.tar.gz"
- :checksum "checksums.txt"}
+ :checksum "checksums.txt"
+ :platforms {"linux-x86_64" {:asset "sou_Linux_x86_64.tar.gz"}}}

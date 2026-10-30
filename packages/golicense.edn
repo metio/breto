@@ -4,5 +4,5 @@
 
 {:description "Scan and analyze OSS dependencies and licenses from compiled Go binaries",
  :source {:github "mitchellh/golicense"}
- :asset "golicense_{version}_linux_x86_64.tar.gz"
- :checksum "checksums.txt"}
+ :checksum "checksums.txt"
+ :platforms {"linux-x86_64" {:asset "golicense_{version}_linux_x86_64.tar.gz"}}}

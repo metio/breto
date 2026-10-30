@@ -5,4 +5,4 @@
 {:description "Cloudflare Tunnel client",
  :source {:github "cloudflare/cloudflared"}
  :tag-prefix ""
- :asset "cloudflared-linux-amd64"}
+ :platforms {"linux-x86_64" {:asset "cloudflared-linux-amd64"}}}

@@ -4,6 +4,6 @@
 
 {:description "A command-line DNS client",
  :source {:github "ogham/dog"}
- :asset "dog-{tag}-x86_64-unknown-linux-gnu.zip"
  :checksum "SHA256SUMS"
- :bins {"dog" "bin/dog"}}
+ :bins {"dog" "bin/dog"}
+ :platforms {"linux-x86_64" {:asset "dog-{tag}-x86_64-unknown-linux-gnu.zip"}}}

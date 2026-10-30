@@ -5,4 +5,4 @@
 {:description "Open-source AI coding agent and agent runtime: one binary, any model, MCP-native. Runs in terminal, CI, or as a daemon",
  :source {:github "muvon/octomind"}
  :tag-prefix ""
- :asset "octomind-{tag}-x86_64-unknown-linux-musl.tar.gz"}
+ :platforms {"linux-x86_64" {:asset "octomind-{tag}-x86_64-unknown-linux-musl.tar.gz"}}}

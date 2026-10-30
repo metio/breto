@@ -5,5 +5,5 @@
 {:description "cURL with AWS request signing",
  :source {:github "legal90/awscurl"}
  :tag-prefix ""
- :asset "awscurl_{tag}_linux_amd64.zip"
- :checksum "checksums.txt"}
+ :checksum "checksums.txt"
+ :platforms {"linux-x86_64" {:asset "awscurl_{tag}_linux_amd64.zip"}}}

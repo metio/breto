@@ -4,5 +4,5 @@
 
 {:description "Pure Go ExifTool wrapper powered by WebAssembly",
  :source {:github "yashikota/exiftool-go"}
- :asset "exiftool-go_{version}_linux_amd64.tar.gz"
- :checksum "exiftool-go_{version}_checksums.txt"}
+ :checksum "exiftool-go_{version}_checksums.txt"
+ :platforms {"linux-x86_64" {:asset "exiftool-go_{version}_linux_amd64.tar.gz"}}}

@@ -4,5 +4,5 @@
 
 {:description "An extensive, fast, and accurate command-line image dithering tool",
  :source {:github "makew0rld/didder"}
- :asset "didder_{version}_linux_64-bit"
- :checksum "didder_{version}_checksums.txt"}
+ :checksum "didder_{version}_checksums.txt"
+ :platforms {"linux-x86_64" {:asset "didder_{version}_linux_64-bit"}}}

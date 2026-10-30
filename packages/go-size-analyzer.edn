@@ -4,6 +4,6 @@
 
 {:description "A tool for analyzing the size of compiled Go binaries, offering cross-platform support, detailed breakdowns, and multiple output formats",
  :source {:github "Zxilly/go-size-analyzer"}
- :asset "go-size-analyzer_{version}_linux_amd64.tar.gz"
  :checksum "checksums.txt"
- :bins {"gsa" "gsa"}}
+ :bins {"gsa" "gsa"}
+ :platforms {"linux-x86_64" {:asset "go-size-analyzer_{version}_linux_amd64.tar.gz"}}}

@@ -4,5 +4,5 @@
 
 {:description "Linter/analyzer for Makefiles",
  :source {:github "checkmake/checkmake"}
- :asset "checkmake-{tag}.linux.amd64"
- :checksum "checksums.txt"}
+ :checksum "checksums.txt"
+ :platforms {"linux-x86_64" {:asset "checkmake-{tag}.linux.amd64"}}}

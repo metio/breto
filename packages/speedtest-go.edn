@@ -4,6 +4,6 @@
 
 {:description "CLI and Go API to Test Internet Speed using speedtest.net",
  :source {:github "showwin/speedtest-go"}
- :asset "speedtest-go_{version}_Linux_x86_64.tar.gz"
  :checksum "checksums.txt"
- :bins {"speedtest" "speedtest-go"}}
+ :bins {"speedtest" "speedtest-go"}
+ :platforms {"linux-x86_64" {:asset "speedtest-go_{version}_Linux_x86_64.tar.gz"}}}

@@ -4,6 +4,6 @@
 {:description "Command line client and server for HashiCorp Vault, which manages secrets"
  :source {:json "https://checkpoint-api.hashicorp.com/v1/check/vault" :version [:current_version]}
  :tag-prefix ""
- :asset "vault_{version}_linux_amd64.zip"
  :url "https://releases.hashicorp.com/vault/{version}/{asset}"
- :checksum "vault_{version}_SHA256SUMS"}
+ :checksum "vault_{version}_SHA256SUMS"
+ :platforms {"linux-x86_64" {:asset "vault_{version}_linux_amd64.zip"}}}

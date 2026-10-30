@@ -5,4 +5,4 @@
 {:description "A CLI Browser for BoltDB Files",
  :source {:github "br0xen/boltbrowser"}
  :tag-prefix ""
- :asset "boltbrowser.linux64"}
+ :platforms {"linux-x86_64" {:asset "boltbrowser.linux64"}}}

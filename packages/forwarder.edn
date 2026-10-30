@@ -4,5 +4,5 @@
 
 {:description "Forwarder is a production-ready, fast MITM proxy with PAC support. It's suitable for debugging, intercepting and manipulating HTTP traffic. It's used as a core component of Sauce Labs Sauce Connect Proxy",
  :source {:github "saucelabs/forwarder"}
- :asset "forwarder-{version}_linux.x86_64.tar.gz"
- :checksum "checksums"}
+ :checksum "checksums"
+ :platforms {"linux-x86_64" {:asset "forwarder-{version}_linux.x86_64.tar.gz"}}}

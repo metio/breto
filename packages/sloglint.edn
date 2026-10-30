@@ -4,5 +4,5 @@
 
 {:description "Ensure consistent code style when using log/slog",
  :source {:github "go-simpler/sloglint"}
- :asset "sloglint_{version}_linux_amd64.tar.gz"
- :checksum "sloglint_{version}_checksums.txt"}
+ :checksum "sloglint_{version}_checksums.txt"
+ :platforms {"linux-x86_64" {:asset "sloglint_{version}_linux_amd64.tar.gz"}}}

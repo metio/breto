@@ -4,4 +4,4 @@
 
 {:description "A fast static site generator in a single binary with everything built-in. https://www.getzola.org",
  :source {:github "getzola/zola"}
- :asset "zola-{tag}-x86_64-unknown-linux-gnu.tar.gz"}
+ :platforms {"linux-x86_64" {:asset "zola-{tag}-x86_64-unknown-linux-gnu.tar.gz"}}}

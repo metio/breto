@@ -32,7 +32,8 @@ Commands:
   update [PKG...]           install the latest (or pinned) version of the configured packages
   outdated [PKG...]         configured packages with a newer release
   check [PKG...] [--all]    whether the latest release of each configured package (or every
-                            package with --all) exists and can be verified, without downloading
+                            package with --all) exists and can be verified, without downloading;
+                            --platforms all|PLATFORM,... checks those platforms' assets
   gc [PKG...] [--keep N]    delete all but the N most recent versions, never the active one,
                             and what killed installs left behind;
                             with :prune true and no PKG, also uninstall unconfigured packages

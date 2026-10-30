@@ -4,5 +4,5 @@
 
 {:description "A top-like tool for your Kubernetes clusters",
  :source {:github "vladimirvivien/ktop"}
- :asset "ktop_{tag}_linux_amd64.tar.gz"
- :checksum "checksums.txt"}
+ :checksum "checksums.txt"
+ :platforms {"linux-x86_64" {:asset "ktop_{tag}_linux_amd64.tar.gz"}}}

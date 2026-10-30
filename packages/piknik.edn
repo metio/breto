@@ -5,5 +5,5 @@
 {:description "Copy/paste anything over the network",
  :source {:github "jedisct1/piknik"}
  :tag-prefix ""
- :asset "piknik-linux_x86_64-{tag}.tar.gz"
- :bins {"piknik" "linux-x86_64/piknik"}}
+ :bins {"piknik" "linux-x86_64/piknik"}
+ :platforms {"linux-x86_64" {:asset "piknik-linux_x86_64-{tag}.tar.gz"}}}

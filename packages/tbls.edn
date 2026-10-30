@@ -4,5 +4,5 @@
 
 {:description "tbls is a CI-Friendly tool to document a database, written in Go",
  :source {:github "k1LoW/tbls"}
- :asset "tbls_{tag}_linux_amd64.tar.gz"
- :checksum "checksums-linux.txt"}
+ :checksum "checksums-linux.txt"
+ :platforms {"linux-x86_64" {:asset "tbls_{tag}_linux_amd64.tar.gz"}}}

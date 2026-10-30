@@ -4,4 +4,4 @@
 
 {:description "SSH Key Manager for 1Password, Bitwarden and AWS S3",
  :source {:github "omegion/ssh-manager"}
- :asset "ssh-manager-linux-amd64"}
+ :platforms {"linux-x86_64" {:asset "ssh-manager-linux-amd64"}}}

@@ -4,8 +4,8 @@
 {:description "A post-modern modal text editor",
  :source {:github "helix-editor/helix"}
  :tag-prefix ""
- :asset "helix-{version}-x86_64-linux.tar.xz"
  :strip 1
  :layout :tree
  :bins {"hx" "hx"}
- :links {"~/.config/helix/runtime" "runtime"}}
+ :links {"~/.config/helix/runtime" "runtime"}
+ :platforms {"linux-x86_64" {:asset "helix-{version}-x86_64-linux.tar.xz"}}}

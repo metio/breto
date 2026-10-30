@@ -5,10 +5,10 @@
  :source {:text "https://api.foojay.io/disco/v3.0/packages?distribution=graalvm&latest=available&operating_system=linux&architecture=x64&archive_type=tar.gz&package_type=jdk&release_status=ga&version=25"
           :match "\"filename\":\"graalvm-jdk-(25\\.\\d+\\.\\d+)_linux-x64_bin\\.tar\\.gz\""}
  :tag-prefix ""
- :asset "graalvm-jdk-{version}_linux-x64_bin.tar.gz"
  :url "https://download.oracle.com/graalvm/25/archive/{asset}"
  :checksum "{asset}.sha256"
  :strip 1
  :layout :tree
  :bin-dir "bin"
- :env {"JAVA_HOME" "{home}" "GRAALVM_HOME" "{home}"}}
+ :env {"JAVA_HOME" "{home}" "GRAALVM_HOME" "{home}"}
+ :platforms {"linux-x86_64" {:asset "graalvm-jdk-{version}_linux-x64_bin.tar.gz"}}}

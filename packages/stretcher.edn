@@ -4,5 +4,5 @@
 
 {:description "Deployment tool with consul/serf event notification",
  :source {:github "fujiwara/stretcher"}
- :asset "stretcher-{tag}-linux-amd64.zip"
- :bins {"stretcher" "stretcher-{tag}-linux-amd64"}}
+ :bins {"stretcher" "stretcher-{tag}-linux-amd64"}
+ :platforms {"linux-x86_64" {:asset "stretcher-{tag}-linux-amd64.zip"}}}

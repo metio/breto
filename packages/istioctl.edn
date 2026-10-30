@@ -5,5 +5,5 @@
 {:description "The istioctl tool is a configuration command line utility that allows service operators to debug and diagnose their Istio service mesh deployments",
  :source {:github "istio/istio"}
  :tag-prefix ""
- :asset "istioctl-{tag}-linux-amd64.tar.gz"
- :checksum "{asset}.sha256"}
+ :checksum "{asset}.sha256"
+ :platforms {"linux-x86_64" {:asset "istioctl-{tag}-linux-amd64.tar.gz"}}}

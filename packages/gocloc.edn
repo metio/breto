@@ -4,5 +4,5 @@
 
 {:description "A little fast cloc(Count Lines Of Code)",
  :source {:github "hhatto/gocloc"}
- :asset "gocloc_Linux_x86_64.tar.gz"
- :checksum "gocloc_{version}_checksums.txt"}
+ :checksum "gocloc_{version}_checksums.txt"
+ :platforms {"linux-x86_64" {:asset "gocloc_Linux_x86_64.tar.gz"}}}

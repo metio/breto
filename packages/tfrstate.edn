@@ -4,5 +4,5 @@
 
 {:description "Find directories where changed terraform_remote_state data source is used",
  :source {:github "suzuki-shunsuke/tfrstate"}
- :asset "tfrstate_linux_amd64.tar.gz"
- :checksum "tfrstate_{version}_checksums.txt"}
+ :checksum "tfrstate_{version}_checksums.txt"
+ :platforms {"linux-x86_64" {:asset "tfrstate_linux_amd64.tar.gz"}}}

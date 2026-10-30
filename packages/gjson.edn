@@ -4,5 +4,5 @@
 
 {:description "Golang JSON Tool",
  :source {:github "takumin/gjson"}
- :asset "gjson_linux_amd64.tar.gz"
- :checksum "gjson_sha256sums.txt"}
+ :checksum "gjson_sha256sums.txt"
+ :platforms {"linux-x86_64" {:asset "gjson_linux_amd64.tar.gz"}}}

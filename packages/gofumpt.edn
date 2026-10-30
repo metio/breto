@@ -4,7 +4,7 @@
 
 {:description "A stricter gofmt",
  :source {:github "mvdan/gofumpt"}
- :asset "gofumpt_{tag}_linux_amd64"
  :platforms {"darwin-aarch64" {:asset "gofumpt_{tag}_darwin_arm64"}
              "darwin-x86_64" {:asset "gofumpt_{tag}_darwin_amd64"}
-             "linux-aarch64" {:asset "gofumpt_{tag}_linux_arm64"}}}
+             "linux-aarch64" {:asset "gofumpt_{tag}_linux_arm64"}
+             "linux-x86_64" {:asset "gofumpt_{tag}_linux_amd64"}}}

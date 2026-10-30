@@ -4,4 +4,4 @@
 
 {:description "Explore Docker registries and manipulate Docker images",
  :source {:github "ivanilves/lstags"}
- :asset "lstags-linux-{tag}.tar.gz"}
+ :platforms {"linux-x86_64" {:asset "lstags-linux-{tag}.tar.gz"}}}

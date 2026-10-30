@@ -3,5 +3,5 @@
 
 {:description "yq is a portable command-line YAML processor",
  :source {:github "mikefarah/yq"},
- :asset "yq_linux_amd64.tar.gz",
- :bins {"yq" "yq_linux_amd64"}}
+ :bins {"yq" "yq_linux_amd64"}
+ :platforms {"linux-x86_64" {:asset "yq_linux_amd64.tar.gz"}}}

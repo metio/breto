@@ -83,22 +83,20 @@
                                        " to replace the earlier definition instead of merging over it")]})))
     :else (cond-> (-> (merge earlier pkg) (assoc ::files (into (vec (::files earlier)) (::files pkg))))
             (and (map? (:platforms earlier)) (map? (:platforms pkg)))
-            (assoc :platforms (merge (:platforms earlier) (:platforms pkg))))))
+            (assoc :platforms (merge-with merge (:platforms earlier) (:platforms pkg))))))
 
 (defn load-registry
   "Package definitions from `builtin`, the files built into breto, and `dirs`,
   keyed by name. A definition in a later directory is merged over the one
   before it, so an overlay can change a single key of an upstream package, or
-  replaces it with :replace true. An overlay's :platforms entries are added
-  to those of the definition it is merged over. Every definition is resolved
+  replaces it with :replace true. An overlay's :platforms entries are merged
+  key by key into those of the definition it is merged over. Every definition is resolved
   for `platform`."
-  ([dirs] (load-registry nil dirs))
-  ([builtin dirs] (load-registry builtin dirs platform/default))
-  ([builtin dirs platform]
-   (let [merged (reduce (fn [acc pkg] (update acc (:name pkg) layer pkg))
-                        {}
-                        (map read-file (entries builtin dirs (complement group-name?))))]
-     (update-vals merged #(normalize platform %)))))
+  [builtin dirs platform]
+  (let [merged (reduce (fn [acc pkg] (update acc (:name pkg) layer pkg))
+                       {}
+                       (map read-file (entries builtin dirs (complement group-name?))))]
+    (update-vals merged #(normalize platform %))))
 
 (defn lookup [registry name]
   (or (get registry name)

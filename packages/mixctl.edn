@@ -5,5 +5,5 @@
 {:description "A tiny TCP load balancer",
  :source {:github "inlets/mixctl"}
  :tag-prefix ""
- :asset "mixctl"
- :checksum "{asset}.sha256"}
+ :checksum "{asset}.sha256"
+ :platforms {"linux-x86_64" {:asset "mixctl"}}}

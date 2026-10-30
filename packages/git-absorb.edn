@@ -5,5 +5,5 @@
 {:description "git commit --fixup, but automatic",
  :source {:github "tummychow/git-absorb"}
  :tag-prefix ""
- :asset "git-absorb-{tag}-x86_64-unknown-linux-musl.tar.gz"
- :bins {"git-absorb" "git-absorb-{tag}-x86_64-unknown-linux-musl/git-absorb"}}
+ :bins {"git-absorb" "git-absorb-{tag}-x86_64-unknown-linux-musl/git-absorb"}
+ :platforms {"linux-x86_64" {:asset "git-absorb-{tag}-x86_64-unknown-linux-musl.tar.gz"}}}

@@ -6,10 +6,10 @@
           :version [:releases 0]}
  :tag-prefix "jdk-"
  :vars {:feature {:match "^(\\d+)"} :file-version {:replace ["+" "_"]}}
- :asset "OpenJDK{feature}U-jdk_x64_linux_hotspot_{file-version}.tar.gz"
  :url "https://github.com/adoptium/temurin{feature}-binaries/releases/download/{tag}/{asset}"
  :checksum "{asset}.sha256.txt"
  :strip 1
  :layout :tree
  :bin-dir "bin"
- :env {"JAVA_HOME" "{home}"}}
+ :env {"JAVA_HOME" "{home}"}
+ :platforms {"linux-x86_64" {:asset "OpenJDK{feature}U-jdk_x64_linux_hotspot_{file-version}.tar.gz"}}}

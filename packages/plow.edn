@@ -4,5 +4,5 @@
 
 {:description "A high-performance HTTP benchmarking tool that includes a real-time web UI and terminal display",
  :source {:github "six-ddc/plow"}
- :asset "plow_{version}_linux_amd64.tar.gz"
- :checksum "plow_{version}_checksums.txt"}
+ :checksum "plow_{version}_checksums.txt"
+ :platforms {"linux-x86_64" {:asset "plow_{version}_linux_amd64.tar.gz"}}}

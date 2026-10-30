@@ -5,5 +5,5 @@
 {:description "Convert mixed-script Korean text into hangul-only text",
  :source {:github "dahlia/gukhanmun"}
  :tag-prefix ""
- :asset "gukhanmun-{tag}-x86_64-unknown-linux-musl.tar.bz2"
- :bins {"gukhanmun" "gukhanmun", "gukhanmun-mkdict" "gukhanmun-mkdict"}}
+ :bins {"gukhanmun" "gukhanmun", "gukhanmun-mkdict" "gukhanmun-mkdict"}
+ :platforms {"linux-x86_64" {:asset "gukhanmun-{tag}-x86_64-unknown-linux-musl.tar.bz2"}}}

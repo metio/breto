@@ -4,5 +4,5 @@
 
 {:description "Language server for Helm",
  :source {:github "mrjosh/helm-ls"}
- :asset "helm_ls_linux_amd64"
- :bins {"helm_ls" "{asset}"}}
+ :bins {"helm_ls" "{asset}"}
+ :platforms {"linux-x86_64" {:asset "helm_ls_linux_amd64"}}}

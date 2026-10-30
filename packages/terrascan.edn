@@ -4,5 +4,5 @@
 
 {:description "Detect compliance and security violations across Infrastructure as Code to mitigate risk before provisioning cloud native infrastructure",
  :source {:github "tenable/terrascan"}
- :asset "terrascan_{version}_Linux_x86_64.tar.gz"
- :checksum "checksums.txt"}
+ :checksum "checksums.txt"
+ :platforms {"linux-x86_64" {:asset "terrascan_{version}_Linux_x86_64.tar.gz"}}}

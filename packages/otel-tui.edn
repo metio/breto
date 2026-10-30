@@ -4,5 +4,5 @@
 
 {:description "A terminal OpenTelemetry viewer inspired by otel-desktop-viewer",
  :source {:github "ymtdzzz/otel-tui"}
- :asset "otel-tui_Linux_x86_64.tar.gz"
- :checksum "otel-tui_{version}_checksums.txt"}
+ :checksum "otel-tui_{version}_checksums.txt"
+ :platforms {"linux-x86_64" {:asset "otel-tui_Linux_x86_64.tar.gz"}}}

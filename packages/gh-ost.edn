@@ -4,4 +4,4 @@
 
 {:description "GitHub's Online Schema-migration Tool for MySQL",
  :source {:github "github/gh-ost"}
- :asset "gh-ost-linux-amd64.tar.gz"}
+ :platforms {"linux-x86_64" {:asset "gh-ost-linux-amd64.tar.gz"}}}

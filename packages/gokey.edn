@@ -4,4 +4,4 @@
 
 {:description "A simple vaultless password manager in Go",
  :source {:github "cloudflare/gokey"}
- :asset "gokey-{tag}-linux-amd64"}
+ :platforms {"linux-x86_64" {:asset "gokey-{tag}-linux-amd64"}}}

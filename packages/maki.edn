@@ -4,5 +4,5 @@
 
 {:description "An efficient AI coding agent extendable by neovim-like Lua plugins",
  :source {:github "tontinton/maki"}
- :asset "maki-{tag}-x86_64-unknown-linux-musl.tar.gz"
- :checksum "sha256sums.txt"}
+ :checksum "sha256sums.txt"
+ :platforms {"linux-x86_64" {:asset "maki-{tag}-x86_64-unknown-linux-musl.tar.gz"}}}

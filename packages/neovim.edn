@@ -4,5 +4,5 @@
 
 {:description "Vim-fork focused on extensibility and usability",
  :source {:github "neovim/neovim"}
- :asset "nvim-linux-x86_64.tar.gz"
- :bins {"nvim" "nvim-linux-x86_64/bin/nvim"}}
+ :bins {"nvim" "nvim-linux-x86_64/bin/nvim"}
+ :platforms {"linux-x86_64" {:asset "nvim-linux-x86_64.tar.gz"}}}

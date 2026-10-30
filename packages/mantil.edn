@@ -4,5 +4,5 @@
 
 {:description "Build your AWS Lambda-based Go backends quicker than ever",
  :source {:github "mantil-io/mantil"}
- :asset "mantil_{version}_Linux_x86_64.tar.gz"
- :checksum "checksums.txt"}
+ :checksum "checksums.txt"
+ :platforms {"linux-x86_64" {:asset "mantil_{version}_Linux_x86_64.tar.gz"}}}

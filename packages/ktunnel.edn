@@ -4,6 +4,6 @@
 
 {:description "A cli that exposes your local resources to kubernetes",
  :source {:github "omrikiei/ktunnel"}
- :asset "ktunnel_{version}_Linux_x86_64.tar.gz"
  :checksum "checksums.txt"
- :bins {"ktunnel" "ktunnel", "kubectl-tunnel" "ktunnel"}}
+ :bins {"ktunnel" "ktunnel", "kubectl-tunnel" "ktunnel"}
+ :platforms {"linux-x86_64" {:asset "ktunnel_{version}_Linux_x86_64.tar.gz"}}}

@@ -4,4 +4,4 @@
 
 {:description "Kubemqctl is a command line interface (CLI) for KubeMQ, Kubernetes Message Broker",
  :source {:github "kubemq-io/kubemqctl"}
- :asset "kubemqctl_linux_amd64"}
+ :platforms {"linux-x86_64" {:asset "kubemqctl_linux_amd64"}}}

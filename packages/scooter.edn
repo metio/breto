@@ -4,5 +4,5 @@
 
 {:description "Interactive find and replace in the terminal",
  :source {:github "thomasschafer/scooter"}
- :asset "scooter-{tag}-x86_64-unknown-linux-musl.tar.gz"
- :checksum "{asset}.sha512"}
+ :checksum "{asset}.sha512"
+ :platforms {"linux-x86_64" {:asset "scooter-{tag}-x86_64-unknown-linux-musl.tar.gz"}}}

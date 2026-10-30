@@ -4,5 +4,5 @@
 
 {:description "a vSphere CLI built on top of govmomi",
  :source {:github "vmware/govmomi"}
- :asset "govc_Linux_x86_64.tar.gz"
- :checksum "checksums.txt"}
+ :checksum "checksums.txt"
+ :platforms {"linux-x86_64" {:asset "govc_Linux_x86_64.tar.gz"}}}

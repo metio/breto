@@ -4,6 +4,6 @@
 
 {:description "pong is not ping. pong is CLI game",
  :source {:github "kurehajime/pong-command"}
- :asset "pong-command_{version}_linux_x86_64.zip"
  :checksum "checksums.txt"
- :bins {"pong" "pong"}}
+ :bins {"pong" "pong"}
+ :platforms {"linux-x86_64" {:asset "pong-command_{version}_linux_x86_64.zip"}}}

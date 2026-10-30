@@ -4,5 +4,5 @@
 
 {:description "Toil reduction tool to prepare before responding to Mackerel alerts",
  :source {:github "mashiike/prepalert"}
- :asset "prepalert_{version}_linux_amd64.tar.gz"
- :checksum "prepalert_{version}_checksums.txt"}
+ :checksum "prepalert_{version}_checksums.txt"
+ :platforms {"linux-x86_64" {:asset "prepalert_{version}_linux_amd64.tar.gz"}}}

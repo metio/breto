@@ -4,5 +4,5 @@
 
 {:description "Autofix for meta files problems. It need a result of unity-meta-check via stdin.",
  :source {:github "DeNA/unity-meta-check"}
- :asset "unity-meta-autofix-linux-amd64"
- :checksum "checksums.txt"}
+ :checksum "checksums.txt"
+ :platforms {"linux-x86_64" {:asset "unity-meta-autofix-linux-amd64"}}}

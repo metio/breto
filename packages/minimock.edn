@@ -4,5 +4,5 @@
 
 {:description "Powerful mock generation tool for Go programming language",
  :source {:github "gojuno/minimock"}
- :asset "minimock_{version}_linux_amd64.tar.gz"
- :checksum "checksums.txt"}
+ :checksum "checksums.txt"
+ :platforms {"linux-x86_64" {:asset "minimock_{version}_linux_amd64.tar.gz"}}}

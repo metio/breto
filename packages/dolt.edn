@@ -4,5 +4,5 @@
 
 {:description "Dolt – It's Git for Data",
  :source {:github "dolthub/dolt"}
- :asset "dolt-linux-amd64.tar.gz"
- :bins {"dolt" "dolt-linux-amd64/bin/dolt"}}
+ :bins {"dolt" "dolt-linux-amd64/bin/dolt"}
+ :platforms {"linux-x86_64" {:asset "dolt-linux-amd64.tar.gz"}}}

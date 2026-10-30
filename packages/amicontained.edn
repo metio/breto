@@ -4,4 +4,4 @@
 
 {:description "Container introspection tool. Find out what container runtime is being used as well as features available",
  :source {:github "genuinetools/amicontained"}
- :asset "amicontained-linux-amd64"}
+ :platforms {"linux-x86_64" {:asset "amicontained-linux-amd64"}}}

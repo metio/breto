@@ -5,4 +5,4 @@
 {:description "Kilo is a multi-cloud network overlay built on WireGuard and designed for Kubernetes (k8s + wg = kg)",
  :source {:github "squat/kilo"}
  :tag-prefix ""
- :asset "kgctl-linux-amd64"}
+ :platforms {"linux-x86_64" {:asset "kgctl-linux-amd64"}}}

@@ -4,4 +4,4 @@
 
 {:description "Scalable build tool for distributed documentation sources",
  :source {:github "gardener/docforge"}
- :asset "docforge-linux-amd64"}
+ :platforms {"linux-x86_64" {:asset "docforge-linux-amd64"}}}

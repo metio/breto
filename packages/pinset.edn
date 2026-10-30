@@ -4,6 +4,6 @@
 
 {:description "A predictable, local-first runtime version manager for multilingual projects",
  :source {:github "Future-Element/pinset"}
- :asset "pinset-{tag}-linux-x86_64.zip"
  :checksum "SHA256SUMS"
- :bins {"pinset" "pinset", "pinset-shim" "pinset-shim"}}
+ :bins {"pinset" "pinset", "pinset-shim" "pinset-shim"}
+ :platforms {"linux-x86_64" {:asset "pinset-{tag}-linux-x86_64.zip"}}}

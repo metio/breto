@@ -4,6 +4,6 @@
 
 {:description "Go Plugin System over WebAssembly",
  :source {:github "knqyf263/go-plugin"}
- :asset "go-plugin_{version}_linux-amd64.tar.gz"
  :checksum "go-plugin_{version}_checksums.txt"
- :bins {"protoc-gen-go-plugin" "protoc-gen-go-plugin"}}
+ :bins {"protoc-gen-go-plugin" "protoc-gen-go-plugin"}
+ :platforms {"linux-x86_64" {:asset "go-plugin_{version}_linux-amd64.tar.gz"}}}

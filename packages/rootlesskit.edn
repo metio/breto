@@ -4,6 +4,6 @@
 
 {:description "Linux-native \"fake root\" for implementing rootless containers",
  :source {:github "rootless-containers/rootlesskit"}
- :asset "rootlesskit-x86_64.tar.gz"
  :checksum "SHA256SUMS"
- :bins {"rootlessctl" "rootlessctl", "rootlesskit" "rootlesskit", "rootlesskit-docker-proxy" "rootlesskit-docker-proxy"}}
+ :bins {"rootlessctl" "rootlessctl", "rootlesskit" "rootlesskit", "rootlesskit-docker-proxy" "rootlesskit-docker-proxy"}
+ :platforms {"linux-x86_64" {:asset "rootlesskit-x86_64.tar.gz"}}}

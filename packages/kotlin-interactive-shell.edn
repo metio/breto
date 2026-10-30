@@ -4,6 +4,6 @@
 
 {:description "Kotlin Language Interactive Shell",
  :source {:github "Kotlin/kotlin-interactive-shell"}
- :asset "ki-archive.zip"
  :checksum "checksums_sha256.txt"
- :bins {"ki" "ki/bin/ki.sh"}}
+ :bins {"ki" "ki/bin/ki.sh"}
+ :platforms {"linux-x86_64" {:asset "ki-archive.zip"}}}

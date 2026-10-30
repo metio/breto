@@ -4,5 +4,5 @@
 
 {:description "bagel, a CLI that inventories security-relevant metadata on developer workstations",
  :source {:github "boostsecurityio/bagel"}
- :asset "bagel_Linux_x86_64.tar.gz"
- :checksum "bagel_{version}_checksums.txt"}
+ :checksum "bagel_{version}_checksums.txt"
+ :platforms {"linux-x86_64" {:asset "bagel_Linux_x86_64.tar.gz"}}}

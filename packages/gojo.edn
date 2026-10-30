@@ -4,5 +4,5 @@
 
 {:description "Yet another Go implementation of jo",
  :source {:github "itchyny/gojo"}
- :asset "gojo_{tag}_linux_amd64.tar.gz"
- :bins {"gojo" "gojo_{tag}_linux_amd64/gojo"}}
+ :bins {"gojo" "gojo_{tag}_linux_amd64/gojo"}
+ :platforms {"linux-x86_64" {:asset "gojo_{tag}_linux_amd64.tar.gz"}}}

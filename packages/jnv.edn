@@ -4,6 +4,6 @@
 
 {:description "Interactive JSON filter using jq",
  :source {:github "ynqa/jnv"}
- :asset "jnv-x86_64-unknown-linux-musl.tar.xz"
  :checksum "{asset}.sha256"
- :bins {"jnv" "jnv-x86_64-unknown-linux-musl/jnv"}}
+ :bins {"jnv" "jnv-x86_64-unknown-linux-musl/jnv"}
+ :platforms {"linux-x86_64" {:asset "jnv-x86_64-unknown-linux-musl.tar.xz"}}}

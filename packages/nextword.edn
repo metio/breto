@@ -4,5 +4,5 @@
 
 {:description "Predict next English words",
  :source {:github "high-moctane/nextword"}
- :asset "nextword_{version}_linux_amd64.tar.gz"
- :checksum "nextword_{version}_checksums.txt"}
+ :checksum "nextword_{version}_checksums.txt"
+ :platforms {"linux-x86_64" {:asset "nextword_{version}_linux_amd64.tar.gz"}}}

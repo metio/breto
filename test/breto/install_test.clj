@@ -3,6 +3,7 @@
 
 (ns breto.install-test
   (:require [babashka.fs :as fs]
+            [breto.support :as s]
             [breto.sealed :as sealed]
             [babashka.process :as process]
             [breto.checksum :as checksum]
@@ -48,7 +49,7 @@
                (or (get texts url) (throw (ex-info (str "no text " url) {}))))})
 
 (def ^:private tool
-  (package/normalize {:name "tool" :source {:github "acme/tool"}
+  (s/normalize {:name "tool" :source {:github "acme/tool"}
                       :asset "tool-{version}.tar.gz" :strip 1
                       :checksum "SHA256SUMS"}))
 
@@ -111,7 +112,7 @@
 
 (deftest several-links-share-one-binary
   (let [cfg (config)
-        wrapper (package/normalize {:name "wrapper" :source {:github "acme/wrapper"} :tag-prefix ""
+        wrapper (s/normalize {:name "wrapper" :source {:github "acme/wrapper"} :tag-prefix ""
                                     :asset "wrapper.tar.gz" :strip 1
                                     :bins {"wrapper" "wrapper" "alias" "wrapper"}})
         io (fake-io {"https://github.com/acme/wrapper/releases/download/1.0.0/wrapper.tar.gz"
@@ -124,7 +125,7 @@
 
 (deftest tree-layout-keeps-the-archive-and-extra-links
   (let [cfg (config)
-        editor (package/normalize {:name "editor" :source {:github "acme/editor"}
+        editor (s/normalize {:name "editor" :source {:github "acme/editor"}
                                    :asset "editor.tar.gz" :strip 1 :layout :tree
                                    :bins {"ed" "bin/ed"}
                                    :links {(str (fs/path *root* "runtime")) "runtime"}})
@@ -145,7 +146,7 @@
   (let [cfg (config)
         src (fs/path *root* "dotted")
         out (fs/path *root* "assets" "dotted.tar.gz")
-        dotted (package/normalize {:name "dotted" :source {:github "acme/dotted"}
+        dotted (s/normalize {:name "dotted" :source {:github "acme/dotted"}
                                    :asset "dotted.tar.gz" :strip 1})]
     (fs/create-dirs src)
     (spit (str (fs/path src "dotted")) "d")
@@ -161,7 +162,7 @@
    (json/generate-string {:tag_name tag :assets assets})])
 
 (def ^:private plain
-  (package/normalize {:name "plain" :source {:github "acme/plain"} :asset "plain.tar.gz" :strip 1}))
+  (s/normalize {:name "plain" :source {:github "acme/plain"} :asset "plain.tar.gz" :strip 1}))
 
 (defn- serve-plain [digest]
   (let [file (tarball! "plain.tar.gz" {"plain" "p"})
@@ -198,7 +199,7 @@
 
 (deftest history-selects-the-definition-of-older-versions
   (let [cfg (config)
-        moved (package/normalize {:name "moved" :source {:github "new/moved"} :tag-prefix ""
+        moved (s/normalize {:name "moved" :source {:github "new/moved"} :tag-prefix ""
                                   :asset "moved-{version}.tar.gz" :strip 1 :checksum "SUMS"
                                   :history [{:before "2.0" :source {:github "old/moved"}
                                              :asset "moved.tgz"}]})
@@ -211,7 +212,7 @@
 
 (deftest rolling-releases-install-the-newest-build
   (let [cfg (config)
-        nightly (package/normalize {:name "nightly" :source {:github "acme/nightly" :tag "nightly"}
+        nightly (s/normalize {:name "nightly" :source {:github "acme/nightly" :tag "nightly"}
                                     :asset "nightly-{version}.tar.gz" :strip 1
                                     :layout :tree :bins {}})
         file (tarball! "nightly-20261027+bbb.tar.gz" {"nightly.sh" "n"})
@@ -225,7 +226,7 @@
     (is (= "n" (slurp (str (fs/path (:store cfg) "nightly" "current" "nightly.sh")))))))
 
 (def ^:private raw-tool
-  (package/normalize {:name "kind" :source {:github "kubernetes-sigs/kind"}
+  (s/normalize {:name "kind" :source {:github "kubernetes-sigs/kind"}
                       :asset "kind-linux-amd64" :checksum "{asset}.sha256sum"}))
 
 (defn- stored-version! [cfg name version files]
@@ -264,7 +265,7 @@
         _ (with-open [out (java.util.zip.GZIPOutputStream. (java.io.FileOutputStream. (str file)))]
             (.write out (.getBytes "taplo")))
         url "https://github.com/tamasfe/taplo/releases/download/0.10.0/taplo-linux-x86_64.gz"
-        pkg (package/normalize {:name "taplo" :source {:github "tamasfe/taplo"} :tag-prefix ""
+        pkg (s/normalize {:name "taplo" :source {:github "tamasfe/taplo"} :tag-prefix ""
                                 :asset "taplo-linux-x86_64.gz" :checksum "{asset}.sha256"})
         io (fake-io {url file}
                     {"https://github.com/tamasfe/taplo/releases/latest" "{\"tag_name\":\"0.10.0\"}"
@@ -279,7 +280,7 @@
         _ (spit (str file) "zig")
         url "https://ziglang.org/download/0.17.0/zig"
         index "https://ziglang.org/download/index.json"
-        pkg (package/normalize {:name "zig" :source {:text index :match "\"(\\d+\\.\\d+\\.\\d+)\":\\s*\\{"}
+        pkg (s/normalize {:name "zig" :source {:text index :match "\"(\\d+\\.\\d+\\.\\d+)\":\\s*\\{"}
                                 :tag-prefix "" :asset "zig" :url "https://ziglang.org/download/{version}/{asset}"
                                 :checksum {:json index :hash ["{version}" "x86_64-linux" "shasum"]}})
         install (fn [hash]
@@ -299,7 +300,7 @@
         _ (spit (str file) "jdtls")
         base "https://download.example.org/jdtls/milestones/"
         url (str base "1.63.0/jdtls-1.63.0-202610191322")
-        pkg (package/normalize {:name "jdtls" :source {:text base :match "(?s).*milestones/(\\d+\\.\\d+\\.\\d+)"}
+        pkg (s/normalize {:name "jdtls" :source {:text base :match "(?s).*milestones/(\\d+\\.\\d+\\.\\d+)"}
                                 :tag-prefix "" :asset "jdtls-{version}-{build}"
                                 :url (str base "{version}/{asset}") :checksum "{asset}.sha256"
                                 :vars {:build {:text (str base "{version}/latest.txt") :match "jdtls-[^-]+-(\\d+)"}}})
@@ -366,7 +367,7 @@
 
 (deftest history-can-exempt-old-releases-from-verification
   (let [cfg (config)
-        pkg (package/normalize (assoc raw-tool :history [{:before "0.34.0" :verify false}]))
+        pkg (s/normalize (assoc raw-tool :history [{:before "0.34.0" :verify false}]))
         file (fs/path *root* "kind-linux-amd64")
         _ (spit (str file) "old")
         url "https://github.com/kubernetes-sigs/kind/releases/download/v0.33.0/kind-linux-amd64"
@@ -398,7 +399,7 @@
     (is (false? @waited))))
 
 (defn- editor [extra]
-  (package/normalize (merge {:name "editor" :source {:github "acme/editor"}
+  (s/normalize (merge {:name "editor" :source {:github "acme/editor"}
                              :asset "editor.tar.gz" :strip 1 :layout :tree
                              :bins {"ed" "bin/ed"}}
                             extra)))

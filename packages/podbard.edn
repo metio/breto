@@ -3,6 +3,6 @@
 ;; SPDX-License-Identifier: MIT
 
 {:source {:github "Songmu/podbard"}
- :asset "podbard_{tag}_linux_amd64.tar.gz"
  :checksum "SHA256SUMS"
- :bins {"podbard" "podbard_{tag}_linux_amd64/podbard"}}
+ :bins {"podbard" "podbard_{tag}_linux_amd64/podbard"}
+ :platforms {"linux-x86_64" {:asset "podbard_{tag}_linux_amd64.tar.gz"}}}

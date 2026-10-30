@@ -4,5 +4,5 @@
 
 {:description "Concurrent traceroute built on trippy that publishes routes",
  :source {:github "Alice39s/xmtr"}
- :asset "xmtr-x86_64-unknown-linux-musl.tar.gz"
- :checksum "SHA256SUMS"}
+ :checksum "SHA256SUMS"
+ :platforms {"linux-x86_64" {:asset "xmtr-x86_64-unknown-linux-musl.tar.gz"}}}

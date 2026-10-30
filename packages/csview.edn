@@ -4,5 +4,5 @@
 
 {:description "Pretty and fast csv viewer for cli with cjk/emoji support",
  :source {:github "wfxr/csview"}
- :asset "csview-{tag}-x86_64-unknown-linux-musl.tar.gz"
- :bins {"csview" "csview-{tag}-x86_64-unknown-linux-musl/csview"}}
+ :bins {"csview" "csview-{tag}-x86_64-unknown-linux-musl/csview"}
+ :platforms {"linux-x86_64" {:asset "csview-{tag}-x86_64-unknown-linux-musl.tar.gz"}}}

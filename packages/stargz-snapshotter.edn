@@ -4,6 +4,6 @@
 
 {:description "Fast container image distribution plugin with lazy pulling\n\n## How to set up\n\nPlease see:\n\nhttps://github.com/containerd/stargz-snapshotter/blob/main/docs/INSTALL.md\nhttps://github.com/containerd/stargz-snapshotter/blob/main/docs/rootless.md",
  :source {:github "containerd/stargz-snapshotter"}
- :asset "stargz-snapshotter-{tag}-linux-amd64.tar.gz"
  :checksum "stargz-snapshotter-{tag}-linux-amd64.tar.gz.sha256sum"
- :bins {"containerd-stargz-grpc" "containerd-stargz-grpc", "ctr-remote" "ctr-remote", "stargz-store" "stargz-store", "stargz-store-helper" "stargz-store-helper"}}
+ :bins {"containerd-stargz-grpc" "containerd-stargz-grpc", "ctr-remote" "ctr-remote", "stargz-store" "stargz-store", "stargz-store-helper" "stargz-store-helper"}
+ :platforms {"linux-x86_64" {:asset "stargz-snapshotter-{tag}-linux-amd64.tar.gz"}}}

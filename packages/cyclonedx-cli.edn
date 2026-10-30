@@ -4,5 +4,5 @@
 
 {:description "CycloneDX CLI tool for SBOM analysis, merging, diffs and format conversions",
  :source {:github "CycloneDX/cyclonedx-cli"}
- :asset "cyclonedx-linux-x64"
- :bins {"cyclonedx" "{asset}"}}
+ :bins {"cyclonedx" "{asset}"}
+ :platforms {"linux-x86_64" {:asset "cyclonedx-linux-x64"}}}

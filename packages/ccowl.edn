@@ -4,6 +4,6 @@
 
 {:description "A cross-platform status bar application that monitors Claude Code usage in real-time",
  :source {:github "sivchari/ccowl"}
- :asset "ccowl-linux-amd64.tar.gz"
  :checksum "{asset}.sha256"
- :bins {"ccowl" "ccowl-linux-amd64"}}
+ :bins {"ccowl" "ccowl-linux-amd64"}
+ :platforms {"linux-x86_64" {:asset "ccowl-linux-amd64.tar.gz"}}}

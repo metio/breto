@@ -4,5 +4,5 @@
 
 {:description "/ˈheɪvənə/ - Think of it as a swiss army knife for Kubernetes tasks",
  :source {:github "homeport/havener"}
- :asset "havener_{version}_linux_amd64.tar.gz"
- :checksum "checksums.txt"}
+ :checksum "checksums.txt"
+ :platforms {"linux-x86_64" {:asset "havener_{version}_linux_amd64.tar.gz"}}}

@@ -5,4 +5,4 @@
 {:description "A tool to enforce Swift style and conventions",
  :source {:github "realm/SwiftLint"}
  :tag-prefix ""
- :asset "swiftlint_linux_amd64.zip"}
+ :platforms {"linux-x86_64" {:asset "swiftlint_linux_amd64.zip"}}}

@@ -5,4 +5,4 @@
 {:description "High-Performance Serverless event and data processing platform",
  :source {:github "nuclio/nuclio"}
  :tag-prefix ""
- :asset "nuctl-{tag}-linux-amd64"}
+ :platforms {"linux-x86_64" {:asset "nuctl-{tag}-linux-amd64"}}}

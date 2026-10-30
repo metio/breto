@@ -4,5 +4,5 @@
 
 {:description "Go minifiers for web formats",
  :source {:github "tdewolff/minify"}
- :asset "minify_linux_amd64.tar.gz"
- :checksum "checksums.txt"}
+ :checksum "checksums.txt"
+ :platforms {"linux-x86_64" {:asset "minify_linux_amd64.tar.gz"}}}

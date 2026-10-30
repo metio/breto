@@ -4,6 +4,6 @@
 
 {:description "Download Youtube Video in Golang",
  :source {:github "kkdai/youtube"}
- :asset "youtubedr_{version}_linux_amd64.tar.gz"
  :checksum "youtubedr_{version}_checksums.txt"
- :bins {"youtubedr" "youtubedr"}}
+ :bins {"youtubedr" "youtubedr"}
+ :platforms {"linux-x86_64" {:asset "youtubedr_{version}_linux_amd64.tar.gz"}}}

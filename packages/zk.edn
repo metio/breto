@@ -4,4 +4,4 @@
 
 {:description "A plain text note-taking assistant",
  :source {:github "zk-org/zk"}
- :asset "zk-{tag}-linux-amd64.tar.gz"}
+ :platforms {"linux-x86_64" {:asset "zk-{tag}-linux-amd64.tar.gz"}}}

@@ -4,5 +4,5 @@
 
 {:description "Access Log Profiler",
  :source {:github "tkuchiki/alp"}
- :asset "alp_linux_amd64.tar.gz"
- :checksum "alp_{version}_checksums.txt"}
+ :checksum "alp_{version}_checksums.txt"
+ :platforms {"linux-x86_64" {:asset "alp_linux_amd64.tar.gz"}}}

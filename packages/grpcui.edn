@@ -4,5 +4,5 @@
 
 {:description "An interactive web UI for gRPC, along the lines of postman",
  :source {:github "fullstorydev/grpcui"}
- :asset "grpcui_{version}_linux_x86_64.tar.gz"
- :checksum "grpcui_{version}_checksums.txt"}
+ :checksum "grpcui_{version}_checksums.txt"
+ :platforms {"linux-x86_64" {:asset "grpcui_{version}_linux_x86_64.tar.gz"}}}

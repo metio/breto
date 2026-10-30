@@ -4,5 +4,5 @@
 
 {:description "General Linter powered by Jsonnet",
  :source {:github "lintnet/lintnet"}
- :asset "lintnet_linux_amd64.tar.gz"
- :checksum "lintnet_{version}_checksums.txt"}
+ :checksum "lintnet_{version}_checksums.txt"
+ :platforms {"linux-x86_64" {:asset "lintnet_linux_amd64.tar.gz"}}}

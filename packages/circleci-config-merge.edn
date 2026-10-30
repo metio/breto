@@ -4,5 +4,5 @@
 
 {:description "Generate .circleci/config.yml by merging multiple files",
  :source {:github "suzuki-shunsuke/circleci-config-merge"}
- :asset "circleci-config-merge_{version}_linux_amd64.tar.gz"
- :checksum "circleci-config-merge_{version}_checksums.txt"}
+ :checksum "circleci-config-merge_{version}_checksums.txt"
+ :platforms {"linux-x86_64" {:asset "circleci-config-merge_{version}_linux_amd64.tar.gz"}}}

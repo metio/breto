@@ -5,5 +5,5 @@
 {:description "A simple terminal UI for search and replace, ala VS Code",
  :source {:github "yassinebridi/serpl"}
  :tag-prefix ""
- :asset "serpl-{tag}-linux-x86_64.tar.gz"
- :checksum "serpl-{tag}-linux-x86_64.sha256"}
+ :checksum "serpl-{tag}-linux-x86_64.sha256"
+ :platforms {"linux-x86_64" {:asset "serpl-{tag}-linux-x86_64.tar.gz"}}}

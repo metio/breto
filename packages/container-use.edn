@@ -4,6 +4,6 @@
 
 {:description "Development environments for coding agents. Enable multiple agents to work safely and independently with your preferred stack",
  :source {:github "dagger/container-use"}
- :asset "container-use_{tag}_linux_amd64.tar.gz"
  :checksum "checksums.txt"
- :bins {"container-use" "container-use", "cu" "container-use"}}
+ :bins {"container-use" "container-use", "cu" "container-use"}
+ :platforms {"linux-x86_64" {:asset "container-use_{tag}_linux_amd64.tar.gz"}}}

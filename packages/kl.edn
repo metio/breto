@@ -4,5 +4,5 @@
 
 {:description "An interactive Kubernetes log viewer for your terminal",
  :source {:github "robinovitch61/kl"}
- :asset "kl_{version}_Linux_x86_64.tar.gz"
- :checksum "checksums.txt"}
+ :checksum "checksums.txt"
+ :platforms {"linux-x86_64" {:asset "kl_{version}_Linux_x86_64.tar.gz"}}}

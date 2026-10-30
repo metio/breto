@@ -30,11 +30,34 @@
             [clojure.pprint :as pprint]
             [clojure.string :as str]))
 
+(defn- unsupported
+  "The package of `spec` when `registry` knows it and it has no release for
+  the platform it was loaded for."
+  [registry spec]
+  (let [pkg (get registry (first (batch/split-spec spec)))]
+    (when (:unsupported pkg) pkg)))
+
+(defn- skip-message [pkg]
+  (str (:name pkg) " has no release for " (:platform pkg) ", so it is skipped; it has releases for "
+       (str/join ", " (:supported pkg))))
+
+(defn- supported-only
+  "`specs` without the packages that have no release for this platform, each
+  of those reported on stderr."
+  [registry specs]
+  (let [skipped (keep #(unsupported registry %) specs)]
+    (binding [*out* *err*] (run! #(println (str "[WARN] " (skip-message %))) skipped))
+    (remove #(unsupported registry %) specs)))
+
 (defn- targets
   "The packages a command acts on: the named ones, groups expanded, else the
-  configured ones."
-  [{:keys [config groups]} args]
-  (if (seq args) (registry/expand groups args) (:packages config)))
+  configured ones. A package a group or the config brings in that has no
+  release for this platform is skipped with a warning; one named on its own
+  is kept, so the command reports why it cannot install it."
+  [{:keys [config groups registry]} args]
+  (if (seq args)
+    (vec (mapcat #(if (str/starts-with? % "@") (supported-only registry (registry/expand groups [%])) [%]) args))
+    (vec (supported-only registry (:packages config)))))
 
 (defn- tracker
   "The progress callback for `command`: the live display and the recorder."
@@ -194,8 +217,8 @@
                     (when (:prune config) " and breto gc uninstalls them")
                     "; add " (str/join " " (map pr-str names)) " to keep them.")))))
 
-(defn install [{:keys [opts groups chosen?] :as ctx} args]
-  (let [code (installing ctx "install" (registry/expand groups args)
+(defn install [{:keys [opts chosen?] :as ctx} args]
+  (let [code (installing ctx "install" (targets ctx args)
                          (fn [name version]
                            (merge {:version version :verify? (:verify opts true)} (locked ctx name))))]
     (when chosen? (unconfigured-hint ctx args))
@@ -225,9 +248,15 @@
 
 (defn- project
   "The project of `dir`: its packages with groups expanded, its variables and
-  commands, and the files they come from; see breto.project."
-  [groups dir]
-  (project/load-project groups dir))
+  commands, and the files they come from; see breto.project. A package
+  without a release for this platform is left out with a warning, so the
+  project's other tools still work there."
+  [groups registry dir]
+  (let [proj (project/load-project groups dir)
+        skipped (keep #(unsupported registry %) (:specs proj))]
+    (-> proj
+        (clojure.core/update :specs #(vec (remove (partial unsupported registry) %)))
+        (clojure.core/update :warnings into (map skip-message skipped)))))
 
 (defn- project-targets
   "[spec bin-targets] for each spec of `project`, bin-targets nil for a
@@ -317,7 +346,7 @@
                 (throw (ex-info (str "no " project/file-name " or " project/local-file-name " in "
                                      (fs/absolutize start) " or above it")
                                 {:breto/problem :no-project :dir (str (fs/absolutize start))})))
-        {:keys [warnings] :as proj} (project groups dir)
+        {:keys [warnings] :as proj} (project groups registry dir)
         _ (binding [*out* *err*] (run! #(println (str "[WARN] " %)) warnings))
         missing (for [[spec targets] (project-targets config registry proj)
                       :when (nil? targets)]
@@ -413,7 +442,7 @@
   [{:keys [config registry groups opts] :as ctx} command]
   (let [projects (for [environment (remove env/stale? (env/environments config))
                        :let [dir (:project environment)]]
-                   (try (project groups dir)
+                   (try (project groups registry dir)
                         (catch Exception e {:dir dir :problem (ex-message e)})))
         projects (doall projects)
         missing (distinct (for [p projects
@@ -463,19 +492,45 @@
                                           :status (if (= latest active) :current :outdated)})))
                                     progress))))
 
+(defn- named-platforms
+  "The platforms --platforms names, comma-separated or all, else the one
+  breto runs for."
+  [{:keys [config opts]}]
+  (let [value (:platforms opts)
+        names (cond (nil? value) [(platform/current config)]
+                    (= "all" value) (sort platform/known)
+                    :else (vec (distinct (remove str/blank? (str/split (str value) #",")))))]
+    (when-let [unknown (seq (remove platform/known names))]
+      (throw (ex-info (str "--platforms names " (str/join ", " unknown) ", which is none of all, "
+                           (str/join ", " (sort platform/known)))
+                      {:breto/problem :usage})))
+    names))
+
 (defn check
   "Checks the configured packages, those named, or with --all every package of
-  the registries, against their latest release without downloading it."
+  the registries, against their latest release without downloading it, on
+  the platforms --platforms names. A package checked for a platform it has
+  no release for fails when it is named, and is passed over otherwise."
   [{:keys [registry opts io] :as ctx} args]
   (let [progress (tracker ctx "check")
-        names (cond (:all opts) (sort (keys registry))
-                    :else (distinct (map (comp first batch/split-spec) (targets ctx args))))
-        io (assoc io :progress progress)]
-    (batch/finish! "check"
-                   (batch/run-batch io names
-                                    ((pacer ctx progress (atom 0))
-                                     #(check/check-package io (registry/lookup registry %)))
-                                    progress))))
+        platforms (named-platforms ctx)
+        names (if (:all opts)
+                (sort (keys registry))
+                (distinct (map (comp first batch/split-spec) (targets ctx args))))
+        named (set (map (comp first batch/split-spec) args))
+        io (assoc io :progress progress)
+        results (vec (mapcat (fn [p]
+                               (let [pkgs (into {} (for [n names
+                                                         :let [pkg (package/for-platform (registry/lookup registry n) p)]
+                                                         :when (or (named n) (not (:unsupported pkg)))]
+                                                     [n pkg]))]
+                                 (when (next platforms) (println (str "Checking " p ":")))
+                                 (batch/run-batch io (sort (keys pkgs))
+                                                  ((pacer ctx progress (atom 0))
+                                                   #(check/check-package io (get pkgs %)))
+                                                  progress)))
+                             platforms))]
+    (batch/finish! "check" results)))
 
 (defn list-installed [{:keys [config]} _]
   (doseq [name (store/installed-packages config)]
@@ -660,20 +715,6 @@
         asset (assoc :asset asset)
         exclude-newer (assoc :exclude-newer exclude-newer)))))
 
-(defn- lock-platforms
-  "The platforms --platforms names, comma-separated or all, else the one
-  breto runs for."
-  [{:keys [config opts]}]
-  (let [value (:platforms opts)
-        names (cond (nil? value) [(platform/current config)]
-                    (= "all" value) (sort platform/known)
-                    :else (vec (distinct (remove str/blank? (str/split (str value) #",")))))]
-    (when-let [unknown (seq (remove platform/known names))]
-      (throw (ex-info (str "--platforms names " (str/join ", " unknown) ", which is none of all, "
-                           (str/join ", " (sort platform/known)))
-                      {:breto/problem :usage})))
-    names))
-
 (defn- foreign-hash
   "The lock result for `spec` on `platform`, hashing the download breto would
   install there and comparing it with `previous`, the hashes an existing
@@ -704,7 +745,7 @@
         path (str (fs/path dir registry/lock-file-name))
         own (filter (fn [[_ {:keys [files]}]] (some #(when-let [parent (fs/parent %)] (= dir (str (fs/canonicalize parent)))) files)) groups)
         specs (filterv #(second (batch/split-spec %)) (registry/expand groups (map key own)))
-        platforms (lock-platforms ctx)
+        platforms (named-platforms ctx)
         here (platform/current config)
         shared? #(contains? package/neutral-kinds (package/source-kind %))
         pkg-of #(registry/lookup registry (first (batch/split-spec %)))

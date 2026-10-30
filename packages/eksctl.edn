@@ -4,5 +4,5 @@
 
 {:description "The official CLI for Amazon EKS",
  :source {:github "eksctl-io/eksctl"}
- :asset "eksctl_Linux_amd64.tar.gz"
- :checksum "eksctl_checksums.txt"}
+ :checksum "eksctl_checksums.txt"
+ :platforms {"linux-x86_64" {:asset "eksctl_Linux_amd64.tar.gz"}}}

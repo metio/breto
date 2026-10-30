@@ -4,4 +4,4 @@
 
 {:description "CLI - Convert between YAML, TOML, JSON, and HCL. Preserves map order",
  :source {:github "sclevine/yj"}
- :asset "yj-linux-amd64"}
+ :platforms {"linux-x86_64" {:asset "yj-linux-amd64"}}}

@@ -298,11 +298,12 @@ ExecStart=/usr/bin/sh -c 'notify-send --urgency=critical "Software installations
 
 ## Package definitions
 
-A package is a file `<name>.edn` in a registry directory, and its file name is the package name. The smallest definition names the repository and the release asset:
+A package is a file `<name>.edn` in a registry directory, and its file name is the package name. The smallest definition names the repository and, for each platform with a release, the asset to download; see [Platforms](#platforms):
 
 ```clojure
 {:source {:github "kubernetes-sigs/kind"}
- :asset "kind-linux-amd64"}
+ :platforms {"linux-x86_64" {:asset "kind-linux-amd64"}
+             "darwin-aarch64" {:asset "kind-darwin-arm64"}}}
 ```
 
 | Key | Meaning | Default |
@@ -311,7 +312,8 @@ A package is a file `<name>.edn` in a registry directory, and its file name is t
 | `:superseded-by` | The package that replaces this one, such as a maintained fork. `install`, `update`, `sync` and `env` warn when they install the package, `breto search` marks it, and `breto doctor` lists configured packages it applies to. breto never switches to the successor itself, because its commands may have other names. | none |
 | `:source` | Where releases are discovered; see below. | required |
 | `:replace` | In an overlay, replaces the earlier definition of the name instead of merging over it; see [Overlays](#overlays). | `false` |
-| `:asset` | Template for the file name to download. | required |
+| `:asset` | Template for the file name to download, usually set per platform. | required |
+| `:platforms` | The platforms with releases, each with the keys that differ there; see [Platforms](#platforms). | required, except for sources built on the machine |
 | `:url` | Template for the download URL. | the GitHub release asset |
 | `:tag-prefix` | Text before the version in a tag: `v1.2.3` is version `1.2.3`. | `"v"` |
 | `:checksum` | Template for a checksum file, next to the asset unless it is a full URL, or `{:json URL :hash [path]}` for a hash inside a JSON or YAML document. | none |
@@ -326,7 +328,7 @@ A package is a file `<name>.edn` in a registry directory, and its file name is t
 | `:history` | Definitions for older versions; see below. | none |
 | `:verify` | `false` installs without verification, for releases whose upstream publishes neither GitHub digests nor checksums. Usually set in a `:history` entry, so newer releases are still verified. | `true` |
 | `:signature` | A sigstore bundle signing the asset or its checksum file; see below. | none |
-| `:skip` | Versions never installed as the latest, e.g. a release without a build for this platform. When the latest release is listed, the newest unlisted one is installed instead, which costs one request listing the releases. An explicitly requested or pinned version is installed regardless. | none |
+| `:skip` | Versions never installed as the latest, e.g. a broken release. When the latest release is listed, the newest unlisted one is installed instead, which costs one request listing the releases. An explicitly requested or pinned version is installed regardless. | none |
 
 Templates can use `{name}`, `{tag}`, `{version}`, `{repo}` and, except in `:asset` itself, `{asset}`. Files ending in `.tar.gz`, `.tgz`, `.tar.xz`, `.txz`, `.tar.bz2`, `.tbz2`, `.tar.zst`, `.tzst`, `.tar` or `.zip` are unpacked. Any other file ending in `.gz`, `.bz2` or `.zst` is a single compressed file, decompressed under its name without that suffix, so `taplo-linux-x86_64.gz` becomes `taplo-linux-x86_64`. Anything else is the binary itself. An entry that would land outside the unpack directory, or a tar entry that would write through a symlink the archive created, fails the install.
 
@@ -334,8 +336,9 @@ The command name is the key in `:bins`, independent of the package name. A packa
 
 ```clojure
 {:source {:github "babashka/babashka"}
- :asset "babashka-{version}-linux-amd64-static.tar.gz"
- :bins {"bb" "bb"}}
+ :bins {"bb" "bb"}
+ :platforms {"darwin-aarch64" {:asset "babashka-{version}-macos-aarch64.tar.gz"}
+             "linux-x86_64" {:asset "babashka-{version}-linux-amd64-static.tar.gz"}}}
 ```
 
 Several commands can share one binary, which suits tools that dispatch on the name they are called by:
@@ -350,11 +353,11 @@ A tool that ships support files next to its binary uses the tree layout, and `:l
 ```clojure
 {:source {:github "helix-editor/helix"}
  :tag-prefix ""
- :asset "helix-{version}-x86_64-linux.tar.xz"
  :strip 1
  :layout :tree
  :bins {"hx" "hx"}
- :links {"~/.config/helix/runtime" "runtime"}}
+ :links {"~/.config/helix/runtime" "runtime"}
+ :platforms {"linux-x86_64" {:asset "helix-{version}-x86_64-linux.tar.xz"}}}
 ```
 
 ### Sources
@@ -380,20 +383,21 @@ A tag is a release of the package when it starts with `:tag-prefix`. A repositor
 ```clojure
 {:source {:github "acme/tool"}
  :tag-prefix "release-"
- :asset "tool"
- :history [{:before "2.0.0" :tag-prefix "v"}]}
+ :history [{:before "2.0.0" :tag-prefix "v"}]
+ :platforms {"linux-x86_64" {:asset "tool"}}}
 ```
 
 Here `release-2.1.0` and `v1.9.0` are releases, while `v2.5.0` is not.
 
-ble.sh publishes its nightly builds as a rolling release:
+ble.sh publishes its nightly builds as a rolling release. The tarball holds shell scripts that run on every platform, so the asset is shared and each platform has an empty entry:
 
 ```clojure
 {:source {:github "akinomyoga/ble.sh" :tag "nightly"}
  :asset "ble-nightly-{version}.tar.xz"
  :strip 1
  :layout :tree
- :bins {}}
+ :bins {}
+ :platforms {"darwin-aarch64" {} "darwin-x86_64" {} "linux-aarch64" {} "linux-x86_64" {}}}
 ```
 
 ### Go modules
@@ -530,40 +534,45 @@ A definition in a later registry directory is merged over the one of the same na
 
 ### Platforms
 
-The top level of a definition describes the releases for `linux-x86_64`. A `:platforms` entry overrides keys for another platform, such as the asset name, the archive layout or the commands:
+breto treats the four platforms alike: `linux-x86_64`, `linux-aarch64`, `darwin-x86_64` and `darwin-aarch64`. The top level of a definition holds what every platform shares, and `:platforms` lists each platform the project publishes a build for, with the keys that differ there, such as the asset name, the archive layout or the commands:
 
 ```clojure
 {:source {:github "sigstore/cosign"}
- :asset "cosign-linux-amd64"
  :checksum "cosign_checksums.txt"
- :platforms {"linux-aarch64" {:asset "cosign-linux-arm64"}
+ :platforms {"darwin-aarch64" {:asset "cosign-darwin-arm64"}
              "darwin-x86_64" {:asset "cosign-darwin-amd64"}
-             "darwin-aarch64" {:asset "cosign-darwin-arm64"}}}
+             "linux-aarch64" {:asset "cosign-linux-arm64"}
+             "linux-x86_64" {:asset "cosign-linux-amd64"}}}
 ```
 
-An entry can have a `:history` of its own, which applies over the definition's `:history` for that platform. A definition has releases for `linux-x86_64` and the platforms its `:platforms` names; on any other, `install` and `check` fail and say so. Definitions with a `:go`, `:pypi`, `:npm`, `:cargo` or `:coursier` source build or resolve the package on the machine and serve every platform, and `:ghcup` serves both Linux platforms. An overlay's `:platforms` entries are added to those of the definition it is merged over, so an overlay can add a platform to an upstream definition.
+A platform without an entry has no release. An entry can have a `:history` of its own, which applies over the definition's `:history` for that platform. Definitions with a `:go`, `:pypi`, `:npm`, `:cargo` or `:coursier` source build or resolve the package on the machine and serve every platform without entries, and `:ghcup` serves both Linux platforms. An overlay's `:platforms` entries are merged key by key into those of the definition it is merged over, so an overlay can add a platform to an upstream definition or change one key of one platform.
 
-A lock entry keeps the hash of the `linux-x86_64` download at its top level and those of other platforms under `:platforms`, so machines of different platforms share one lock file:
+A package named on the command line that has no release for the platform fails to install and says which platforms it has. One that a group, the config's `:packages` or a project brings in is skipped with a warning instead, so a shared group or project file still works on every platform for the tools that exist there. `breto check --platforms all` checks the release assets of every platform from one machine.
+
+A lock entry keeps the hashes of each platform's download under `:platforms`, so machines of different platforms share one lock file; a package built on the machine has one set of hashes at the top level:
 
 ```clojure
-{"cosign@3.0.2" {:sha256 "…" :asset "cosign-linux-amd64" :platforms {"darwin-aarch64" {:sha256 "…" :asset "cosign-darwin-arm64"}}}}
+{"cosign@3.0.2" {:platforms {"darwin-aarch64" {:sha256 "…" :asset "cosign-darwin-arm64"}
+                             "linux-x86_64" {:sha256 "…" :asset "cosign-linux-amd64"}}}}
 ```
+
+A lock file written by an earlier breto holds the `linux-x86_64` hashes at the top level of an entry; breto reads them as that platform's and moves them under `:platforms` when it next writes the entry.
 
 ### Version history
 
-Projects rename assets, change archive formats and move between hosts. The top level of a definition describes current releases, and each `:history` entry overrides keys for every version older than its `:before`. Entries apply cumulatively from the newest boundary down, so an entry only lists what changed at its boundary:
+Projects rename assets, change archive formats and move between hosts. The keys of a definition describe current releases, and each `:history` entry overrides keys for every version older than its `:before`. Entries apply cumulatively from the newest boundary down, so an entry only lists what changed at its boundary:
 
 ```clojure
 {:source {:github "ulyssa/iamb"}
- :asset "iamb-{version}-x86_64-unknown-linux-musl.tar.gz"
  :strip 1
- :history [{:before "0.0.13" :asset "iamb-x86_64-unknown-linux-musl-binary.zip" :strip 0}
-           {:before "0.0.12" :asset "iamb-x86_64-unknown-linux-musl.tgz" :strip 1}]}
+ :platforms {"linux-x86_64" {:asset "iamb-{version}-x86_64-unknown-linux-musl.tar.gz"
+                             :history [{:before "0.0.13" :asset "iamb-x86_64-unknown-linux-musl-binary.zip" :strip 0}
+                                       {:before "0.0.12" :asset "iamb-x86_64-unknown-linux-musl.tgz" :strip 1}]}}}
 ```
 
 `{:before "0.5.1" :verify false}` installs releases older than 0.5.1 without verification, because GitHub only records asset digests since mid-2025, while 0.5.1 and newer stay verified. The report marks every install made this way.
 
-Version 0.0.11 installs `iamb-x86_64-unknown-linux-musl.tgz` with one leading component stripped, and 0.13.1 uses the top level. A project that moved from GitLab to GitHub keeps one package name with an entry such as `{:before "2.0.0" :source {:gitlab "gitlab.com/group/project"} :url "…"}`, and both old and new versions stay installable. Defaults such as the GitHub download URL are worked out separately for each entry.
+Version 0.0.11 installs `iamb-x86_64-unknown-linux-musl.tgz` with one leading component stripped, and 0.13.1 uses the current keys. A project that moved from GitLab to GitHub keeps one package name with an entry such as `{:before "2.0.0" :source {:gitlab "gitlab.com/group/project"} :url "…"}`, and both old and new versions stay installable. Defaults such as the GitHub download URL are worked out separately for each entry.
 
 Versions compare by their runs of digits and letters, with numbers compared numerically, so `0.0.13` follows `0.0.12` and `2026.9` follows `2025.12`.
 

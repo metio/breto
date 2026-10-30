@@ -4,6 +4,6 @@
 
 {:description "Free & Open Source CLI for Wolt: discover venues, inspect menus and options, manage carts, and preview checkout from the terminal",
  :source {:github "mekedron/wolt-cli"}
- :asset "wolt_{tag}_linux_amd64.tar.gz"
  :checksum "SHA256SUMS"
- :bins {"wolt" "wolt", "wolt-mcp" "wolt-mcp"}}
+ :bins {"wolt" "wolt", "wolt-mcp" "wolt-mcp"}
+ :platforms {"linux-x86_64" {:asset "wolt_{tag}_linux_amd64.tar.gz"}}}

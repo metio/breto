@@ -4,4 +4,4 @@
 
 {:description "JSON diff and patch",
  :source {:github "josephburnett/jd"}
- :asset "jd-amd64-linux"}
+ :platforms {"linux-x86_64" {:asset "jd-amd64-linux"}}}

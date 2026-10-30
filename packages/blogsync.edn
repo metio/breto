@@ -4,5 +4,5 @@
 
 {:description "Push and pull blog entries from/to local filesystem",
  :source {:github "x-motemen/blogsync"}
- :asset "blogsync_{tag}_linux_amd64.tar.gz"
- :bins {"blogsync" "blogsync_{tag}_linux_amd64/blogsync"}}
+ :bins {"blogsync" "blogsync_{tag}_linux_amd64/blogsync"}
+ :platforms {"linux-x86_64" {:asset "blogsync_{tag}_linux_amd64.tar.gz"}}}

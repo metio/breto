@@ -4,7 +4,6 @@
 {:description "The Go programming language toolchain"
  :source {:json "https://go.dev/dl/?mode=json" :version [0 :version]}
  :tag-prefix "go"
- :asset "go{version}.linux-amd64.tar.gz"
  :url "https://dl.google.com/go/{asset}"
  :checksum "{asset}.sha256"
  :strip 1
@@ -12,4 +11,5 @@
  :bins {"go" "bin/go" "gofmt" "bin/gofmt"}
  :platforms {"darwin-aarch64" {:asset "go{version}.darwin-arm64.tar.gz"}
              "darwin-x86_64" {:asset "go{version}.darwin-amd64.tar.gz"}
-             "linux-aarch64" {:asset "go{version}.linux-arm64.tar.gz"}}}
+             "linux-aarch64" {:asset "go{version}.linux-arm64.tar.gz"}
+             "linux-x86_64" {:asset "go{version}.linux-amd64.tar.gz"}}}

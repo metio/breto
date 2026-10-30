@@ -4,5 +4,5 @@
 
 {:description "Your dev tool to manage /etc/hosts like a pro",
  :source {:github "guumaster/hostctl"}
- :asset "hostctl_{version}_linux_64-bit.tar.gz"
- :checksum "hostctl_{version}_checksums.txt"}
+ :checksum "hostctl_{version}_checksums.txt"
+ :platforms {"linux-x86_64" {:asset "hostctl_{version}_linux_64-bit.tar.gz"}}}

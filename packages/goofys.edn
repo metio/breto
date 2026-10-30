@@ -4,4 +4,4 @@
 
 {:description "a high-performance, POSIX-ish Amazon S3 file system written in Go",
  :source {:github "kahing/goofys"}
- :asset "goofys"}
+ :platforms {"linux-x86_64" {:asset "goofys"}}}

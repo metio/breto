@@ -4,5 +4,5 @@
 
 {:description "Go Fuzzy",
  :source {:github "mattn/gof"}
- :asset "gof_{tag}_linux_amd64.tar.gz"
- :bins {"gof" "gof_{tag}_linux_amd64/gof"}}
+ :bins {"gof" "gof_{tag}_linux_amd64/gof"}
+ :platforms {"linux-x86_64" {:asset "gof_{tag}_linux_amd64.tar.gz"}}}

@@ -4,5 +4,5 @@
 
 {:description "Bit is a modern Git CLI",
  :source {:github "chriswalz/bit"}
- :asset "bit_{version}_linux_amd64.tar.gz"
- :checksum "bit_{version}_checksums.txt"}
+ :checksum "bit_{version}_checksums.txt"
+ :platforms {"linux-x86_64" {:asset "bit_{version}_linux_amd64.tar.gz"}}}

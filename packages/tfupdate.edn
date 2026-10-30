@@ -4,5 +4,5 @@
 
 {:description "Update version constraints in your Terraform configurations",
  :source {:github "minamijoyo/tfupdate"}
- :asset "tfupdate_{version}_linux_amd64.tar.gz"
- :checksum "tfupdate_{version}_checksums.txt"}
+ :checksum "tfupdate_{version}_checksums.txt"
+ :platforms {"linux-x86_64" {:asset "tfupdate_{version}_linux_amd64.tar.gz"}}}

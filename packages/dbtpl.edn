@@ -4,4 +4,4 @@
 
 {:description "Command line tool to generate idiomatic Go code for SQL databases supporting PostgreSQL, MySQL, SQLite, Oracle, and Microsoft SQL Server",
  :source {:github "xo/dbtpl"}
- :asset "xo-{version}-linux-amd64.tar.bz2"}
+ :platforms {"linux-x86_64" {:asset "xo-{version}-linux-amd64.tar.bz2"}}}

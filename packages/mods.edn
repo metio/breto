@@ -4,6 +4,6 @@
 
 {:description "AI on the command line",
  :source {:github "charmbracelet/mods"}
- :asset "mods_{version}_Linux_x86_64.tar.gz"
  :checksum "checksums.txt"
- :bins {"mods" "mods_{version}_Linux_x86_64/mods"}}
+ :bins {"mods" "mods_{version}_Linux_x86_64/mods"}
+ :platforms {"linux-x86_64" {:asset "mods_{version}_Linux_x86_64.tar.gz"}}}

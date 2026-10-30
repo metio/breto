@@ -5,5 +5,5 @@
 {:description "Rust task runner and build tool",
  :source {:github "sagiegurari/cargo-make"}
  :tag-prefix ""
- :asset "cargo-make-v{tag}-x86_64-unknown-linux-musl.zip"
- :bins {"cargo-make" "cargo-make-v{tag}-x86_64-unknown-linux-musl/cargo-make", "makers" "cargo-make-v{tag}-x86_64-unknown-linux-musl/makers"}}
+ :bins {"cargo-make" "cargo-make-v{tag}-x86_64-unknown-linux-musl/cargo-make", "makers" "cargo-make-v{tag}-x86_64-unknown-linux-musl/makers"}
+ :platforms {"linux-x86_64" {:asset "cargo-make-v{tag}-x86_64-unknown-linux-musl.zip"}}}

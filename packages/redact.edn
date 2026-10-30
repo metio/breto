@@ -4,6 +4,6 @@
 
 {:description "Data encryptor for git",
  :source {:github "julian7/redact"}
- :asset "redact-linux-amd64-{version}.tgz"
  :checksum "SHA256SUMS.redact-{version}"
- :bins {"redact" "redact", "redact-ext-aws" "redact-ext-aws", "redact-ext-azure" "redact-ext-azure"}}
+ :bins {"redact" "redact", "redact-ext-aws" "redact-ext-aws", "redact-ext-azure" "redact-ext-azure"}
+ :platforms {"linux-x86_64" {:asset "redact-linux-amd64-{version}.tgz"}}}

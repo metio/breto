@@ -5,5 +5,5 @@
 {:description "Pre-built FFmpeg binaries for every platform",
  :source {:github "Tyrrrz/FFmpegBin"}
  :tag-prefix ""
- :asset "ffmpeg-linux-x64.zip"
- :bins {"ffmpeg" "ffmpeg", "ffplay" "ffplay", "ffprobe" "ffprobe"}}
+ :bins {"ffmpeg" "ffmpeg", "ffplay" "ffplay", "ffprobe" "ffprobe"}
+ :platforms {"linux-x86_64" {:asset "ffmpeg-linux-x64.zip"}}}

@@ -151,15 +151,15 @@
 
 (deftest ghcup-releases-are-the-generic-final-ones-of-the-metadata
   (let [io (s/fake-io {} {ghcup/metadata-url (metadata (apply str (repeat 64 "9")))} (atom []))
-        pkg (package/normalize {:name "ghc" :source {:ghcup "ghc"}})]
+        pkg (s/normalize {:name "ghc" :source {:ghcup "ghc"}})]
     (is (= "9.14.1" (:version (source/latest pkg io))))
     (testing "skipping it falls back to the one before"
       (is (= "9.12.2" (:version (source/newest (assoc pkg :skip ["9.14.1"]) io)))))))
 
 (deftest ghcup-definitions-read-the-download-from-the-metadata
   (let [io (s/fake-io {} {ghcup/metadata-url (metadata (apply str (repeat 64 "9")))} (atom []))
-        ghc (package/normalize {:name "ghc" :source {:ghcup "ghc"}})
-        cabal (package/normalize {:name "cabal" :source {:ghcup "cabal"}})
+        ghc (s/normalize {:name "ghc" :source {:ghcup "ghc"}})
+        cabal (s/normalize {:name "cabal" :source {:ghcup "cabal"}})
         release (source/fetch-vars ghc io {:tag "9.14.1" :version "9.14.1"})
         artifact (package/artifact ghc release)]
     (is (= "https://downloads.haskell.org/~ghc/9.14.1/ghc-9.14.1-x86_64-linux.tar.xz" (:url artifact)))
@@ -167,7 +167,7 @@
     (is (= "bin" (:bin-dir ghc)))
     (is (= {"cabal" "cabal"} (:bins cabal))))
   (is (thrown-with-msg? clojure.lang.ExceptionInfo #"names a tool ghcup installs"
-                        (package/normalize {:name "x" :source {:ghcup "agda"}}))))
+                        (s/normalize {:name "x" :source {:ghcup "agda"}}))))
 
 (deftest pinned-metadata-points-only-the-exact-download-at-the-file
   (let [url "https://example.org/ghc-1.tar.xz"

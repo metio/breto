@@ -4,4 +4,4 @@
 
 {:description "Scans your project to determine what components you use",
  :source {:github "microsoft/component-detection"}
- :asset "component-detection-linux-x64"}
+ :platforms {"linux-x86_64" {:asset "component-detection-linux-x64"}}}

@@ -4,5 +4,5 @@
 
 {:description "dlayer is docker layer analyzer",
  :source {:github "orisano/dlayer"}
- :asset "dlayer_{version}_Linux_x86_64.tar.gz"
- :checksum "checksums.txt"}
+ :checksum "checksums.txt"
+ :platforms {"linux-x86_64" {:asset "dlayer_{version}_Linux_x86_64.tar.gz"}}}

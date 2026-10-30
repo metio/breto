@@ -4,5 +4,5 @@
 
 {:description "A Go Authoring tool",
  :source {:github "Songmu/godzil"}
- :asset "godzil_{tag}_linux_amd64.tar.gz"
- :bins {"godzil" "godzil_{tag}_linux_amd64/godzil"}}
+ :bins {"godzil" "godzil_{tag}_linux_amd64/godzil"}
+ :platforms {"linux-x86_64" {:asset "godzil_{tag}_linux_amd64.tar.gz"}}}

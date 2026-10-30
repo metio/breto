@@ -4,4 +4,4 @@
 
 {:description "dt - duct tape for your unix pipes",
  :source {:github "so-dang-cool/dt"}
- :asset "dt-x86_64-linux-gnu.tgz"}
+ :platforms {"linux-x86_64" {:asset "dt-x86_64-linux-gnu.tgz"}}}

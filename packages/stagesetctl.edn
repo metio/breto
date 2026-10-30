@@ -3,11 +3,11 @@
 
 {:description "Flux-compatible Kubernetes controller for ordered, gated, multi-stage deployments",
  :source {:github "metio/stageset-controller"},
- :asset "stagesetctl_{version}_linux_amd64.tar.gz",
  :tag-prefix "",
  :checksum "stageset-controller_{version}_SHA256SUMS",
  :bins {"stagesetctl" "stagesetctl_v{version}"},
  :signature {:bundle "stageset-controller_{version}_SHA256SUMS.bundle",
              :identity "https://github.com/metio/stageset-controller/.github/workflows/release.yml@refs/heads/main",
              :issuer "https://token.actions.githubusercontent.com",
-             :of :checksum}}
+             :of :checksum}
+ :platforms {"linux-x86_64" {:asset "stagesetctl_{version}_linux_amd64.tar.gz"}}}

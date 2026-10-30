@@ -5,4 +5,4 @@
 {:description "From git log to SemVer in no time",
  :source {:github "GitTools/GitVersion"}
  :tag-prefix ""
- :asset "gitversion-linux-x64-{tag}.tar.gz"}
+ :platforms {"linux-x86_64" {:asset "gitversion-linux-x64-{tag}.tar.gz"}}}

@@ -4,5 +4,5 @@
 
 {:description "The lazier way to manage everything docker",
  :source {:github "jesseduffield/lazydocker"}
- :asset "lazydocker_{version}_Linux_x86_64.tar.gz"
- :checksum "checksums.txt"}
+ :checksum "checksums.txt"
+ :platforms {"linux-x86_64" {:asset "lazydocker_{version}_Linux_x86_64.tar.gz"}}}

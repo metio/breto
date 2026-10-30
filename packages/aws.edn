@@ -5,5 +5,5 @@
 {:description "CLI tool to generate terraform files from existing infrastructure (reverse Terraform). Infrastructure to Code",
  :source {:github "GoogleCloudPlatform/terraformer"}
  :tag-prefix ""
- :asset "terraformer-aws-linux-amd64"
- :bins {"terraformer" "{asset}"}}
+ :bins {"terraformer" "{asset}"}
+ :platforms {"linux-x86_64" {:asset "terraformer-aws-linux-amd64"}}}

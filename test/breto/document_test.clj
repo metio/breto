@@ -27,7 +27,7 @@
 (deftest vars-can-be-read-from-a-path-in-a-document
   (let [io (s/fake-io {} {"https://example.org/tool.yaml" "releases:\n  1.2.0:\n    file: tool-1.2.0-linux.tar.gz\n"}
                       (atom []))
-        pkg (package/normalize {:name "tool" :source {:text "https://example.org/latest"}
+        pkg (s/normalize {:name "tool" :source {:text "https://example.org/latest"}
                                 :vars {:file {:json "https://example.org/tool.yaml" :path ["releases" "{version}" "file"]}}
                                 :asset "{file}" :url "https://example.org/{asset}"})
         release (source/fetch-vars pkg io {:tag "1.2.0" :version "1.2.0"})]

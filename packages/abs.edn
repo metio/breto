@@ -5,4 +5,4 @@
 {:description "Home of the ABS programming language: the joy of shell scripting",
  :source {:github "abs-lang/abs"}
  :tag-prefix ""
- :asset "abs-linux-amd64"}
+ :platforms {"linux-x86_64" {:asset "abs-linux-amd64"}}}

@@ -4,6 +4,6 @@
 
 {:description "Generate images of code and terminal output",
  :source {:github "charmbracelet/freeze"}
- :asset "freeze_{version}_Linux_x86_64.tar.gz"
  :checksum "checksums.txt"
- :bins {"freeze" "freeze_{version}_Linux_x86_64/freeze"}}
+ :bins {"freeze" "freeze_{version}_Linux_x86_64/freeze"}
+ :platforms {"linux-x86_64" {:asset "freeze_{version}_Linux_x86_64.tar.gz"}}}

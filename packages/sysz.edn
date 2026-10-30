@@ -5,4 +5,4 @@
 {:description "An fzf  terminal UI for systemctl",
  :source {:github "joehillen/sysz"}
  :tag-prefix ""
- :asset "sysz"}
+ :platforms {"linux-x86_64" {:asset "sysz"}}}

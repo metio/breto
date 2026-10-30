@@ -3,6 +3,6 @@
 ;; SPDX-License-Identifier: MIT
 
 {:source {:github "cloverrose/unusedinterface"}
- :asset "unusedinterface_Linux_x86_64.tar.gz"
  :checksum "unusedinterface_{version}_checksums.txt"
- :bins {"unusedinterface" "unusedinterface_Linux_x86_64/unusedinterface"}}
+ :bins {"unusedinterface" "unusedinterface_Linux_x86_64/unusedinterface"}
+ :platforms {"linux-x86_64" {:asset "unusedinterface_Linux_x86_64.tar.gz"}}}

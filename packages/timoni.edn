@@ -4,5 +4,5 @@
 
 {:description "Timoni is a package manager for Kubernetes, powered by CUE and inspired by Helm",
  :source {:github "stefanprodan/timoni"}
- :asset "timoni_{version}_linux_amd64.tar.gz"
- :checksum "timoni_{version}_checksums.txt"}
+ :checksum "timoni_{version}_checksums.txt"
+ :platforms {"linux-x86_64" {:asset "timoni_{version}_linux_amd64.tar.gz"}}}

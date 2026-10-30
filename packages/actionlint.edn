@@ -3,8 +3,8 @@
 
 {:description "Static checker for GitHub Actions workflow files"
  :source {:github "rhysd/actionlint"}
- :asset "actionlint_{version}_linux_amd64.tar.gz"
  :man ["man/actionlint.1"]
  :platforms {"darwin-aarch64" {:asset "actionlint_{version}_darwin_arm64.tar.gz"}
              "darwin-x86_64" {:asset "actionlint_{version}_darwin_amd64.tar.gz"}
-             "linux-aarch64" {:asset "actionlint_{version}_linux_arm64.tar.gz"}}}
+             "linux-aarch64" {:asset "actionlint_{version}_linux_arm64.tar.gz"}
+             "linux-x86_64" {:asset "actionlint_{version}_linux_amd64.tar.gz"}}}

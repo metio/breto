@@ -4,5 +4,5 @@
 
 {:description "extract internal monitoring data from application logs for collection in a timeseries database",
  :source {:github "google/mtail"}
- :asset "mtail_{version}_linux_amd64.tar.gz"
- :checksum "checksums.txt"}
+ :checksum "checksums.txt"
+ :platforms {"linux-x86_64" {:asset "mtail_{version}_linux_amd64.tar.gz"}}}

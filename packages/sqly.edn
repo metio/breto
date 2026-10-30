@@ -4,5 +4,5 @@
 
 {:description "easily execute SQL against CSV/TSV/LTSV/JSON and Microsoft Excel with shell",
  :source {:github "nao1215/sqly"}
- :asset "sqly_{version}_linux_amd64.tar.gz"
- :checksum "checksums.txt"}
+ :checksum "checksums.txt"
+ :platforms {"linux-x86_64" {:asset "sqly_{version}_linux_amd64.tar.gz"}}}

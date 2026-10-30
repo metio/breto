@@ -4,6 +4,6 @@
 
 {:description "Miller is like awk, sed, cut, join, and sort for name-indexed data such as CSV, TSV, and tabular JSON",
  :source {:github "johnkerl/miller"}
- :asset "miller-{version}-linux-amd64.tar.gz"
  :checksum "miller-{version}-checksums.txt"
- :bins {"mlr" "miller-{version}-linux-amd64/mlr"}}
+ :bins {"mlr" "miller-{version}-linux-amd64/mlr"}
+ :platforms {"linux-x86_64" {:asset "miller-{version}-linux-amd64.tar.gz"}}}

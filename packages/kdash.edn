@@ -4,5 +4,5 @@
 
 {:description "A simple and fast dashboard for Kubernetes",
  :source {:github "kdash-rs/kdash"}
- :asset "kdash-linux.tar.gz"
- :checksum "kdash-linux.sha256"}
+ :checksum "kdash-linux.sha256"
+ :platforms {"linux-x86_64" {:asset "kdash-linux.tar.gz"}}}

@@ -4,4 +4,4 @@
 
 {:description "Ohayou(おはよう), HTTP load generator, inspired by rakyll/hey with tui animation",
  :source {:github "hatoo/oha"}
- :asset "oha-linux-amd64"}
+ :platforms {"linux-x86_64" {:asset "oha-linux-amd64"}}}

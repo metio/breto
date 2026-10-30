@@ -4,5 +4,5 @@
 
 {:description "Your Go project's documentation, to-go",
  :source {:github "abhinav/doc2go"}
- :asset "doc2go-linux-amd64.tar.gz"
- :checksum "checksums.txt"}
+ :checksum "checksums.txt"
+ :platforms {"linux-x86_64" {:asset "doc2go-linux-amd64.tar.gz"}}}

@@ -4,4 +4,4 @@
 
 {:description "Agent Builder and Runtime by Docker Engineering",
  :source {:github "docker/cagent"}
- :asset "cagent-linux-amd64"}
+ :platforms {"linux-x86_64" {:asset "cagent-linux-amd64"}}}

@@ -4,5 +4,5 @@
 
 {:description "Validate \"terraform plan\" changes against a customizable ruleset",
  :source {:github "drlau/akashi"}
- :asset "akashi_{version}_Linux_x86_64.tar.gz"
- :checksum "akashi_{version}_checksums.txt"}
+ :checksum "akashi_{version}_checksums.txt"
+ :platforms {"linux-x86_64" {:asset "akashi_{version}_Linux_x86_64.tar.gz"}}}

@@ -4,4 +4,4 @@
 
 {:description "Autogenerate RBAC policies based on Kubernetes audit logs",
  :source {:github "liggitt/audit2rbac"}
- :asset "audit2rbac-linux-amd64.tar.gz"}
+ :platforms {"linux-x86_64" {:asset "audit2rbac-linux-amd64.tar.gz"}}}

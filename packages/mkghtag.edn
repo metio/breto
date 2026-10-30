@@ -4,5 +4,5 @@
 
 {:description "CLI to create GitHub Tags via API",
  :source {:github "suzuki-shunsuke/mkghtag"}
- :asset "mkghtag_linux_amd64.tar.gz"
- :checksum "mkghtag_{version}_checksums.txt"}
+ :checksum "mkghtag_{version}_checksums.txt"
+ :platforms {"linux-x86_64" {:asset "mkghtag_linux_amd64.tar.gz"}}}

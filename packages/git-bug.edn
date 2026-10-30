@@ -4,5 +4,5 @@
 
 {:description "Distributed, offline-first bug tracker embedded in git, with bridges",
  :source {:github "git-bug/git-bug"}
- :asset "git-bug_linux_amd64"
- :checksum "checksums.txt"}
+ :checksum "checksums.txt"
+ :platforms {"linux-x86_64" {:asset "git-bug_linux_amd64"}}}

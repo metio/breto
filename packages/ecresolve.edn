@@ -4,5 +4,5 @@
 
 {:description "Resolves AWS ECR images with prioritized tag-based lookup",
  :source {:github "ebi-yade/ecresolve"}
- :asset "ecresolve_{version}_linux_amd64.tar.gz"
- :checksum "ecresolve_{version}_checksums.txt"}
+ :checksum "ecresolve_{version}_checksums.txt"
+ :platforms {"linux-x86_64" {:asset "ecresolve_{version}_linux_amd64.tar.gz"}}}

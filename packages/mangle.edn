@@ -4,5 +4,5 @@
 
 {:description "Mangle is a tool that manipulates aspects of compiled executables (.exe or DLL) to avoid detection from EDRs",
  :source {:github "optiv/Mangle"}
- :asset "Mangle_{version}_linux_amd64"
- :checksum "Mangle_checksums.txt"}
+ :checksum "Mangle_checksums.txt"
+ :platforms {"linux-x86_64" {:asset "Mangle_{version}_linux_amd64"}}}

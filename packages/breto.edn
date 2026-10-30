@@ -4,7 +4,6 @@
 {:description "Declarative installs of prebuilt binaries, as one executable with the package definitions of its release built in"
  :source {:github "metio/breto"}
  :tag-prefix ""
- :asset "breto-linux-amd64"
  :checksum "breto_{version}_SHA256SUMS"
  :bins {"breto" "{asset}"}
  :signature {:bundle "breto_{version}_SHA256SUMS.bundle"
@@ -13,4 +12,5 @@
              :of :checksum}
  :platforms {"darwin-aarch64" {:asset "breto-darwin-aarch64"}
              "darwin-x86_64" {:asset "breto-darwin-amd64"}
-             "linux-aarch64" {:asset "breto-linux-aarch64"}}}
+             "linux-aarch64" {:asset "breto-linux-aarch64"}
+             "linux-x86_64" {:asset "breto-linux-amd64"}}}

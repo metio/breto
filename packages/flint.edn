@@ -4,5 +4,5 @@
 
 {:description "Flint is a fast linter runner that keeps local and CI checks consistent with one binary, one config, and only the tools your repo declares",
  :source {:github "grafana/flint"}
- :asset "flint-x86_64-unknown-linux-musl.tar.gz"
- :checksum "{asset}.sha256"}
+ :checksum "{asset}.sha256"
+ :platforms {"linux-x86_64" {:asset "flint-x86_64-unknown-linux-musl.tar.gz"}}}

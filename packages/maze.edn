@@ -4,5 +4,5 @@
 
 {:description "A maze command written in Go",
  :source {:github "itchyny/maze"}
- :asset "maze_{tag}_linux_amd64.tar.gz"
- :bins {"maze" "maze_{tag}_linux_amd64/maze"}}
+ :bins {"maze" "maze_{tag}_linux_amd64/maze"}
+ :platforms {"linux-x86_64" {:asset "maze_{tag}_linux_amd64.tar.gz"}}}

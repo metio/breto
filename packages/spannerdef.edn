@@ -4,5 +4,5 @@
 
 {:description "Idempotent Google Cloud Spanner schema management by SQL, inspired by sqldef",
  :source {:github "hokaccha/spannerdef"}
- :asset "spannerdef-{tag}-linux-amd64"
- :checksum "checksums.txt"}
+ :checksum "checksums.txt"
+ :platforms {"linux-x86_64" {:asset "spannerdef-{tag}-linux-amd64"}}}

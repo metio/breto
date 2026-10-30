@@ -4,5 +4,5 @@
 
 {:description "Terminal DynamoDB Viewer",
  :source {:github "lusingander/ddv"}
- :asset "ddv-{version}-x86_64-unknown-linux-musl.tar.gz"
- :checksum "checksum.txt"}
+ :checksum "checksum.txt"
+ :platforms {"linux-x86_64" {:asset "ddv-{version}-x86_64-unknown-linux-musl.tar.gz"}}}

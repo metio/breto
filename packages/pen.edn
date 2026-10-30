@@ -4,5 +4,5 @@
 
 {:description "The parallel, concurrent, and functional programming language for scalable software development",
  :source {:github "pen-lang/pen"}
- :asset "pen-{version}-x86_64-unknown-linux-gnu.tar.xz"
- :bins {"pen" "target/release/pen"}}
+ :bins {"pen" "target/release/pen"}
+ :platforms {"linux-x86_64" {:asset "pen-{version}-x86_64-unknown-linux-gnu.tar.xz"}}}

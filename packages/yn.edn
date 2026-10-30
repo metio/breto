@@ -3,5 +3,5 @@
 ;; SPDX-License-Identifier: MIT
 
 {:source {:github "so-dang-cool/yn"}
- :asset "yn-x86_64-linux-gnu.tgz"
- :bins {"Yn" "Yn", "yN" "yN"}}
+ :bins {"Yn" "Yn", "yN" "yN"}
+ :platforms {"linux-x86_64" {:asset "yn-x86_64-linux-gnu.tgz"}}}

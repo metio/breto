@@ -4,5 +4,5 @@
 
 {:description "WhatsApp in your terminal",
  :source {:github "openclaw/wacli"}
- :asset "wacli_{version}_linux_amd64.tar.gz"
- :checksum "checksums.txt"}
+ :checksum "checksums.txt"
+ :platforms {"linux-x86_64" {:asset "wacli_{version}_linux_amd64.tar.gz"}}}

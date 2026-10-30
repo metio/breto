@@ -5,4 +5,4 @@
 {:description "Amber the programming language compiled to bash",
  :source {:github "amber-lang/amber"}
  :tag-prefix ""
- :asset "amber-linux-musl-x86_64.tar.xz"}
+ :platforms {"linux-x86_64" {:asset "amber-linux-musl-x86_64.tar.xz"}}}

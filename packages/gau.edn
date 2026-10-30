@@ -4,5 +4,5 @@
 
 {:description "Fetch known URLs from AlienVault's Open Threat Exchange, the Wayback Machine, and Common Crawl",
  :source {:github "lc/gau"}
- :asset "gau_{version}_linux_amd64.tar.gz"
- :checksum "gau_{version}_checksums.txt"}
+ :checksum "gau_{version}_checksums.txt"
+ :platforms {"linux-x86_64" {:asset "gau_{version}_linux_amd64.tar.gz"}}}

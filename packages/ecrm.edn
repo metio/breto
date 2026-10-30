@@ -4,5 +4,5 @@
 
 {:description "A command line tool for managing ECR repositories",
  :source {:github "fujiwara/ecrm"}
- :asset "ecrm_{version}_linux_amd64.tar.gz"
- :checksum "checksums.txt"}
+ :checksum "checksums.txt"
+ :platforms {"linux-x86_64" {:asset "ecrm_{version}_linux_amd64.tar.gz"}}}

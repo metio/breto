@@ -4,6 +4,6 @@
 
 {:description "A multi-shell completion binary",
  :source {:github "carapace-sh/carapace-bin"}
- :asset "carapace-bin_{version}_linux_amd64.tar.gz"
  :checksum "carapace-bin_{version}_checksums.txt"
- :bins {"carapace" "carapace"}}
+ :bins {"carapace" "carapace"}
+ :platforms {"linux-x86_64" {:asset "carapace-bin_{version}_linux_amd64.tar.gz"}}}

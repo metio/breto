@@ -3,10 +3,10 @@
 
 {:description "The Kubernetes Package Manager",
  :source {:github "helm/helm"}
- :asset "helm-{tag}-linux-amd64.tar.gz"
  :url "https://get.helm.sh/{asset}"
  :checksum "{asset}.sha256sum"
  :strip 1
  :platforms {"darwin-aarch64" {:asset "helm-{tag}-darwin-arm64.tar.gz"}
              "darwin-x86_64" {:asset "helm-{tag}-darwin-amd64.tar.gz"}
-             "linux-aarch64" {:asset "helm-{tag}-linux-arm64.tar.gz"}}}
+             "linux-aarch64" {:asset "helm-{tag}-linux-arm64.tar.gz"}
+             "linux-x86_64" {:asset "helm-{tag}-linux-amd64.tar.gz"}}}

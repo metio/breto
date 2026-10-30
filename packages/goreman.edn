@@ -4,5 +4,5 @@
 
 {:description "foreman clone written in go language",
  :source {:github "mattn/goreman"}
- :asset "goreman_{tag}_linux_amd64.tar.gz"
- :bins {"goreman" "goreman_{tag}_linux_amd64/goreman"}}
+ :bins {"goreman" "goreman_{tag}_linux_amd64/goreman"}
+ :platforms {"linux-x86_64" {:asset "goreman_{tag}_linux_amd64.tar.gz"}}}

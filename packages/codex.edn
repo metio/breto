@@ -4,9 +4,9 @@
 {:description "OpenAI's coding agent for the terminal"
  :source {:github "openai/codex"}
  :tag-prefix "rust-v"
- :asset "codex-x86_64-unknown-linux-musl.tar.gz"
  :bins {"codex" "codex-x86_64-unknown-linux-musl"}
  :signature {:bundle "codex-x86_64-unknown-linux-musl.sigstore"
              :of {:file "codex-x86_64-unknown-linux-musl"}
              :identity "https://github.com/openai/codex/.github/workflows/rust-release.yml@refs/tags/{tag}"
-             :issuer "https://token.actions.githubusercontent.com"}}
+             :issuer "https://token.actions.githubusercontent.com"}
+ :platforms {"linux-x86_64" {:asset "codex-x86_64-unknown-linux-musl.tar.gz"}}}

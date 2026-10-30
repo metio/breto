@@ -4,5 +4,5 @@
 
 {:description "Run common networking tests against any site",
  :source {:github "ycd/dstp"}
- :asset "dstp_{version}_Linux_amd64.tar.gz"
- :checksum "checksums.txt"}
+ :checksum "checksums.txt"
+ :platforms {"linux-x86_64" {:asset "dstp_{version}_Linux_amd64.tar.gz"}}}

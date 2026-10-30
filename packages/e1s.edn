@@ -4,5 +4,5 @@
 
 {:description "E1S - Easily Manage AWS ECS Resources in Terminal",
  :source {:github "keidarcy/e1s"}
- :asset "e1s_{version}_linux_amd64.tar.gz"
- :checksum "e1s_{version}_checksums.txt"}
+ :checksum "e1s_{version}_checksums.txt"
+ :platforms {"linux-x86_64" {:asset "e1s_{version}_linux_amd64.tar.gz"}}}

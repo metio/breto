@@ -4,6 +4,6 @@
 
 {:description "The best way of working with Protocol Buffers",
  :source {:github "bufbuild/buf"}
- :asset "buf-Linux-x86_64.tar.gz"
  :checksum "sha256.txt"
- :bins {"buf" "buf/bin/buf", "protoc-gen-buf-breaking" "buf/bin/protoc-gen-buf-breaking", "protoc-gen-buf-lint" "buf/bin/protoc-gen-buf-lint"}}
+ :bins {"buf" "buf/bin/buf", "protoc-gen-buf-breaking" "buf/bin/protoc-gen-buf-breaking", "protoc-gen-buf-lint" "buf/bin/protoc-gen-buf-lint"}
+ :platforms {"linux-x86_64" {:asset "buf-Linux-x86_64.tar.gz"}}}

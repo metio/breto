@@ -4,5 +4,5 @@
 
 {:description "Slice and dice logs on the command line",
  :source {:github "rcoh/angle-grinder"}
- :asset "agrind-x86_64-unknown-linux-musl.tar.gz"
- :bins {"agrind" "agrind"}}
+ :bins {"agrind" "agrind"}
+ :platforms {"linux-x86_64" {:asset "agrind-x86_64-unknown-linux-musl.tar.gz"}}}

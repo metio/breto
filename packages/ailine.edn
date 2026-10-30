@@ -4,6 +4,6 @@
 
 {:description "Claude Code statusline with real usage limits from Anthropic API",
  :source {:github "lexfrei/ailine"}
- :asset "ailine_linux_amd64.tar.gz"
  :checksum "checksums.txt"
- :bins {"ailine" "ailine", "claudeline" "ailine"}}
+ :bins {"ailine" "ailine", "claudeline" "ailine"}
+ :platforms {"linux-x86_64" {:asset "ailine_linux_amd64.tar.gz"}}}

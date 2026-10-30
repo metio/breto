@@ -4,5 +4,5 @@
 
 {:description "Nerdlog: fast, remote-first, multi-host TUI log viewer with timeline histogram and no central server",
  :source {:github "dimonomid/nerdlog"}
- :asset "nerdlog_{version}_linux_amd64.tar.gz"
- :checksum "checksums.txt"}
+ :checksum "checksums.txt"
+ :platforms {"linux-x86_64" {:asset "nerdlog_{version}_linux_amd64.tar.gz"}}}

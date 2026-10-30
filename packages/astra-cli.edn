@@ -4,6 +4,6 @@
 
 {:description "DataStax Astra automation CLI",
  :source {:github "datastax-archive/astra-cli"}
- :asset "astra-cli_{version}_linux_amd64.tar.gz"
  :checksum "astra-cli_{version}_checksums.txt"
- :bins {"astra" "astra"}}
+ :bins {"astra" "astra"}
+ :platforms {"linux-x86_64" {:asset "astra-cli_{version}_linux_amd64.tar.gz"}}}

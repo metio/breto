@@ -4,5 +4,5 @@
 
 {:description "Create, develop, and deploy Slack apps from the command-line",
  :source {:github "slackapi/slack-cli"}
- :asset "slack_cli_{version}_linux_64-bit.tar.gz"
- :bins {"slack" "bin/slack"}}
+ :bins {"slack" "bin/slack"}
+ :platforms {"linux-x86_64" {:asset "slack_cli_{version}_linux_64-bit.tar.gz"}}}

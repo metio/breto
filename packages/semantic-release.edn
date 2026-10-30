@@ -4,5 +4,5 @@
 
 {:description "semantic-release written in Go",
  :source {:github "go-semantic-release/semantic-release"}
- :asset "semantic-release_{tag}_linux_amd64"
- :checksum "semantic-release_{tag}_checksums.txt"}
+ :checksum "semantic-release_{tag}_checksums.txt"
+ :platforms {"linux-x86_64" {:asset "semantic-release_{tag}_linux_amd64"}}}

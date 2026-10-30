@@ -4,6 +4,6 @@
 
 {:description "fuse-overlayfs plugin for rootless containerd on old Linux (not needed on modern Linux)",
  :source {:github "containerd/fuse-overlayfs-snapshotter"}
- :asset "containerd-fuse-overlayfs-{version}-linux-amd64.tar.gz"
  :checksum "SHA256SUMS"
- :bins {"containerd-fuse-overlayfs-grpc" "containerd-fuse-overlayfs-grpc"}}
+ :bins {"containerd-fuse-overlayfs-grpc" "containerd-fuse-overlayfs-grpc"}
+ :platforms {"linux-x86_64" {:asset "containerd-fuse-overlayfs-{version}-linux-amd64.tar.gz"}}}

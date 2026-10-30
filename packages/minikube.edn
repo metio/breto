@@ -3,6 +3,6 @@
 
 {:description "Runs a local Kubernetes cluster"
  :source {:github "kubernetes/minikube"}
- :asset "minikube-linux-amd64"
  :checksum "{asset}.sha256"
- :bins {"minikube" "minikube-linux-amd64"}}
+ :bins {"minikube" "minikube-linux-amd64"}
+ :platforms {"linux-x86_64" {:asset "minikube-linux-amd64"}}}

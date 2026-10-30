@@ -4,5 +4,5 @@
 
 {:description "command line helper to obtain live confirmation from relevant people",
  :source {:github "mvisonneau/approuvez"}
- :asset "approuvez_{tag}_linux_amd64.tar.gz"
- :checksum "approuvez_{tag}_sha512sums.txt"}
+ :checksum "approuvez_{tag}_sha512sums.txt"
+ :platforms {"linux-x86_64" {:asset "approuvez_{tag}_linux_amd64.tar.gz"}}}

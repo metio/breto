@@ -4,5 +4,5 @@
 
 {:description "A portable devkit for CI/CD pipelines",
  :source {:github "dagger/dagger"}
- :asset "dagger_{tag}_linux_amd64.tar.gz"
- :checksum "checksums.txt"}
+ :checksum "checksums.txt"
+ :platforms {"linux-x86_64" {:asset "dagger_{tag}_linux_amd64.tar.gz"}}}

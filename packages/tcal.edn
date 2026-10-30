@@ -3,8 +3,8 @@
 
 {:description "Edit and merge iCalendars as ergonomic TOML.",
  :source {:github "pimalaya/tcal"}
- :asset "tcal.x86_64-linux.tgz",
  :man ["share/man/*.1.gz"],
  :completions {:bash "share/completions/tcal.bash",
                :zsh "share/completions/_tcal",
-               :fish "share/completions/tcal.fish"}}
+               :fish "share/completions/tcal.fish"}
+ :platforms {"linux-x86_64" {:asset "tcal.x86_64-linux.tgz"}}}

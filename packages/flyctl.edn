@@ -4,6 +4,6 @@
 
 {:description "Command line tools for fly.io services",
  :source {:github "superfly/flyctl"}
- :asset "flyctl_{version}_Linux_x86_64.tar.gz"
  :checksum "flyctl_{version}_checksums.txt"
- :bins {"fly" "flyctl", "flyctl" "flyctl"}}
+ :bins {"fly" "flyctl", "flyctl" "flyctl"}
+ :platforms {"linux-x86_64" {:asset "flyctl_{version}_Linux_x86_64.tar.gz"}}}

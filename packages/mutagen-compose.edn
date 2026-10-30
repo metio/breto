@@ -4,5 +4,5 @@
 
 {:description "Compose with Mutagen integration",
  :source {:github "mutagen-io/mutagen-compose"}
- :asset "mutagen-compose_linux_amd64_{tag}.tar.gz"
- :checksum "SHA256SUMS"}
+ :checksum "SHA256SUMS"
+ :platforms {"linux-x86_64" {:asset "mutagen-compose_linux_amd64_{tag}.tar.gz"}}}

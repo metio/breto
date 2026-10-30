@@ -4,6 +4,6 @@
 
 {:description "kubectl plugin to connect to external host via Envoy Proxy in Kubernetes cluster",
  :source {:github "int128/kubectl-external-forward"}
- :asset "kubectl-external_forward_linux_amd64.zip"
  :checksum "{asset}.sha256"
- :bins {"kubectl-external_forward" "kubectl-external_forward"}}
+ :bins {"kubectl-external_forward" "kubectl-external_forward"}
+ :platforms {"linux-x86_64" {:asset "kubectl-external_forward_linux_amd64.zip"}}}

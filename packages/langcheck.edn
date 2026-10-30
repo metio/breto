@@ -4,5 +4,5 @@
 
 {:description "langcheck is a CLI for checking if disallowed characters are included in files and texts. This is useful to prevent coding agents from using disallowed characters in code, commit messages, issues, pull requests, and so on",
  :source {:github "suzuki-shunsuke/langcheck"}
- :asset "langcheck_linux_amd64.tar.gz"
- :checksum "langcheck_checksums.txt"}
+ :checksum "langcheck_checksums.txt"
+ :platforms {"linux-x86_64" {:asset "langcheck_linux_amd64.tar.gz"}}}

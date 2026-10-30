@@ -4,5 +4,5 @@
 
 {:description "A Go static analyzer that identifies variables with unnecessarily wide scope and suggests moving them to tighter scopes",
  :source {:github "fillmore-labs/scopeguard"}
- :asset "scopeguard_linux_amd64.tar.gz"
- :checksum "checksums.txt"}
+ :checksum "checksums.txt"
+ :platforms {"linux-x86_64" {:asset "scopeguard_linux_amd64.tar.gz"}}}

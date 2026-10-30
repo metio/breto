@@ -4,4 +4,4 @@
 
 {:description "Slack client for your terminal",
  :source {:github "jpbruinsslot/slack-term"}
- :asset "slack-term-linux-amd64"}
+ :platforms {"linux-x86_64" {:asset "slack-term-linux-amd64"}}}

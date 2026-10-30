@@ -4,5 +4,5 @@
 
 {:description "Manage your ssh alias configs easily",
  :source {:github "xwjdsh/manssh"}
- :asset "manssh_{version}_Linux_x86_64.tar.gz"
- :checksum "checksums.txt"}
+ :checksum "checksums.txt"
+ :platforms {"linux-x86_64" {:asset "manssh_{version}_Linux_x86_64.tar.gz"}}}

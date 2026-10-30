@@ -4,5 +4,5 @@
 
 {:description "A minimal, fast alternative to 'du -sh'",
  :source {:github "sharkdp/diskus"}
- :asset "diskus-{tag}-x86_64-unknown-linux-musl.tar.gz"
- :bins {"diskus" "diskus-{tag}-x86_64-unknown-linux-musl/diskus"}}
+ :bins {"diskus" "diskus-{tag}-x86_64-unknown-linux-musl/diskus"}
+ :platforms {"linux-x86_64" {:asset "diskus-{tag}-x86_64-unknown-linux-musl.tar.gz"}}}

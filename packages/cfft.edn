@@ -4,5 +4,5 @@
 
 {:description "cfft is a testing tool for CloudFront Functions",
  :source {:github "fujiwara/cfft"}
- :asset "cfft_{version}_linux_amd64.tar.gz"
- :checksum "checksums.txt"}
+ :checksum "checksums.txt"
+ :platforms {"linux-x86_64" {:asset "cfft_{version}_linux_amd64.tar.gz"}}}

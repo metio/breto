@@ -4,6 +4,6 @@
 
 {:description "Manage multiple AI agents like Claude Code, Aider, Codex, and Amp. 10x your productivity",
  :source {:github "smtg-ai/claude-squad"}
- :asset "claude-squad_{version}_linux_amd64.tar.gz"
  :checksum "checksums.txt"
- :bins {"claude-squad" "claude-squad", "cs" "claude-squad"}}
+ :bins {"claude-squad" "claude-squad", "cs" "claude-squad"}
+ :platforms {"linux-x86_64" {:asset "claude-squad_{version}_linux_amd64.tar.gz"}}}

@@ -4,5 +4,5 @@
 
 {:description "The Grafana Kubernetes Plugin allows you to explore your Kubernetes resources and logs directly within Grafana",
  :source {:github "ricoberger/grafana-kubernetes-plugin"}
- :asset "kubectl-grafana-linux-amd64.tar.gz"
- :bins {"kubectl-grafana" "kubectl-grafana"}}
+ :bins {"kubectl-grafana" "kubectl-grafana"}
+ :platforms {"linux-x86_64" {:asset "kubectl-grafana-linux-amd64.tar.gz"}}}

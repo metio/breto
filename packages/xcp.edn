@@ -4,6 +4,6 @@
 {:description "An extended cp with progress bars and parallel copies"
  :source {:github "tarka/xcp"}
  :tag-prefix "xcp-v"
- :asset "xcp-v{version}-x86_64-unknown-linux-gnu.tar.gz"
  :strip 1
- :bins {"xcp" "bin/xcp"}}
+ :bins {"xcp" "bin/xcp"}
+ :platforms {"linux-x86_64" {:asset "xcp-v{version}-x86_64-unknown-linux-gnu.tar.gz"}}}

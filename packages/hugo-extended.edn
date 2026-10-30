@@ -4,6 +4,6 @@
 
 {:description "The world’s fastest framework for building websites",
  :source {:github "gohugoio/hugo"}
- :asset "hugo_extended_{version}_linux-amd64.tar.gz"
  :checksum "hugo_{version}_checksums.txt"
- :bins {"hugo" "hugo"}}
+ :bins {"hugo" "hugo"}
+ :platforms {"linux-x86_64" {:asset "hugo_extended_{version}_linux-amd64.tar.gz"}}}

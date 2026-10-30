@@ -4,4 +4,4 @@
 
 {:description "Blazing  fast terminal-ui for git written in rust",
  :source {:github "gitui-org/gitui"}
- :asset "gitui-linux-x86_64.tar.gz"}
+ :platforms {"linux-x86_64" {:asset "gitui-linux-x86_64.tar.gz"}}}

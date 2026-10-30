@@ -4,5 +4,5 @@
 
 {:description "Tobari is a scoped coverage measurement tool for Go",
  :source {:github "goccy/tobari"}
- :asset "tobari_{tag}_linux_amd64.tar.gz"
- :checksum "checksums.txt"}
+ :checksum "checksums.txt"
+ :platforms {"linux-x86_64" {:asset "tobari_{tag}_linux_amd64.tar.gz"}}}

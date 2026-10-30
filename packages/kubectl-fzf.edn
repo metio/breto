@@ -4,6 +4,6 @@
 
 {:description "A fast kubectl autocompletion with fzf",
  :source {:github "bonnefoa/kubectl-fzf"}
- :asset "kubectl-fzf_linux_amd64.tar.gz"
  :checksum "kubectl-fzf_checksums.txt"
- :bins {"kubectl-fzf-completion" "kubectl-fzf-completion", "kubectl-fzf-server" "kubectl-fzf-server"}}
+ :bins {"kubectl-fzf-completion" "kubectl-fzf-completion", "kubectl-fzf-server" "kubectl-fzf-server"}
+ :platforms {"linux-x86_64" {:asset "kubectl-fzf_linux_amd64.tar.gz"}}}

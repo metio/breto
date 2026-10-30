@@ -4,4 +4,4 @@
 
 {:description "Standalone program to fetch authentication tokens for AWS EKS Clusters",
  :source {:github "jscaltreto/eks-auth"}
- :asset "eks-auth-{tag}-linux-amd64.tar.gz"}
+ :platforms {"linux-x86_64" {:asset "eks-auth-{tag}-linux-amd64.tar.gz"}}}

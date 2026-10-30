@@ -4,5 +4,5 @@
 
 {:description "A tiny command-line utility to retrieve Github Apps Installation Token",
  :source {:github "nabeken/go-github-apps"}
- :asset "go-github-apps_{version}_linux_amd64.tar.gz"
- :checksum "checksums.txt"}
+ :checksum "checksums.txt"
+ :platforms {"linux-x86_64" {:asset "go-github-apps_{version}_linux_amd64.tar.gz"}}}

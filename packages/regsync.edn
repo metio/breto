@@ -4,4 +4,4 @@
 
 {:description "Docker and OCI image mirroring tool",
  :source {:github "regclient/regclient"}
- :asset "regsync-linux-amd64"}
+ :platforms {"linux-x86_64" {:asset "regsync-linux-amd64"}}}

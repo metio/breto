@@ -4,6 +4,6 @@
 
 {:description "mockguard checks if mockgen is used in conventional filename and options",
  :source {:github "cloverrose/mockguard"}
- :asset "mockguard_Linux_x86_64.tar.gz"
  :checksum "mockguard_{version}_checksums.txt"
- :bins {"mockguard" "mockguard_Linux_x86_64/mockguard"}}
+ :bins {"mockguard" "mockguard_Linux_x86_64/mockguard"}
+ :platforms {"linux-x86_64" {:asset "mockguard_Linux_x86_64.tar.gz"}}}

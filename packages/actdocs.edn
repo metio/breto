@@ -4,5 +4,5 @@
 
 {:description "Generate documentation from Actions and Reusable Workflows",
  :source {:github "tmknom/actdocs"}
- :asset "actdocs_{version}_linux_amd64"
- :checksum "actdocs_{version}_checksums.txt"}
+ :checksum "actdocs_{version}_checksums.txt"
+ :platforms {"linux-x86_64" {:asset "actdocs_{version}_linux_amd64"}}}

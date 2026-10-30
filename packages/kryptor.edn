@@ -4,4 +4,4 @@
 
 {:description "A simple, modern, and secure encryption and signing tool that aims to be a better version of age and Minisign",
  :source {:github "samuel-lucas6/Kryptor"}
- :asset "kryptor-linux-x64.zip"}
+ :platforms {"linux-x86_64" {:asset "kryptor-linux-x64.zip"}}}

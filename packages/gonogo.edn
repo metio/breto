@@ -4,5 +4,5 @@
 
 {:description "[alpha] Tool to evaluate upgrade confidence for Kubernetes cluster addons",
  :source {:github "FairwindsOps/gonogo"}
- :asset "gonogo_{version}_linux_amd64.tar.gz"
- :checksum "checksums.txt"}
+ :checksum "checksums.txt"
+ :platforms {"linux-x86_64" {:asset "gonogo_{version}_linux_amd64.tar.gz"}}}

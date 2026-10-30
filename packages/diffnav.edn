@@ -4,5 +4,5 @@
 
 {:description "A git diff pager based on delta but with a file tree, à la GitHub",
  :source {:github "dlvhdr/diffnav"}
- :asset "diffnav_Linux_x86_64.tar.gz"
- :checksum "diffnav_{version}_checksums.txt"}
+ :checksum "diffnav_{version}_checksums.txt"
+ :platforms {"linux-x86_64" {:asset "diffnav_Linux_x86_64.tar.gz"}}}

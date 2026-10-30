@@ -5,5 +5,5 @@
 {:description "Run any process, on your machine or in an AI agent's environment, as if it were a pod in your Kubernetes cluster: real env vars, DNS, network, traffic",
  :source {:github "metalbear-co/mirrord"}
  :tag-prefix ""
- :asset "mirrord_linux_x86_64.zip"
- :checksum "{asset}.sha256"}
+ :checksum "{asset}.sha256"
+ :platforms {"linux-x86_64" {:asset "mirrord_linux_x86_64.zip"}}}

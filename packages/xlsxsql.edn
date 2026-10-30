@@ -4,5 +4,5 @@
 
 {:description "Execute SQL on xlsx file",
  :source {:github "noborus/xlsxsql"}
- :asset "xlsxsql_{version}_Linux_x86_64.tar.gz"
- :checksum "checksums.txt"}
+ :checksum "checksums.txt"
+ :platforms {"linux-x86_64" {:asset "xlsxsql_{version}_Linux_x86_64.tar.gz"}}}

@@ -4,4 +4,4 @@
 
 {:description "A tool for managing complex enterprise Kubernetes environments as code",
  :source {:github "kubecfg/kubecfg"}
- :asset "kubecfg_Linux_X64"}
+ :platforms {"linux-x86_64" {:asset "kubecfg_Linux_X64"}}}

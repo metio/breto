@@ -4,4 +4,4 @@
 
 {:description "Kiosk Utility for Grafana",
  :source {:github "grafana/grafana-kiosk"}
- :asset "grafana-kiosk.linux.amd64"}
+ :platforms {"linux-x86_64" {:asset "grafana-kiosk.linux.amd64"}}}

@@ -4,6 +4,6 @@
 
 {:description "Masking tape to help commands \"do one thing well\"",
  :source {:github "greymd/teip"}
- :asset "teip-{version}.x86_64-unknown-linux-musl.tar.gz"
  :checksum "{asset}.sha256"
- :bins {"teip" "bin/teip"}}
+ :bins {"teip" "bin/teip"}
+ :platforms {"linux-x86_64" {:asset "teip-{version}.x86_64-unknown-linux-musl.tar.gz"}}}

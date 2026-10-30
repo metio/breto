@@ -3,6 +3,7 @@
 
 (ns breto.package-test
   (:require [breto.package :as package]
+            [breto.support :as s]
             [breto.source :as source]
             [breto.template :as template]
             [breto.version :as version]
@@ -38,7 +39,7 @@
   (is (= "kind-linux-amd64" (package/unpacked-name "kind-linux-amd64"))))
 
 (deftest normalize-fills-github-defaults
-  (let [pkg (package/normalize {:name "eza" :source {:github "eza-community/eza"}
+  (let [pkg (s/normalize {:name "eza" :source {:github "eza-community/eza"}
                                 :asset "eza_x86_64-unknown-linux-gnu.tar.gz"})]
     (is (= "v" (:tag-prefix pkg)))
     (is (= :binary (:layout pkg)))
@@ -47,22 +48,22 @@
 
 (deftest normalize-defaults-raw-assets-to-the-downloaded-file
   (is (= {"kind" "{asset}"}
-         (:bins (package/normalize {:name "kind" :source {:github "kubernetes-sigs/kind"}
+         (:bins (s/normalize {:name "kind" :source {:github "kubernetes-sigs/kind"}
                                     :asset "kind-linux-amd64"})))))
 
 (deftest normalize-defaults-compressed-assets-to-the-decompressed-file
   (is (= {"restic" "restic_{version}_linux_amd64"}
-         (:bins (package/normalize {:name "restic" :source {:github "restic/restic"}
+         (:bins (s/normalize {:name "restic" :source {:github "restic/restic"}
                                     :asset "restic_{version}_linux_amd64.bz2"})))))
 
 (deftest normalize-rejects-incomplete-definitions
   (testing "non-github sources need a url"
     (is (thrown-with-msg? clojure.lang.ExceptionInfo #":url is required"
-                          (package/normalize {:name "kubectl" :source {:text "https://dl.k8s.io/release/stable.txt"}
+                          (s/normalize {:name "kubectl" :source {:text "https://dl.k8s.io/release/stable.txt"}
                                               :asset "kubectl"}))))
   (testing "exactly one source kind"
     (is (thrown-with-msg? clojure.lang.ExceptionInfo #":source must have exactly one"
-                          (package/normalize {:name "x" :source {:github "a/b" :text "u"} :asset "x"})))))
+                          (s/normalize {:name "x" :source {:github "a/b" :text "u"} :asset "x"})))))
 
 (deftest tag-and-version-round-trip
   (let [pkg {:name "kustomize" :tag-prefix "kustomize/"}]
@@ -72,7 +73,7 @@
                           (package/version-of-tag pkg "v5.7.1")))))
 
 (deftest artifact-encodes-slashes-in-the-url-only
-  (let [pkg (package/normalize {:name "kustomize" :source {:github "kubernetes-sigs/kustomize"}
+  (let [pkg (s/normalize {:name "kustomize" :source {:github "kubernetes-sigs/kustomize"}
                                 :tag-prefix "kustomize/"
                                 :asset "kustomize_{version}_linux_amd64.tar.gz"})
         artifact (package/artifact pkg {:tag "kustomize/v5.7.1" :version "v5.7.1"})]
@@ -81,7 +82,7 @@
            (:url artifact)))))
 
 (deftest artifact-resolves-checksums-next-to-the-asset
-  (let [pkg (package/normalize {:name "kubectl" :source {:text "https://dl.k8s.io/release/stable.txt"}
+  (let [pkg (s/normalize {:name "kubectl" :source {:text "https://dl.k8s.io/release/stable.txt"}
                                 :asset "kubectl"
                                 :url "https://dl.k8s.io/release/{tag}/bin/linux/amd64/{asset}"
                                 :checksum "{asset}.sha256"})]
@@ -89,7 +90,7 @@
            (:checksum-url (package/artifact pkg {:tag "v1.34.1" :version "1.34.1"}))))))
 
 (deftest artifact-passes-absolute-checksum-urls-through
-  (let [pkg (package/normalize {:name "x" :source {:github "a/x"} :asset "x.tar.gz"
+  (let [pkg (s/normalize {:name "x" :source {:github "a/x"} :asset "x.tar.gz"
                                 :checksum "https://sums.example/{version}/SUMS"})]
     (is (= "https://sums.example/1.0.0/SUMS"
            (:checksum-url (package/artifact pkg {:tag "v1.0.0" :version "1.0.0"}))))))
@@ -135,7 +136,7 @@
   (is (not (re-matches (template/matcher "ble-nightly-{version}.tar.xz" {}) "ble-nightly.tar.xz"))))
 
 (def ^:private iamb
-  (package/normalize {:name "iamb" :source {:github "ulyssa/iamb"}
+  (s/normalize {:name "iamb" :source {:github "ulyssa/iamb"}
                       :asset "iamb-{version}-x86_64-unknown-linux-musl.tar.gz" :strip 1
                       :history [{:before "0.0.12" :asset "iamb-x86_64-unknown-linux-musl.tgz"}
                                 {:before "0.0.13" :asset "iamb-x86_64-unknown-linux-musl-binary.zip" :strip 0}]}))
@@ -151,27 +152,27 @@
   (is (= iamb (package/at iamb nil))))
 
 (deftest history-recomputes-defaults-per-version
-  (let [pkg (package/normalize {:name "x" :source {:github "new/x"} :asset "x.tar.gz"
+  (let [pkg (s/normalize {:name "x" :source {:github "new/x"} :asset "x.tar.gz"
                                 :history [{:before "2.0" :source {:github "old/x"}}]})]
     (is (= "https://github.com/old/x/releases/download/{tag}/{asset}" (:url (package/at pkg "1.0"))))
     (is (= "https://github.com/new/x/releases/download/{tag}/{asset}" (:url (package/at pkg "2.0"))))))
 
 (deftest history-entries-are-validated
   (is (thrown-with-msg? clojure.lang.ExceptionInfo #"needs a :before"
-                        (package/normalize {:name "x" :source {:github "a/x"} :asset "x" :history [{:asset "y"}]})))
+                        (s/normalize {:name "x" :source {:github "a/x"} :asset "x" :history [{:asset "y"}]})))
   (is (thrown-with-msg? clojure.lang.ExceptionInfo #":url is required"
-                        (package/normalize {:name "x" :source {:github "a/x"} :asset "x"
+                        (s/normalize {:name "x" :source {:github "a/x"} :asset "x"
                                             :history [{:before "1.0" :source {:text "https://t"}}]}))))
 
 (deftest rolling-releases-use-their-fixed-tag
-  (let [pkg (package/normalize {:name "blesh" :source {:github "akinomyoga/ble.sh" :tag "nightly"}
+  (let [pkg (s/normalize {:name "blesh" :source {:github "akinomyoga/ble.sh" :tag "nightly"}
                                 :asset "ble-nightly-{version}.tar.xz" :layout :tree :bins {}})]
     (is (= "nightly" (package/tag-of-version pkg "20261027+c70c0e4")))
     (is (thrown-with-msg? clojure.lang.ExceptionInfo #"must contain \{version\}"
-                          (package/normalize (assoc pkg :asset "ble-nightly.tar.xz" :history []))))))
+                          (s/normalize (assoc pkg :asset "ble-nightly.tar.xz" :history []))))))
 
 (deftest gitlab-sources-read-the-latest-release-permalink
-  (let [pkg (package/normalize {:name "glab" :source {:gitlab "gitlab.com/gitlab-org/cli"}
+  (let [pkg (s/normalize {:name "glab" :source {:gitlab "gitlab.com/gitlab-org/cli"}
                                 :asset "glab_{version}_linux_amd64.tar.gz"
                                 :url "https://gitlab.com/gitlab-org/cli/-/releases/{tag}/downloads/{asset}"})
         io {:get-text (fn [url _]
@@ -186,14 +187,14 @@
 
 (deftest skip-lists-must-hold-version-strings
   (is (thrown? clojure.lang.ExceptionInfo
-               (package/normalize {:name "x" :source {:github "a/x"} :asset "x" :skip "0.5.1"}))))
+               (s/normalize {:name "x" :source {:github "a/x"} :asset "x" :skip "0.5.1"}))))
 
 (deftest bins-stay-inside-the-release-and-the-bin-directory
   (doseq [bins [{"../evil" "tool"} {"sub/tool" "tool"} {".hidden" "tool"} {"tool" "/etc/passwd"} {"tool" "a/../../x"}]]
     (is (thrown-with-msg? clojure.lang.ExceptionInfo #":bins must map plain command names"
-                          (package/normalize {:name "t" :source {:github "a/t"} :asset "t" :bins bins}))
+                          (s/normalize {:name "t" :source {:github "a/t"} :asset "t" :bins bins}))
         (pr-str bins)))
-  (is (package/normalize {:name "t" :source {:github "a/t"} :asset "t.tar.gz" :bins {"t" "t-1.0/bin/t"}})))
+  (is (s/normalize {:name "t" :source {:github "a/t"} :asset "t.tar.gz" :bins {"t" "t-1.0/bin/t"}})))
 
 (deftest pre-releases-precede-their-release
   (is (version/older? "1.0.0-rc1" "1.0.0"))
@@ -208,7 +209,7 @@
   (is (version/older? "1.0.0-Beta1" "1.0.0-rc1")))
 
 (deftest a-var-pattern-whose-group-is-empty-is-reported
-  (let [pkg (package/normalize {:name "x" :source {:github "a/x"} :asset "x-{major}"
+  (let [pkg (s/normalize {:name "x" :source {:github "a/x"} :asset "x-{major}"
                                 :vars {:major {:match "(\\d+)x|1"}}})]
     (is (= :invalid-package
            (try (package/artifact pkg {:tag "v1.0" :version "1.0"}) nil
@@ -216,19 +217,19 @@
 
 (deftest signatures-of-a-file-need-an-archive-asset
   (let [sig {:bundle "b" :identity "me" :issuer "iss" :of {:file "tool"}}
-        normalize (fn [asset] (try (package/normalize {:name "tool" :source {:github "a/tool"} :asset asset :signature sig})
+        normalize (fn [asset] (try (s/normalize {:name "tool" :source {:github "a/tool"} :asset asset :signature sig})
                                    (catch clojure.lang.ExceptionInfo e (:breto/problem (ex-data e)))))]
     (is (map? (normalize "tool.tar.gz")))
     (is (map? (normalize "tool.zip")))
     (is (= :invalid-package (normalize "tool")))
     (is (= :invalid-package (normalize "tool.gz")))
     (is (= :invalid-package
-           (try (package/normalize {:name "tool" :source {:github "a/tool"} :asset "tool.tar.gz"
+           (try (s/normalize {:name "tool" :source {:github "a/tool"} :asset "tool.tar.gz"
                                     :signature (assoc sig :of {:file "../tool"})})
                 (catch clojure.lang.ExceptionInfo e (:breto/problem (ex-data e))))))))
 
 (deftest json-checksums-render-their-path
-  (let [pkg (package/normalize {:name "zig" :source {:text "https://ziglang.org/download/index.json" :match "x"}
+  (let [pkg (s/normalize {:name "zig" :source {:text "https://ziglang.org/download/index.json" :match "x"}
                                 :tag-prefix "" :asset "zig-{version}.tar.xz" :url "https://ziglang.org/download/{version}/{asset}"
                                 :checksum {:json "https://ziglang.org/download/index.json" :hash ["{version}" "x86_64-linux" :shasum]}})
         artifact (package/artifact pkg {:tag "0.17.0" :version "0.17.0"})]
@@ -238,12 +239,12 @@
 (deftest json-checksums-need-a-url-and-a-path
   (doseq [checksum [{:json "u"} {:json "u" :hash []} {:hash ["a"]} {:json "u" :hash ["a"] :extra 1} {:json "u" :hash [1.5]} 42]]
     (is (= :invalid-package
-           (try (package/normalize {:name "x" :source {:github "a/x"} :asset "x" :checksum checksum}) nil
+           (try (s/normalize {:name "x" :source {:github "a/x"} :asset "x" :checksum checksum}) nil
                 (catch clojure.lang.ExceptionInfo e (:breto/problem (ex-data e)))))
         (pr-str checksum))))
 
 (deftest vars-read-from-a-document-come-from-the-release
-  (let [pkg (package/normalize {:name "jdtls" :source {:text "https://example.org/latest.txt"} :tag-prefix ""
+  (let [pkg (s/normalize {:name "jdtls" :source {:text "https://example.org/latest.txt"} :tag-prefix ""
                                 :asset "jdtls-{version}-{build}.tar.gz" :url "https://example.org/{version}/{asset}"
                                 :vars {:build {:text "https://example.org/{version}/latest.txt" :match "-(\\d+)\\.tar"}}})]
     (is (= "jdtls-1.63.0-202610191322.tar.gz"
@@ -251,4 +252,4 @@
     (testing "a release built without fetching keeps the placeholder"
       (is (= "jdtls-1.63.0-{build}.tar.gz" (:asset (package/artifact pkg {:tag "1.63.0" :version "1.63.0"})))))
     (is (thrown-with-msg? clojure.lang.ExceptionInfo #"matched in a document"
-                          (package/normalize (assoc-in pkg [:vars :build] {:text "u"}))))))
+                          (s/normalize (assoc-in pkg [:vars :build] {:text "u"}))))))

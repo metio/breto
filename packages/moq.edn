@@ -4,5 +4,5 @@
 
 {:description "Interface mocking tool for go generate",
  :source {:github "matryer/moq"}
- :asset "moq_Linux_x86_64.tar.gz"
- :checksum "checksums.txt"}
+ :checksum "checksums.txt"
+ :platforms {"linux-x86_64" {:asset "moq_Linux_x86_64.tar.gz"}}}

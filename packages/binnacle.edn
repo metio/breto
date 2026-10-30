@@ -5,5 +5,5 @@
 {:description "An opinionated tool to interact with Kubernetes' Helm",
  :source {:github "Traackr/binnacle"}
  :tag-prefix ""
- :asset "binnacle-linux_amd64.tar.gz"
- :checksum "SHA256SUM.txt"}
+ :checksum "SHA256SUM.txt"
+ :platforms {"linux-x86_64" {:asset "binnacle-linux_amd64.tar.gz"}}}

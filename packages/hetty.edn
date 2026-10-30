@@ -4,5 +4,5 @@
 
 {:description "An HTTP toolkit for security research",
  :source {:github "dstotijn/hetty"}
- :asset "hetty_{version}_Linux_x86_64.tar.gz"
- :checksum "checksums.txt"}
+ :checksum "checksums.txt"
+ :platforms {"linux-x86_64" {:asset "hetty_{version}_Linux_x86_64.tar.gz"}}}

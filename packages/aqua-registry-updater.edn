@@ -4,5 +4,5 @@
 
 {:description "Renovate alternative specific to aqua-registry. Overcome Renovate's scalability issue",
  :source {:github "aquaproj/aqua-registry-updater"}
- :asset "aqua-registry-updater_linux_amd64.tar.gz"
- :checksum "aqua-registry-updater_{version}_checksums.txt"}
+ :checksum "aqua-registry-updater_{version}_checksums.txt"
+ :platforms {"linux-x86_64" {:asset "aqua-registry-updater_linux_amd64.tar.gz"}}}

@@ -4,5 +4,5 @@
 
 {:description "Notification library for gophers and their furry friends",
  :source {:github "containrrr/shoutrrr"}
- :asset "shoutrrr_linux_amd64.tar.gz"
- :checksum "shoutrrr_{version}_checksums.txt"}
+ :checksum "shoutrrr_{version}_checksums.txt"
+ :platforms {"linux-x86_64" {:asset "shoutrrr_linux_amd64.tar.gz"}}}

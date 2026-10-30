@@ -4,5 +4,5 @@
 
 {:description "CLI tool to tracking packages in Japan",
  :source {:github "arrow2nd/nimotsu"}
- :asset "nimotsu_Linux_x86_64.tar.gz"
- :checksum "checksums.txt"}
+ :checksum "checksums.txt"
+ :platforms {"linux-x86_64" {:asset "nimotsu_Linux_x86_64.tar.gz"}}}

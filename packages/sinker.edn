@@ -4,4 +4,4 @@
 
 {:description "A tool to sync images from one container registry to another",
  :source {:github "plexsystems/sinker"}
- :asset "sinker-linux-amd64"}
+ :platforms {"linux-x86_64" {:asset "sinker-linux-amd64"}}}

@@ -4,5 +4,5 @@
 
 {:description "Blazingly fast terminal recorder that generates animated gif images for the web written in rust",
  :source {:github "sassman/t-rec-rs"}
- :asset "t-rec-{tag}-x86_64-unknown-linux-musl.tar.gz"
- :bins {"t-rec" "t-rec"}}
+ :bins {"t-rec" "t-rec"}
+ :platforms {"linux-x86_64" {:asset "t-rec-{tag}-x86_64-unknown-linux-musl.tar.gz"}}}

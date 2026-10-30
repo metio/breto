@@ -4,4 +4,4 @@
 
 {:description "Idempotent schema management for PostgreSQL",
  :source {:github "sqldef/sqldef"}
- :asset "psqldef_linux_amd64.tar.gz"}
+ :platforms {"linux-x86_64" {:asset "psqldef_linux_amd64.tar.gz"}}}

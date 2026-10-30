@@ -4,5 +4,5 @@
 
 {:description "Manage Infrastructure as Code with less pain",
  :source {:github "chanzuckerberg/fogg"}
- :asset "fogg_{version}_linux_amd64.tar.gz"
- :checksum "fogg_{version}_checksums.txt"}
+ :checksum "fogg_{version}_checksums.txt"
+ :platforms {"linux-x86_64" {:asset "fogg_{version}_linux_amd64.tar.gz"}}}

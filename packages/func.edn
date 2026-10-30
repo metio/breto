@@ -5,5 +5,5 @@
 {:description "Knative Functions client API and CLI",
  :source {:github "knative/func"}
  :tag-prefix ""
- :asset "func_linux_amd64"
- :checksum "checksums.txt"}
+ :checksum "checksums.txt"
+ :platforms {"linux-x86_64" {:asset "func_linux_amd64"}}}

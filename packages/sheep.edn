@@ -4,5 +4,5 @@
 
 {:description "Sleep with Sheep",
  :source {:github "koki-develop/sheep"}
- :asset "sheep_Linux_x86_64.tar.gz"
- :checksum "checksums.txt"}
+ :checksum "checksums.txt"
+ :platforms {"linux-x86_64" {:asset "sheep_Linux_x86_64.tar.gz"}}}

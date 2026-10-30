@@ -4,5 +4,5 @@
 
 {:description "Kafta is a command line for managing Kafka clusters",
  :source {:github "electric-saw/kafta"}
- :asset "kafta_Linux_x86_64.tar.gz"
- :checksum "checksums.txt"}
+ :checksum "checksums.txt"
+ :platforms {"linux-x86_64" {:asset "kafta_Linux_x86_64.tar.gz"}}}

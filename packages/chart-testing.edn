@@ -4,6 +4,6 @@
 
 {:description "CLI tool for linting and testing Helm charts",
  :source {:github "helm/chart-testing"}
- :asset "chart-testing_{version}_linux_amd64.tar.gz"
  :checksum "checksums.txt"
- :bins {"ct" "ct"}}
+ :bins {"ct" "ct"}
+ :platforms {"linux-x86_64" {:asset "chart-testing_{version}_linux_amd64.tar.gz"}}}

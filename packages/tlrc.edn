@@ -4,5 +4,5 @@
 
 {:description "A tldr client written in Rust",
  :source {:github "tldr-pages/tlrc"}
- :asset "tlrc-{tag}-x86_64-unknown-linux-musl.tar.gz"
- :bins {"tldr" "tldr"}}
+ :bins {"tldr" "tldr"}
+ :platforms {"linux-x86_64" {:asset "tlrc-{tag}-x86_64-unknown-linux-musl.tar.gz"}}}

@@ -4,5 +4,5 @@
 
 {:description "Format agnostic SBOM tooling",
  :source {:github "bomctl/bomctl"}
- :asset "bomctl_{version}_linux_amd64.tar.gz"
- :checksum "bomctl_{version}_checksums.txt"}
+ :checksum "bomctl_{version}_checksums.txt"
+ :platforms {"linux-x86_64" {:asset "bomctl_{version}_linux_amd64.tar.gz"}}}

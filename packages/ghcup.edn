@@ -3,6 +3,6 @@
 
 {:description "The Haskell installer, which installs GHC, cabal, stack and HLS for breto"
  :source {:github "haskell/ghcup-hs"}
- :asset "x86_64-linux-ghcup-{version}"
  :checksum "SHA256SUMS"
- :bins {"ghcup" "{asset}"}}
+ :bins {"ghcup" "{asset}"}
+ :platforms {"linux-x86_64" {:asset "x86_64-linux-ghcup-{version}"}}}

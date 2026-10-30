@@ -4,5 +4,5 @@
 
 {:description "Arduino command line tool",
  :source {:github "arduino/arduino-cli"}
- :asset "arduino-cli_{version}_Linux_64bit.tar.gz"
- :checksum "{version}-checksums.txt"}
+ :checksum "{version}-checksums.txt"
+ :platforms {"linux-x86_64" {:asset "arduino-cli_{version}_Linux_64bit.tar.gz"}}}

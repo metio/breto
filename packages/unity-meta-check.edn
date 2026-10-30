@@ -4,5 +4,5 @@
 
 {:description "Checker for missing/dangling meta files. The result print to stdout.",
  :source {:github "DeNA/unity-meta-check"}
- :asset "unity-meta-check-linux-amd64"
- :checksum "checksums.txt"}
+ :checksum "checksums.txt"
+ :platforms {"linux-x86_64" {:asset "unity-meta-check-linux-amd64"}}}

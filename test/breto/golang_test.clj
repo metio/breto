@@ -52,12 +52,12 @@
 (deftest module-paths-are-escaped-for-the-proxy
   (is (= "github.com/!burnt!sushi/toml" (package/go-escape "github.com/BurntSushi/toml")))
   (is (= "https://proxy.golang.org/github.com/!burnt!sushi/toml/@v/{tag}.zip"
-         (:url (package/normalize {:name "tomlv" :source {:go "github.com/BurntSushi/toml" :package "github.com/BurntSushi/toml/cmd/tomlv"}}))))
-  (is (= "tomlv" (:asset (package/normalize {:name "tomlv" :source {:go "github.com/BurntSushi/toml" :package "github.com/BurntSushi/toml/cmd/tomlv"}})))))
+         (:url (s/normalize {:name "tomlv" :source {:go "github.com/BurntSushi/toml" :package "github.com/BurntSushi/toml/cmd/tomlv"}}))))
+  (is (= "tomlv" (:asset (s/normalize {:name "tomlv" :source {:go "github.com/BurntSushi/toml" :package "github.com/BurntSushi/toml/cmd/tomlv"}})))))
 
 (deftest a-package-outside-the-module-is-refused
   (is (thrown-with-msg? clojure.lang.ExceptionInfo #"a package inside that module"
-                        (package/normalize {:name "x" :source {:go "golang.org/x/vuln" :package "golang.org/x/tools/cmd/x"}}))))
+                        (s/normalize {:name "x" :source {:go "golang.org/x/vuln" :package "golang.org/x/tools/cmd/x"}}))))
 
 (deftest a-module-with-a-major-version-suffix-builds-its-binary
   (let [io (world)]
@@ -72,7 +72,7 @@
       (is (fs/exists? (path "bin" "bar"))))))
 
 (deftest the-skip-fallback-ignores-go-pre-releases
-  (let [pkg (package/normalize {:name "gopls" :source {:go "golang.org/x/tools/gopls"} :skip ["0.16.3"]})
+  (let [pkg (s/normalize {:name "gopls" :source {:go "golang.org/x/tools/gopls"} :skip ["0.16.3"]})
         io {:get-text (fn [url _]
                         (case url
                           "https://proxy.golang.org/golang.org/x/tools/gopls/@latest" "{\"Version\":\"v0.16.3\"}"

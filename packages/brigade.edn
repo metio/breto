@@ -4,5 +4,5 @@
 
 {:description "Brigade CLI. Event-driven scripting for Kubernetes",
  :source {:github "brigadecore/brigade"}
- :asset "brig-linux-amd64"
- :bins {"brig" "{asset}"}}
+ :bins {"brig" "{asset}"}
+ :platforms {"linux-x86_64" {:asset "brig-linux-amd64"}}}

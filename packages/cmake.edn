@@ -4,5 +4,5 @@
 
 {:description "Mirror of CMake upstream repository",
  :source {:github "Kitware/CMake"}
- :asset "cmake-{version}-linux-x86_64.tar.gz"
- :bins {"ccmake" "cmake-{version}-linux-x86_64/bin/ccmake", "cmake" "cmake-{version}-linux-x86_64/bin/cmake", "cmake-gui" "cmake-{version}-linux-x86_64/bin/cmake-gui", "cpack" "cmake-{version}-linux-x86_64/bin/cpack", "ctest" "cmake-{version}-linux-x86_64/bin/ctest"}}
+ :bins {"ccmake" "cmake-{version}-linux-x86_64/bin/ccmake", "cmake" "cmake-{version}-linux-x86_64/bin/cmake", "cmake-gui" "cmake-{version}-linux-x86_64/bin/cmake-gui", "cpack" "cmake-{version}-linux-x86_64/bin/cpack", "ctest" "cmake-{version}-linux-x86_64/bin/ctest"}
+ :platforms {"linux-x86_64" {:asset "cmake-{version}-linux-x86_64.tar.gz"}}}

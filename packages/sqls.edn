@@ -4,4 +4,4 @@
 
 {:description "SQL language server written in Go",
  :source {:github "sqls-server/sqls"}
- :asset "sqls-linux-{version}.zip"}
+ :platforms {"linux-x86_64" {:asset "sqls-linux-{version}.zip"}}}

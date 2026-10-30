@@ -4,5 +4,5 @@
 
 {:description "Zig updator",
  :source {:github "mattn/zig-update"}
- :asset "zig-update_{tag}_linux_amd64.tar.gz"
- :bins {"zig-update" "zig-update_{tag}_linux_amd64/zig-update"}}
+ :bins {"zig-update" "zig-update_{tag}_linux_amd64/zig-update"}
+ :platforms {"linux-x86_64" {:asset "zig-update_{tag}_linux_amd64.tar.gz"}}}

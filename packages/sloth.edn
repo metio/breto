@@ -2,4 +2,5 @@
 ;; SPDX-License-Identifier: 0BSD
 
 {:description "Easy and simple Prometheus SLO (service level objectives) generator",
- :source {:github "slok/sloth"}, :asset "sloth-linux-amd64"}
+ :source {:github "slok/sloth"}
+ :platforms {"linux-x86_64" {:asset "sloth-linux-amd64"}}}

@@ -4,5 +4,5 @@
 
 {:description "A git query language",
  :source {:github "filhodanuvem/gitql"}
- :asset "gitql_{version}_Linux_x86_64.tar.gz"
- :checksum "checksums.txt"}
+ :checksum "checksums.txt"
+ :platforms {"linux-x86_64" {:asset "gitql_{version}_Linux_x86_64.tar.gz"}}}

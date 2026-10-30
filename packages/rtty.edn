@@ -4,5 +4,5 @@
 
 {:description "Terminal on browser via websocket",
  :source {:github "skanehira/rtty"}
- :asset "rtty_Linux_x86_64.tar.gz"
- :checksum "rtty_{version}_checksums.txt"}
+ :checksum "rtty_{version}_checksums.txt"
+ :platforms {"linux-x86_64" {:asset "rtty_Linux_x86_64.tar.gz"}}}

@@ -4,6 +4,6 @@
 
 {:description "CLI for executing Cirrus tasks locally and in any CI",
  :source {:github "cirruslabs/cirrus-cli"}
- :asset "cirrus-linux-amd64.tar.gz"
  :checksum "cirrus_{version}_checksums.txt"
- :bins {"cirrus" "cirrus"}}
+ :bins {"cirrus" "cirrus"}
+ :platforms {"linux-x86_64" {:asset "cirrus-linux-amd64.tar.gz"}}}

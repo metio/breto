@@ -5,6 +5,6 @@
 {:description "Godot Engine – Multi-platform 2D and 3D game engine",
  :source {:github "godotengine/godot"}
  :tag-prefix ""
- :asset "Godot_v{tag}_linux.x86_64.zip"
  :checksum "SHA512-SUMS.txt"
- :bins {"godot" "Godot_v{tag}_linux.x86_64"}}
+ :bins {"godot" "Godot_v{tag}_linux.x86_64"}
+ :platforms {"linux-x86_64" {:asset "Godot_v{tag}_linux.x86_64.zip"}}}

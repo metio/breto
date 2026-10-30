@@ -4,4 +4,4 @@
 
 {:description "Predict next words (｀･ω･´)",
  :source {:github "high-moctane/mocword"}
- :asset "mocword-x86_64-unknown-linux-musl"}
+ :platforms {"linux-x86_64" {:asset "mocword-x86_64-unknown-linux-musl"}}}

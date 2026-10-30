@@ -5,6 +5,6 @@
 {:description "The WebAssembly Binary Toolkit",
  :source {:github "WebAssembly/wabt"}
  :tag-prefix ""
- :asset "wabt-{tag}-linux-x64.tar.gz"
  :checksum "{asset}.sha256"
- :bins {"spectest-interp" "wabt-{tag}/bin/spectest-interp", "wasm-decompile" "wabt-{tag}/bin/wasm-decompile", "wasm-interp" "wabt-{tag}/bin/wasm-interp", "wasm-objdump" "wabt-{tag}/bin/wasm-objdump", "wasm-stats" "wabt-{tag}/bin/wasm-stats", "wasm-strip" "wabt-{tag}/bin/wasm-strip", "wasm-validate" "wabt-{tag}/bin/wasm-validate", "wasm2c" "wabt-{tag}/bin/wasm2c", "wasm2wat" "wabt-{tag}/bin/wasm2wat", "wast2json" "wabt-{tag}/bin/wast2json", "wat-desugar" "wabt-{tag}/bin/wat-desugar", "wat2wasm" "wabt-{tag}/bin/wat2wasm"}}
+ :bins {"spectest-interp" "wabt-{tag}/bin/spectest-interp", "wasm-decompile" "wabt-{tag}/bin/wasm-decompile", "wasm-interp" "wabt-{tag}/bin/wasm-interp", "wasm-objdump" "wabt-{tag}/bin/wasm-objdump", "wasm-stats" "wabt-{tag}/bin/wasm-stats", "wasm-strip" "wabt-{tag}/bin/wasm-strip", "wasm-validate" "wabt-{tag}/bin/wasm-validate", "wasm2c" "wabt-{tag}/bin/wasm2c", "wasm2wat" "wabt-{tag}/bin/wasm2wat", "wast2json" "wabt-{tag}/bin/wast2json", "wat-desugar" "wabt-{tag}/bin/wat-desugar", "wat2wasm" "wabt-{tag}/bin/wat2wasm"}
+ :platforms {"linux-x86_64" {:asset "wabt-{tag}-linux-x64.tar.gz"}}}

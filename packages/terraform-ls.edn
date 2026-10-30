@@ -4,6 +4,6 @@
 {:description "The official language server for Terraform"
  :source {:json "https://checkpoint-api.hashicorp.com/v1/check/terraform-ls" :version [:current_version]}
  :tag-prefix ""
- :asset "terraform-ls_{version}_linux_amd64.zip"
  :url "https://releases.hashicorp.com/terraform-ls/{version}/{asset}"
- :checksum "terraform-ls_{version}_SHA256SUMS"}
+ :checksum "terraform-ls_{version}_SHA256SUMS"
+ :platforms {"linux-x86_64" {:asset "terraform-ls_{version}_linux_amd64.zip"}}}

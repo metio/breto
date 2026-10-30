@@ -4,5 +4,5 @@
 
 {:description "Git in your tmux status bar",
  :source {:github "arl/gitmux"}
- :asset "gitmux_{tag}_linux_amd64.tar.gz"
- :checksum "checksums.txt"}
+ :checksum "checksums.txt"
+ :platforms {"linux-x86_64" {:asset "gitmux_{tag}_linux_amd64.tar.gz"}}}

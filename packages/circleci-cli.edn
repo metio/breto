@@ -4,6 +4,6 @@
 
 {:description "Use CircleCI from the command line",
  :source {:github "CircleCI-Public/circleci-cli"}
- :asset "circleci-cli_{version}_linux_amd64.tar.gz"
  :checksum "circleci-cli_{version}_checksums.txt"
- :bins {"circleci" "circleci"}}
+ :bins {"circleci" "circleci"}
+ :platforms {"linux-x86_64" {:asset "circleci-cli_{version}_linux_amd64.tar.gz"}}}

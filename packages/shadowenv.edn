@@ -5,4 +5,4 @@
 {:description "reversible directory-local environment variable manipulations",
  :source {:github "Shopify/shadowenv"}
  :tag-prefix ""
- :asset "shadowenv-x86_64-unknown-linux-gnu"}
+ :platforms {"linux-x86_64" {:asset "shadowenv-x86_64-unknown-linux-gnu"}}}

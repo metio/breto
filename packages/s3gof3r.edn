@@ -4,5 +4,5 @@
 
 {:description "Fast, concurrent, streaming access to Amazon S3, including gof3r, a CLI",
  :source {:github "rlmcpherson/s3gof3r"}
- :asset "gof3r_{version}_linux_amd64.tar.gz"
- :bins {"gof3r" "gof3r_{version}_linux_amd64/gof3r"}}
+ :bins {"gof3r" "gof3r_{version}_linux_amd64/gof3r"}
+ :platforms {"linux-x86_64" {:asset "gof3r_{version}_linux_amd64.tar.gz"}}}

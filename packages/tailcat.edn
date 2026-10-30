@@ -4,5 +4,5 @@
 
 {:description "like netcat, but over Tailscale's data plane, without Tailscale's control plane",
  :source {:github "tailscale/tailcat"}
- :asset "tailcat_{version}_linux_amd64.tar.gz"
- :checksum "checksums.txt"}
+ :checksum "checksums.txt"
+ :platforms {"linux-x86_64" {:asset "tailcat_{version}_linux_amd64.tar.gz"}}}

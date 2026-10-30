@@ -4,4 +4,4 @@
 
 {:description "Repeatable builds",
  :source {:github "earthly/earthly"}
- :asset "earthly-linux-amd64"}
+ :platforms {"linux-x86_64" {:asset "earthly-linux-amd64"}}}

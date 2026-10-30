@@ -4,4 +4,4 @@
 
 {:description "CLI for determining the cost of Kubernetes workloads",
  :source {:github "kubecost/kubectl-cost"}
- :asset "kubectl-cost-linux-amd64.tar.gz"}
+ :platforms {"linux-x86_64" {:asset "kubectl-cost-linux-amd64.tar.gz"}}}

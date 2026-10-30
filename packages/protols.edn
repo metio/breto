@@ -5,4 +5,4 @@
 {:description "Language Server for protocol buffers",
  :source {:github "coder3101/protols"}
  :tag-prefix ""
- :asset "protols-x86_64-unknown-linux-gnu.tar.gz"}
+ :platforms {"linux-x86_64" {:asset "protols-x86_64-unknown-linux-gnu.tar.gz"}}}

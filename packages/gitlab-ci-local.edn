@@ -5,4 +5,4 @@
 {:description "Tired of pushing to test your .gitlab-ci.yml",
  :source {:github "firecow/gitlab-ci-local"}
  :tag-prefix ""
- :asset "gitlab-ci-local-linux-amd64.tar.gz"}
+ :platforms {"linux-x86_64" {:asset "gitlab-ci-local-linux-amd64.tar.gz"}}}

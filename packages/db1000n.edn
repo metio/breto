@@ -4,4 +4,4 @@
 
 {:source {:github "Arriven/db1000n"}
  :tag-prefix ""
- :asset "db1000n-{tag}-linux-amd64.tar.gz"}
+ :platforms {"linux-x86_64" {:asset "db1000n-{tag}-linux-amd64.tar.gz"}}}

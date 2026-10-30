@@ -4,6 +4,6 @@
 
 {:description "A TCP proxy to simulate network and system conditions for chaos and resiliency testing",
  :source {:github "Shopify/toxiproxy"}
- :asset "toxiproxy_{version}_linux_amd64.tar.gz"
  :checksum "checksums.txt"
- :bins {"toxiproxy-cli" "toxiproxy-cli", "toxiproxy-server" "toxiproxy-server"}}
+ :bins {"toxiproxy-cli" "toxiproxy-cli", "toxiproxy-server" "toxiproxy-server"}
+ :platforms {"linux-x86_64" {:asset "toxiproxy_{version}_linux_amd64.tar.gz"}}}

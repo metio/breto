@@ -3,4 +3,4 @@
 
 {:description "A small build system focused on speed"
  :source {:github "ninja-build/ninja"}
- :asset "ninja-linux.zip"}
+ :platforms {"linux-x86_64" {:asset "ninja-linux.zip"}}}

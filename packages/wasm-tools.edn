@@ -4,5 +4,5 @@
 
 {:description "CLI and Rust libraries for low-level manipulation of WebAssembly modules",
  :source {:github "bytecodealliance/wasm-tools"}
- :asset "wasm-tools-{version}-x86_64-linux.tar.gz"
- :bins {"wasm-tools" "wasm-tools-{version}-x86_64-linux/wasm-tools"}}
+ :bins {"wasm-tools" "wasm-tools-{version}-x86_64-linux/wasm-tools"}
+ :platforms {"linux-x86_64" {:asset "wasm-tools-{version}-x86_64-linux.tar.gz"}}}

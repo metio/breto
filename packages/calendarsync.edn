@@ -4,5 +4,5 @@
 
 {:description "Stateless CLI tool to sync calendars across different calendaring systems",
  :source {:github "inovex/CalendarSync"}
- :asset "CalendarSync_{version}_linux_amd64.tar.gz"
- :checksum "checksums.txt"}
+ :checksum "checksums.txt"
+ :platforms {"linux-x86_64" {:asset "CalendarSync_{version}_linux_amd64.tar.gz"}}}

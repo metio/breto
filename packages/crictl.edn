@@ -4,5 +4,5 @@
 
 {:description "CLI and validation tools for Kubelet Container Runtime Interface (CRI)",
  :source {:github "kubernetes-sigs/cri-tools"}
- :asset "crictl-{tag}-linux-amd64.tar.gz"
- :checksum "{asset}.sha512"}
+ :checksum "{asset}.sha512"
+ :platforms {"linux-x86_64" {:asset "crictl-{tag}-linux-amd64.tar.gz"}}}

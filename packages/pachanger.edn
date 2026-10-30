@@ -4,5 +4,5 @@
 
 {:description "Pachanger - A CLI tool for renaming Go package names safely and efficiently",
  :source {:github "pyama86/pachanger"}
- :asset "pachanger_{version}_linux_amd64.tar.gz"
- :checksum "pachanger_{version}_checksums.txt"}
+ :checksum "pachanger_{version}_checksums.txt"
+ :platforms {"linux-x86_64" {:asset "pachanger_{version}_linux_amd64.tar.gz"}}}

@@ -4,5 +4,5 @@
 
 {:description "Todoist CLI Client. I  Todoist and CLI",
  :source {:github "sachaos/todoist"}
- :asset "todoist_Linux_x86_64.tar.gz"
- :checksum "checksums.txt"}
+ :checksum "checksums.txt"
+ :platforms {"linux-x86_64" {:asset "todoist_Linux_x86_64.tar.gz"}}}

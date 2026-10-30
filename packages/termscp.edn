@@ -4,4 +4,4 @@
 
 {:description "A feature rich terminal UI file transfer and explorer with support for SCP/SFTP/FTP/S3",
  :source {:github "veeso/termscp"}
- :asset "termscp-{tag}-x86_64-unknown-linux-gnu.tar.gz"}
+ :platforms {"linux-x86_64" {:asset "termscp-{tag}-x86_64-unknown-linux-gnu.tar.gz"}}}

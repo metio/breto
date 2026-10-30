@@ -4,4 +4,4 @@
 
 {:description "Don't install Node, Go, ... locally - use containers you define within your project. If you have a new machine / other contributors you just have to install docker and envcli to get started",
  :source {:github "EnvCLI/EnvCLI"}
- :asset "linux_amd64"}
+ :platforms {"linux-x86_64" {:asset "linux_amd64"}}}

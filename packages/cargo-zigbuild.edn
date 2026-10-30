@@ -4,6 +4,6 @@
 
 {:description "Compile Cargo project with zig as linker",
  :source {:github "rust-cross/cargo-zigbuild"}
- :asset "cargo-zigbuild-x86_64-unknown-linux-gnu.tar.xz"
  :checksum "{asset}.sha256"
- :bins {"cargo-zigbuild" "cargo-zigbuild-x86_64-unknown-linux-gnu/cargo-zigbuild"}}
+ :bins {"cargo-zigbuild" "cargo-zigbuild-x86_64-unknown-linux-gnu/cargo-zigbuild"}
+ :platforms {"linux-x86_64" {:asset "cargo-zigbuild-x86_64-unknown-linux-gnu.tar.xz"}}}

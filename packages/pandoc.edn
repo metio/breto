@@ -5,5 +5,5 @@
 {:description "Universal markup converter",
  :source {:github "jgm/pandoc"}
  :tag-prefix ""
- :asset "pandoc-{tag}-linux-amd64.tar.gz"
- :bins {"pandoc" "pandoc-{tag}/bin/pandoc", "pandoc-lua" "pandoc-{tag}/bin/pandoc-lua", "pandoc-server" "pandoc-{tag}/bin/pandoc-server"}}
+ :bins {"pandoc" "pandoc-{tag}/bin/pandoc", "pandoc-lua" "pandoc-{tag}/bin/pandoc-lua", "pandoc-server" "pandoc-{tag}/bin/pandoc-server"}
+ :platforms {"linux-x86_64" {:asset "pandoc-{tag}-linux-amd64.tar.gz"}}}

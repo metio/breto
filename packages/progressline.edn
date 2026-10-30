@@ -5,4 +5,4 @@
 {:description "Track commands progress in a compact one-line format",
  :source {:github "kattouf/ProgressLine"}
  :tag-prefix ""
- :asset "progressline-{tag}-x86_64-unknown-linux-gnu.zip"}
+ :platforms {"linux-x86_64" {:asset "progressline-{tag}-x86_64-unknown-linux-gnu.zip"}}}

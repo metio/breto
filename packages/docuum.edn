@@ -4,4 +4,4 @@
 
 {:description "Docuum performs least recently used (LRU) eviction of Docker images",
  :source {:github "stepchowfun/docuum"}
- :asset "docuum-x86_64-unknown-linux-musl"}
+ :platforms {"linux-x86_64" {:asset "docuum-x86_64-unknown-linux-musl"}}}

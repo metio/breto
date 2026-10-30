@@ -4,5 +4,5 @@
 
 {:description "This plugin gets the subject name using the effective kubeconfig",
  :source {:github "rajatjindal/kubectl-whoami"}
- :asset "kubectl-whoami_{tag}_linux_amd64.tar.gz"
- :checksum "kubectl-whoami_{version}_checksums.txt"}
+ :checksum "kubectl-whoami_{version}_checksums.txt"
+ :platforms {"linux-x86_64" {:asset "kubectl-whoami_{tag}_linux_amd64.tar.gz"}}}

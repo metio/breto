@@ -6,9 +6,9 @@
           :match "<version>(\\d+\\.\\d+\\.\\d+)</version>"
           :newest true}
  :tag-prefix ""
- :asset "apache-maven-{version}-bin.tar.gz"
  :url "https://repo1.maven.org/maven2/org/apache/maven/apache-maven/{version}/{asset}"
  :checksum "{asset}.sha512"
  :strip 1
  :layout :tree
- :bins {"mvn" "bin/mvn" "mvnDebug" "bin/mvnDebug"}}
+ :bins {"mvn" "bin/mvn" "mvnDebug" "bin/mvnDebug"}
+ :platforms {"linux-x86_64" {:asset "apache-maven-{version}-bin.tar.gz"}}}

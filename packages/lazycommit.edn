@@ -4,5 +4,5 @@
 
 {:description "using AI to generate commit message suggestions",
  :source {:github "m7medVision/lazycommit"}
- :asset "lazycommit_{version}_linux_amd64.tar.gz"
- :checksum "checksums.txt"}
+ :checksum "checksums.txt"
+ :platforms {"linux-x86_64" {:asset "lazycommit_{version}_linux_amd64.tar.gz"}}}

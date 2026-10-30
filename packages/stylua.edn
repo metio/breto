@@ -4,4 +4,4 @@
 
 {:description "A Lua code formatter",
  :source {:github "JohnnyMorganz/StyLua"}
- :asset "stylua-linux-x86_64-musl.zip"}
+ :platforms {"linux-x86_64" {:asset "stylua-linux-x86_64-musl.zip"}}}

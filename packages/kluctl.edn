@@ -4,5 +4,5 @@
 
 {:description "The missing glue to put together large Kubernetes deployments, composed of multiple smaller parts (Helm/Kustomize/...)  in a manageable and unified way",
  :source {:github "kluctl/kluctl"}
- :asset "kluctl_{tag}_linux_amd64.tar.gz"
- :checksum "kluctl_{tag}_checksums.txt"}
+ :checksum "kluctl_{tag}_checksums.txt"
+ :platforms {"linux-x86_64" {:asset "kluctl_{tag}_linux_amd64.tar.gz"}}}

@@ -4,4 +4,4 @@
 
 {:description "jq inspired interoperable config format transcoder with interactive querying",
  :source {:github "JFryy/qq"}
- :asset "qq-{tag}-linux-amd64.tar.gz"}
+ :platforms {"linux-x86_64" {:asset "qq-{tag}-linux-amd64.tar.gz"}}}

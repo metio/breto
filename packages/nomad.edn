@@ -4,6 +4,6 @@
 {:description "Command line client and agent for HashiCorp Nomad, which schedules containers and other workloads"
  :source {:json "https://checkpoint-api.hashicorp.com/v1/check/nomad" :version [:current_version]}
  :tag-prefix ""
- :asset "nomad_{version}_linux_amd64.zip"
  :url "https://releases.hashicorp.com/nomad/{version}/{asset}"
- :checksum "nomad_{version}_SHA256SUMS"}
+ :checksum "nomad_{version}_SHA256SUMS"
+ :platforms {"linux-x86_64" {:asset "nomad_{version}_linux_amd64.zip"}}}

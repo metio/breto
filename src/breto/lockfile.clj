@@ -5,12 +5,11 @@
   "The lock file: the active version and download hash of each configured
   package, one package per line so changes read well in version control.
   Comment lines at the top of an existing file, such as a license header,
-  are kept when it is rewritten. The hash of a download that differs by
-  platform is at the top level for linux-x86_64 and under :platforms for the
-  others; a package built or resolved on the machine has one for all."
+  are kept when it is rewritten. The hashes of a download that differs by
+  platform are under :platforms, one entry per platform; a package built or
+  resolved on the machine has one set at the top level for all."
   (:require [babashka.fs :as fs]
             [breto.package :as package]
-            [breto.platform :as platform]
             [breto.store :as store]
             [clojure.edn :as edn]
             [clojure.string :as str]))
@@ -45,21 +44,33 @@
 (defn- shared? [pkg]
   (or (nil? pkg) (contains? package/neutral-kinds (package/source-kind pkg))))
 
+(def ^:private hash-keys [:sha256 :sum :asset :exclude-newer])
+
+(defn- migrated
+  "`entry` with hashes at its top level moved to linux-x86_64 when `pkg`
+  differs by platform: lock files written before every platform had its own
+  entry kept the hashes of linux-x86_64 there."
+  [entry pkg]
+  (if (and (not (shared? pkg)) (some #(contains? entry %) hash-keys))
+    (-> (apply dissoc entry hash-keys)
+        (update-in [:platforms "linux-x86_64"] #(merge (select-keys entry hash-keys) %)))
+    entry))
+
 (defn hashes
   "The keys of `entry` that pin the download of `pkg` on the platform it was
   resolved for, or nil."
   [entry pkg]
-  (if (or (shared? pkg) (= platform/default (:platform pkg)))
+  (if (shared? pkg)
     (not-empty (dissoc entry :platforms))
-    (get-in entry [:platforms (:platform pkg)])))
+    (get-in (migrated entry pkg) [:platforms (:platform pkg)])))
 
 (defn with-hashes
   "`entry` with `hashes` as the keys pinning the download of `pkg` on its
   platform, keeping those of the other platforms."
   [entry pkg hashes]
-  (if (or (shared? pkg) (= platform/default (:platform pkg)))
+  (if (shared? pkg)
     (merge (select-keys entry [:version :platforms]) hashes)
-    (assoc-in (or entry {}) [:platforms (:platform pkg)] hashes)))
+    (assoc-in (migrated (or entry {}) pkg) [:platforms (:platform pkg)] hashes)))
 
 (defn- fields [{:keys [version sha256 sum asset exclude-newer]}]
   (str/join " " (remove nil? [(when version (str ":version " (pr-str version)))

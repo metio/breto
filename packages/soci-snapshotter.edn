@@ -4,6 +4,6 @@
 
 {:description "A containerd snapshotter plugin which enables standard OCI images to be lazily loaded without requiring a build-time conversion step.",
  :source {:github "awslabs/soci-snapshotter"}
- :asset "soci-snapshotter-{version}-linux-amd64-static.tar.gz"
  :checksum "{asset}.sha256sum"
- :bins {"soci" "soci", "soci-snapshotter-grpc" "soci-snapshotter-grpc"}}
+ :bins {"soci" "soci", "soci-snapshotter-grpc" "soci-snapshotter-grpc"}
+ :platforms {"linux-x86_64" {:asset "soci-snapshotter-{version}-linux-amd64-static.tar.gz"}}}

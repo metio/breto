@@ -5,4 +5,4 @@
 {:description "Transparent file encryption in git",
  :source {:github "AGWA/git-crypt"}
  :tag-prefix ""
- :asset "git-crypt-{tag}-linux-x86_64"}
+ :platforms {"linux-x86_64" {:asset "git-crypt-{tag}-linux-x86_64"}}}

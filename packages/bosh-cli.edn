@@ -4,5 +4,5 @@
 
 {:description "The bosh CLI is the command line tool used for interacting with all things BOSH, from deployment operations to software release management",
  :source {:github "cloudfoundry/bosh-cli"}
- :asset "bosh-cli-{version}-linux-amd64"
- :bins {"bosh" "{asset}"}}
+ :bins {"bosh" "{asset}"}
+ :platforms {"linux-x86_64" {:asset "bosh-cli-{version}-linux-amd64"}}}

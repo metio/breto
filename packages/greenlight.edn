@@ -4,5 +4,5 @@
 
 {:description "greenlight is a graceful health check agent",
  :source {:github "fujiwara/greenlight"}
- :asset "greenlight_{version}_linux_amd64.tar.gz"
- :checksum "checksums.txt"}
+ :checksum "checksums.txt"
+ :platforms {"linux-x86_64" {:asset "greenlight_{version}_linux_amd64.tar.gz"}}}

@@ -5,4 +5,4 @@
 {:description "SmartyPants for Korean language",
  :source {:github "dahlia/seonbi"}
  :tag-prefix ""
- :asset "seonbi-{tag}.linux-x86_64.tar.bz2"}
+ :platforms {"linux-x86_64" {:asset "seonbi-{tag}.linux-x86_64.tar.bz2"}}}

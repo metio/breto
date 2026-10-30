@@ -4,4 +4,4 @@
 
 {:description "DuckDB is an analytical in-process SQL database management system",
  :source {:github "duckdb/duckdb"}
- :asset "duckdb-cli-linux-amd64.tar.gz"}
+ :platforms {"linux-x86_64" {:asset "duckdb-cli-linux-amd64.tar.gz"}}}

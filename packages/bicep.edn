@@ -4,4 +4,4 @@
 
 {:description "Bicep is a declarative language for describing and deploying Azure resources",
  :source {:github "Azure/bicep"}
- :asset "bicep-linux-musl-x64"}
+ :platforms {"linux-x86_64" {:asset "bicep-linux-musl-x64"}}}

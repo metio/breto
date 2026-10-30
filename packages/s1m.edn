@@ -4,5 +4,5 @@
 
 {:description "TUI Application for AWS Systems Manager Parameter Store (ssm)",
  :source {:github "yumafuu/s1m"}
- :asset "s1m_Linux_x86_64.tar.gz"
- :checksum "s1m_{version}_checksums.txt"}
+ :checksum "s1m_{version}_checksums.txt"
+ :platforms {"linux-x86_64" {:asset "s1m_Linux_x86_64.tar.gz"}}}

@@ -4,5 +4,5 @@
 
 {:description "Terraform Provider Lint Tool",
  :source {:github "bflad/tfproviderlint"}
- :asset "tfproviderlint_{version}_linux_amd64.tar.gz"
- :checksum "tfproviderlint_{version}_checksums.txt"}
+ :checksum "tfproviderlint_{version}_checksums.txt"
+ :platforms {"linux-x86_64" {:asset "tfproviderlint_{version}_linux_amd64.tar.gz"}}}

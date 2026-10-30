@@ -4,5 +4,5 @@
 
 {:description "Authy/Google Authenticator like TOTP CLI tool written in Go",
  :source {:github "yitsushi/totp-cli"}
- :asset "totp-cli_Linux_x86_64.tar.gz"
- :checksum "totp-cli_{version}_checksums.txt"}
+ :checksum "totp-cli_{version}_checksums.txt"
+ :platforms {"linux-x86_64" {:asset "totp-cli_Linux_x86_64.tar.gz"}}}

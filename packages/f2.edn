@@ -4,5 +4,5 @@
 
 {:description "F2 is a cross-platform command-line tool for batch renaming files and directories quickly and safely. Written in Go",
  :source {:github "ayoisaiah/f2"}
- :asset "f2_{version}_linux_amd64.tar.gz"
- :checksum "checksums.txt"}
+ :checksum "checksums.txt"
+ :platforms {"linux-x86_64" {:asset "f2_{version}_linux_amd64.tar.gz"}}}

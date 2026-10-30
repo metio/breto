@@ -4,5 +4,5 @@
 
 {:description "TOML Formatter / Linter / Language Server",
  :source {:github "tombi-toml/tombi"}
- :asset "tombi-cli-{version}-x86_64-unknown-linux-musl.tar.gz"
- :bins {"tombi" "tombi-cli-{version}-x86_64-unknown-linux-musl/tombi"}}
+ :bins {"tombi" "tombi-cli-{version}-x86_64-unknown-linux-musl/tombi"}
+ :platforms {"linux-x86_64" {:asset "tombi-cli-{version}-x86_64-unknown-linux-musl.tar.gz"}}}

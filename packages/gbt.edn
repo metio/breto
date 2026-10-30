@@ -4,6 +4,6 @@
 
 {:description "Highly configurable prompt builder for Bash, ZSH and PowerShell written in Go",
  :source {:github "jtyr/gbt"}
- :asset "gbt-{version}-linux-amd64.tar.gz"
  :checksum "gbt-{version}-checksums-sha256.txt"
- :bins {"gbt" "gbt-{version}/gbt"}}
+ :bins {"gbt" "gbt-{version}/gbt"}
+ :platforms {"linux-x86_64" {:asset "gbt-{version}-linux-amd64.tar.gz"}}}

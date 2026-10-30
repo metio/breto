@@ -4,4 +4,4 @@
 
 {:description "A smarter cd command. Supports all major shells",
  :source {:github "ajeetdsouza/zoxide"}
- :asset "zoxide-{version}-x86_64-unknown-linux-musl.tar.gz"}
+ :platforms {"linux-x86_64" {:asset "zoxide-{version}-x86_64-unknown-linux-musl.tar.gz"}}}

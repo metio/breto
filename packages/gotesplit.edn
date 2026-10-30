@@ -4,6 +4,6 @@
 
 {:description "Splits the testing in Go into a subset and run it. It is useful for the CI environment",
  :source {:github "Songmu/gotesplit"}
- :asset "gotesplit_{tag}_linux_amd64.tar.gz"
  :checksum "SHA256SUMS"
- :bins {"gotesplit" "gotesplit_{tag}_linux_amd64/gotesplit"}}
+ :bins {"gotesplit" "gotesplit_{tag}_linux_amd64/gotesplit"}
+ :platforms {"linux-x86_64" {:asset "gotesplit_{tag}_linux_amd64.tar.gz"}}}

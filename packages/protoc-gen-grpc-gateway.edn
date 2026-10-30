@@ -4,5 +4,5 @@
 
 {:description "Generate golang code to reverse proxy Protocol Buffer definitions to RESTful HTTP/1",
  :source {:github "grpc-ecosystem/grpc-gateway"}
- :asset "protoc-gen-grpc-gateway-{tag}-linux-x86_64"
- :checksum "grpc-gateway_{version}_checksums.txt"}
+ :checksum "grpc-gateway_{version}_checksums.txt"
+ :platforms {"linux-x86_64" {:asset "protoc-gen-grpc-gateway-{tag}-linux-x86_64"}}}

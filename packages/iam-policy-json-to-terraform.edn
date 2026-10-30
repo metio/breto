@@ -5,4 +5,4 @@
 {:description "Small tool to convert an IAM Policy in JSON format into a Terraform aws_iam_policy_document",
  :source {:github "flosell/iam-policy-json-to-terraform"}
  :tag-prefix ""
- :asset "iam-policy-json-to-terraform_amd64"}
+ :platforms {"linux-x86_64" {:asset "iam-policy-json-to-terraform_amd64"}}}

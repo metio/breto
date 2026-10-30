@@ -4,4 +4,4 @@
 
 {:description "A utility to examine and validate certificates in a variety of formats",
  :source {:github "square/certigo"}
- :asset "certigo-linux-amd64"}
+ :platforms {"linux-x86_64" {:asset "certigo-linux-amd64"}}}

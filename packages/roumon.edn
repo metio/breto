@@ -4,5 +4,5 @@
 
 {:description "Universal goroutine monitor using pprof and termui",
  :source {:github "becheran/roumon"}
- :asset "roumon_{version}_linux_amd64.tar.gz"
- :checksum "roumon_{version}_checksums.txt"}
+ :checksum "roumon_{version}_checksums.txt"
+ :platforms {"linux-x86_64" {:asset "roumon_{version}_linux_amd64.tar.gz"}}}
