@@ -20,7 +20,7 @@ jobs:
       - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7
         with:
           persist-credentials: false
-      - uses: metio/breto@8770afbc98d14728fea7802284c5ea4cf253242e # 2026.10.30075053
+      - uses: metio/breto@e65765d856bb566e844e65b2d7e7e491a83ae956 # 2026.10.30165548
         with:
           registries: github:metio/toolchains
       - name: Check every definition against its latest release on every platform
