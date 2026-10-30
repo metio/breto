@@ -465,14 +465,34 @@
             (println (str "[WARN] project " (:dir p) " keeps its links: " (ex-message e)))))))
     (vec results)))
 
+(defn install-registries
+  "Installs the releases of the published registries `names`, under sync the
+  version the lock file lists, else the pinned or latest one. Returns the
+  install results."
+  [{:keys [config opts registry] :as ctx} command names]
+  (let [path (:lockfile config)
+        entries (when (and (= "sync" command) path (fs/exists? path)) (:entries (lockfile/read-lock path)))]
+    (install-results ctx command names
+                     (fn [name _]
+                       (if-let [entry (get entries name)]
+                         (let [{:keys [sha256 sum]} (lockfile/hashes entry (get registry name))]
+                           {:version (:version entry) :verify? (:verify opts true) :expect-sha256 sha256 :expect-sum sum})
+                         (merge {:version (get-in config [:pins name]) :verify? (:verify opts true)} (locked ctx name)))))))
+
+(defn- done
+  "The packages of `results`, which a command installed before the rest."
+  [results]
+  (set (map :package results)))
+
 (defn update
   "Updates the named packages, else the configured ones and then the projects
-  with an environment."
-  [{:keys [config opts] :as ctx} args]
-  (let [results (install-results ctx "update" (targets ctx args)
+  with an environment. The published registries installed first come with
+  their results under :registry-results."
+  [{:keys [config opts registry-results] :as ctx} args]
+  (let [results (install-results ctx "update" (vec (remove (comp (done registry-results) first batch/split-spec) (targets ctx args)))
                                  (fn [name version]
                                    (merge {:version (or version (get-in config [:pins name])) :verify? (:verify opts true)} (locked ctx name))))]
-    (batch/finish! "update" (into results (when (empty? args) (refresh-projects ctx "update"))))))
+    (batch/finish! "update" (-> (vec registry-results) (into results) (into (when (empty? args) (refresh-projects ctx "update")))))))
 
 (defn outdated
   "The packages whose latest release differs from the active version, or from
@@ -634,7 +654,7 @@
   "Makes the store match the lock file: installs and activates each locked
   version, checked against its locked hash, and uninstalls every package the
   lock file does not list and no project uses. --dry-run lists the changes."
-  [{:keys [config opts io registry] :as ctx} _]
+  [{:keys [config opts io registry registry-results] :as ctx} _]
   (let [path (or (:lockfile config)
                  (throw (ex-info "sync needs :lockfile in the config" {:breto/problem :no-lockfile :path nil})))
         _ (when-not (fs/exists? path)
@@ -649,13 +669,15 @@
           (doseq [name extra]
             (println (str name " would be removed")))
           0)
-      (let [installed (install-results ctx "sync" (mapv (fn [[name {:keys [version]}]] (str name "@" version)) entries)
+      (let [installed (install-results ctx "sync" (vec (for [[name {:keys [version]}] entries
+                                                            :when (not ((done registry-results) name))]
+                                                        (str name "@" version)))
                                        (fn [name version]
                                          (let [{:keys [sha256 sum exclude-newer]} (lockfile/hashes (get entries name) (get registry name))]
                                            {:version version :verify? (:verify opts true)
                                             :expect-sha256 sha256 :expect-sum sum :exclude-newer exclude-newer})))
             removed (batch/run-batch io extra #(uninstall-one ctx % false) (fn [_]))]
-        (batch/finish! "sync" (-> installed (into removed) (into (refresh-projects ctx "sync"))))))))
+        (batch/finish! "sync" (-> (vec registry-results) (into installed) (into removed) (into (refresh-projects ctx "sync"))))))))
 
 (defn uninstall [{:keys [config opts io] :as ctx} args]
   (when (empty? args)

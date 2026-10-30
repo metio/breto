@@ -16,6 +16,7 @@
             [breto.proc :as proc]
             [breto.progress :as progress]
             [breto.registry :as registry]
+            [breto.remote :as remote]
             [breto.report :as report]
             [breto.store :as store]
             [breto.token :as token]
@@ -123,24 +124,73 @@ Every failure is explained with what to do; --debug adds each request and stack 
            :packages (vec (distinct (map first specs)))
            :pins (merge (into {} (filter second) specs) (:pins config)))))
 
+(defn- published
+  "The published registries among `entries`, the :registries of the config at
+  `config-path`, each checked."
+  [config-path entries]
+  (let [remotes (filter remote/remote? entries)]
+    (doseq [entry remotes
+            :let [problems (remote/problems entry)]
+            :when (seq problems)]
+      (throw (ex-info (str "invalid registry " (pr-str entry) " in " config-path ": " (str/join "; " problems))
+                      {:breto/problem :invalid-package :package (pr-str entry) :files [config-path] :problems problems})))
+    remotes))
+
+(def ^:private installs-registries
+  "Commands that install the published registries before the rest."
+  #{"update" "sync"})
+
 (defn- with-registry
   "`ctx` with the registry and groups loaded and the groups in :packages
-  expanded into their members. doctor runs without one when it fails to
-  load, since diagnosing that is its job, and report needs none, so a broken
+  expanded into their members, and :reload to load them again. A published
+  registry is read from its active release, and its package comes first in
+  :packages. One not installed yet is left out with a warning, except under
+  update and sync, which install it first; until then their :packages holds
+  only what loads. doctor runs without a registry when it fails to load,
+  since diagnosing that is its job, and report needs none, so a broken
   definition still leaves the last run readable."
   [ctx command]
-  (let [dirs (get-in ctx [:config :registries])
-        builtin (registry/builtin)
-        load (fn [ctx]
-               (let [groups (registry/load-groups builtin dirs)]
+  (let [entries (get-in ctx [:config :registries])
+        remotes (published (:config-path ctx) entries)
+        builtin (into (or (registry/builtin) (sorted-map))
+                      (for [entry remotes] [(str (remote/package-name entry) ".edn") (pr-str (remote/definition entry))]))
+        load (fn load [ctx]
+               (let [config (:config ctx)
+                     missing (remove #(remote/dir config %) remotes)
+                     dirs (keep #(if (remote/remote? %) (remote/dir config %) %) entries)
+                     groups (registry/load-groups builtin dirs)
+                     names (map remote/package-name remotes)
+                     expand #(cond-> % (seq remotes) (update :packages (fn [packages] (into (vec names) packages))))]
+                 (when-not (installs-registries command)
+                   (binding [*out* *err*]
+                     (doseq [entry missing]
+                       (println (str "[WARN] the registry " (:github entry) " is not installed, so its packages and groups are missing; breto update installs it")))))
                  (-> ctx
-                     (assoc :registry (registry/load-registry builtin dirs (platform/current (:config ctx))) :groups groups
-                            :locks (registry/load-locks dirs lockfile/read-lock))
-                     (update :config configured groups))))]
+                     (assoc :registry (registry/load-registry builtin dirs (platform/current config)) :groups groups
+                            :locks (registry/load-locks dirs lockfile/read-lock)
+                            :published (vec names) :reload #(load ctx))
+                     (update :config #(try (configured (expand %) groups)
+                                           (catch clojure.lang.ExceptionInfo e
+                                             (if (and (seq missing) (installs-registries command))
+                                               (configured (assoc % :packages (vec names)) groups)
+                                               (throw e))))))))]
     (case command
       "report" ctx
       "doctor" (try (load ctx) (catch Exception e (assoc ctx :registry nil :load-error (diagnose/diagnose e {}))))
       (load ctx))))
+
+(defn- registries-first
+  "`ctx` loaded again after update or sync installed the published registries
+  first: all of them when no packages are named, else those not installed
+  yet. Their results are under :registry-results."
+  [{:keys [config published] :as ctx} command args]
+  (let [names (if (seq args)
+                (remove #(store/current-version config %) published)
+                published)]
+    (if (and (installs-registries command) (seq names) (not (get-in ctx [:opts :dry-run])))
+      (let [results (commands/install-registries ctx command (vec names))]
+        (assoc ((:reload ctx)) :registry-results results))
+      ctx)))
 
 (def ^:private changes-store
   #{"install" "use" "update" "gc" "uninstall" "sync" "lock"})
@@ -160,18 +210,20 @@ Every failure is explained with what to do; --debug adds each request and stack 
              (println (str "[WARN] could not update the lock file " path ": " (ex-message e))))))))
 
 (defn- locked
-  "Runs `f` under the store lock when `command` changes the store, and records
-  the lock file afterwards."
-  [ctx command f]
+  "Runs `f` with `ctx` under the store lock when `command` changes the store,
+  after installing the published registries it needs, and records the lock
+  file afterwards."
+  [ctx command args f]
   (if (changes-store command)
     (store/with-store-lock (:config ctx)
       (fn [pid]
         (binding [*out* *err*]
           (println (str "waiting for another breto run (process " pid ") to finish with the store"))))
-      #(let [code (f)]
+      #(let [ctx (registries-first ctx command args)
+             code (f ctx)]
          (record-lock! ctx command)
          code))
-    (f)))
+    (f ctx)))
 
 (def parse-spec
   {:coerce {:keep :long :delay :long :debug :boolean :verify :boolean :force :boolean :dry-run :boolean :all :boolean :previous :boolean :locked :boolean :brief :boolean :wait :boolean :install :boolean :check :boolean :enter :boolean}
@@ -237,7 +289,7 @@ Every failure is explained with what to do; --debug adds each request and stack 
                     args (if chosen? (commands/install-args ctx more) more)]
                 (if (and chosen? (empty? args))
                   (do (println "Nothing chosen.") 0)
-                  (locked (assoc ctx :chosen? chosen?) command (fn [] (f (assoc ctx :chosen? chosen?) args))))))
+                  (locked (assoc ctx :chosen? chosen?) command args (fn [ctx] (f ctx args))))))
            (do (println usage) (if (#{nil "help"} command) 0 2))))))))
 
 (defn -main [& args]

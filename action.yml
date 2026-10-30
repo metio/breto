@@ -16,8 +16,11 @@ inputs:
     default: .
   registries:
     description: >
-      Directories with package definitions and groups, one per line and
-      relative to the workspace, read after the definitions built into breto.
+      Registries read after the definitions built into breto, one per line:
+      a directory with package definitions and groups, relative to the
+      workspace, or github:OWNER/REPO for the registry that repository
+      publishes as signed releases, which is installed at its latest
+      release.
     default: ""
   cache:
     description: Whether to keep the installed packages in the Actions cache.
@@ -98,9 +101,14 @@ runs:
         {
           printf '{:registries ['
           while IFS= read -r dir; do
-            [ -n "$dir" ] || continue
-            path=$(cd "${GITHUB_WORKSPACE}/${dir}" && pwd)
-            printf '"%s" ' "$(printf '%s' "$path" | sed 's/[\\"]/\\&/g')"
+            case "$dir" in
+              "") continue ;;
+              github:*) printf '{:github "%s"} ' "${dir#github:}" ;;
+              *)
+                path=$(cd "${GITHUB_WORKSPACE}/${dir}" && pwd)
+                printf '"%s" ' "$(printf '%s' "$path" | sed 's/[\\"]/\\&/g')"
+                ;;
+            esac
           done <<< "$REGISTRIES"
           printf ']}\n'
         } > "$config"
@@ -110,7 +118,7 @@ runs:
           cd "${GITHUB_WORKSPACE}"
           for f in "${PROJECT}/.breto.edn" "${PROJECT}/.breto.local.edn"; do [ -f "$f" ] && cat "$f"; done
           while IFS= read -r dir; do
-            [ -n "$dir" ] || continue
+            case "$dir" in ""|github:*) continue ;; esac
             find "$dir" -maxdepth 1 \( -name '*.edn' -o -name breto.lock \) -type f | LC_ALL=C sort | xargs cat
           done <<< "$REGISTRIES"
         } | { if command -v sha256sum > /dev/null; then sha256sum; else shasum --algorithm 256; fi; } | cut -d ' ' -f 1)
@@ -128,8 +136,16 @@ runs:
       env:
         GITHUB_TOKEN: ${{ inputs.token }}
         PROJECT: ${{ inputs.project }}
+        REGISTRIES: ${{ inputs.registries }}
       run: |
         set -euo pipefail
+        published=()
+        while IFS= read -r dir; do
+          case "$dir" in
+            github:*) repo="${dir#github:}"; published+=("registry-${repo//\//-}") ;;
+          esac
+        done <<< "$REGISTRIES"
+        if [ "${#published[@]}" -gt 0 ]; then breto update "${published[@]}"; fi
         out="${RUNNER_TEMP}/breto/env"
         breto env --dir "${GITHUB_WORKSPACE}/${PROJECT}" --shell github > "$out"
         cat "$out" >> "$GITHUB_ENV"

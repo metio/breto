@@ -62,4 +62,4 @@
         (update :python-dir expand-home)
         (update :man-dir #(some-> % expand-home))
         (update :completion-dirs #(update-vals % expand-home))
-        (update :registries #(mapv expand-home %)))))
+        (update :registries #(mapv (fn [entry] (if (string? entry) (expand-home entry) entry)) %)))))

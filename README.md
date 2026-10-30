@@ -50,11 +50,11 @@ The action in this repository installs breto from its signed release, installs t
 - uses: metio/breto@VERSION
   with:
     registries: |
-      toolchains
+      github:metio/toolchains
 - run: breto run check
 ```
 
-`project` names the project directory, `.` by default. `registries` lists directories of definitions and groups beside the built-in ones, relative to the workspace, so groups from another repository need a checkout of it first. `version` picks a breto release, `latest` by default. The action verifies the release's `SHA256SUMS` with cosign against the release workflow's identity before running the binary, and keeps the installed packages in the Actions cache, keyed on the project files and the registries' definitions and lock files; `cache: false` turns that off. It runs on Linux and macOS runners, x86_64 and arm64.
+`project` names the project directory, `.` by default. `registries` lists the registries read after the built-in definitions, one per line: `github:OWNER/REPO` installs the latest release of a [published registry](#published-registries), and any other line is a directory of definitions and groups relative to the workspace. `version` picks a breto release, `latest` by default. The action verifies the release's `SHA256SUMS` with cosign against the release workflow's identity before running the binary, and keeps the installed packages in the Actions cache, keyed on the project files and the registries' definitions and lock files; `cache: false` turns that off. It runs on Linux and macOS runners, x86_64 and arm64.
 
 ## Configuration
 
@@ -73,7 +73,7 @@ breto reads the file given with `--config`, else the one `BRETO_CONFIG` names, e
 
 | Key | Meaning | Default |
 | --- | --- | --- |
-| `:registries` | Directories of package definitions. A later directory overrides an earlier one key by key, so an overlay can change a single key of a package; see [Overlays](#overlays). | none |
+| `:registries` | Directories of package definitions, or maps such as `{:github "metio/toolchains"}` naming a [published registry](#published-registries). A later registry overrides an earlier one key by key, so an overlay can change a single key of a package; see [Overlays](#overlays). | none |
 | `:packages` | What `update` and `outdated` act on when no package is named: package names and [groups](#groups) such as `"@pimalaya"`. | none |
 | `:pins` | Versions `update` installs instead of the latest. | none |
 | `:keep` | Versions per package that `gc` keeps. | `3` |
@@ -234,6 +234,19 @@ A group file can also hold the commands every project of its kind runs, so they 
 ```
 
 `gc` keeps every version a project links to, and `:prune true` keeps the packages, for as long as the project's `.breto.edn` or `.breto.local.edn` exists. Once the file is gone, `gc` removes the project's links and treats its versions like any other.
+
+### Published registries
+
+A registry can be published as releases of a GitHub repository, so every machine and CI job reads the same signed definitions and groups without a clone:
+
+```clojure
+{:registries [{:github "metio/toolchains"}]
+ :packages ["breto"]}
+```
+
+breto installs the release like a package named `registry-OWNER-REPO`, which comes first in `:packages`, and reads the registry from its active version. `breto update` and `breto sync` install it before everything else and then load the registry again, so a group that a new release changes reaches the projects in the same run; the lock file records the registry's version like any other package's. Other commands read the installed release offline, and warn when none is installed yet.
+
+A release named `VERSION` carries three assets: `REPO-VERSION.tar.gz` with the registry's `.edn` files and `breto.lock` at its root, `REPO_VERSION_SHA256SUMS`, and its cosign bundle `REPO_VERSION_SHA256SUMS.bundle`. The checksum file must be signed by the repository's `.github/workflows/release.yml` on `main`, as GitHub's OIDC issuer certifies it. `:signature {:identity … :issuer …}` names another identity, and `:tag-prefix` the text before the version in a tag, empty by default.
 
 ## Lock files
 

@@ -26,6 +26,7 @@ jobs:
         uses: ./
         with:
           project: test/action
+          registries: github:metio/toolchains
       - name: Use the project's tools and commands
         env:
           BIN: ${{ steps.breto.outputs.bin }}
@@ -35,3 +36,4 @@ jobs:
           test "$ACTION_PROJECT" = "${GITHUB_WORKSPACE}/test/action"
           cd test/action
           breto run versions
+          breto list | grep --quiet registry-metio-toolchains

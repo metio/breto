@@ -8,6 +8,7 @@
             [breto.github :as github]
             [breto.hooks :as hooks]
             [breto.install :as install]
+            [breto.remote :as remote]
             [breto.report :as report]
             [breto.search :as search]
             [breto.signature :as signature]
@@ -54,15 +55,22 @@
   (apply check :fail "The definitions do not load, so the checks below see none" (str/join "; " (cons (or summary message) facts))
          advice))
 
-(defn config-check [config-path {:keys [registries packages]} registry]
+(defn config-check [config-path {:keys [registries packages] :as config} registry]
   (concat
    [(if (fs/exists? config-path)
       (check :ok "The configuration file exists" config-path)
       (check :warn "There is no configuration file" config-path
              "Without one, breto has no registries and no package list; see the README for its keys."))]
    (for [dir registries]
-     (if (fs/directory? dir)
+     (cond
+       (remote/remote? dir)
+       (if-let [installed (remote/dir config dir)]
+         (check :ok "A published registry is installed" (str (:github dir) " in " installed))
+         (check :fail "A published registry is not installed" (:github dir)
+                "Run breto update, which installs it first."))
+       (fs/directory? dir)
        (check :ok "A registry directory exists" dir)
+       :else
        (check :fail "A registry directory is missing" dir
               "Fix the path under :registries, or clone the registry there.")))
    (when-let [unknown (seq (remove registry packages))]
