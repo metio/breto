@@ -5,4 +5,5 @@
 {:description "Fast and lightweight tool to scan your disk space",
  :source {:github "funbiscuit/spacedisplay-rs"}
  :bins {"spacedisplay" "{asset}"}
- :platforms {"linux-x86_64" {:asset "spacedisplay-amd64_linux"}}}
+ :platforms {"linux-x86_64" {:asset "spacedisplay-amd64_linux"}
+             "darwin-x86_64" {:asset "spacedisplay-macos"}}}

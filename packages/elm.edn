@@ -5,5 +5,6 @@
  :source {:github "elm/compiler"}
  :tag-prefix ""
  :platforms {"linux-x86_64" {:asset "elm-{version}-linux-x64.gz"}
+             "linux-aarch64" {:asset "elm-{version}-linux-arm.gz"}
              "darwin-x86_64" {:asset "elm-{version}-mac-x64.gz"}
              "darwin-aarch64" {:asset "elm-{version}-mac-arm.gz"}}}

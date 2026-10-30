@@ -4,4 +4,5 @@
 
 {:description "Kalker is a calculator program that supports user-defined variables, functions, differentiation, and integration",
  :source {:github "PaddiM8/kalker"}
- :platforms {"linux-x86_64" {:asset "kalker-linux"}}}
+ :platforms {"linux-x86_64" {:asset "kalker-linux"}
+             "darwin-aarch64" {:asset "kalker-macOS.zip" :bins {"kalker" "target/release/kalker"}}}}

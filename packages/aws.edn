@@ -6,4 +6,5 @@
  :source {:github "GoogleCloudPlatform/terraformer"}
  :tag-prefix ""
  :bins {"terraformer" "{asset}"}
- :platforms {"linux-x86_64" {:asset "terraformer-aws-linux-amd64"}}}
+ :platforms {"linux-x86_64" {:asset "terraformer-aws-linux-amd64"}
+             "darwin-aarch64" {:asset "terraformer-aws-darwin-arm64"}}}
