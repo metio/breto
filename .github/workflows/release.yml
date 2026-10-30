@@ -24,10 +24,10 @@ jobs:
           fetch-depth: 0
           persist-credentials: false
       - id: gate
-        uses: metio/ci/needs-release@c5d6aa7eac14393fa0d61ebe41460f8f4d2d9365 # 2026.10.30162913
+        uses: metio/ci/needs-release@4354ee55387b207473970b2419ed1b4d4b69dfe2 # 2026.10.30184401
         with:
           paths: src packages shell bb.edn breto action.yml .breto.edn README.md
-      - uses: metio/breto@e65765d856bb566e844e65b2d7e7e491a83ae956 # 2026.10.30165548
+      - uses: metio/breto@3d35cbfa61e9b8e98fe3d92113390a6db219b66c # 2026.10.30182439
         if: steps.gate.outputs.needed == 'true'
         with:
           registries: github:metio/toolchains
@@ -36,11 +36,11 @@ jobs:
         run: bb test
       - id: version
         if: steps.gate.outputs.needed == 'true'
-        uses: metio/ci/calver@c5d6aa7eac14393fa0d61ebe41460f8f4d2d9365 # 2026.10.30162913
+        uses: metio/ci/calver@4354ee55387b207473970b2419ed1b4d4b69dfe2 # 2026.10.30184401
       - id: notes
         name: Generate release notes
         if: steps.gate.outputs.needed == 'true'
-        uses: metio/ci/release-notes@c5d6aa7eac14393fa0d61ebe41460f8f4d2d9365 # 2026.10.30162913
+        uses: metio/ci/release-notes@4354ee55387b207473970b2419ed1b4d4b69dfe2 # 2026.10.30184401
         with:
           version: ${{ steps.version.outputs.version }}
           previous: ${{ steps.gate.outputs.last }}
@@ -68,7 +68,7 @@ jobs:
           (cd dist && sha256sum breto-* > "breto_${VERSION}_SHA256SUMS")
       - name: Sign the checksums
         if: steps.gate.outputs.needed == 'true'
-        uses: metio/ci/cosign-sign-blob@c5d6aa7eac14393fa0d61ebe41460f8f4d2d9365 # 2026.10.30162913
+        uses: metio/ci/cosign-sign-blob@4354ee55387b207473970b2419ed1b4d4b69dfe2 # 2026.10.30184401
         with:
           file: dist/breto_${{ steps.version.outputs.version }}_SHA256SUMS
       - name: Tag and publish the GitHub release
