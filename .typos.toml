@@ -6,4 +6,4 @@ edn = "edn"
 juxt = "juxt"
 
 [files]
-extend-exclude = ["flake.lock", "packages/"]
+extend-exclude = ["packages/"]

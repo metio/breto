@@ -25,12 +25,14 @@ jobs:
       - id: gate
         uses: metio/ci/needs-release@14ad475c5f5c4c0df727df1a22345298604e66ba # 2026.10.26174650
         with:
-          paths: src packages shell bb.edn breto action.yml flake.nix flake.lock README.md
-      - uses: metio/nix-devshell@d0c25fdb0d2c08f23bc62c867317a266b6f1a5c1 # 2026.9.12204255
+          paths: src packages shell bb.edn breto action.yml .breto.edn README.md
+      - uses: metio/breto@d333d47e385c6178e8f5380a07d65a018fa9d293 # 2026.10.30074227
         if: steps.gate.outputs.needed == 'true'
+        with:
+          registries: github:metio/toolchains
       - name: Run the test suite before releasing
         if: steps.gate.outputs.needed == 'true'
-        run: nix develop --command bb test
+        run: bb test
       - id: version
         if: steps.gate.outputs.needed == 'true'
         uses: metio/ci/calver@14ad475c5f5c4c0df727df1a22345298604e66ba # 2026.10.26174650
@@ -48,8 +50,8 @@ jobs:
           VERSION: ${{ steps.version.outputs.version }}
         run: |
           set -euo pipefail
-          nix develop --command bb build
-          bb_version=$(nix develop --command bb --version | sed 's/^babashka v//')
+          bb build
+          bb_version=$(bb --version | sed 's/^babashka v//')
           mkdir dist bb
           for target in linux-amd64:linux-amd64-static linux-aarch64:linux-aarch64-static \
                         darwin-amd64:macos-amd64 darwin-aarch64:macos-aarch64; do

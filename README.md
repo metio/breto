@@ -595,10 +595,11 @@ A scheduled workflow runs `breto check --all` every week against the latest rele
 
 ## Development
 
-The flake's dev shell provides babashka and every lint tool CI runs:
+The `.breto.edn` names the `metio/toolchains` groups that pin babashka and every lint tool CI runs. With that registry under `:registries`, `breto env` links them into the project:
 
 ```shell
-nix develop --command bb test
+eval "$(breto env)"
+bb test
 ```
 
 `bb convert SCRIPT-DIR OUT-DIR` turns shell wrappers around the `install-binary-from-github` helper scripts into package definitions. It runs each wrapper with stub helpers that record their arguments, so no download happens.

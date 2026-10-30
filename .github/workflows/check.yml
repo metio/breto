@@ -18,14 +18,16 @@ jobs:
     timeout-minutes: 330
     steps:
       - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7
-      - uses: metio/nix-devshell@d0c25fdb0d2c08f23bc62c867317a266b6f1a5c1 # 2026.9.12204255
+      - uses: metio/breto@d333d47e385c6178e8f5380a07d65a018fa9d293 # 2026.10.30074227
+        with:
+          registries: github:metio/toolchains
       - name: Check every definition against its latest release on every platform
         env:
           GITHUB_TOKEN: ${{ github.token }}
           XDG_STATE_HOME: ${{ runner.temp }}/state
         run: |
           printf '{:registries ["%s/packages"]}\n' "$GITHUB_WORKSPACE" > "$RUNNER_TEMP/config.edn"
-          nix develop --command ./breto check --all --platforms all --config "$RUNNER_TEMP/config.edn"
+          ./breto check --all --platforms all --config "$RUNNER_TEMP/config.edn"
       - name: Summarize the failures
         if: always()
         env:
@@ -33,6 +35,6 @@ jobs:
         run: |
           {
             echo '```'
-            nix develop --command ./breto report check --config "$RUNNER_TEMP/config.edn" | grep --invert-match '^\[OK\]' | head --bytes=900000
+            ./breto report check --config "$RUNNER_TEMP/config.edn" | grep --invert-match '^\[OK\]' | head --bytes=900000
             echo '```'
           } >> "$GITHUB_STEP_SUMMARY"
