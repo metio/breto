@@ -6,4 +6,7 @@
  :tag-prefix "jq-"
  :checksum "sha256sum.txt"
  :bins {"jq" "{asset}"}
- :platforms {"linux-x86_64" {:asset "jq-linux-amd64"}}}
+ :platforms {"linux-x86_64" {:asset "jq-linux-amd64"}
+             "linux-aarch64" {:asset "jq-linux-arm64"}
+             "darwin-x86_64" {:asset "jq-macos-amd64"}
+             "darwin-aarch64" {:asset "jq-macos-arm64"}}}
