@@ -5,5 +5,4 @@
 {:description "Highly available Prometheus setup with long term storage capabilities. A CNCF Incubating project",
  :source {:github "thanos-io/thanos"}
  :checksum "sha256sums.txt"
- :bins {"thanos" "thanos-{version}.linux-amd64/thanos"}
- :platforms {"linux-x86_64" {:asset "thanos-{version}.linux-amd64.tar.gz"}}}
+ :platforms {"linux-x86_64" {:asset "thanos-{version}.linux-amd64.tar.gz" :bins {"thanos" "thanos-{version}.linux-amd64/thanos"}}}}

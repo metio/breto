@@ -4,5 +4,4 @@
 
 {:description "Intuitive find & replace CLI (sed alternative)",
  :source {:github "chmln/sd"}
- :bins {"sd" "sd-{tag}-x86_64-unknown-linux-musl/sd"}
- :platforms {"linux-x86_64" {:asset "sd-{tag}-x86_64-unknown-linux-musl.tar.gz"}}}
+ :platforms {"linux-x86_64" {:asset "sd-{tag}-x86_64-unknown-linux-musl.tar.gz" :bins {"sd" "sd-{tag}-x86_64-unknown-linux-musl/sd"}}}}

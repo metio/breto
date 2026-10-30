@@ -5,5 +5,4 @@
 {:description "pkgdep checks if package dependency follows rule",
  :source {:github "cloverrose/pkgdep"}
  :checksum "pkgdep_{version}_checksums.txt"
- :bins {"pkgdep" "pkgdep_Linux_x86_64/pkgdep"}
- :platforms {"linux-x86_64" {:asset "pkgdep_Linux_x86_64.tar.gz"}}}
+ :platforms {"linux-x86_64" {:asset "pkgdep_Linux_x86_64.tar.gz" :bins {"pkgdep" "pkgdep_Linux_x86_64/pkgdep"}}}}

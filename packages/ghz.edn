@@ -4,5 +4,5 @@
 
 {:description "Simple gRPC benchmarking and load testing tool",
  :source {:github "bojand/ghz"}
- :checksum "ghz-linux-x86_64.tar.gz.sha256"
+ :checksum "{asset}.sha256"
  :platforms {"linux-x86_64" {:asset "ghz-linux-x86_64.tar.gz"}}}

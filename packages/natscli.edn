@@ -5,5 +5,4 @@
 {:description "The NATS Command Line Interface",
  :source {:github "nats-io/natscli"}
  :checksum "SHA256SUMS"
- :bins {"nats" "nats-{version}-linux-amd64/nats"}
- :platforms {"linux-x86_64" {:asset "nats-{version}-linux-amd64.zip"}}}
+ :platforms {"linux-x86_64" {:asset "nats-{version}-linux-amd64.zip" :bins {"nats" "nats-{version}-linux-amd64/nats"}}}}

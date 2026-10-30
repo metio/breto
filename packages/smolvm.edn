@@ -5,5 +5,4 @@
 {:description "Tool to build & run portable, lightweight, self-contained virtual machines",
  :source {:github "smol-machines/smolvm"}
  :checksum "checksums.sha256"
- :bins {"smolvm" "smolvm-{version}-linux-x86_64/smolvm"}
- :platforms {"linux-x86_64" {:asset "smolvm-{version}-linux-x86_64.tar.gz"}}}
+ :platforms {"linux-x86_64" {:asset "smolvm-{version}-linux-x86_64.tar.gz" :bins {"smolvm" "smolvm-{version}-linux-x86_64/smolvm"}}}}

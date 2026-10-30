@@ -5,5 +5,4 @@
 {:description "A Zig Language Server",
  :source {:github "llogick/zigscient"}
  :tag-prefix ""
- :bins {"zls" "zigscient-x86_64-linux"}
- :platforms {"linux-x86_64" {:asset "zigscient-x86_64-linux.zip"}}}
+ :platforms {"linux-x86_64" {:asset "zigscient-x86_64-linux.zip" :bins {"zls" "zigscient-x86_64-linux"}}}}

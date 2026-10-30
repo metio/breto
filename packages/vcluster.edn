@@ -4,7 +4,7 @@
 {:description "Creates and manages virtual Kubernetes clusters inside a host cluster"
  :source {:github "loft-sh/vcluster"}
  :checksum "checksums.txt"
- :bins {"vcluster" "vcluster-linux-amd64"}
+ :bins {"vcluster" "{asset}"}
  :signature {:of :checksum
              :bundle "checksums.txt.sigstore.json"
              :identity "https://github.com/loft-sh/vcluster-pro/.github/workflows/release.yaml@refs/tags/{tag}"

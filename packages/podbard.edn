@@ -4,5 +4,4 @@
 
 {:source {:github "Songmu/podbard"}
  :checksum "SHA256SUMS"
- :bins {"podbard" "podbard_{tag}_linux_amd64/podbard"}
- :platforms {"linux-x86_64" {:asset "podbard_{tag}_linux_amd64.tar.gz"}}}
+ :platforms {"linux-x86_64" {:asset "podbard_{tag}_linux_amd64.tar.gz" :bins {"podbard" "podbard_{tag}_linux_amd64/podbard"}}}}

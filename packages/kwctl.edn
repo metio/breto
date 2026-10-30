@@ -4,5 +4,4 @@
 
 {:description "Go-to CLI tool for Kubewarden users",
  :source {:github "kubewarden/kwctl"}
- :bins {"kwctl" "kwctl-linux-x86_64"}
- :platforms {"linux-x86_64" {:asset "kwctl-linux-x86_64.zip"}}}
+ :platforms {"linux-x86_64" {:asset "kwctl-linux-x86_64.zip" :bins {"kwctl" "kwctl-linux-x86_64"}}}}

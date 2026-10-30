@@ -4,5 +4,4 @@
 
 {:description "A command-line tool to generate, analyze, convert and manipulate colors",
  :source {:github "sharkdp/pastel"}
- :bins {"pastel" "pastel-{tag}-x86_64-unknown-linux-musl/pastel"}
- :platforms {"linux-x86_64" {:asset "pastel-{tag}-x86_64-unknown-linux-musl.tar.gz"}}}
+ :platforms {"linux-x86_64" {:asset "pastel-{tag}-x86_64-unknown-linux-musl.tar.gz" :bins {"pastel" "pastel-{tag}-x86_64-unknown-linux-musl/pastel"}}}}

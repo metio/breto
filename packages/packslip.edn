@@ -4,5 +4,4 @@
 
 {:description "A signed release manifest for vendor binaries",
  :source {:github "jdx/packslip"}
- :bins {"packslip" "packslip-{tag}-linux-x64/packslip"}
- :platforms {"linux-x86_64" {:asset "packslip-{tag}-linux-x64.tar.xz"}}}
+ :platforms {"linux-x86_64" {:asset "packslip-{tag}-linux-x64.tar.xz" :bins {"packslip" "packslip-{tag}-linux-x64/packslip"}}}}

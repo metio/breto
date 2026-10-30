@@ -4,5 +4,4 @@
 
 {:description "Diff tool for ECS Task Definition",
  :source {:github "enokawa/taskdiff"}
- :bins {"taskdiff" "taskdiff_{tag}_linux_amd64/taskdiff"}
- :platforms {"linux-x86_64" {:asset "taskdiff_{tag}_linux_amd64.tar.gz"}}}
+ :platforms {"linux-x86_64" {:asset "taskdiff_{tag}_linux_amd64.tar.gz" :bins {"taskdiff" "taskdiff_{tag}_linux_amd64/taskdiff"}}}}

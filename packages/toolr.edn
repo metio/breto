@@ -5,5 +5,4 @@
 {:description "In-project CLI tooling support",
  :source {:github "s0undt3ch/ToolR"}
  :checksum "{asset}.sha256"
- :bins {"toolr" "toolr-{version}-x86_64-unknown-linux-musl/toolr"}
- :platforms {"linux-x86_64" {:asset "toolr-{version}-x86_64-unknown-linux-musl.tar.gz"}}}
+ :platforms {"linux-x86_64" {:asset "toolr-{version}-x86_64-unknown-linux-musl.tar.gz" :bins {"toolr" "toolr-{version}-x86_64-unknown-linux-musl/toolr"}}}}

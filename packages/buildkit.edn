@@ -5,7 +5,4 @@
  :source {:github "moby/buildkit"}
  :layout :tree
  :bin-dir "bin"
- :signature {:bundle "buildkit-v{version}.linux-amd64.sigstore.json"
-             :identity-regexp "^https://github\\.com/docker/github-builder/\\.github/workflows/bake\\.yml@[0-9a-f]{40}$"
-             :issuer "https://token.actions.githubusercontent.com"}
- :platforms {"linux-x86_64" {:asset "buildkit-v{version}.linux-amd64.tar.gz"}}}
+ :platforms {"linux-x86_64" {:asset "buildkit-v{version}.linux-amd64.tar.gz" :signature {:bundle "buildkit-v{version}.linux-amd64.sigstore.json" :identity-regexp "^https://github\\.com/docker/github-builder/\\.github/workflows/bake\\.yml@[0-9a-f]{40}$" :issuer "https://token.actions.githubusercontent.com"}}}}

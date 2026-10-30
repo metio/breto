@@ -4,5 +4,5 @@
 
 {:description "Sigi - a tool for organizing",
  :source {:github "so-dang-cool/sigi"}
- :checksum "sigi_{tag}_x86_64-unknown-linux-musl.tar.gz.sha256sum"
+ :checksum "{asset}.sha256sum"
  :platforms {"linux-x86_64" {:asset "sigi_{tag}_x86_64-unknown-linux-musl.tar.gz"}}}

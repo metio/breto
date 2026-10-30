@@ -4,5 +4,4 @@
 
 {:description "creates CREDITS file from LICENSE files of dependencies",
  :source {:github "Songmu/gocredits"}
- :bins {"gocredits" "gocredits_{tag}_linux_amd64/gocredits"}
- :platforms {"linux-x86_64" {:asset "gocredits_{tag}_linux_amd64.tar.gz"}}}
+ :platforms {"linux-x86_64" {:asset "gocredits_{tag}_linux_amd64.tar.gz" :bins {"gocredits" "gocredits_{tag}_linux_amd64/gocredits"}}}}

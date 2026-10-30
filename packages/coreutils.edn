@@ -5,5 +5,4 @@
 {:description "Cross-platform Rust rewrite of the GNU coreutils",
  :source {:github "uutils/coreutils"}
  :tag-prefix ""
- :bins {"coreutils" "coreutils-{tag}-x86_64-unknown-linux-musl/coreutils"}
- :platforms {"linux-x86_64" {:asset "coreutils-{tag}-x86_64-unknown-linux-musl.tar.gz"}}}
+ :platforms {"linux-x86_64" {:asset "coreutils-{tag}-x86_64-unknown-linux-musl.tar.gz" :bins {"coreutils" "coreutils-{tag}-x86_64-unknown-linux-musl/coreutils"}}}}

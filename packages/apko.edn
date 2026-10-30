@@ -5,5 +5,4 @@
 {:description "Build OCI images from APK packages directly without Dockerfile",
  :source {:github "chainguard-dev/apko"}
  :checksum "checksums.txt"
- :bins {"apko" "apko_{version}_linux_amd64/apko"}
- :platforms {"linux-x86_64" {:asset "apko_{version}_linux_amd64.tar.gz"}}}
+ :platforms {"linux-x86_64" {:asset "apko_{version}_linux_amd64.tar.gz" :bins {"apko" "apko_{version}_linux_amd64/apko"}}}}

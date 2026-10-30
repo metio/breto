@@ -5,5 +5,4 @@
 {:description "Send push notifications to your phone or desktop using PUT/POST",
  :source {:github "binwiederhier/ntfy"}
  :checksum "checksums.txt"
- :bins {"ntfy" "ntfy_{version}_linux_amd64/ntfy"}
- :platforms {"linux-x86_64" {:asset "ntfy_{version}_linux_amd64.tar.gz"}}}
+ :platforms {"linux-x86_64" {:asset "ntfy_{version}_linux_amd64.tar.gz" :bins {"ntfy" "ntfy_{version}_linux_amd64/ntfy"}}}}

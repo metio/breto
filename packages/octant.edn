@@ -5,5 +5,4 @@
 {:description "Highly extensible platform for developers to better understand the complexity of Kubernetes clusters",
  :source {:github "vmware-archive/octant"}
  :checksum "checksums.txt"
- :bins {"octant" "octant_{version}_Linux-64bit/octant"}
- :platforms {"linux-x86_64" {:asset "octant_{version}_Linux-64bit.tar.gz"}}}
+ :platforms {"linux-x86_64" {:asset "octant_{version}_Linux-64bit.tar.gz" :bins {"octant" "octant_{version}_Linux-64bit/octant"}}}}

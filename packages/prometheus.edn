@@ -5,5 +5,4 @@
 {:description "The Prometheus monitoring system and time series database",
  :source {:github "prometheus/prometheus"}
  :checksum "sha256sums.txt"
- :bins {"prometheus" "prometheus-{version}.linux-amd64/prometheus", "promtool" "prometheus-{version}.linux-amd64/promtool"}
- :platforms {"linux-x86_64" {:asset "prometheus-{version}.linux-amd64.tar.gz"}}}
+ :platforms {"linux-x86_64" {:asset "prometheus-{version}.linux-amd64.tar.gz" :bins {"prometheus" "prometheus-{version}.linux-amd64/prometheus", "promtool" "prometheus-{version}.linux-amd64/promtool"}}}}

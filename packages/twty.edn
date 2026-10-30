@@ -4,5 +4,4 @@
 
 {:description "command-line twitter client written in golang",
  :source {:github "mattn/twty"}
- :bins {"twty" "twty_{tag}_linux_amd64/twty"}
- :platforms {"linux-x86_64" {:asset "twty_{tag}_linux_amd64.tar.gz"}}}
+ :platforms {"linux-x86_64" {:asset "twty_{tag}_linux_amd64.tar.gz" :bins {"twty" "twty_{tag}_linux_amd64/twty"}}}}

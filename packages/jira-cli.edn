@@ -5,5 +5,4 @@
 {:description "Feature-rich interactive Jira command line",
  :source {:github "ankitpokhrel/jira-cli"}
  :checksum "checksums.txt"
- :bins {"jira" "jira_{version}_linux_x86_64/bin/jira"}
- :platforms {"linux-x86_64" {:asset "jira_{version}_linux_x86_64.tar.gz"}}}
+ :platforms {"linux-x86_64" {:asset "jira_{version}_linux_x86_64.tar.gz" :bins {"jira" "jira_{version}_linux_x86_64/bin/jira"}}}}

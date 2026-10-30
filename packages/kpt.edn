@@ -4,5 +4,5 @@
 {:description "Packages, customizes and applies Kubernetes configuration as data"
  :source {:github "kptdev/kpt"}
  :checksum "checksums.txt"
- :bins {"kpt" "kpt_linux_amd64"}
+ :bins {"kpt" "{asset}"}
  :platforms {"linux-x86_64" {:asset "kpt_linux_amd64"}}}

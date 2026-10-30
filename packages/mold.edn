@@ -4,5 +4,4 @@
 
 {:description "mold: A Modern Linker",
  :source {:github "rui314/mold"}
- :bins {"ld.mold" "mold-{version}-x86_64-linux/bin/mold", "ld64.mold" "mold-{version}-x86_64-linux/bin/mold", "mold" "mold-{version}-x86_64-linux/bin/mold"}
- :platforms {"linux-x86_64" {:asset "mold-{version}-x86_64-linux.tar.gz"}}}
+ :platforms {"linux-x86_64" {:asset "mold-{version}-x86_64-linux.tar.gz" :bins {"ld.mold" "mold-{version}-x86_64-linux/bin/mold", "ld64.mold" "mold-{version}-x86_64-linux/bin/mold", "mold" "mold-{version}-x86_64-linux/bin/mold"}}}}

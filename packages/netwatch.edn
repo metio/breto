@@ -4,5 +4,4 @@
 
 {:description "Real-time network diagnostics in your terminal. One command, zero config, instant visibility",
  :source {:github "matthart1983/netwatch"}
- :bins {"netwatch" "netwatch-linux-x86_64-static"}
- :platforms {"linux-x86_64" {:asset "netwatch-linux-x86_64-static.tar.gz"}}}
+ :platforms {"linux-x86_64" {:asset "netwatch-linux-x86_64-static.tar.gz" :bins {"netwatch" "netwatch-linux-x86_64-static"}}}}

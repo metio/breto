@@ -5,5 +5,4 @@
  :source {:github "DanielGavin/ols"}
  :tag-prefix "dev-"
  :layout :tree
- :bins {"ols" "ols-x86_64-unknown-linux-gnu" "odinfmt" "odinfmt-x86_64-unknown-linux-gnu"}
- :platforms {"linux-x86_64" {:asset "ols-x86_64-unknown-linux-gnu.zip"}}}
+ :platforms {"linux-x86_64" {:asset "ols-x86_64-unknown-linux-gnu.zip" :bins {"ols" "ols-x86_64-unknown-linux-gnu" "odinfmt" "odinfmt-x86_64-unknown-linux-gnu"}}}}

@@ -4,7 +4,7 @@
 {:description "Command line client for Talos Linux clusters"
  :source {:github "siderolabs/talos"}
  :checksum "sha256sum.txt"
- :bins {"talosctl" "talosctl-linux-amd64"}
+ :bins {"talosctl" "{asset}"}
  :signature {:bundle "{asset}.bundle"
              :identity "https://github.com/siderolabs/talos/.github/workflows/ci.yaml@refs/tags/{tag}"
              :issuer "https://token.actions.githubusercontent.com"}

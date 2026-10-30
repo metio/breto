@@ -5,5 +5,4 @@
 {:description "hammer is a command-line tool to schema management for Google Cloud Spanner",
  :source {:github "daichirata/hammer"}
  :checksum "checksums.txt"
- :bins {"hammer" "hammer-{version}-linux-amd64/hammer"}
- :platforms {"linux-x86_64" {:asset "hammer-{version}-linux-amd64.tar.gz"}}}
+ :platforms {"linux-x86_64" {:asset "hammer-{version}-linux-amd64.tar.gz" :bins {"hammer" "hammer-{version}-linux-amd64/hammer"}}}}

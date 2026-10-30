@@ -6,5 +6,4 @@
  :source {:github "EmbarkStudios/cargo-deny"}
  :tag-prefix ""
  :checksum "{asset}.sha256"
- :bins {"cargo-deny" "cargo-deny-{tag}-x86_64-unknown-linux-musl/cargo-deny"}
- :platforms {"linux-x86_64" {:asset "cargo-deny-{tag}-x86_64-unknown-linux-musl.tar.gz"}}}
+ :platforms {"linux-x86_64" {:asset "cargo-deny-{tag}-x86_64-unknown-linux-musl.tar.gz" :bins {"cargo-deny" "cargo-deny-{tag}-x86_64-unknown-linux-musl/cargo-deny"}}}}

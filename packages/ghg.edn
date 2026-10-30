@@ -4,5 +4,4 @@
 
 {:description "Get the executable from github releases easily",
  :source {:github "Songmu/ghg"}
- :bins {"ghg" "ghg_{tag}_linux_amd64/ghg"}
- :platforms {"linux-x86_64" {:asset "ghg_{tag}_linux_amd64.tar.gz"}}}
+ :platforms {"linux-x86_64" {:asset "ghg_{tag}_linux_amd64.tar.gz" :bins {"ghg" "ghg_{tag}_linux_amd64/ghg"}}}}

@@ -4,5 +4,4 @@
 
 {:description "a database management tui for postgres",
  :source {:github "achristmascarl/rainfrog"}
- :checksum "rainfrog-{tag}-x86_64-unknown-linux-gnu.sha256"
- :platforms {"linux-x86_64" {:asset "rainfrog-{tag}-x86_64-unknown-linux-gnu.tar.gz"}}}
+ :platforms {"linux-x86_64" {:asset "rainfrog-{tag}-x86_64-unknown-linux-gnu.tar.gz" :checksum "rainfrog-{tag}-x86_64-unknown-linux-gnu.sha256"}}}

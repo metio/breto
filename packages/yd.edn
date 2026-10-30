@@ -4,5 +4,4 @@
 
 {:description "YAML Incremental Digger",
  :source {:github "skanehira/yd"}
- :bins {"yd" "yd_{tag}_linux_amd64/yd"}
- :platforms {"linux-x86_64" {:asset "yd_{tag}_linux_amd64.tar.gz"}}}
+ :platforms {"linux-x86_64" {:asset "yd_{tag}_linux_amd64.tar.gz" :bins {"yd" "yd_{tag}_linux_amd64/yd"}}}}

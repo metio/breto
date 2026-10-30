@@ -4,5 +4,4 @@
 
 {:description "A cli application for nostr",
  :source {:github "mattn/algia"}
- :bins {"algia" "algia_{tag}_linux_amd64/algia"}
- :platforms {"linux-x86_64" {:asset "algia_{tag}_linux_amd64.tar.gz"}}}
+ :platforms {"linux-x86_64" {:asset "algia_{tag}_linux_amd64.tar.gz" :bins {"algia" "algia_{tag}_linux_amd64/algia"}}}}

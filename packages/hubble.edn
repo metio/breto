@@ -4,5 +4,5 @@
 
 {:description "Hubble - Network, Service & Security Observability for Kubernetes using eBPF",
  :source {:github "cilium/hubble"}
- :checksum "hubble-linux-amd64.tar.gz.sha256sum"
+ :checksum "{asset}.sha256sum"
  :platforms {"linux-x86_64" {:asset "hubble-linux-amd64.tar.gz"}}}

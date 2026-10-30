@@ -6,5 +6,4 @@
  :source {:github "BurntSushi/ripgrep"}
  :tag-prefix ""
  :checksum "{asset}.sha256"
- :bins {"rg" "ripgrep-{tag}-x86_64-unknown-linux-musl/rg"}
- :platforms {"linux-x86_64" {:asset "ripgrep-{tag}-x86_64-unknown-linux-musl.tar.gz"}}}
+ :platforms {"linux-x86_64" {:asset "ripgrep-{tag}-x86_64-unknown-linux-musl.tar.gz" :bins {"rg" "ripgrep-{tag}-x86_64-unknown-linux-musl/rg"}}}}

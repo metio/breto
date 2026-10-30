@@ -5,5 +5,4 @@
 {:description "A dotfile manager with templating",
  :source {:github "oknozor/toml-bombadil"}
  :tag-prefix ""
- :bins {"bombadil" "x86_64-unknown-linux-musl/bombadil"}
- :platforms {"linux-x86_64" {:asset "bombadil-{tag}-x86_64-unknown-linux-musl.tar.gz"}}}
+ :platforms {"linux-x86_64" {:asset "bombadil-{tag}-x86_64-unknown-linux-musl.tar.gz" :bins {"bombadil" "x86_64-unknown-linux-musl/bombadil"}}}}

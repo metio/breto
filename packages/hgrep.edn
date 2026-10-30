@@ -4,5 +4,4 @@
 
 {:description "Grep with human-friendly search results",
  :source {:github "rhysd/hgrep"}
- :bins {"hgrep" "hgrep-{tag}-x86_64-unknown-linux-musl/hgrep"}
- :platforms {"linux-x86_64" {:asset "hgrep-{tag}-x86_64-unknown-linux-musl.zip"}}}
+ :platforms {"linux-x86_64" {:asset "hgrep-{tag}-x86_64-unknown-linux-musl.zip" :bins {"hgrep" "hgrep-{tag}-x86_64-unknown-linux-musl/hgrep"}}}}

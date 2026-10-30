@@ -4,5 +4,4 @@
 
 {:description "A simple, fast and user-friendly alternative to 'find'",
  :source {:github "sharkdp/fd"}
- :bins {"fd" "fd-{tag}-x86_64-unknown-linux-musl/fd"}
- :platforms {"linux-x86_64" {:asset "fd-{tag}-x86_64-unknown-linux-musl.tar.gz"}}}
+ :platforms {"linux-x86_64" {:asset "fd-{tag}-x86_64-unknown-linux-musl.tar.gz" :bins {"fd" "fd-{tag}-x86_64-unknown-linux-musl/fd"}}}}

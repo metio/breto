@@ -3,7 +3,6 @@
 
 {:description "The Kubernetes command-line tool",
  :source {:text "https://dl.k8s.io/release/stable.txt"}
- :url "https://dl.k8s.io/release/{tag}/bin/linux/amd64/{asset}"
  :checksum "{asset}.sha256",
  :completions {:bash {:args ["completion" "bash"]}}
- :platforms {"linux-x86_64" {:asset "kubectl"}}}
+ :platforms {"linux-x86_64" {:asset "kubectl" :url "https://dl.k8s.io/release/{tag}/bin/linux/amd64/{asset}"}}}

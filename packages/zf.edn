@@ -5,5 +5,4 @@
 {:description "a commandline fuzzy finder designed for filtering filepaths",
  :source {:github "natecraddock/zf"}
  :tag-prefix ""
- :bins {"zf" "zf-{tag}-x86_64-linux"}
- :platforms {"linux-x86_64" {:asset "zf-{tag}-x86_64-linux.tar.xz"}}}
+ :platforms {"linux-x86_64" {:asset "zf-{tag}-x86_64-linux.tar.xz" :bins {"zf" "zf-{tag}-x86_64-linux"}}}}

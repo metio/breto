@@ -5,5 +5,4 @@
 {:description "A pluggable multi-language version manager",
  :source {:github "moonrepo/proto"}
  :checksum "{asset}.sha256"
- :bins {"proto" "proto_cli-x86_64-unknown-linux-musl/proto"}
- :platforms {"linux-x86_64" {:asset "proto_cli-x86_64-unknown-linux-musl.tar.xz"}}}
+ :platforms {"linux-x86_64" {:asset "proto_cli-x86_64-unknown-linux-musl.tar.xz" :bins {"proto" "proto_cli-x86_64-unknown-linux-musl/proto"}}}}

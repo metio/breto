@@ -4,6 +4,5 @@
 
 {:description "Spotify for the terminal written in Rust",
  :source {:github "Rigellute/spotify-tui"}
- :checksum "spotify-tui-linux.sha256"
  :bins {"spt" "spt"}
- :platforms {"linux-x86_64" {:asset "spotify-tui-linux.tar.gz"}}}
+ :platforms {"linux-x86_64" {:asset "spotify-tui-linux.tar.gz" :checksum "spotify-tui-linux.sha256"}}}

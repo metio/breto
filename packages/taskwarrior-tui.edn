@@ -4,5 +4,4 @@
 
 {:description "`taskwarrior-tui`: A terminal user interface for taskwarrior",
  :source {:github "kdheepak/taskwarrior-tui"}
- :checksum "taskwarrior-tui-x86_64-unknown-linux-musl.sha256"
- :platforms {"linux-x86_64" {:asset "taskwarrior-tui-x86_64-unknown-linux-musl.tar.gz"}}}
+ :platforms {"linux-x86_64" {:asset "taskwarrior-tui-x86_64-unknown-linux-musl.tar.gz" :checksum "taskwarrior-tui-x86_64-unknown-linux-musl.sha256"}}}

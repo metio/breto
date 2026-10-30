@@ -4,5 +4,4 @@
 {:description "Find files with SQL-like queries"
  :source {:github "jhspetersson/fselect"}
  :tag-prefix ""
- :bins {"fselect" "fselect-x86_64-linux-musl"}
- :platforms {"linux-x86_64" {:asset "fselect-x86_64-linux-musl.gz"}}}
+ :platforms {"linux-x86_64" {:asset "fselect-x86_64-linux-musl.gz" :bins {"fselect" "fselect-x86_64-linux-musl"}}}}

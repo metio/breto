@@ -4,5 +4,4 @@
 
 {:description "Fast file find",
  :source {:github "mattn/files"}
- :bins {"files" "files_{tag}_linux_amd64/files"}
- :platforms {"linux-x86_64" {:asset "files_{tag}_linux_amd64.tar.gz"}}}
+ :platforms {"linux-x86_64" {:asset "files_{tag}_linux_amd64.tar.gz" :bins {"files" "files_{tag}_linux_amd64/files"}}}}

@@ -4,5 +4,4 @@
 
 {:description "Open a web search in your terminal",
  :source {:github "zquestz/s"}
- :bins {"s" "s-linux_amd64/s"}
- :platforms {"linux-x86_64" {:asset "s-linux_amd64.zip"}}}
+ :platforms {"linux-x86_64" {:asset "s-linux_amd64.zip" :bins {"s" "s-linux_amd64/s"}}}}

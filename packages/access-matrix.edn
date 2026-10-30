@@ -5,5 +5,4 @@
 {:description "Review Access - kubectl plugin to show an access matrix for k8s server resources",
  :source {:github "corneliusweig/rakkess"}
  :checksum "{asset}.sha256"
- :bins {"kubectl-access_matrix" "access-matrix-amd64-linux"}
- :platforms {"linux-x86_64" {:asset "access-matrix-amd64-linux.tar.gz"}}}
+ :platforms {"linux-x86_64" {:asset "access-matrix-amd64-linux.tar.gz" :bins {"kubectl-access_matrix" "access-matrix-amd64-linux"}}}}

@@ -4,5 +4,4 @@
 
 {:description "Proxy SSH connections on a gateway",
  :source {:github "cea-hpc/sshproxy"}
- :bins {"sshproxy" "sshproxy_{version}_Linux_x86_64/sshproxy", "sshproxy-dumpd" "sshproxy_{version}_Linux_x86_64/sshproxy-dumpd", "sshproxy-replay" "sshproxy_{version}_Linux_x86_64/sshproxy-replay", "sshproxyctl" "sshproxy_{version}_Linux_x86_64/sshproxyctl"}
- :platforms {"linux-x86_64" {:asset "sshproxy_{version}_Linux_x86_64.tar.gz"}}}
+ :platforms {"linux-x86_64" {:asset "sshproxy_{version}_Linux_x86_64.tar.gz" :bins {"sshproxy" "sshproxy_{version}_Linux_x86_64/sshproxy", "sshproxy-dumpd" "sshproxy_{version}_Linux_x86_64/sshproxy-dumpd", "sshproxy-replay" "sshproxy_{version}_Linux_x86_64/sshproxy-replay", "sshproxyctl" "sshproxy_{version}_Linux_x86_64/sshproxyctl"}}}}

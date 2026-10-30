@@ -5,5 +5,4 @@
 {:description "Command line interface used by all WakaTime text editor plugins",
  :source {:github "wakatime/wakatime-cli"}
  :checksum "checksums_sha256.txt"
- :bins {"wakatime-cli" "wakatime-cli-linux-amd64"}
- :platforms {"linux-x86_64" {:asset "wakatime-cli-linux-amd64.zip"}}}
+ :platforms {"linux-x86_64" {:asset "wakatime-cli-linux-amd64.zip" :bins {"wakatime-cli" "wakatime-cli-linux-amd64"}}}}

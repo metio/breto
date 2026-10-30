@@ -3,6 +3,7 @@
 
 (ns breto.registry-test
   (:require [babashka.fs :as fs]
+            [clojure.edn :as edn]
             [breto.support :as s]
             [breto.package :as package]
             [breto.platform :as platform]
@@ -85,3 +86,12 @@
 
 (deftest a-checkout-has-no-built-in-definitions
   (is (nil? (registry/builtin))))
+
+(deftest shared-keys-of-shipped-definitions-name-no-platform
+  (let [token #"(?i)linux|darwin|macos|apple|windows|x86_64|x86-64|amd64|aarch64|arm64|x64|musl|gnu"
+        strings (fn strings [v] (cond (string? v) [v] (map? v) (mapcat strings (concat (keys v) (vals v))) (coll? v) (mapcat strings v)))]
+    (doseq [file (fs/glob "packages" "*.edn")
+            :let [definition (edn/read-string (slurp (str file)))]
+            [k v] (dissoc definition :platforms :description :source)
+            s (strings v)]
+      (is (not (re-find token s)) (str (fs/file-name file) " " k " " s)))))

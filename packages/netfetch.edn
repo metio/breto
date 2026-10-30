@@ -6,5 +6,4 @@
  :source {:github "deggja/netfetch"}
  :tag-prefix ""
  :checksum "netfetch_{tag}_checksums.txt"
- :bins {"netfetch" "netfetch_{tag}_linux_amd64/netfetch"}
- :platforms {"linux-x86_64" {:asset "netfetch_{tag}_linux_amd64.tar.gz"}}}
+ :platforms {"linux-x86_64" {:asset "netfetch_{tag}_linux_amd64.tar.gz" :bins {"netfetch" "netfetch_{tag}_linux_amd64/netfetch"}}}}

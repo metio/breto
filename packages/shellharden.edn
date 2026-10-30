@@ -4,5 +4,4 @@
 
 {:description "The corrective bash syntax highlighter",
  :source {:github "anordal/shellharden"}
- :checksum "shellharden-x86_64-unknown-linux-musl.sha512"
- :platforms {"linux-x86_64" {:asset "shellharden-x86_64-unknown-linux-musl.tar.gz"}}}
+ :platforms {"linux-x86_64" {:asset "shellharden-x86_64-unknown-linux-musl.tar.gz" :checksum "shellharden-x86_64-unknown-linux-musl.sha512"}}}

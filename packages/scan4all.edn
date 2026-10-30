@@ -5,5 +5,4 @@
 {:description "Official repository vuls Scan: 15000+PoCs; 23 kinds of application password crack; 7000+Web fingerprints; 146 protocols and 90000+ rules Port scanning; Fuzz, HW, awesome BugBounty",
  :source {:github "GhostTroops/scan4all"}
  :tag-prefix ""
- :checksum "scan4all-linux-checksums.txt"
- :platforms {"linux-x86_64" {:asset "scan4all_{tag}_linux_amd64.zip"}}}
+ :platforms {"linux-x86_64" {:asset "scan4all_{tag}_linux_amd64.zip" :checksum "scan4all-linux-checksums.txt"}}}

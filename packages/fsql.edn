@@ -4,5 +4,4 @@
 
 {:description "Search for files using a fun query language",
  :source {:github "kashav/fsql"}
- :bins {"fsql" "fsql-linux-amd64/fsql"}
- :platforms {"linux-x86_64" {:asset "fsql-{version}-fsql-linux-amd64.tar.gz"}}}
+ :platforms {"linux-x86_64" {:asset "fsql-{version}-fsql-linux-amd64.tar.gz" :bins {"fsql" "fsql-linux-amd64/fsql"}}}}

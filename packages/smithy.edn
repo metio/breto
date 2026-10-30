@@ -6,5 +6,4 @@
  :source {:github "smithy-lang/smithy"}
  :tag-prefix ""
  :checksum "{asset}.sha256"
- :bins {"smithy" "smithy-cli-linux-x86_64/bin/smithy"}
- :platforms {"linux-x86_64" {:asset "smithy-cli-linux-x86_64.zip"}}}
+ :platforms {"linux-x86_64" {:asset "smithy-cli-linux-x86_64.zip" :bins {"smithy" "smithy-cli-linux-x86_64/bin/smithy"}}}}

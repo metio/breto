@@ -4,5 +4,4 @@
 
 {:description "ERD exporter with PlantUML and mermaid format",
  :source {:github "sue445/plant_erd"}
- :bins {"plant_erd" "plant_erd_linux_amd64"}
- :platforms {"linux-x86_64" {:asset "plant_erd_linux_amd64.zip"}}}
+ :platforms {"linux-x86_64" {:asset "plant_erd_linux_amd64.zip" :bins {"plant_erd" "plant_erd_linux_amd64"}}}}

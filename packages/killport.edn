@@ -4,5 +4,4 @@
 
 {:description "A command-line tool to easily kill processes running on a specified port",
  :source {:github "jkfran/killport"}
- :bins {"killport" "killport-x86_64-linux-gnu/killport"}
- :platforms {"linux-x86_64" {:asset "killport-x86_64-linux-gnu.tar.gz"}}}
+ :platforms {"linux-x86_64" {:asset "killport-x86_64-linux-gnu.tar.gz" :bins {"killport" "killport-x86_64-linux-gnu/killport"}}}}

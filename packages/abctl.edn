@@ -5,5 +5,4 @@
 {:description "Airbyte's CLI for managing local Airbyte installations",
  :source {:github "airbytehq/abctl"}
  :checksum "abctl_{version}_checksums.txt"
- :bins {"abctl" "abctl-{tag}-linux-amd64/abctl"}
- :platforms {"linux-x86_64" {:asset "abctl-{tag}-linux-amd64.tar.gz"}}}
+ :platforms {"linux-x86_64" {:asset "abctl-{tag}-linux-amd64.tar.gz" :bins {"abctl" "abctl-{tag}-linux-amd64/abctl"}}}}

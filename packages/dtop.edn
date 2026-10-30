@@ -5,5 +5,4 @@
 {:description "Terminal dashboard for Docker monitoring across multiple hosts with Dozzle integration",
  :source {:github "amir20/dtop"}
  :checksum "{asset}.sha256"
- :bins {"dtop" "dtop-x86_64-unknown-linux-gnu/dtop"}
- :platforms {"linux-x86_64" {:asset "dtop-x86_64-unknown-linux-gnu.tar.gz"}}}
+ :platforms {"linux-x86_64" {:asset "dtop-x86_64-unknown-linux-gnu.tar.gz" :bins {"dtop" "dtop-x86_64-unknown-linux-gnu/dtop"}}}}

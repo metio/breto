@@ -5,5 +5,4 @@
 {:description "A build system and monorepo management tool for the web ecosystem, written in Rust",
  :source {:github "moonrepo/moon"}
  :checksum "{asset}.sha256"
- :bins {"moon" "moon_cli-x86_64-unknown-linux-musl/moon", "moonx" "moon_cli-x86_64-unknown-linux-musl/moonx"}
- :platforms {"linux-x86_64" {:asset "moon_cli-x86_64-unknown-linux-musl.tar.xz"}}}
+ :platforms {"linux-x86_64" {:asset "moon_cli-x86_64-unknown-linux-musl.tar.xz" :bins {"moon" "moon_cli-x86_64-unknown-linux-musl/moon", "moonx" "moon_cli-x86_64-unknown-linux-musl/moonx"}}}}

@@ -4,5 +4,4 @@
 
 {:description "A command-line benchmarking tool",
  :source {:github "sharkdp/hyperfine"}
- :bins {"hyperfine" "hyperfine-{tag}-x86_64-unknown-linux-musl/hyperfine"}
- :platforms {"linux-x86_64" {:asset "hyperfine-{tag}-x86_64-unknown-linux-musl.tar.gz"}}}
+ :platforms {"linux-x86_64" {:asset "hyperfine-{tag}-x86_64-unknown-linux-musl.tar.gz" :bins {"hyperfine" "hyperfine-{tag}-x86_64-unknown-linux-musl/hyperfine"}}}}

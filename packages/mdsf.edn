@@ -5,5 +5,4 @@
 {:description "Format markdown code blocks using your favorite tools",
  :source {:github "hougesen/mdsf"}
  :checksum "{asset}.sha256"
- :bins {"mdsf" "mdsf-x86_64-unknown-linux-gnu/mdsf"}
- :platforms {"linux-x86_64" {:asset "mdsf-x86_64-unknown-linux-gnu.tar.gz"}}}
+ :platforms {"linux-x86_64" {:asset "mdsf-x86_64-unknown-linux-gnu.tar.gz" :bins {"mdsf" "mdsf-x86_64-unknown-linux-gnu/mdsf"}}}}

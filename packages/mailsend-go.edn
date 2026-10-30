@@ -5,5 +5,4 @@
 {:description "mailsend-go is a multi-platform  command line tool to send mail via SMTP protocol",
  :source {:github "muquit/mailsend-go"}
  :checksum "mailsend-go-{tag}-checksums.txt"
- :bins {"mailsend-go" "mailsend-go-{tag}-linux-amd64"}
- :platforms {"linux-x86_64" {:asset "mailsend-go-{tag}-linux-amd64.d.tar.gz"}}}
+ :platforms {"linux-x86_64" {:asset "mailsend-go-{tag}-linux-amd64.d.tar.gz" :bins {"mailsend-go" "mailsend-go-{tag}-linux-amd64"}}}}

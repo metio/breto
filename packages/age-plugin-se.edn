@@ -4,5 +4,4 @@
 
 {:description "Age plugin for Apple's Secure Enclave",
  :source {:github "remko/age-plugin-se"}
- :bins {"age-plugin-se" "age-plugin-se-{tag}-x86_64-linux/usr/bin/age-plugin-se"}
- :platforms {"linux-x86_64" {:asset "age-plugin-se-{tag}-x86_64-linux.tgz"}}}
+ :platforms {"linux-x86_64" {:asset "age-plugin-se-{tag}-x86_64-linux.tgz" :bins {"age-plugin-se" "age-plugin-se-{tag}-x86_64-linux/usr/bin/age-plugin-se"}}}}

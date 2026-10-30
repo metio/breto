@@ -4,5 +4,4 @@
 
 {:description "Terminal interface for managing markdown-based tasks",
  :source {:github "callumalpass/tasknotes-tui"}
- :bins {"tasknotes-tui" "tasknotes-tui-{tag}-linux-x86_64/tasknotes-tui"}
- :platforms {"linux-x86_64" {:asset "tasknotes-tui-{tag}-linux-x86_64.tar.gz"}}}
+ :platforms {"linux-x86_64" {:asset "tasknotes-tui-{tag}-linux-x86_64.tar.gz" :bins {"tasknotes-tui" "tasknotes-tui-{tag}-linux-x86_64/tasknotes-tui"}}}}

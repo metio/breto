@@ -5,5 +5,4 @@
 {:description "A modern load testing tool, using Go and JavaScript",
  :source {:github "grafana/k6"}
  :checksum "k6-{tag}-checksums.txt"
- :bins {"k6" "k6-{tag}-linux-amd64/k6"}
- :platforms {"linux-x86_64" {:asset "k6-{tag}-linux-amd64.tar.gz"}}}
+ :platforms {"linux-x86_64" {:asset "k6-{tag}-linux-amd64.tar.gz" :bins {"k6" "k6-{tag}-linux-amd64/k6"}}}}

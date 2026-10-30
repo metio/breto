@@ -5,5 +5,4 @@
 {:description "Prometheus rule linter/validator",
  :source {:github "cloudflare/pint"}
  :checksum "checksums.txt"
- :bins {"pint" "pint-linux-amd64"}
- :platforms {"linux-x86_64" {:asset "pint-{version}-linux-amd64.tar.gz"}}}
+ :platforms {"linux-x86_64" {:asset "pint-{version}-linux-amd64.tar.gz" :bins {"pint" "pint-linux-amd64"}}}}

@@ -5,5 +5,4 @@
 {:description "Display and control your Android device",
  :source {:github "Genymobile/scrcpy"}
  :checksum "SHA256SUMS.txt"
- :bins {"scrcpy" "scrcpy-linux-x86_64-{tag}/scrcpy"}
- :platforms {"linux-x86_64" {:asset "scrcpy-linux-x86_64-{tag}.tar.gz"}}}
+ :platforms {"linux-x86_64" {:asset "scrcpy-linux-x86_64-{tag}.tar.gz" :bins {"scrcpy" "scrcpy-linux-x86_64-{tag}/scrcpy"}}}}

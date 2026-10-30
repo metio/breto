@@ -5,5 +5,4 @@
 {:description "Distributed reliable key-value store for the most critical data of a distributed system",
  :source {:github "etcd-io/etcd"}
  :checksum "SHA256SUMS"
- :bins {"etcd" "etcd-{tag}-linux-amd64/etcd", "etcdctl" "etcd-{tag}-linux-amd64/etcdctl"}
- :platforms {"linux-x86_64" {:asset "etcd-{tag}-linux-amd64.tar.gz"}}}
+ :platforms {"linux-x86_64" {:asset "etcd-{tag}-linux-amd64.tar.gz" :bins {"etcd" "etcd-{tag}-linux-amd64/etcd", "etcdctl" "etcd-{tag}-linux-amd64/etcdctl"}}}}

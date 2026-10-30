@@ -5,5 +5,4 @@
 {:description "The official Twitch CLI to make developing on Twitch easier",
  :source {:github "twitchdev/twitch-cli"}
  :checksum "checksums.txt"
- :bins {"twitch" "twitch-cli_{version}_Linux_x86_64/twitch"}
- :platforms {"linux-x86_64" {:asset "twitch-cli_{version}_Linux_x86_64.tar.gz"}}}
+ :platforms {"linux-x86_64" {:asset "twitch-cli_{version}_Linux_x86_64.tar.gz" :bins {"twitch" "twitch-cli_{version}_Linux_x86_64/twitch"}}}}

@@ -6,5 +6,4 @@
  :source {:github "mitsuhiko/insta"}
  :tag-prefix ""
  :checksum "{asset}.sha256"
- :bins {"cargo-insta" "cargo-insta-x86_64-unknown-linux-musl/cargo-insta"}
- :platforms {"linux-x86_64" {:asset "cargo-insta-x86_64-unknown-linux-musl.tar.xz"}}}
+ :platforms {"linux-x86_64" {:asset "cargo-insta-x86_64-unknown-linux-musl.tar.xz" :bins {"cargo-insta" "cargo-insta-x86_64-unknown-linux-musl/cargo-insta"}}}}

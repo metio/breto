@@ -5,5 +5,4 @@
 {:description "Fast linters runner for Go",
  :source {:github "golangci/golangci-lint"}
  :checksum "golangci-lint-{version}-checksums.txt"
- :bins {"golangci-lint" "golangci-lint-{version}-linux-amd64/golangci-lint"}
- :platforms {"linux-x86_64" {:asset "golangci-lint-{version}-linux-amd64.tar.gz"}}}
+ :platforms {"linux-x86_64" {:asset "golangci-lint-{version}-linux-amd64.tar.gz" :bins {"golangci-lint" "golangci-lint-{version}-linux-amd64/golangci-lint"}}}}

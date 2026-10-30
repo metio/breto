@@ -5,5 +5,4 @@
 {:description "Monitor your Website and APIs from your Computer. Get Notified through Slack, E-mail when your server is down or response time is more than expected",
  :source {:github "sanathp/statusok"}
  :tag-prefix ""
- :bins {"statusok" "statusok_linux/statusok"}
- :platforms {"linux-x86_64" {:asset "statusok_linux.zip"}}}
+ :platforms {"linux-x86_64" {:asset "statusok_linux.zip" :bins {"statusok" "statusok_linux/statusok"}}}}

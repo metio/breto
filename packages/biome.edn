@@ -4,5 +4,5 @@
 {:description "Formatter and linter for JavaScript, TypeScript, JSON, CSS and GraphQL"
  :source {:github "biomejs/biome"}
  :tag-prefix "@biomejs/biome@"
- :bins {"biome" "biome-linux-x64"}
+ :bins {"biome" "{asset}"}
  :platforms {"linux-x86_64" {:asset "biome-linux-x64"}}}

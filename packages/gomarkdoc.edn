@@ -5,5 +5,4 @@
 {:description "Generate markdown documentation for Go (golang) code",
  :source {:github "princjef/gomarkdoc"}
  :checksum "gomarkdoc_{version}_checksums.txt"
- :bins {"gomarkdoc" "gomarkdoc_{version}_linux_amd64/gomarkdoc"}
- :platforms {"linux-x86_64" {:asset "gomarkdoc_{version}_linux_amd64.tar.gz"}}}
+ :platforms {"linux-x86_64" {:asset "gomarkdoc_{version}_linux_amd64.tar.gz" :bins {"gomarkdoc" "gomarkdoc_{version}_linux_amd64/gomarkdoc"}}}}

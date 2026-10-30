@@ -4,5 +4,4 @@
 
 {:description "AKS Engine deploys and manages Kubernetes clusters in Azure",
  :source {:github "Azure/aks-engine"}
- :bins {"aks-engine" "aks-engine-{tag}-linux-amd64/aks-engine"}
- :platforms {"linux-x86_64" {:asset "aks-engine-{tag}-linux-amd64.tar.gz"}}}
+ :platforms {"linux-x86_64" {:asset "aks-engine-{tag}-linux-amd64.tar.gz" :bins {"aks-engine" "aks-engine-{tag}-linux-amd64/aks-engine"}}}}

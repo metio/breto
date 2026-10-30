@@ -4,5 +4,4 @@
 
 {:description "The next gen ls command",
  :source {:github "lsd-rs/lsd"}
- :bins {"lsd" "lsd-{tag}-x86_64-unknown-linux-musl/lsd"}
- :platforms {"linux-x86_64" {:asset "lsd-{tag}-x86_64-unknown-linux-musl.tar.gz"}}}
+ :platforms {"linux-x86_64" {:asset "lsd-{tag}-x86_64-unknown-linux-musl.tar.gz" :bins {"lsd" "lsd-{tag}-x86_64-unknown-linux-musl/lsd"}}}}

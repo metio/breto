@@ -4,5 +4,4 @@
 
 {:source {:github "cloverrose/unusedinterface"}
  :checksum "unusedinterface_{version}_checksums.txt"
- :bins {"unusedinterface" "unusedinterface_Linux_x86_64/unusedinterface"}
- :platforms {"linux-x86_64" {:asset "unusedinterface_Linux_x86_64.tar.gz"}}}
+ :platforms {"linux-x86_64" {:asset "unusedinterface_Linux_x86_64.tar.gz" :bins {"unusedinterface" "unusedinterface_Linux_x86_64/unusedinterface"}}}}

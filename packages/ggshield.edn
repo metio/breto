@@ -4,5 +4,4 @@
 
 {:description "Detect and validate 500+ types of hardcoded secrets with advanced checks. Use it as a pre-commit hook, GitHub Action, or CLI for proactive secret detection and security",
  :source {:github "GitGuardian/ggshield"}
- :bins {"ggshield" "ggshield-{version}-x86_64-unknown-linux-gnu/ggshield"}
- :platforms {"linux-x86_64" {:asset "ggshield-{version}-x86_64-unknown-linux-gnu.tar.gz"}}}
+ :platforms {"linux-x86_64" {:asset "ggshield-{version}-x86_64-unknown-linux-gnu.tar.gz" :bins {"ggshield" "ggshield-{version}-x86_64-unknown-linux-gnu/ggshield"}}}}

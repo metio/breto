@@ -5,5 +5,4 @@
 {:description "A personal key value store",
  :source {:github "charmbracelet/skate"}
  :checksum "checksums.txt"
- :bins {"skate" "skate_{version}_Linux_x86_64/skate"}
- :platforms {"linux-x86_64" {:asset "skate_{version}_Linux_x86_64.tar.gz"}}}
+ :platforms {"linux-x86_64" {:asset "skate_{version}_Linux_x86_64.tar.gz" :bins {"skate" "skate_{version}_Linux_x86_64/skate"}}}}

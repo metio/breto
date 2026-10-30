@@ -4,5 +4,4 @@
 
 {:description "Easily install prebuilt binaries from GitHub",
  :source {:github "zyedidia/eget"}
- :bins {"eget" "eget-{version}-linux_amd64/eget"}
- :platforms {"linux-x86_64" {:asset "eget-{version}-linux_amd64.tar.gz"}}}
+ :platforms {"linux-x86_64" {:asset "eget-{version}-linux_amd64.tar.gz" :bins {"eget" "eget-{version}-linux_amd64/eget"}}}}

@@ -4,5 +4,4 @@
 
 {:description "Unsupported Nvim releases",
  :source {:github "neovim/neovim-releases"}
- :bins {"nvim" "nvim-linux-x86_64/bin/nvim"}
- :platforms {"linux-x86_64" {:asset "nvim-linux-x86_64.tar.gz"}}}
+ :platforms {"linux-x86_64" {:asset "nvim-linux-x86_64.tar.gz" :bins {"nvim" "nvim-linux-x86_64/bin/nvim"}}}}

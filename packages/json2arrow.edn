@@ -5,5 +5,4 @@
 {:description "Convert JSON files to Apache Arrow. This package is part of Arrow CLI tools",
  :source {:github "domoritz/arrow-tools"}
  :checksum "{asset}.sha256"
- :bins {"json2arrow" "json2arrow-x86_64-unknown-linux-gnu/json2arrow"}
- :platforms {"linux-x86_64" {:asset "json2arrow-x86_64-unknown-linux-gnu.tar.xz"}}}
+ :platforms {"linux-x86_64" {:asset "json2arrow-x86_64-unknown-linux-gnu.tar.xz" :bins {"json2arrow" "json2arrow-x86_64-unknown-linux-gnu/json2arrow"}}}}

@@ -3,6 +3,6 @@
 
 {:description "Native, fast starting Clojure interpreter for scripting",
  :source {:github "babashka/babashka"},
- :checksum "babashka-{version}-linux-amd64-static.tar.gz.sha256",
+ :checksum "{asset}.sha256",
  :bins {"bb" "bb"}
  :platforms {"linux-x86_64" {:asset "babashka-{version}-linux-amd64-static.tar.gz"}}}

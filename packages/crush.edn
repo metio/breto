@@ -5,5 +5,4 @@
 {:description "The glamourous AI coding agent for your favourite terminal",
  :source {:github "charmbracelet/crush"}
  :checksum "checksums.txt"
- :bins {"crush" "crush_{version}_Linux_x86_64/crush"}
- :platforms {"linux-x86_64" {:asset "crush_{version}_Linux_x86_64.tar.gz"}}}
+ :platforms {"linux-x86_64" {:asset "crush_{version}_Linux_x86_64.tar.gz" :bins {"crush" "crush_{version}_Linux_x86_64/crush"}}}}

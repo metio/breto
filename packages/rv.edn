@@ -5,5 +5,4 @@
 {:description "Next-gen very fast Ruby tooling",
  :source {:github "spinel-coop/rv"}
  :checksum "{asset}.sha256"
- :bins {"rv" "rv-x86_64-unknown-linux-gnu/rv"}
- :platforms {"linux-x86_64" {:asset "rv-x86_64-unknown-linux-gnu.tar.xz"}}}
+ :platforms {"linux-x86_64" {:asset "rv-x86_64-unknown-linux-gnu.tar.xz" :bins {"rv" "rv-x86_64-unknown-linux-gnu/rv"}}}}

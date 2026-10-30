@@ -5,5 +5,4 @@
 {:description "Cross-platform backup tool for Windows, macOS & Linux with fast, incremental backups, client-side end-to-end encryption, compression and data deduplication. CLI and GUI included",
  :source {:github "kopia/kopia"}
  :checksum "checksums.txt"
- :bins {"kopia" "kopia-{version}-linux-x64/kopia"}
- :platforms {"linux-x86_64" {:asset "kopia-{version}-linux-x64.tar.gz"}}}
+ :platforms {"linux-x86_64" {:asset "kopia-{version}-linux-x64.tar.gz" :bins {"kopia" "kopia-{version}-linux-x64/kopia"}}}}

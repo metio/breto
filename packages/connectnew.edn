@@ -5,5 +5,4 @@
 {:description "Go linter checking if &connect.Request or &connect.Response are used.nInstead connect.NewRequest or connect.NewResponse should be used",
  :source {:github "cloverrose/connectnew"}
  :checksum "connectnew_{version}_checksums.txt"
- :bins {"connectnew" "connectnew_Linux_x86_64/connectnew"}
- :platforms {"linux-x86_64" {:asset "connectnew_Linux_x86_64.tar.gz"}}}
+ :platforms {"linux-x86_64" {:asset "connectnew_Linux_x86_64.tar.gz" :bins {"connectnew" "connectnew_Linux_x86_64/connectnew"}}}}

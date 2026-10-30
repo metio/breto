@@ -5,5 +5,4 @@
 {:description "Process Interactive Kill",
  :source {:github "jacek-kurlit/pik"}
  :tag-prefix ""
- :bins {"pik" "pik-{tag}-x86_64-unknown-linux-gnu/pik"}
- :platforms {"linux-x86_64" {:asset "pik-{tag}-x86_64-unknown-linux-gnu.tar.gz"}}}
+ :platforms {"linux-x86_64" {:asset "pik-{tag}-x86_64-unknown-linux-gnu.tar.gz" :bins {"pik" "pik-{tag}-x86_64-unknown-linux-gnu/pik"}}}}

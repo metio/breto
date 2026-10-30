@@ -4,5 +4,4 @@
 
 {:description "Data-Centric Pipelines and Data Versioning",
  :source {:github "pachyderm/pachyderm"}
- :bins {"pachctl" "pachctl_{version}_linux_amd64/pachctl"}
- :platforms {"linux-x86_64" {:asset "pachctl_{version}_linux_amd64.tar.gz"}}}
+ :platforms {"linux-x86_64" {:asset "pachctl_{version}_linux_amd64.tar.gz" :bins {"pachctl" "pachctl_{version}_linux_amd64/pachctl"}}}}

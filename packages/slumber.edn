@@ -5,5 +5,4 @@
 {:description "Terminal-based HTTP/REST client",
  :source {:github "LucasPickering/slumber"}
  :checksum "{asset}.sha256"
- :bins {"slumber" "slumber-x86_64-unknown-linux-musl/slumber"}
- :platforms {"linux-x86_64" {:asset "slumber-x86_64-unknown-linux-musl.tar.xz"}}}
+ :platforms {"linux-x86_64" {:asset "slumber-x86_64-unknown-linux-musl.tar.xz" :bins {"slumber" "slumber-x86_64-unknown-linux-musl/slumber"}}}}

@@ -4,5 +4,4 @@
 
 {:description "Timeout invocation. Go porting of GNU timeout and able to use as Go package",
  :source {:github "Songmu/timeout"}
- :bins {"go-timeout" "timeout_{tag}_linux_amd64/go-timeout"}
- :platforms {"linux-x86_64" {:asset "timeout_{tag}_linux_amd64.tar.gz"}}}
+ :platforms {"linux-x86_64" {:asset "timeout_{tag}_linux_amd64.tar.gz" :bins {"go-timeout" "timeout_{tag}_linux_amd64/go-timeout"}}}}

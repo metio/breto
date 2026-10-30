@@ -5,5 +5,4 @@
 {:description "Terminal UI to list, browse and run APIs defined with openapi spec",
  :source {:github "zaghaghi/openapi-tui"}
  :tag-prefix ""
- :checksum "openapi-tui-{tag}-linux-x86_64.sha256"
- :platforms {"linux-x86_64" {:asset "openapi-tui-{tag}-linux-x86_64.tar.gz"}}}
+ :platforms {"linux-x86_64" {:asset "openapi-tui-{tag}-linux-x86_64.tar.gz" :checksum "openapi-tui-{tag}-linux-x86_64.sha256"}}}

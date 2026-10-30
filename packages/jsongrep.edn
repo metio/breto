@@ -5,5 +5,4 @@
 {:description "A path query language for JSON, YAML, TOML, and other serialization formats",
  :source {:github "micahkepe/jsongrep"}
  :checksum "{asset}.sha256"
- :bins {"jg" "jsongrep-{version}-x86_64-unknown-linux-musl/jg"}
- :platforms {"linux-x86_64" {:asset "jsongrep-{version}-x86_64-unknown-linux-musl.tar.gz"}}}
+ :platforms {"linux-x86_64" {:asset "jsongrep-{version}-x86_64-unknown-linux-musl.tar.gz" :bins {"jg" "jsongrep-{version}-x86_64-unknown-linux-musl/jg"}}}}

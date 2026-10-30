@@ -5,5 +5,4 @@
 {:description "shippable application packaging",
  :source {:github "axodotdev/cargo-dist"}
  :checksum "{asset}.sha256"
- :bins {"dist" "dist-x86_64-unknown-linux-musl/dist"}
- :platforms {"linux-x86_64" {:asset "dist-x86_64-unknown-linux-musl.tar.xz"}}}
+ :platforms {"linux-x86_64" {:asset "dist-x86_64-unknown-linux-musl.tar.xz" :bins {"dist" "dist-x86_64-unknown-linux-musl/dist"}}}}

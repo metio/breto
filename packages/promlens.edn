@@ -5,5 +5,4 @@
 {:description "PromLens – The query builder, analyzer, and explainer for PromQL",
  :source {:github "prometheus/promlens"}
  :checksum "sha256sums.txt"
- :bins {"promlens" "promlens-{version}.linux-amd64/promlens"}
- :platforms {"linux-x86_64" {:asset "promlens-{version}.linux-amd64.tar.gz"}}}
+ :platforms {"linux-x86_64" {:asset "promlens-{version}.linux-amd64.tar.gz" :bins {"promlens" "promlens-{version}.linux-amd64/promlens"}}}}

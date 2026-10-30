@@ -4,5 +4,5 @@
 {:description "Continuous development for Kubernetes applications"
  :source {:github "GoogleContainerTools/skaffold"}
  :checksum "{asset}.sha256"
- :bins {"skaffold" "skaffold-linux-amd64"}
+ :bins {"skaffold" "{asset}"}
  :platforms {"linux-x86_64" {:asset "skaffold-linux-amd64"}}}

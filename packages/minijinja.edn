@@ -6,5 +6,4 @@
  :source {:github "mitsuhiko/minijinja"}
  :tag-prefix ""
  :checksum "{asset}.sha256"
- :bins {"minijinja-cli" "minijinja-cli-x86_64-unknown-linux-musl/minijinja-cli"}
- :platforms {"linux-x86_64" {:asset "minijinja-cli-x86_64-unknown-linux-musl.tar.xz"}}}
+ :platforms {"linux-x86_64" {:asset "minijinja-cli-x86_64-unknown-linux-musl.tar.xz" :bins {"minijinja-cli" "minijinja-cli-x86_64-unknown-linux-musl/minijinja-cli"}}}}
