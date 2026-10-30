@@ -54,7 +54,8 @@ Commands:
                             project, with its commands, and print the
                             shell code putting them first on PATH: eval \"$(breto env)\";
                             --shell github prints lines for $GITHUB_ENV instead;
-                            --no-install fails instead of installing a missing version;
+                            --no-install fails with exit code 3 instead of installing a
+                            missing version;
                             --no-wait fails instead of waiting when it must install while
                             another run changes the store
   info PKG                  the resolved package definition
@@ -62,8 +63,9 @@ Commands:
                             --brief prints the latest in a few lines, for notifications
   doctor                    check the environment, configuration and store
 
-After a package that downloaded something, install and update wait :delay seconds, or as long
-as an upstream host's rate limit asks if that is longer; --delay N overrides :delay.
+After a package that downloaded something, install, update and sync wait :delay seconds, or as
+long as an upstream host's rate limit asks if that is longer; env and run skip :delay, and
+--delay N overrides it for every command.
 gc and uninstall accept --dry-run. uninstall refuses configured packages unless --force,
 since the next update would install them again.
 install and update refuse downloads they cannot verify unless --no-verify is given; with
@@ -302,5 +304,5 @@ Every failure is explained with what to do; --debug adds each request and stack 
                         (doseq [f facts] (println (str "  · " f)))
                         (doseq [a advice] (println (str "  - " a)))
                         (when (some #{"--debug" "-d"} args) (stacktrace/print-cause-trace e))))
-                    1))]
-    (System/exit (if (pos? code) 1 0))))
+                    (if (= :env-missing (:breto/problem (ex-data e))) ::missing 1)))]
+    (System/exit (cond (= ::missing code) 3 (pos? code) 1 :else 0))))

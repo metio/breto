@@ -37,9 +37,12 @@
   (read-line))
 
 (defn run-in
-  "Runs `command` in `dir` with `env` added to the environment, returning its
-  exit code and output. A program that cannot start throws."
-  [{:keys [command env dir]}]
-  (select-keys (apply process/shell {:out :string :err :string :continue true :extra-env env :dir (str dir)}
+  "Runs `command` in `dir` with `env` added to the environment and the
+  variables `unset` removed from it, returning its exit code and output. A
+  program that cannot start throws."
+  [{:keys [command env unset dir]}]
+  (select-keys (apply process/shell (cond-> {:out :string :err :string :continue true :dir (str dir)}
+                                      (seq unset) (assoc :env (apply dissoc (merge (into {} (System/getenv)) env) unset))
+                                      (empty? unset) (assoc :extra-env env))
                       (map str command))
                [:exit :out :err]))

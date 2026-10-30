@@ -13,12 +13,17 @@
   "The XDG state directory; nil reads XDG_STATE_HOME."
   nil)
 
-(defn state-path []
+(defn state-dir
+  "The directory of breto's state under the XDG state directory."
+  []
   (let [state (or *state-home* (System/getenv "XDG_STATE_HOME"))]
     (str (fs/path (if (str/blank? state)
                     (fs/path (System/getProperty "user.home") ".local" "state")
                     state)
-                  "breto" "last-run.edn"))))
+                  "breto"))))
+
+(defn state-path []
+  (str (fs/path (state-dir) "last-run.edn")))
 
 (def ^:private status-label
   {:installed "installed" :current "up to date" :outdated "outdated"

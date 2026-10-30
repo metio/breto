@@ -40,7 +40,8 @@
   (s/define! "node" {:source {:github "nodejs/node"} :asset "npm" :bins {"npm" "npm"} :verify false})
   (s/define! "prettier" {:source {:npm "prettier"}})
   (s/define! "biome" {:source {:npm "@biomejs/biome"}})
-  (s/fake-io {"https://github.com/nodejs/node/releases/download/v1.0.0/npm" (fake-npm)}
+  (s/fake-io {"https://github.com/nodejs/node/releases/download/v1.0.0/npm" (fake-npm)
+              "https://github.com/nodejs/node/releases/download/v0.9.0/npm" (fake-npm)}
              {"https://github.com/nodejs/node/releases/latest" "{\"tag_name\":\"v1.0.0\"}"
               "https://registry.npmjs.org/prettier/latest" "{\"version\":\"3.9.10\"}"
               "https://registry.npmjs.org/@biomejs%2Fbiome/latest" "{\"version\":\"2.6.4\"}"}
@@ -65,6 +66,7 @@
         (is (str/includes? line "--registry https://registry.npmjs.org/"))
         (is (re-find #"--userconfig (\S+)/npmrc/userrc --globalconfig \1/npmrc/globalrc" line))
         (is (str/includes? line "--ignore-scripts"))
+        (is (re-find #"--cache \S+/npm-cache " line) "a cache of its own, not the user's")
         (is (re-find #"--before \d{4}-\d\d-\d\dT" line))))
     (testing "the directory of npm, which holds node, comes first on PATH"
       (is (str/ends-with? (first (log-lines)) (str "| " (fs/parent (fs/real-path (path "bin" "npm")))))))))
@@ -104,7 +106,23 @@
                 {:keys [code out]} (s/breto! fresh ["install" "node" "prettier@3.9.10"] {:io io})]
             (is (= 1 code))
             (is (str/includes? out "[FAIL] prettier"))
-            (is (not (fs/exists? (path "bin3" "prettier"))))))))))
+            (is (not (fs/exists? (path "bin3" "prettier"))))
+            (testing "keeps the resolution it got for a comparison"
+              (let [kept (path "state" "breto" "resolutions" "prettier@3.9.10" "package-lock.json")]
+                (is (fs/exists? kept))
+                (is (str/includes? out (str "Kept     " kept)))))))))))
+
+(deftest a-build-uses-the-node-its-specs-pin
+  (let [io (world)]
+    (is (= 0 (:code (s/breto! {} ["install" "node@0.9.0"] {:io io}))))
+    (is (= 0 (:code (s/breto! {} ["install" "node"] {:io io}))))
+    (is (= "1.0.0" (store/current-version {:store (path "store")} "node")))
+    (fs/create-dirs (path "app"))
+    (spit (path "app" ".breto.edn") (pr-str {:packages ["node@0.9.0" "prettier@3.9.10"]}))
+    (is (= 0 (:code (binding [*err* (java.io.StringWriter.)]
+                      (s/breto! {:env-dir (path "envs")} ["env" "--dir" (path "app")] {:io io})))))
+    (is (str/ends-with? (first (log-lines)) (str "| " (path "store" "node" "0.9.0")))
+        "the node of the project, not the active one")))
 
 (deftest npm-releases-come-from-the-registry
   (let [io (s/fake-io {} {"https://registry.npmjs.org/@biomejs%2Fbiome/latest" "{\"version\":\"2.6.4\"}"

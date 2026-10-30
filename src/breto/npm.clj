@@ -6,8 +6,10 @@
   their own. npm checks every tarball against the integrity hash the registry
   publishes for it and records the resolution in package-lock.json; the hash
   of that file is what a lock file records. Resolving again with the same
-  cut-off time, --before, gives the same file, since the registry never
-  replaces a published version."
+  cut-off time, --before, and the same npm gives the same file, since the
+  registry never replaces a published version. Each build starts from an
+  empty cache of its own, so no earlier resolution on the host can leak into
+  it."
   (:require [babashka.fs :as fs]
             [breto.proc :as proc]
             [clojure.string :as str]))
@@ -24,14 +26,22 @@
   "The arguments of `npm install` for `spec` into `prefix`. They come before
   any configuration of the user's own: npm reads neither the user's nor the
   global npmrc, reading the empty files userrc and globalrc in `config`
-  instead, runs no install scripts, and considers only versions published
-  before `before`. npm refuses to load one file as both."
-  [spec prefix config before]
+  instead, keeps its cache in `cache`, runs no install scripts, and considers
+  only versions published before `before`. npm refuses to load one file as
+  both."
+  [spec prefix config cache before]
   ["install" "--prefix" (str prefix) "--registry" registry
    "--userconfig" (str (fs/path config "userrc")) "--globalconfig" (str (fs/path config "globalrc"))
+   "--cache" (str cache)
    "--before" before "--ignore-scripts" "--save-exact" "--omit=dev"
    "--no-audit" "--no-fund" "--update-notifier=false" "--loglevel=error"
    spec])
+
+(defn- configuration-variable?
+  "Whether the environment variable `name` configures npm, which reads every
+  npm_config_ variable in any case as a setting."
+  [name]
+  (str/starts-with? (str/lower-case name) "npm_config_"))
 
 (defn build!
   "Installs the release of `pkg` with `npm`, the path of an npm command whose
@@ -47,13 +57,14 @@
         unpacked (fs/path work "unpacked")
         config (fs/path work "npmrc")
         spec (str (get-in pkg [:source :npm]) "@" (:version release))
-        args (arguments spec unpacked config before)
+        args (arguments spec unpacked config (fs/path work "npm-cache") before)
         run (or (:run-in io) proc/run-in)
-        path (str (fs/parent npm) (some->> (System/getenv "PATH") (str ":")))]
+        path (str (fs/parent npm) (some->> (System/getenv "PATH") (str ":")))
+        unset (filter configuration-variable? (keys (System/getenv)))]
     (fs/create-dirs unpacked)
     (fs/create-dirs config)
     (run! #(spit (str (fs/path config %)) "") ["userrc" "globalrc"])
-    (let [{:keys [exit out err]} (run {:command (cons npm args) :env {"PATH" path} :dir work})]
+    (let [{:keys [exit out err]} (run {:command (cons npm args) :env {"PATH" path} :unset unset :dir work})]
       (when-not (zero? exit)
         (throw (ex-info (str "npm install " spec " failed: " (str/trim (str err)))
                         (assoc context :breto/problem :npm-failed :command (vec (cons "npm" args))

@@ -19,6 +19,12 @@
   (is (= {:exit 0 :out "a b\n" :err ""}
          (proc/run-bounded {:command ["sh" "-c" "echo \"$1\"" "sh" "a b"] :env {} :timeout 10}))))
 
+(deftest commands-in-a-directory-run-without-the-unset-variables
+  (let [{:keys [exit out]} (proc/run-in {:command ["sh" "-c" "echo \"${HOME-none} $EXTRA\""] :env {"EXTRA" "x"}
+                                         :unset ["HOME"] :dir (s/path)})]
+    (is (= 0 exit))
+    (is (= "none x\n" out))))
+
 (defn- fake-cosign
   "A script standing in for cosign that records its arguments and exits with
   `exit`."

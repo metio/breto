@@ -27,6 +27,7 @@
             [breto.source :as source]
             [breto.store :as store]
             [breto.template :as template]
+            [breto.version :as version]
             [clojure.pprint :as pprint]
             [clojure.string :as str]))
 
@@ -87,13 +88,18 @@
   (when-let [deps (hook-deps ctx)]
     (hooks/locked! config command path deps)))
 
+(def ^:private project-commands
+  "Commands that install what a project needs while somebody waits for it, so
+  :delay does not apply to them."
+  #{"env" "run"})
+
 (defn- pacer
-  "Paces a batch so that :delay follows only packages that received download
-  bytes; a package found up to date, or a download refused outright, costs one
-  small request."
-  [{:keys [config opts io sleep-second!]} progress transferred]
+  "Paces a batch under `command` so that :delay follows only packages that
+  received download bytes; a package found up to date, or a download refused
+  outright, costs one small request."
+  [{:keys [config opts io sleep-second!]} command progress transferred]
   (fn [f]
-    (batch/paced (or (:delay opts) (:delay config) 0)
+    (batch/paced (or (:delay opts) (when-not (project-commands command) (:delay config)) 0)
                  #(pos? (first (reset-vals! transferred 0)))
                  (:upstream-wait io (constantly 0))
                  (batch/counting-down progress sleep-second!)
@@ -119,12 +125,28 @@
 (defn tool-command
   "The command `command` of the package `name`, by default the command of the
   same name, which builds the packages of a :go, :pypi, :npm, :cargo, :ghcup or :coursier source: that of
-  its active version, else of its newest installed one."
-  ([config registry name] (tool-command config registry name name))
-  ([config registry name command]
+  the version `pins` names for it when that is installed, else of its active
+  version, else of its newest installed one."
+  ([config registry pins name] (tool-command config registry pins name name))
+  ([config registry pins name command]
    (when-let [pkg (get registry name)]
-     (when-let [version (or (store/current-version config name) (:version (first (store/versions config name))))]
+     (when-let [version (or (let [pinned (get pins name)]
+                              (when (and pinned (fs/directory? (store/version-dir config name pinned))) pinned))
+                            (store/current-version config name)
+                            (:version (first (store/versions config name))))]
        (get (install/bin-targets config pkg version) command)))))
+
+(defn- tool-pins
+  "The version `specs` pin for each package, the newest where they pin
+  several, so that a build uses the go, uv or node that the group or project
+  next to it names."
+  [specs]
+  (reduce (fn [pins spec]
+            (let [[name pinned] (batch/split-spec spec)]
+              (if (and pinned (or (nil? (pins name)) (version/older? (pins name) pinned)))
+                (assoc pins name pinned)
+                pins)))
+          {} specs))
 
 (defn- lock-options
   "install! options checking `pkg` at `version` against the lock files of
@@ -138,41 +160,47 @@
 
 (defn- install-results
   "Runs `install-one` (name, version -> install! options) over `specs` with
-  progress and pacing under `command`, returning a result per spec."
-  [{:keys [config registry locks io] :as ctx} command specs install-one]
-  (let [progress (batch/broadcast (tracker ctx command) (hook-listener ctx command))
-        transferred (atom 0)
-        io (batch/tracked-io io progress transferred)]
-    (batch/run-batch io (vec (tools-first registry specs))
-                     ((pacer ctx progress transferred)
-                      (fn [spec]
-                        (let [[name version] (batch/split-spec spec)
-                              pkg (registry/lookup registry name)
-                              options (install-one name version)
-                              locked (lock-options locks pkg (or (:version options) version))
-                              unlocked? (and (::pinned options) (seq locks) (nil? locked))
-                              _ (when (and unlocked? (:require-locked config))
-                                  (throw (ex-info (str name " " version " is in no lock file of the registry directories, and :require-locked is set")
-                                                  {:breto/problem :not-locked :package name :version version})))
-                              options (cond-> (into (or locked {}) (remove (comp nil? val)) (dissoc options ::pinned))
-                                        (= :go (package/source-kind pkg)) (assoc :go (tool-command config registry "go"))
-                                        (= :pypi (package/source-kind pkg)) (assoc :uv (tool-command config registry "uv"))
-                                        (= :npm (package/source-kind pkg)) (assoc :npm (tool-command config registry "node" "npm"))
-                                        (= :cargo (package/source-kind pkg)) (assoc :cargo (tool-command config registry "rustup" "cargo"))
-                                        (= :ghcup (package/source-kind pkg)) (assoc :ghcup (tool-command config registry "ghcup"))
-                                        (= :coursier (package/source-kind pkg)) (assoc :coursier (tool-command config registry "coursier" "cs")))
-                              result (installed-result name (install/install! config io pkg options))
-                              warnings (cond-> []
-                                         (package/superseded-warning pkg) (conj (package/superseded-warning pkg))
-                                         unlocked? (conj (str version " is in no lock file of the registry directories, so only upstream verified it")))]
-                          (cond-> result
-                            (seq warnings) (clojure.core/update :warnings (fnil into []) warnings)))))
-                     progress)))
+  progress and pacing under `command`, returning a result per spec. A package
+  built by another one uses the version of the builder that `context`, the
+  specs it is installed for and `specs` by default, pins."
+  ([ctx command specs install-one] (install-results ctx command specs install-one specs))
+  ([{:keys [config registry locks io] :as ctx} command specs install-one context]
+   (let [pins (tool-pins context)
+         tool (partial tool-command config registry pins)
+         progress (batch/broadcast (tracker ctx command) (hook-listener ctx command))
+         transferred (atom 0)
+         io (batch/tracked-io io progress transferred)]
+     (batch/run-batch io (vec (tools-first registry specs))
+                      ((pacer ctx command progress transferred)
+                       (fn [spec]
+                         (let [[name version] (batch/split-spec spec)
+                               pkg (registry/lookup registry name)
+                               options (install-one name version)
+                               locked (lock-options locks pkg (or (:version options) version))
+                               unlocked? (and (::pinned options) (seq locks) (nil? locked))
+                               _ (when (and unlocked? (:require-locked config))
+                                   (throw (ex-info (str name " " version " is in no lock file of the registry directories, and :require-locked is set")
+                                                   {:breto/problem :not-locked :package name :version version})))
+                               options (cond-> (into (or locked {}) (remove (comp nil? val)) (dissoc options ::pinned))
+                                         (= :go (package/source-kind pkg)) (assoc :go (tool "go"))
+                                         (= :pypi (package/source-kind pkg)) (assoc :uv (tool "uv"))
+                                         (= :npm (package/source-kind pkg)) (assoc :npm (tool "node" "npm"))
+                                         (= :cargo (package/source-kind pkg)) (assoc :cargo (tool "rustup" "cargo"))
+                                         (= :ghcup (package/source-kind pkg)) (assoc :ghcup (tool "ghcup"))
+                                         (= :coursier (package/source-kind pkg)) (assoc :coursier (tool "coursier" "cs")))
+                               result (installed-result name (install/install! config io pkg options))
+                               warnings (cond-> []
+                                          (package/superseded-warning pkg) (conj (package/superseded-warning pkg))
+                                          unlocked? (conj (str version " is in no lock file of the registry directories, so only upstream verified it")))]
+                           (cond-> result
+                             (seq warnings) (clojure.core/update :warnings (fnil into []) warnings)))))
+                      progress))))
 
 (defn- installing
   "install-results with a printed and saved report under `command`."
-  [ctx command specs install-one]
-  (batch/finish! command (install-results ctx command specs install-one)))
+  ([ctx command specs install-one] (installing ctx command specs install-one specs))
+  ([ctx command specs install-one context]
+   (batch/finish! command (install-results ctx command specs install-one context))))
 
 (defn- locked
   "install! options for `name` from the lock file, when --locked asks for it."
@@ -356,7 +384,7 @@
                             {:breto/problem :env-missing :missing (vec missing) :project dir})))
         code (if (seq missing)
                (binding [*out* *err*]
-                 (with-store-lock ctx #(installing ctx command (vec missing) (project-install opts))))
+                 (with-store-lock ctx #(installing ctx command (vec missing) (project-install opts) (:specs proj))))
                0)]
     (if (pos? code)
       (assoc proj :code code)
@@ -450,7 +478,9 @@
                                 [spec targets] (try (project-targets config registry p) (catch Exception _ []))
                                 :when (and (nil? targets) (second (batch/split-spec spec)))]
                             spec))
-        results (when (seq missing) (install-results ctx command (vec missing) (project-install opts)))]
+        results (when (seq missing)
+                  (install-results ctx command (vec missing) (project-install opts)
+                                   (mapcat :specs (remove :problem projects))))]
     (doseq [p projects]
       (if (:problem p)
         (println (str "[WARN] project " (:dir p) " keeps its links: " (:problem p)))
@@ -501,7 +531,7 @@
   (let [progress (tracker ctx "outdated")]
     (batch/finish! "outdated"
                    (batch/run-batch io (targets ctx args)
-                                    ((pacer ctx progress (atom 0))
+                                    ((pacer ctx "outdated" progress (atom 0))
                                      (fn [spec]
                                        (progress {:type :stage :stage :resolve})
                                        (let [[name pinned] (batch/split-spec spec)
@@ -546,7 +576,7 @@
                                                      [n pkg]))]
                                  (when (next platforms) (println (str "Checking " p ":")))
                                  (batch/run-batch io (sort (keys pkgs))
-                                                  ((pacer ctx progress (atom 0))
+                                                  ((pacer ctx "check" progress (atom 0))
                                                    #(check/check-package io (get pkgs %)))
                                                   progress)))
                              platforms))]

@@ -167,6 +167,19 @@
       (is (str/includes? (first (:advice (diagnose/diagnose e {}))) "eval \"$(breto env)\"")))
     (is (not (fs/exists? (path "store" "beta"))))))
 
+(deftest env-installs-without-the-configured-delay
+  (let [io (world)
+        cfg (assoc config :env-dir (path "envs") :delay 30)]
+    (project! "app" ["alpha@0.9.0" "beta@0.9.0"])
+    (let [{:keys [code slept]} (binding [*err* (java.io.StringWriter.)]
+                                 (s/breto! cfg ["env" "--dir" (path "app")] {:io io}))]
+      (is (= 0 code))
+      (is (= 0 slept)))
+    (project! "app" ["alpha@1.0.0" "beta@1.0.0"])
+    (let [{:keys [slept]} (binding [*err* (java.io.StringWriter.)]
+                            (s/breto! cfg ["env" "--dir" (path "app") "--delay" "2"] {:io io}))]
+      (is (= 2 slept) "--delay still paces the download that follows another"))))
+
 (deftest installing-a-superseded-package-warns
   (let [io (world)]
     (s/define! "alpha" {:source {:github "acme/alpha"} :asset "alpha" :verify false :superseded-by "beta"})

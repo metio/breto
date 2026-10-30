@@ -77,7 +77,7 @@ breto reads the file given with `--config`, else the one `BRETO_CONFIG` names, e
 | `:packages` | What `update` and `outdated` act on when no package is named: package names and [groups](#groups) such as `"@pimalaya"`. | none |
 | `:pins` | Versions `update` installs instead of the latest. | none |
 | `:keep` | Versions per package that `gc` keeps. | `3` |
-| `:delay` | Seconds `install` and `update` wait after a package that downloaded something, e.g. to spread traffic on a slow link. A package found up to date costs no wait. `--delay N` overrides it. | `0` |
+| `:delay` | Seconds `install`, `update` and `sync` wait after a package that downloaded something, e.g. to spread traffic on a slow link. A package found up to date costs no wait. `breto env` and `breto run` install what a project needs without it, since somebody waits for them. `--delay N` overrides it for every command. | `0` |
 | `:token-command` | A command printing a GitHub token on its first line, e.g. `["gh" "auth" "token"]` or `["gopass" "show" "--password" "github/token"]`. It runs at most once per breto process, only when a GitHub API request is made, and is stopped after 60 seconds. `GITHUB_TOKEN` and `GH_TOKEN` take precedence. | none |
 | `:require-locked` | Whether installing a version a group pins fails when no `breto.lock` of the registry directories lists it, instead of warning; see [Registry lock files](#registry-lock-files). | `false` |
 | `:python` | The Python version environments of `:pypi` packages are created for, unless their definition names one. | `"3.13"` |
@@ -156,7 +156,7 @@ eval "$(breto env)"
 breto env --shell fish | source
 ```
 
-In bash, the hook `breto hook bash` prints does this on its own: evaluated in `.bashrc`, it runs `breto env` when the shell enters a directory below a `.breto.edn` or one of the files in `BRETO_ENV_FILES` changes, and takes the project's bin directory off `PATH` again, through `BRETO_ENV_BIN`, when the shell leaves the project. Between those it costs a few file tests per prompt. The hook runs `breto env --no-install`, which only links versions that are installed and never waits for another breto run, since Ctrl-C may not reach a command a prompt hook runs. A project that needs a missing version gets a message to run `eval "$(breto env)"`, which installs it, waiting for a running update if necessary. `--no-wait` instead fails at once when installing has to wait for another run. A failing `breto env` is retried once the file changes or the shell enters the project again, not on every prompt.
+In bash, the hook `breto hook bash` prints does this on its own: evaluated in `.bashrc`, it runs `breto env` when the shell enters a directory below a `.breto.edn` or one of the files in `BRETO_ENV_FILES` changes, and takes the project's bin directory off `PATH` again, through `BRETO_ENV_BIN`, when the shell leaves the project. Between those it costs a few file tests per prompt. The hook runs `breto env --no-install`, which only links versions that are installed and never waits for another breto run, since Ctrl-C may not reach a command a prompt hook runs; it exits with code 3 when the project needs a version that is missing. The hook then starts a `breto env` in the background that installs it, waiting for a running update if necessary, and the first prompt after that finishes switches the shell to the project; a failed install prints its output once. `eval "$(breto env)"` installs in the foreground instead, and `--no-wait` makes it fail at once when installing has to wait for another run. A failing `breto env` is retried once the file changes or the shell enters the project again, not on every prompt.
 
 ```sh
 eval "$(breto hook bash)"
@@ -435,15 +435,17 @@ The files of a resolution are pinned by hash, the build dependencies of a source
 
 ### npm packages
 
-A package with an `:npm` source is installed with the `npm` command of the installed `node` package, which any batch installs first. npm resolves the package and its dependencies, checks every tarball against the integrity hash the registry publishes for it, and installs them into the version's directory, recording the resolution in `package-lock.json`. Each version has a directory of its own, so projects can use different versions side by side.
+A package with an `:npm` source is installed with the `npm` command of the installed `node` package, which any batch installs first: the version of `node` that the project, or the group being locked, pins next to it, else the active one. npm resolves the package and its dependencies, checks every tarball against the integrity hash the registry publishes for it, and installs them into the version's directory, recording the resolution in `package-lock.json`. Each version has a directory of its own, so projects can use different versions side by side.
 
-npm runs with the npm registry, without the user's or the global npmrc, and without install scripts, so a package whose install script downloads or builds its program does not work. The installed commands are usually scripts that start `node` from `PATH`, and those need `node` on `PATH` when they run.
+npm runs with the npm registry, without the user's or the global npmrc, without `npm_config_` variables from the environment, with an empty cache of its own, and without install scripts, so a package whose install script downloads or builds its program does not work. The installed commands are usually scripts that start `node` from `PATH`, and those need `node` on `PATH` when they run.
 
 The resolution depends on a cut-off: npm considers only versions published before it, given as `--before`. breto records it with the hash of `package-lock.json`, and a lock file entry carries both, so resolving again elsewhere gives the same file or fails:
 
 ```clojure
 {"prettier@3.9.10" {:sha256 "…" :asset "package-lock.json" :exclude-newer "2026-10-29T10:12:45Z"}}
 ```
+
+When the resolution differs from the lock, breto keeps the `package-lock.json` it got in `$XDG_STATE_HOME/breto/resolutions/<package>@<version>/` (`~/.local/state` by default) and names it in the report, so it can be compared with the file the lock was made from. The same holds for the `requirements.txt` of a pypi package. Go, uv and cargo builds likewise use the version of `go`, `uv` or `rustup` pinned next to them.
 
 ### Cargo crates
 

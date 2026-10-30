@@ -269,18 +269,26 @@
    :advice ["If the file lists the asset under another name, the asset itself may have been renamed; check :asset."
             "If the checksum file covers other assets only, point :checksum at the right one."]})
 
-(defmethod explain :checksum-mismatch [{:keys [asset expected actual origin]} _]
-  (if (= :lockfile origin)
+(defmethod explain :checksum-mismatch [{:keys [asset expected actual origin kept]} _]
+  (cond
+    kept
+    {:summary (str "The " asset " breto resolved differs from the one the lock file recorded.")
+     :facts [(str "Locked   " expected) (str "Got      " actual) (str "Kept     " kept)]
+     :advice [(str "Compare " kept " with the " asset " the lock was made from to see which dependency resolved differently.")
+              "A different npm, uv or node version, or a registry that changed what it serves before the cut-off, produces this."
+              "Do not delete the entry from the lock file to make this go away: this is what it is there to catch."]}
+    (= :lockfile origin)
     {:summary (str "The download of " asset " differs from the one the lock file recorded.")
      :facts [(str "Locked   " expected) (str "Got      " actual)]
      :advice ["Upstream replaced the asset after it was locked, or the download was corrupted; retry first."
               "If upstream confirms the new file, breto update without --locked installs it and records its hash."
               "Do not delete the entry from the lock file to make this go away: this is what it is there to catch."]}
-  {:summary (str "The download of " asset " does not match its published checksum.")
-   :facts [(str "Expected " expected) (str "Got      " actual)]
-   :advice ["Retry later: an interrupted download or a stale mirror produces this."
-            "If it persists, upstream replaced the file after publishing the checksum; report it to the project."
-            "Do not bypass this with --no-verify: a mismatch is exactly what verification exists to catch."]}))
+    :else
+    {:summary (str "The download of " asset " does not match its published checksum.")
+     :facts [(str "Expected " expected) (str "Got      " actual)]
+     :advice ["Retry later: an interrupted download or a stale mirror produces this."
+              "If it persists, upstream replaced the file after publishing the checksum; report it to the project."
+              "Do not bypass this with --no-verify: a mismatch is exactly what verification exists to catch."]}))
 
 (defmethod explain :checksum-format [{:keys [checksum]} _]
   {:summary "The checksum does not look like a SHA or MD5 hash."

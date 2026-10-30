@@ -13,7 +13,9 @@
 
 (defn- fake-breto!
   "A breto that logs each env call and prints the exports of a project bin
-  directory, or fails when the project file says :fail."
+  directory, or fails when the project file says :fail. A project file saying
+  :missing fails with exit code 3 under --no-install until a call without it
+  installed, and one saying :broken fails that call."
   []
   (fs/create-dirs (path "fake"))
   (spit (path "fake" "breto")
@@ -22,6 +24,11 @@
              "echo \"$dir\" >> " (path "calls") "\n"
              "echo \"$*\" >> " (path "args") "\n"
              "grep -qs :fail \"$dir/.breto.edn\" && { echo failed >&2; exit 1; }\n"
+             "if grep -qs :missing \"$dir/.breto.edn\" && [ ! -f \"$dir/installed\" ]; then\n"
+             "  case \" $* \" in *\" --no-install \"*) echo missing >&2; exit 3 ;; esac\n"
+             "  grep -qs :broken \"$dir/.breto.edn\" && { echo boom >&2; exit 1; }\n"
+             "  touch \"$dir/installed\"\n"
+             "fi\n"
              "bin=" (path "envs") "/$(basename \"$dir\")\n"
              "mkdir -p \"$bin\" && touch \"$bin\"\n"
              "printf 'export PATH=%s:\"$PATH\"\\nexport BRETO_PROJECT=%s\\nexport BRETO_ENV_BIN=%s\\nexport BRETO_ENV_FILES=%s/.breto.edn:%s\\n' \"$bin\" \"$dir\" \"$bin\" \"$dir\" " (path "shared" "@group.edn") "\n"))
@@ -113,6 +120,33 @@
                   "sleep 1.1; echo '{:packages [\"kind\"]}' > .breto.edn"
                   "true")))
   (is (= 2 (count (calls)))))
+
+(def ^:private finished
+  "A prompt that waits up to ten seconds for the background install."
+  "for i in $(seq 100); do [ -s \"$__breto_pending\" ] && break; sleep 0.1; done")
+
+(deftest a-missing-version-installs-in-the-background-and-links-at-the-next-prompt
+  (fake-breto!)
+  (project! "app" "{:missing true}")
+  (is (= (str "PATH=" (path "envs" "app") ":" (path "fake") ":/usr/bin:/bin|PROJECT=" (path "app"))
+         (session (str "export XDG_RUNTIME_DIR=" (path)) (str "cd " (path "app")) finished "true")))
+  (is (= [(path "app") (path "app") (path "app")] (calls)))
+  (let [args (str/split-lines (slurp (path "args")))]
+    (is (str/includes? (first args) "--no-install"))
+    (is (not (str/includes? (second args) "--no-install")) "the background run installs")
+    (is (str/includes? (nth args 2) "--no-install"))))
+
+(deftest a-failed-background-install-is-reported-once
+  (fake-breto!)
+  (project! "app" "{:missing true :broken true}")
+  (let [script (str "export XDG_RUNTIME_DIR=" (path) "\nPATH=" (path "fake") ":/usr/bin:/bin\nsource \"$HOOK\"\n"
+                    "cd " (path "app") "\n__breto_env\n" finished "\n__breto_env\n__breto_env\n"
+                    "echo \"PROJECT=$BRETO_PROJECT\"\n")
+        {:keys [out err]} (process/shell {:dir (path) :env (outside-projects) :out :string :err :string} "bash" "--norc" "-c" script)]
+    (is (= "PROJECT=" (str/trim out)))
+    (is (= 1 (count (re-seq #"boom" err))) err)
+    (is (str/includes? err "installing what"))
+    (is (not (str/includes? err "missing")) "the --no-install error is not shown when the hook installs")))
 
 (deftest sourcing-twice-hooks-once
   (is (= "__breto_env;x"

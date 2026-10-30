@@ -12,6 +12,7 @@
             [breto.golang :as golang]
             [breto.npm :as npm]
             [breto.pypi :as pypi]
+            [breto.report :as report]
             [breto.sealed :as sealed]
             [breto.log :as log]
             [breto.package :as package]
@@ -20,6 +21,17 @@
             [breto.source :as source]
             [breto.store :as store]
             [clojure.string :as str]))
+
+(defn- kept-resolution
+  "The mismatch `e` of the resolution `file` that breto built for `name` at
+  `version`, after copying the file to the state directory, where it outlives
+  the work directory for a comparison with the locked one."
+  [name version file e]
+  (let [dir (fs/path (report/state-dir) "resolutions" (str name "@" version))
+        kept (fs/path dir (fs/file-name file))]
+    (fs/create-dirs dir)
+    (fs/copy file kept {:replace-existing true})
+    (ex-info (ex-message e) (assoc (ex-data e) :kept (str kept)) e)))
 
 (defn resolve-release
   "The tag and version to install: the requested `version`, or the newest one
@@ -361,7 +373,11 @@
                            staging (fs/path work "staged")]
                        (when (and expect-sha256 (not sum))
                          (staged io :verify context
-                           #(checksum/verify! file (:asset artifact) expect-sha256 :lockfile)))
+                           #(try (checksum/verify! file (:asset artifact) expect-sha256 :lockfile)
+                                 (catch clojure.lang.ExceptionInfo e
+                                   (throw (if (and built (= :checksum-mismatch (:breto/problem (ex-data e))))
+                                            (kept-resolution (:name pkg) version file e)
+                                            e))))))
                        (when-not (or built in-place?)
                          (staged io :unpack context
                            #(archive/unpack! file (:archive artifact) (:asset artifact) unpacked (:strip pkg))))
