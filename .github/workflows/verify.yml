@@ -13,6 +13,8 @@ jobs:
     timeout-minutes: 15
     steps:
       - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7
+        with:
+          persist-credentials: false
       - uses: metio/breto@8770afbc98d14728fea7802284c5ea4cf253242e # 2026.10.30075053
         with:
           registries: github:metio/toolchains
@@ -22,6 +24,8 @@ jobs:
     timeout-minutes: 15
     steps:
       - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7
+        with:
+          persist-credentials: false
       - uses: metio/breto@8770afbc98d14728fea7802284c5ea4cf253242e # 2026.10.30075053
         with:
           registries: github:metio/toolchains
@@ -31,6 +35,8 @@ jobs:
     timeout-minutes: 15
     steps:
       - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7
+        with:
+          persist-credentials: false
       - uses: metio/breto@8770afbc98d14728fea7802284c5ea4cf253242e # 2026.10.30075053
         with:
           registries: github:metio/toolchains
@@ -40,15 +46,32 @@ jobs:
     timeout-minutes: 15
     steps:
       - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7
+        with:
+          persist-credentials: false
       - uses: metio/breto@8770afbc98d14728fea7802284c5ea4cf253242e # 2026.10.30075053
         with:
           registries: github:metio/toolchains
       - run: actionlint
+  zizmor:
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7
+        with:
+          persist-credentials: false
+      - uses: metio/breto@8770afbc98d14728fea7802284c5ea4cf253242e # 2026.10.30075053
+        with:
+          registries: github:metio/toolchains
+      - env:
+          GH_TOKEN: ${{ github.token }}
+        run: zizmor --format github .
   markdown:
     runs-on: ubuntu-latest
     timeout-minutes: 15
     steps:
       - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7
+        with:
+          persist-credentials: false
       - uses: metio/breto@8770afbc98d14728fea7802284c5ea4cf253242e # 2026.10.30075053
         with:
           registries: github:metio/toolchains
@@ -58,6 +81,8 @@ jobs:
     timeout-minutes: 15
     steps:
       - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7
+        with:
+          persist-credentials: false
       - uses: metio/breto@8770afbc98d14728fea7802284c5ea4cf253242e # 2026.10.30075053
         with:
           registries: github:metio/toolchains
@@ -70,16 +95,19 @@ jobs:
       - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7
         with:
           fetch-depth: 0
+          persist-credentials: false
       - uses: metio/ci/dco@14ad475c5f5c4c0df727df1a22345298604e66ba # 2026.10.26174650
   policy:
     runs-on: ubuntu-latest
     timeout-minutes: 10
     steps:
       - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7
+        with:
+          persist-credentials: false
       - uses: metio/ci/policy-check@14ad475c5f5c4c0df727df1a22345298604e66ba # 2026.10.26174650
   verify:
     name: Verify
-    needs: [test, reuse, yaml, github-actions, markdown, typos, dco, policy]
+    needs: [test, reuse, yaml, github-actions, zizmor, markdown, typos, dco, policy]
     if: always()
     runs-on: ubuntu-latest
     timeout-minutes: 10

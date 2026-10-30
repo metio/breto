@@ -3,7 +3,7 @@
 
 name: Action
 on:
-  workflow_run:
+  workflow_run: # zizmor: ignore[dangerous-triggers] runs only after this repository's own Release
     workflows: [Release]
     types: [completed]
   workflow_dispatch:
@@ -23,7 +23,7 @@ jobs:
         with:
           persist-credentials: false
       - id: breto
-        uses: ./
+        uses: ./ # zizmor: ignore[self-repository] tests the action of this commit
         with:
           project: test/action
           registries: github:metio/toolchains

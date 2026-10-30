@@ -22,6 +22,7 @@ jobs:
       - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7
         with:
           fetch-depth: 0
+          persist-credentials: false
       - id: gate
         uses: metio/ci/needs-release@14ad475c5f5c4c0df727df1a22345298604e66ba # 2026.10.26174650
         with:

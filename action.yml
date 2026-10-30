@@ -77,7 +77,7 @@ runs:
         DIR: ${{ steps.download.outputs.dir }}
         VERSION: ${{ steps.download.outputs.version }}
         ASSET: ${{ steps.platform.outputs.asset }}
-      run: |
+      run: | # zizmor: ignore[github-env] breto validates variable names and delimits multi-line values
         set -euo pipefail
         cd "$DIR"
         cosign verify-blob "breto_${VERSION}_SHA256SUMS" \
@@ -95,7 +95,7 @@ runs:
       env:
         REGISTRIES: ${{ inputs.registries }}
         PROJECT: ${{ inputs.project }}
-      run: |
+      run: | # zizmor: ignore[github-env] breto validates variable names and delimits multi-line values
         set -euo pipefail
         config="${RUNNER_TEMP}/breto/config.edn"
         {
@@ -138,7 +138,7 @@ runs:
         GITHUB_TOKEN: ${{ inputs.token }}
         PROJECT: ${{ inputs.project }}
         REGISTRIES: ${{ inputs.registries }}
-      run: |
+      run: | # zizmor: ignore[github-env] breto validates variable names and delimits multi-line values
         set -euo pipefail
         published=()
         while IFS= read -r dir; do

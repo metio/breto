@@ -18,6 +18,8 @@ jobs:
     timeout-minutes: 330
     steps:
       - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7
+        with:
+          persist-credentials: false
       - uses: metio/breto@8770afbc98d14728fea7802284c5ea4cf253242e # 2026.10.30075053
         with:
           registries: github:metio/toolchains
