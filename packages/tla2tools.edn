@@ -1,0 +1,9 @@
+;; SPDX-FileCopyrightText: The breto Authors
+;; SPDX-License-Identifier: 0BSD
+
+{:description "The TLA+ tools jar with the TLC model checker, SANY and PlusCal, which java runs as java -cp tla2tools.jar tlc2.TLC; the project links the jar into its bin directory"
+ :source {:github "tlaplus/tlaplus"}
+ :verify false
+ :asset "tla2tools.jar"
+ :bins {"tla2tools.jar" "tla2tools.jar"}
+ :platforms {"linux-x86_64" {} "linux-aarch64" {} "darwin-x86_64" {} "darwin-aarch64" {}}}

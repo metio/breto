@@ -49,6 +49,14 @@
            (registry/expand groups ["helm" "@mail" "kind" "tcard"])))
     (is (= ["a"] (registry/expand {} ["a"])))))
 
+(deftest a-package-named-directly-replaces-the-version-a-group-pins
+  (let [groups {"@lint" {:members ["uv@1.0" "node@26.1.0" "@docs"]}
+                "@docs" {:members ["node@26.1.0" "hugo@0.1"]}}]
+    (is (= ["uv@1.0" "node@24.2.0" "hugo@0.1"]
+           (registry/expand groups ["@lint" "node@24.2.0"])))
+    (is (= ["node" "uv@1.0" "hugo@0.1"]
+           (registry/expand groups ["node" "@lint"])))))
+
 (deftest unknown-groups-and-cycles-are-explained
   (let [unknown (problem #(registry/expand {"@mail" {:members ["x"]}} ["@male"]))]
     (is (= :unknown-group (:breto/problem unknown)))

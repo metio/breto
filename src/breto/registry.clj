@@ -135,9 +135,16 @@
                                             :files (:files group) :problems (vec problems)})))
                          [name group]))))))
 
+(defn- package-of
+  "The package a spec names: PKG of PKG@VERSION."
+  [spec]
+  (first (str/split spec #"@(?=[^@]*$)" 2)))
+
 (defn expand
   "`names` with every @group replaced by its members, recursively, keeping the
-  first occurrence of each package."
+  first occurrence of each package. A package `names` lists itself takes the
+  place of every group member of the same package, so its version wins over
+  the one a group pins."
   [groups names]
   (letfn [(walk [path name]
             (if (group-name? name)
@@ -151,7 +158,8 @@
                                    :problems [(str "it contains itself through " (str/join " -> " (conj path name)))]})))
                 (mapcat #(walk (conj path name) %) (:members group)))
               [name]))]
-    (vec (distinct (mapcat #(walk [] %) names)))))
+    (let [direct (into {} (for [n names :when (not (group-name? n))] [(package-of n) n]))]
+      (vec (distinct (map #(get direct (package-of %) %) (mapcat #(walk [] %) names)))))))
 
 (defn reached-groups
   "The groups `names` uses, directly or through other groups, in the order

@@ -1,0 +1,6 @@
+;; SPDX-FileCopyrightText: The breto Authors
+;; SPDX-License-Identifier: 0BSD
+
+{:description "Renovate, the dependency update bot, with renovate-config-validator, which checks a repository's Renovate configuration"
+ :source {:npm "renovate"}
+ :bins {"renovate" "node_modules/.bin/renovate" "renovate-config-validator" "node_modules/.bin/renovate-config-validator"}}

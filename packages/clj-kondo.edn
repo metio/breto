@@ -1,0 +1,9 @@
+;; SPDX-FileCopyrightText: The breto Authors
+;; SPDX-License-Identifier: 0BSD
+
+{:description "A linter for Clojure code that sparks joy"
+ :source {:github "clj-kondo/clj-kondo"}
+ :platforms {"linux-x86_64" {:asset "clj-kondo-{version}-linux-static-amd64.zip"}
+             "linux-aarch64" {:asset "clj-kondo-{version}-linux-aarch64.zip"}
+             "darwin-x86_64" {:asset "clj-kondo-{version}-macos-amd64.zip"}
+             "darwin-aarch64" {:asset "clj-kondo-{version}-macos-aarch64.zip"}}}

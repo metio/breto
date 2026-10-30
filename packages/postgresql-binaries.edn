@@ -2,8 +2,14 @@
 ;; SPDX-FileCopyrightText: The breto Authors
 ;; SPDX-License-Identifier: MIT
 
-{:description "PostgreSQL binaries for Linux, MacOS and Windows",
+{:description "PostgreSQL, the server and its client programs such as initdb, pg_ctl and psql, built relocatable by theseus-rs"
  :source {:github "theseus-rs/postgresql-binaries"}
  :tag-prefix ""
  :checksum "{asset}.sha256"
- :platforms {"linux-x86_64" {:asset "postgresql-{tag}-x86_64-unknown-linux-gnu.tar.gz" :bins {"psql" "postgresql-{tag}-x86_64-unknown-linux-gnu/bin/psql"}}}}
+ :strip 1
+ :layout :tree
+ :bin-dir "bin"
+ :platforms {"linux-x86_64" {:asset "postgresql-{version}-x86_64-unknown-linux-gnu.tar.gz"}
+             "linux-aarch64" {:asset "postgresql-{version}-aarch64-unknown-linux-gnu.tar.gz"}
+             "darwin-x86_64" {:asset "postgresql-{version}-x86_64-apple-darwin.tar.gz"}
+             "darwin-aarch64" {:asset "postgresql-{version}-aarch64-apple-darwin.tar.gz"}}}

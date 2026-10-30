@@ -516,7 +516,7 @@ A file named `@NAME.edn` in a registry defines a group of packages:
 
 In a project, a group's `:env` and `:commands` apply as well; see [Project variables and commands](#project-variables-and-commands).
 
-`"@pimalaya"` in `:packages`, or as an argument to `install`, `update`, `outdated`, `check`, `gc` and `uninstall`, stands for its members, in order. Members can be groups themselves; a package listed twice is handled once. Everything after that sees the packages: the lock file lists each member, and reports name them. `breto info @pimalaya` shows the members and the files that define the group. A later registry directory replaces the members of a group with the same name, so an overlay can trim or extend one.
+`"@pimalaya"` in `:packages`, or as an argument to `install`, `update`, `outdated`, `check`, `gc` and `uninstall`, stands for its members, in order. Members can be groups themselves; a package listed twice is handled once. A package listed next to a group takes the place of the group's member for it, so `["@lint" "node@24.11.0"]` uses node 24.11.0 where `@lint` pins another version. Everything after that sees the packages: the lock file lists each member, and reports name them. `breto info @pimalaya` shows the members and the files that define the group. A later registry directory replaces the members of a group with the same name, so an overlay can trim or extend one.
 
 With `:prune true`, a member that leaves a configured group is uninstalled by the next `breto gc`, as if its name had been removed from `:packages`. A group is a selection of definitions and declares none: each member still needs its own file.
 
