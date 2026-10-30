@@ -8,4 +8,7 @@
  :layout :tree
  :bins {"hx" "hx"}
  :links {"~/.config/helix/runtime" "runtime"}
- :platforms {"linux-x86_64" {:asset "helix-{version}-x86_64-linux.tar.xz"}}}
+ :platforms {"linux-x86_64" {:asset "helix-{version}-x86_64-linux.tar.xz"}
+             "linux-aarch64" {:asset "helix-{version}-aarch64-linux.tar.xz"}
+             "darwin-x86_64" {:asset "helix-{version}-x86_64-macos.tar.xz"}
+             "darwin-aarch64" {:asset "helix-{version}-aarch64-macos.tar.xz"}}}

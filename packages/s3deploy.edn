@@ -5,4 +5,6 @@
 {:description "A simple tool to deploy static websites to Amazon S3 and CloudFront with Gzip and custom headers support (e.g. \"Cache-Control\")",
  :source {:github "bep/s3deploy"}
  :checksum "s3deploy_{version}_checksums.txt"
- :platforms {"linux-x86_64" {:asset "s3deploy_{version}_linux-amd64.tar.gz"}}}
+ :platforms {"linux-x86_64" {:asset "s3deploy_{version}_linux-amd64.tar.gz"}
+             "darwin-x86_64" {:asset "s3deploy_{version}_darwin-universal.tar.gz"}
+             "darwin-aarch64" {:asset "s3deploy_{version}_darwin-universal.tar.gz"}}}

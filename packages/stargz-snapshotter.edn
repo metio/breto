@@ -6,4 +6,5 @@
  :source {:github "containerd/stargz-snapshotter"}
  :checksum "{asset}.sha256sum"
  :bins {"containerd-stargz-grpc" "containerd-stargz-grpc", "ctr-remote" "ctr-remote", "stargz-store" "stargz-store", "stargz-store-helper" "stargz-store-helper"}
- :platforms {"linux-x86_64" {:asset "stargz-snapshotter-{tag}-linux-amd64.tar.gz"}}}
+ :platforms {"linux-x86_64" {:asset "stargz-snapshotter-{tag}-linux-amd64.tar.gz"}
+             "linux-aarch64" {:asset "stargz-snapshotter-{tag}-linux-arm64.tar.gz"}}}

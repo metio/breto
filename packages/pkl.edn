@@ -5,4 +5,7 @@
 {:description "A configuration as code language with rich validation and tooling",
  :source {:github "apple/pkl"}
  :tag-prefix ""
- :platforms {"linux-x86_64" {:asset "pkl-linux-amd64"}}}
+ :platforms {"linux-x86_64" {:asset "pkl-linux-amd64"}
+             "linux-aarch64" {:asset "pkl-linux-aarch64"}
+             "darwin-x86_64" {:asset "pkl-macos-amd64"}
+             "darwin-aarch64" {:asset "pkl-macos-aarch64"}}}

@@ -5,4 +5,7 @@
 {:description "Fast disk usage analyzer with console interface written in Go",
  :source {:github "dundee/gdu"}
  :checksum "sha256sums.txt"
- :platforms {"linux-x86_64" {:asset "gdu_linux_amd64.tgz" :bins {"gdu" "gdu_linux_amd64"}}}}
+ :platforms {"linux-x86_64" {:asset "gdu_linux_amd64.tgz" :bins {"gdu" "gdu_linux_amd64"}}
+             "linux-aarch64" {:asset "gdu_linux_arm64.tgz" :bins {"gdu" "gdu_linux_arm64"}}
+             "darwin-x86_64" {:asset "gdu_darwin_amd64.tgz" :bins {"gdu" "gdu_darwin_amd64"}}
+             "darwin-aarch64" {:asset "gdu_darwin_arm64.tgz" :bins {"gdu" "gdu_darwin_arm64"}}}}

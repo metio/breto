@@ -6,4 +6,7 @@
  :source {:github "lima-vm/lima"}
  :checksum "SHA256SUMS"
  :bins {"lima" "bin/lima", "limactl" "bin/limactl"}
- :platforms {"linux-x86_64" {:asset "lima-{version}-Linux-x86_64.tar.gz"}}}
+ :platforms {"linux-x86_64" {:asset "lima-{version}-Linux-x86_64.tar.gz"}
+             "linux-aarch64" {:asset "lima-{version}-Linux-aarch64.tar.gz"}
+             "darwin-x86_64" {:asset "lima-{version}-Darwin-x86_64.tar.gz"}
+             "darwin-aarch64" {:asset "lima-{version}-Darwin-arm64.tar.gz"}}}

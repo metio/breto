@@ -6,4 +6,7 @@
  :source {:github "github/copilot-language-server-release"}
  :tag-prefix ""
  :bins {"copilot-language-server" "copilot-language-server"}
- :platforms {"linux-x86_64" {:asset "copilot-language-server-linux-x64-{tag}.zip"}}}
+ :platforms {"linux-x86_64" {:asset "copilot-language-server-linux-x64-{tag}.zip"}
+             "linux-aarch64" {:asset "copilot-language-server-linux-arm64-{tag}.zip"}
+             "darwin-x86_64" {:asset "copilot-language-server-darwin-x64-{tag}.zip"}
+             "darwin-aarch64" {:asset "copilot-language-server-darwin-arm64-{tag}.zip"}}}

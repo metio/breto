@@ -4,4 +4,6 @@
 
 {:description "Terminal and Web console for Kubernetes",
  :source {:github "astefanutti/kubebox"}
- :platforms {"linux-x86_64" {:asset "kubebox-linux"}}}
+ :platforms {"linux-x86_64" {:asset "kubebox-linux"}
+             "darwin-x86_64" {:asset "kubebox-macos"}
+             "darwin-aarch64" {:asset "kubebox-macos"}}}

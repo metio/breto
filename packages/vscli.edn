@@ -4,4 +4,6 @@
 
 {:description "A CLI tool to launch vscode projects, which supports devcontainers",
  :source {:github "michidk/vscli"}
- :platforms {"linux-x86_64" {:asset "vscli-x86_64-unknown-linux-musl.tar.gz" :bins {"vscli" "vscli-x86_64-unknown-linux-musl/vscli"}}}}
+ :platforms {"linux-x86_64" {:asset "vscli-x86_64-unknown-linux-musl.tar.gz" :bins {"vscli" "vscli-x86_64-unknown-linux-musl/vscli"}}
+             "darwin-x86_64" {:asset "vscli-x86_64-apple-darwin.tar.gz" :bins {"vscli" "vscli-x86_64-apple-darwin/vscli"}}
+             "darwin-aarch64" {:asset "vscli-aarch64-apple-darwin.tar.gz" :bins {"vscli" "vscli-aarch64-apple-darwin/vscli"}}}}

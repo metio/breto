@@ -4,4 +4,5 @@
 
 {:description "Find parent directories",
  :source {:github "so-dang-cool/findup"}
- :platforms {"linux-x86_64" {:asset "findup-x86_64-linux-gnu.tgz"}}}
+ :platforms {"linux-x86_64" {:asset "findup-x86_64-linux-gnu.tgz"}
+             "linux-aarch64" {:asset "findup-aarch64-linux-gnu.tgz"}}}

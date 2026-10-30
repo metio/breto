@@ -6,4 +6,7 @@
  :source {:github "goharbor/harbor-cli"}
  :checksum "checksums.txt"
  :bins {"harbor" "harbor-cli"}
- :platforms {"linux-x86_64" {:asset "harbor-cli_{version}_linux_amd64.tar.gz"}}}
+ :platforms {"linux-x86_64" {:asset "harbor-cli_{version}_linux_amd64.tar.gz"}
+             "linux-aarch64" {:asset "harbor-cli_{version}_linux_arm64.tar.gz"}
+             "darwin-x86_64" {:asset "harbor-cli_{version}_darwin_amd64.tar.gz"}
+             "darwin-aarch64" {:asset "harbor-cli_{version}_darwin_arm64.tar.gz"}}}

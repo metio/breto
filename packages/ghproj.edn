@@ -5,4 +5,7 @@
 {:description "Add GitHub Issues and Pull Requests to GitHub Projects",
  :source {:github "suzuki-shunsuke/ghproj"}
  :checksum "ghproj_{version}_checksums.txt"
- :platforms {"linux-x86_64" {:asset "ghproj_linux_amd64.tar.gz"}}}
+ :platforms {"linux-x86_64" {:asset "ghproj_linux_amd64.tar.gz"}
+             "linux-aarch64" {:asset "ghproj_linux_arm64.tar.gz"}
+             "darwin-x86_64" {:asset "ghproj_darwin_amd64.tar.gz"}
+             "darwin-aarch64" {:asset "ghproj_darwin_arm64.tar.gz"}}}

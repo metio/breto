@@ -5,4 +5,7 @@
  :source {:github "gitleaks/gitleaks"},
  :checksum "gitleaks_{version}_checksums.txt",
  :superseded-by "betterleaks"
- :platforms {"linux-x86_64" {:asset "gitleaks_{version}_linux_x64.tar.gz"}}}
+ :platforms {"linux-x86_64" {:asset "gitleaks_{version}_linux_x64.tar.gz"}
+             "linux-aarch64" {:asset "gitleaks_{version}_linux_arm64.tar.gz"}
+             "darwin-x86_64" {:asset "gitleaks_{version}_darwin_x64.tar.gz"}
+             "darwin-aarch64" {:asset "gitleaks_{version}_darwin_arm64.tar.gz"}}}

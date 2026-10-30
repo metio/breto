@@ -5,4 +5,5 @@
 {:description "Easy-to-use CUI for fixing git conflicts",
  :source {:github "mkchoi212/fac"}
  :checksum "fac_{version}_checksums.txt"
- :platforms {"linux-x86_64" {:asset "fac_{version}_linux_amd64.tar.gz"}}}
+ :platforms {"linux-x86_64" {:asset "fac_{version}_linux_amd64.tar.gz"}
+             "darwin-x86_64" {:asset "fac_{version}_darwin_amd64.tar.gz"}}}

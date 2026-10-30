@@ -4,4 +4,7 @@
 
 {:description "The hacker's BLE (bluetooth low energy) browser terminal app",
  :source {:github "dmtrKovalenko/blendr"}
- :platforms {"linux-x86_64" {:asset "blendr-x86_64-unknown-linux-musl.tar.gz"}}}
+ :platforms {"linux-x86_64" {:asset "blendr-x86_64-unknown-linux-musl.tar.gz"}
+             "linux-aarch64" {:asset "blendr-aarch64-unknown-linux-gnu.tar.gz"}
+             "darwin-x86_64" {:asset "blendr-x86_64-apple-darwin.tar.gz"}
+             "darwin-aarch64" {:asset "blendr-aarch64-apple-darwin.tar.gz"}}}

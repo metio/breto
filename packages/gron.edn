@@ -4,4 +4,7 @@
 
 {:description "Make JSON greppable",
  :source {:github "tomnomnom/gron"}
- :platforms {"linux-x86_64" {:asset "gron-linux-amd64-{version}.tgz"}}}
+ :platforms {"linux-x86_64" {:asset "gron-linux-amd64-{version}.tgz"}
+             "linux-aarch64" {:asset "gron-linux-arm64-{version}.tgz"}
+             "darwin-x86_64" {:asset "gron-darwin-amd64-{version}.tgz"}
+             "darwin-aarch64" {:asset "gron-darwin-arm64-{version}.tgz"}}}

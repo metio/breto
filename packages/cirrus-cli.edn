@@ -6,4 +6,7 @@
  :source {:github "cirruslabs/cirrus-cli"}
  :checksum "cirrus_{version}_checksums.txt"
  :bins {"cirrus" "cirrus"}
- :platforms {"linux-x86_64" {:asset "cirrus-linux-amd64.tar.gz"}}}
+ :platforms {"linux-x86_64" {:asset "cirrus-linux-amd64.tar.gz"}
+             "linux-aarch64" {:asset "cirrus-linux-arm64.tar.gz"}
+             "darwin-x86_64" {:asset "cirrus-darwin-amd64.tar.gz"}
+             "darwin-aarch64" {:asset "cirrus-darwin-arm64.tar.gz"}}}

@@ -5,4 +5,7 @@
 {:description "Mermaid.js, but headless, in Rust",
  :source {:github "Latias94/merman"}
  :checksum "{asset}.sha256"
- :platforms {"linux-x86_64" {:asset "merman-cli-x86_64-unknown-linux-gnu.tar.xz" :bins {"merman-cli" "merman-cli-x86_64-unknown-linux-gnu/merman-cli"}}}}
+ :platforms {"linux-x86_64" {:asset "merman-cli-x86_64-unknown-linux-gnu.tar.xz" :bins {"merman-cli" "merman-cli-x86_64-unknown-linux-gnu/merman-cli"}}
+             "linux-aarch64" {:asset "merman-cli-aarch64-unknown-linux-gnu.tar.xz" :bins {"merman-cli" "merman-cli-aarch64-unknown-linux-gnu/merman-cli"}}
+             "darwin-x86_64" {:asset "merman-cli-x86_64-apple-darwin.tar.xz" :bins {"merman-cli" "merman-cli-x86_64-apple-darwin/merman-cli"}}
+             "darwin-aarch64" {:asset "merman-cli-aarch64-apple-darwin.tar.xz" :bins {"merman-cli" "merman-cli-aarch64-apple-darwin/merman-cli"}}}}

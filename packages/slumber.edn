@@ -5,4 +5,7 @@
 {:description "Terminal-based HTTP/REST client",
  :source {:github "LucasPickering/slumber"}
  :checksum "{asset}.sha256"
- :platforms {"linux-x86_64" {:asset "slumber-x86_64-unknown-linux-musl.tar.xz" :bins {"slumber" "slumber-x86_64-unknown-linux-musl/slumber"}}}}
+ :platforms {"linux-x86_64" {:asset "slumber-x86_64-unknown-linux-musl.tar.xz" :bins {"slumber" "slumber-x86_64-unknown-linux-musl/slumber"}}
+             "linux-aarch64" {:asset "slumber-aarch64-unknown-linux-musl.tar.xz" :bins {"slumber" "slumber-aarch64-unknown-linux-musl/slumber"}}
+             "darwin-x86_64" {:asset "slumber-x86_64-apple-darwin.tar.xz" :bins {"slumber" "slumber-x86_64-apple-darwin/slumber"}}
+             "darwin-aarch64" {:asset "slumber-aarch64-apple-darwin.tar.xz" :bins {"slumber" "slumber-aarch64-apple-darwin/slumber"}}}}

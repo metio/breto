@@ -5,4 +5,6 @@
 {:description "Library for encoding and decoding AVIF files",
  :source {:github "AOMediaCodec/libavif"}
  :bins {"avifdec" "avifdec", "avifenc" "avifenc", "avifgainmaputil" "avifgainmaputil"}
- :platforms {"linux-x86_64" {:asset "linux-artifacts.zip"}}}
+ :platforms {"linux-x86_64" {:asset "linux-artifacts.zip"}
+             "darwin-x86_64" {:asset "macOS-artifacts.zip"}
+             "darwin-aarch64" {:asset "macOS-artifacts.zip"}}}

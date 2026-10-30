@@ -4,4 +4,7 @@
 {:description "Command line client for Tekton Pipelines"
  :source {:github "tektoncd/cli"}
  :checksum "checksums.txt"
- :platforms {"linux-x86_64" {:asset "tkn_{version}_Linux_x86_64.tar.gz"}}}
+ :platforms {"linux-x86_64" {:asset "tkn_{version}_Linux_x86_64.tar.gz"}
+             "linux-aarch64" {:asset "tkn_{version}_Linux_aarch64.tar.gz"}
+             "darwin-x86_64" {:asset "tkn_{version}_Darwin_all.tar.gz"}
+             "darwin-aarch64" {:asset "tkn_{version}_Darwin_all.tar.gz"}}}

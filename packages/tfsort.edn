@@ -5,4 +5,7 @@
 {:description "A CLI utility to sort Terraform variables and outputs",
  :source {:github "AlexNabokikh/tfsort"}
  :checksum "checksums.txt"
- :platforms {"linux-x86_64" {:asset "tfsort_{version}_linux_amd64.tar.gz"}}}
+ :platforms {"linux-x86_64" {:asset "tfsort_{version}_linux_amd64.tar.gz"}
+             "linux-aarch64" {:asset "tfsort_{version}_linux_arm64.tar.gz"}
+             "darwin-x86_64" {:asset "tfsort_{version}_darwin_all.tar.gz"}
+             "darwin-aarch64" {:asset "tfsort_{version}_darwin_all.tar.gz"}}}

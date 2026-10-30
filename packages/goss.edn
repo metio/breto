@@ -5,4 +5,7 @@
  :source {:github "goss-org/goss"},
  :checksum "goss_{version}_SHA256SUMS",
  :platforms {"linux-x86_64" {:asset "goss_{version}_linux_x86_64.tar.gz"
-                             :history [{:before "0.4.10" :asset "goss-linux-amd64" :checksum "goss-linux-amd64.sha256"}]}}}
+                             :history [{:before "0.4.10" :asset "goss-linux-amd64" :checksum "goss-linux-amd64.sha256"}]}
+             "linux-aarch64" {:asset "goss_{version}_linux_arm64.tar.gz" :history [{:before "0.4.10" :asset "goss-linux-amd64" :checksum "goss-linux-amd64.sha256"}]}
+             "darwin-x86_64" {:asset "goss_{version}_darwin_x86_64.tar.gz" :history [{:before "0.4.10" :asset "goss-darwin-amd64" :checksum "goss-darwin-amd64.sha256"}]}
+             "darwin-aarch64" {:asset "goss_{version}_darwin_arm64.tar.gz" :history [{:before "0.4.10" :asset "goss-darwin-amd64" :checksum "goss-darwin-amd64.sha256"}]}}}

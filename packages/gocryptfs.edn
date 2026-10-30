@@ -5,4 +5,5 @@
 {:description "Encrypted overlay filesystem written in Go",
  :source {:github "rfjakob/gocryptfs"}
  :bins {"gocryptfs" "gocryptfs", "gocryptfs-xray" "gocryptfs-xray"}
- :platforms {"linux-x86_64" {:asset "gocryptfs_{tag}_linux-static_amd64.tar.gz"}}}
+ :platforms {"linux-x86_64" {:asset "gocryptfs_{tag}_linux-static_amd64.tar.gz"}
+             "linux-aarch64" {:asset "gocryptfs_{tag}_linux-static_arm64.tar.gz"}}}

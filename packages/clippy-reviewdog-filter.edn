@@ -4,4 +4,7 @@
 
 {:description "A filter for integrating Clippy with Reviewdog",
  :source {:github "qnighy/clippy-reviewdog-filter"}
- :platforms {"linux-x86_64" {:asset "clippy-reviewdog-filter-x86_64-unknown-linux-musl"}}}
+ :platforms {"linux-x86_64" {:asset "clippy-reviewdog-filter-x86_64-unknown-linux-musl"}
+             "linux-aarch64" {:asset "clippy-reviewdog-filter-aarch64-unknown-linux-musl"}
+             "darwin-x86_64" {:asset "clippy-reviewdog-filter-x86_64-apple-darwin"}
+             "darwin-aarch64" {:asset "clippy-reviewdog-filter-aarch64-apple-darwin"}}}

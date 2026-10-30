@@ -4,4 +4,7 @@
 
 {:description "A simple zero-config tool to make locally trusted development certificates with any names you'd like",
  :source {:github "FiloSottile/mkcert"}
- :platforms {"linux-x86_64" {:asset "mkcert-{tag}-linux-amd64"}}}
+ :platforms {"linux-x86_64" {:asset "mkcert-{tag}-linux-amd64"}
+             "linux-aarch64" {:asset "mkcert-{tag}-linux-arm64"}
+             "darwin-x86_64" {:asset "mkcert-{tag}-darwin-amd64"}
+             "darwin-aarch64" {:asset "mkcert-{tag}-darwin-arm64"}}}

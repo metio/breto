@@ -5,4 +5,7 @@
 {:description "Execute all Zencode from Zenroom and Slangroom plugins in one shot",
  :source {:github "dyne/slangroom-exec"}
  :bins {"slangroom-exec" "slangroom-exec", "slexfe" "slexfe"}
- :platforms {"linux-x86_64" {:asset "slangroom-exec-Linux-x86_64.tar.gz"}}}
+ :platforms {"linux-x86_64" {:asset "slangroom-exec-Linux-x86_64.tar.gz"}
+             "linux-aarch64" {:asset "slangroom-exec-Linux-aarch64.tar.gz"}
+             "darwin-x86_64" {:asset "slangroom-exec-Darwin-x86_64.tar.gz"}
+             "darwin-aarch64" {:asset "slangroom-exec-Darwin-arm64.tar.gz"}}}

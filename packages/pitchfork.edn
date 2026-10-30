@@ -4,4 +4,6 @@
 
 {:description "Daemons with DX",
  :source {:github "jdx/pitchfork"}
- :platforms {"linux-x86_64" {:asset "pitchfork-x86_64-unknown-linux-gnu.tar.gz"}}}
+ :platforms {"linux-x86_64" {:asset "pitchfork-x86_64-unknown-linux-gnu.tar.gz"}
+             "linux-aarch64" {:asset "pitchfork-aarch64-unknown-linux-gnu.tar.gz"}
+             "darwin-aarch64" {:asset "pitchfork-aarch64-apple-darwin.tar.gz"}}}

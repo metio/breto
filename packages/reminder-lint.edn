@@ -6,4 +6,6 @@
  :source {:github "CyberAgent/reminder-lint"}
  :tag-prefix ""
  :checksum "{asset}.sha256"
- :platforms {"linux-x86_64" {:asset "reminder-lint-x86_64-unknown-linux-musl.tar.xz" :bins {"reminder-lint" "reminder-lint-x86_64-unknown-linux-musl/reminder-lint"}}}}
+ :platforms {"linux-x86_64" {:asset "reminder-lint-x86_64-unknown-linux-musl.tar.xz" :bins {"reminder-lint" "reminder-lint-x86_64-unknown-linux-musl/reminder-lint"}}
+             "darwin-x86_64" {:asset "reminder-lint-x86_64-apple-darwin.tar.xz" :bins {"reminder-lint" "reminder-lint-x86_64-apple-darwin/reminder-lint"}}
+             "darwin-aarch64" {:asset "reminder-lint-aarch64-apple-darwin.tar.xz" :bins {"reminder-lint" "reminder-lint-aarch64-apple-darwin/reminder-lint"}}}}

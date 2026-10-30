@@ -5,4 +5,7 @@
 {:description "A cross-platform command-line tool to convert images into ascii art and print them on the console. Now supports braille art",
  :source {:github "TheZoraiz/ascii-image-converter"}
  :checksum "sha256_checksums.txt"
- :platforms {"linux-x86_64" {:asset "ascii-image-converter_Linux_amd64_64bit.tar.gz" :bins {"ascii-image-converter" "ascii-image-converter_Linux_amd64_64bit/ascii-image-converter"}}}}
+ :platforms {"linux-x86_64" {:asset "ascii-image-converter_Linux_amd64_64bit.tar.gz" :bins {"ascii-image-converter" "ascii-image-converter_Linux_amd64_64bit/ascii-image-converter"}}
+             "linux-aarch64" {:asset "ascii-image-converter_Linux_arm64_64bit.tar.gz" :bins {"ascii-image-converter" "ascii-image-converter_Linux_arm64_64bit/ascii-image-converter"}}
+             "darwin-x86_64" {:asset "ascii-image-converter_macOS_amd64_64bit.tar.gz" :bins {"ascii-image-converter" "ascii-image-converter_macOS_amd64_64bit/ascii-image-converter"}}
+             "darwin-aarch64" {:asset "ascii-image-converter_macOS_arm64_64bit.tar.gz" :bins {"ascii-image-converter" "ascii-image-converter_macOS_arm64_64bit/ascii-image-converter"}}}}

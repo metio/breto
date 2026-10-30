@@ -6,4 +6,6 @@
  :source {:github "Kampfkarren/selene"}
  :tag-prefix ""
  :bins {"selene" "selene"}
- :platforms {"linux-x86_64" {:asset "selene-light-{tag}-linux.zip"}}}
+ :platforms {"linux-x86_64" {:asset "selene-light-{tag}-linux.zip"}
+             "darwin-x86_64" {:asset "selene-light-{tag}-macos.zip"}
+             "darwin-aarch64" {:asset "selene-light-{tag}-macos.zip"}}}

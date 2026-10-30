@@ -6,4 +6,7 @@
  :source {:github "metalbear-co/mirrord"}
  :tag-prefix ""
  :checksum "{asset}.sha256"
- :platforms {"linux-x86_64" {:asset "mirrord_linux_x86_64.zip"}}}
+ :platforms {"linux-x86_64" {:asset "mirrord_linux_x86_64.zip"}
+             "linux-aarch64" {:asset "mirrord_linux_aarch64.zip"}
+             "darwin-x86_64" {:asset "mirrord_mac_universal.zip"}
+             "darwin-aarch64" {:asset "mirrord_mac_universal.zip"}}}

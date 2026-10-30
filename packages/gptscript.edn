@@ -5,4 +5,7 @@
 {:description "Natural Language Programming",
  :source {:github "gptscript-ai/gptscript"}
  :checksum "checksums.txt"
- :platforms {"linux-x86_64" {:asset "gptscript-{tag}-linux-amd64.tar.gz"}}}
+ :platforms {"linux-x86_64" {:asset "gptscript-{tag}-linux-amd64.tar.gz"}
+             "linux-aarch64" {:asset "gptscript-{tag}-linux-arm64.tar.gz"}
+             "darwin-x86_64" {:asset "gptscript-{tag}-macOS-universal.tar.gz"}
+             "darwin-aarch64" {:asset "gptscript-{tag}-macOS-universal.tar.gz"}}}

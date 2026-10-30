@@ -5,4 +5,7 @@
  :source {:github "moby/buildkit"}
  :layout :tree
  :bin-dir "bin"
- :platforms {"linux-x86_64" {:asset "buildkit-v{version}.linux-amd64.tar.gz" :signature {:bundle "buildkit-v{version}.linux-amd64.sigstore.json" :identity-regexp "^https://github\\.com/docker/github-builder/\\.github/workflows/bake\\.yml@[0-9a-f]{40}$" :issuer "https://token.actions.githubusercontent.com"}}}}
+ :platforms {"linux-x86_64" {:asset "buildkit-v{version}.linux-amd64.tar.gz" :signature {:bundle "buildkit-v{version}.linux-amd64.sigstore.json" :identity-regexp "^https://github\\.com/docker/github-builder/\\.github/workflows/bake\\.yml@[0-9a-f]{40}$" :issuer "https://token.actions.githubusercontent.com"}}
+             "linux-aarch64" {:asset "buildkit-v{version}.linux-arm64.tar.gz" :signature {:bundle "buildkit-v{version}.linux-arm64.sigstore.json" :identity-regexp "^https://github\\.com/docker/github-builder/\\.github/workflows/bake\\.yml@[0-9a-f]{40}$" :issuer "https://token.actions.githubusercontent.com"}}
+             "darwin-x86_64" {:asset "buildkit-v{version}.darwin-amd64.tar.gz" :signature {:bundle "buildkit-v{version}.darwin-amd64.sigstore.json" :identity-regexp "^https://github\\.com/docker/github-builder/\\.github/workflows/bake\\.yml@[0-9a-f]{40}$" :issuer "https://token.actions.githubusercontent.com"}}
+             "darwin-aarch64" {:asset "buildkit-v{version}.darwin-arm64.tar.gz" :signature {:bundle "buildkit-v{version}.darwin-arm64.sigstore.json" :identity-regexp "^https://github\\.com/docker/github-builder/\\.github/workflows/bake\\.yml@[0-9a-f]{40}$" :issuer "https://token.actions.githubusercontent.com"}}}}

@@ -5,4 +5,7 @@
 {:description "The official Twitch CLI to make developing on Twitch easier",
  :source {:github "twitchdev/twitch-cli"}
  :checksum "checksums.txt"
- :platforms {"linux-x86_64" {:asset "twitch-cli_{version}_Linux_x86_64.tar.gz" :bins {"twitch" "twitch-cli_{version}_Linux_x86_64/twitch"}}}}
+ :platforms {"linux-x86_64" {:asset "twitch-cli_{version}_Linux_x86_64.tar.gz" :bins {"twitch" "twitch-cli_{version}_Linux_x86_64/twitch"}}
+             "linux-aarch64" {:asset "twitch-cli_{version}_Linux_arm64.tar.gz" :bins {"twitch" "twitch-cli_{version}_Linux_arm64/twitch"}}
+             "darwin-x86_64" {:asset "twitch-cli_{version}_Darwin_x86_64.tar.gz" :bins {"twitch" "twitch-cli_{version}_Darwin_x86_64/twitch"}}
+             "darwin-aarch64" {:asset "twitch-cli_{version}_Darwin_arm64.tar.gz" :bins {"twitch" "twitch-cli_{version}_Darwin_arm64/twitch"}}}}

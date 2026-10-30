@@ -6,4 +6,7 @@
  :source {:github "megaease/easeprobe"}
  :checksum "checksums.txt"
  :bins {"easeprobe" "bin/easeprobe"}
- :platforms {"linux-x86_64" {:asset "easeprobe-{tag}-linux-amd64.tar.gz"}}}
+ :platforms {"linux-x86_64" {:asset "easeprobe-{tag}-linux-amd64.tar.gz"}
+             "linux-aarch64" {:asset "easeprobe-{tag}-linux-arm64.tar.gz"}
+             "darwin-x86_64" {:asset "easeprobe-{tag}-darwin-amd64.tar.gz"}
+             "darwin-aarch64" {:asset "easeprobe-{tag}-darwin-arm64.tar.gz"}}}

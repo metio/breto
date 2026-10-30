@@ -5,4 +5,6 @@
 {:description "Pryrite, interactively execute shell code blocks in a markdown file",
  :source {:github "1xyz/pryrite"}
  :tag-prefix ""
- :platforms {"linux-x86_64" {:asset "pryrite-linux-amd64-{tag}.zip"}}}
+ :platforms {"linux-x86_64" {:asset "pryrite-linux-amd64-{tag}.zip"}
+             "linux-aarch64" {:asset "pryrite-linux-arm64-{tag}.zip"}
+             "darwin-x86_64" {:asset "pryrite-darwin-amd64-{tag}.zip"}}}

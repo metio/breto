@@ -5,4 +5,7 @@
  :source {:github "uutils/diffutils"}
  :checksum "{asset}.sha256"
  :strip 1
- :platforms {"linux-x86_64" {:asset "diffutils-x86_64-unknown-linux-gnu.tar.xz"}}}
+ :platforms {"linux-x86_64" {:asset "diffutils-x86_64-unknown-linux-gnu.tar.xz"}
+             "linux-aarch64" {:asset "diffutils-aarch64-unknown-linux-gnu.tar.xz"}
+             "darwin-x86_64" {:asset "diffutils-x86_64-apple-darwin.tar.xz"}
+             "darwin-aarch64" {:asset "diffutils-aarch64-apple-darwin.tar.xz"}}}

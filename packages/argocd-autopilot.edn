@@ -4,4 +4,7 @@
 
 {:description "Argo-CD Autopilot",
  :source {:github "argoproj-labs/argocd-autopilot"}
- :platforms {"linux-x86_64" {:asset "argocd-autopilot-linux-amd64.tar.gz" :checksum "argocd-autopilot-linux-amd64.sha256" :bins {"argocd-autopilot" "argocd-autopilot-linux-amd64"}}}}
+ :platforms {"linux-x86_64" {:asset "argocd-autopilot-linux-amd64.tar.gz" :checksum "argocd-autopilot-linux-amd64.sha256" :bins {"argocd-autopilot" "argocd-autopilot-linux-amd64"}}
+             "linux-aarch64" {:asset "argocd-autopilot-linux-arm64.tar.gz" :checksum "argocd-autopilot-linux-arm64.sha256" :bins {"argocd-autopilot" "argocd-autopilot-linux-arm64"}}
+             "darwin-x86_64" {:asset "argocd-autopilot-darwin-amd64.tar.gz" :checksum "argocd-autopilot-darwin-amd64.sha256" :bins {"argocd-autopilot" "argocd-autopilot-darwin-amd64"}}
+             "darwin-aarch64" {:asset "argocd-autopilot-darwin-arm64.tar.gz" :checksum "argocd-autopilot-darwin-arm64.sha256" :bins {"argocd-autopilot" "argocd-autopilot-darwin-arm64"}}}}

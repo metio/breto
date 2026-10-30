@@ -6,4 +6,7 @@
  :source {:github "anthropics/anthropic-cli"}
  :checksum "ant_{version}_checksums.txt"
  :bins {"ant" "ant"}
- :platforms {"linux-x86_64" {:asset "ant_{version}_linux_amd64.tar.gz"}}}
+ :platforms {"linux-x86_64" {:asset "ant_{version}_linux_amd64.tar.gz"}
+             "linux-aarch64" {:asset "ant_{version}_linux_arm64.tar.gz"}
+             "darwin-x86_64" {:asset "ant_{version}_macos_amd64.zip"}
+             "darwin-aarch64" {:asset "ant_{version}_macos_arm64.zip"}}}

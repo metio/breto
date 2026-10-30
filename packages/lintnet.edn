@@ -5,4 +5,7 @@
 {:description "General Linter powered by Jsonnet",
  :source {:github "lintnet/lintnet"}
  :checksum "lintnet_{version}_checksums.txt"
- :platforms {"linux-x86_64" {:asset "lintnet_linux_amd64.tar.gz"}}}
+ :platforms {"linux-x86_64" {:asset "lintnet_linux_amd64.tar.gz"}
+             "linux-aarch64" {:asset "lintnet_linux_arm64.tar.gz"}
+             "darwin-x86_64" {:asset "lintnet_darwin_amd64.tar.gz"}
+             "darwin-aarch64" {:asset "lintnet_darwin_arm64.tar.gz"}}}

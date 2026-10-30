@@ -5,4 +5,7 @@
 {:description "Homebrew, but with Docker images",
  :source {:github "whalebrew/whalebrew"}
  :tag-prefix ""
- :platforms {"linux-x86_64" {:asset "whalebrew-Linux-x86_64"}}}
+ :platforms {"linux-x86_64" {:asset "whalebrew-Linux-x86_64"}
+             "linux-aarch64" {:asset "whalebrew-Linux-arm64"}
+             "darwin-x86_64" {:asset "whalebrew-Darwin-x86_64"}
+             "darwin-aarch64" {:asset "whalebrew-Darwin-arm64"}}}

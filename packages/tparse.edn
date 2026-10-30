@@ -5,4 +5,7 @@
 {:description "CLI tool for summarizing go test output. Pipe friendly. CI/CD friendly",
  :source {:github "mfridman/tparse"}
  :checksum "checksums.txt"
- :platforms {"linux-x86_64" {:asset "tparse_linux_x86_64"}}}
+ :platforms {"linux-x86_64" {:asset "tparse_linux_x86_64"}
+             "linux-aarch64" {:asset "tparse_linux_arm64"}
+             "darwin-x86_64" {:asset "tparse_darwin_x86_64"}
+             "darwin-aarch64" {:asset "tparse_darwin_arm64"}}}

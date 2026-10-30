@@ -4,4 +4,6 @@
 
 {:description "Convert Go test output to JUnit XML",
  :source {:github "jstemmer/go-junit-report"}
- :platforms {"linux-x86_64" {:asset "go-junit-report-{tag}-linux-amd64.tar.gz"}}}
+ :platforms {"linux-x86_64" {:asset "go-junit-report-{tag}-linux-amd64.tar.gz"}
+             "darwin-x86_64" {:asset "go-junit-report-{tag}-darwin-amd64.tar.gz"}
+             "darwin-aarch64" {:asset "go-junit-report-{tag}-darwin-arm64.tar.gz"}}}

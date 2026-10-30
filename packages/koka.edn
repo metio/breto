@@ -5,4 +5,7 @@
  :source {:github "koka-lang/koka"}
  :layout :tree
  :bins {"koka" "bin/koka"}
- :platforms {"linux-x86_64" {:asset "koka-{tag}-linux-x64.tar.gz"}}}
+ :platforms {"linux-x86_64" {:asset "koka-{tag}-linux-x64.tar.gz"}
+             "linux-aarch64" {:asset "koka-{tag}-linux-arm64.tar.gz"}
+             "darwin-x86_64" {:asset "koka-{tag}-macos-x64.tar.gz"}
+             "darwin-aarch64" {:asset "koka-{tag}-macos-arm64.tar.gz"}}}

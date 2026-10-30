@@ -4,4 +4,7 @@
 
 {:description "Codespaces but open-source, client-only and unopinionated: Works with any IDE and lets you use any cloud, kubernetes or just localhost docker",
  :source {:github "loft-sh/devpod"}
- :platforms {"linux-x86_64" {:asset "devpod-linux-amd64"}}}
+ :platforms {"linux-x86_64" {:asset "devpod-linux-amd64"}
+             "linux-aarch64" {:asset "devpod-linux-arm64"}
+             "darwin-x86_64" {:asset "devpod-darwin-amd64"}
+             "darwin-aarch64" {:asset "devpod-darwin-arm64"}}}

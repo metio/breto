@@ -6,4 +6,7 @@
  :source {:github "replicatedhq/kots"}
  :checksum "kots_{version}_checksums.txt"
  :bins {"kubectl-kots" "kots"}
- :platforms {"linux-x86_64" {:asset "kots_linux_amd64.tar.gz"}}}
+ :platforms {"linux-x86_64" {:asset "kots_linux_amd64.tar.gz"}
+             "linux-aarch64" {:asset "kots_linux_arm64.tar.gz"}
+             "darwin-x86_64" {:asset "kots_darwin_all.tar.gz"}
+             "darwin-aarch64" {:asset "kots_darwin_all.tar.gz"}}}

@@ -4,4 +4,5 @@
 
 {:description "Terminal based Conway's Game of Life. Implemented in Go",
  :source {:github "sachaos/go-life"}
- :platforms {"linux-x86_64" {:asset "go-life_linux_amd64"}}}
+ :platforms {"linux-x86_64" {:asset "go-life_linux_amd64"}
+             "darwin-x86_64" {:asset "go-life_darwin_amd64"}}}

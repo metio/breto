@@ -5,4 +5,7 @@
 {:description "Update outdated Go dependencies interactively",
  :source {:github "oligot/go-mod-upgrade"}
  :checksum "checksums.txt"
- :platforms {"linux-x86_64" {:asset "go-mod-upgrade_linux_amd64.tar.gz"}}}
+ :platforms {"linux-x86_64" {:asset "go-mod-upgrade_linux_amd64.tar.gz"}
+             "linux-aarch64" {:asset "go-mod-upgrade_linux_arm64.tar.gz"}
+             "darwin-x86_64" {:asset "go-mod-upgrade_darwin_amd64.tar.gz"}
+             "darwin-aarch64" {:asset "go-mod-upgrade_darwin_arm64.tar.gz"}}}

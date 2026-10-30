@@ -5,4 +5,5 @@
 {:description "Interactive debugger for Dockerfile, with support for IDEs (VS Code, Emacs, Neovim, etc.)",
  :source {:github "ktock/buildg"}
  :checksum "SHA256SUMS"
- :platforms {"linux-x86_64" {:asset "buildg-{tag}-linux-amd64.tar.gz"}}}
+ :platforms {"linux-x86_64" {:asset "buildg-{tag}-linux-amd64.tar.gz"}
+             "linux-aarch64" {:asset "buildg-{tag}-linux-arm64.tar.gz"}}}

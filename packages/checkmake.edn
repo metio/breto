@@ -5,4 +5,7 @@
 {:description "Linter/analyzer for Makefiles",
  :source {:github "checkmake/checkmake"}
  :checksum "checksums.txt"
- :platforms {"linux-x86_64" {:asset "checkmake-{tag}.linux.amd64"}}}
+ :platforms {"linux-x86_64" {:asset "checkmake-{tag}.linux.amd64"}
+             "linux-aarch64" {:asset "checkmake-{tag}.linux.arm64"}
+             "darwin-x86_64" {:asset "checkmake-{tag}.darwin.amd64"}
+             "darwin-aarch64" {:asset "checkmake-{tag}.darwin.arm64"}}}

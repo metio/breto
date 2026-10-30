@@ -4,4 +4,7 @@
 
 {:description "A terminal-based Markdown browser",
  :source {:github "bahdotsh/mdterm"}
- :platforms {"linux-x86_64" {:asset "mdterm-x86_64-unknown-linux-musl.tar.gz"}}}
+ :platforms {"linux-x86_64" {:asset "mdterm-x86_64-unknown-linux-musl.tar.gz"}
+             "linux-aarch64" {:asset "mdterm-aarch64-unknown-linux-musl.tar.gz"}
+             "darwin-x86_64" {:asset "mdterm-x86_64-apple-darwin.tar.gz"}
+             "darwin-aarch64" {:asset "mdterm-aarch64-apple-darwin.tar.gz"}}}

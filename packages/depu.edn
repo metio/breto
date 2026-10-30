@@ -5,4 +5,7 @@
 {:description "A tool to check  available updates of packages in go.mod",
  :source {:github "kevwan/depu"}
  :checksum "depu_{version}_checksums.txt"
- :platforms {"linux-x86_64" {:asset "depu_{version}_linux_amd64.tar.gz"}}}
+ :platforms {"linux-x86_64" {:asset "depu_{version}_linux_amd64.tar.gz"}
+             "linux-aarch64" {:asset "depu_{version}_linux_arm64.tar.gz"}
+             "darwin-x86_64" {:asset "depu_{version}_darwin_amd64.tar.gz"}
+             "darwin-aarch64" {:asset "depu_{version}_darwin_arm64.tar.gz"}}}

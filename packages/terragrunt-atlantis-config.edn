@@ -5,4 +5,7 @@
 {:description "Generate Atlantis config for Terragrunt projects",
  :source {:github "transcend-io/terragrunt-atlantis-config"}
  :checksum "SHA512SUMS"
- :platforms {"linux-x86_64" {:asset "terragrunt-atlantis-config_{version}_linux_amd64"}}}
+ :platforms {"linux-x86_64" {:asset "terragrunt-atlantis-config_{version}_linux_amd64"}
+             "linux-aarch64" {:asset "terragrunt-atlantis-config_{version}_linux_arm64"}
+             "darwin-x86_64" {:asset "terragrunt-atlantis-config_{version}_darwin_amd64"}
+             "darwin-aarch64" {:asset "terragrunt-atlantis-config_{version}_darwin_arm64"}}}

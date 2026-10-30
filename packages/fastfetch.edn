@@ -5,4 +5,7 @@
 {:description "An actively maintained, feature-rich and performance oriented, neofetch like system information tool",
  :source {:github "fastfetch-cli/fastfetch"}
  :tag-prefix ""
- :platforms {"linux-x86_64" {:asset "fastfetch-linux-amd64.tar.gz" :bins {"fastfetch" "fastfetch-linux-amd64/usr/bin/fastfetch"}}}}
+ :platforms {"linux-x86_64" {:asset "fastfetch-linux-amd64.tar.gz" :bins {"fastfetch" "fastfetch-linux-amd64/usr/bin/fastfetch"}}
+             "linux-aarch64" {:asset "fastfetch-linux-aarch64.tar.gz" :bins {"fastfetch" "fastfetch-linux-aarch64/usr/bin/fastfetch"}}
+             "darwin-x86_64" {:asset "fastfetch-macos-universal.tar.gz" :bins {"fastfetch" "fastfetch-macos-universal/usr/bin/fastfetch"}}
+             "darwin-aarch64" {:asset "fastfetch-macos-universal.tar.gz" :bins {"fastfetch" "fastfetch-macos-universal/usr/bin/fastfetch"}}}}

@@ -6,4 +6,7 @@
  :source {:github "pulumi/esc"}
  :checksum "esc-{version}-checksums.txt"
  :bins {"esc" "esc/esc"}
- :platforms {"linux-x86_64" {:asset "esc-{tag}-linux-x64.tar.gz"}}}
+ :platforms {"linux-x86_64" {:asset "esc-{tag}-linux-x64.tar.gz"}
+             "linux-aarch64" {:asset "esc-{tag}-linux-arm64.tar.gz"}
+             "darwin-x86_64" {:asset "esc-{tag}-darwin-x64.tar.gz"}
+             "darwin-aarch64" {:asset "esc-{tag}-darwin-arm64.tar.gz"}}}

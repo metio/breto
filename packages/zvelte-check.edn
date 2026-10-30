@@ -5,4 +5,7 @@
 {:description "A fast diagnostic tool for Svelte projects",
  :source {:github "ampcode/zvelte-check"}
  :checksum "checksums.txt"
- :platforms {"linux-x86_64" {:asset "zvelte-check-linux-x86_64.tar.gz"}}}
+ :platforms {"linux-x86_64" {:asset "zvelte-check-linux-x86_64.tar.gz"}
+             "linux-aarch64" {:asset "zvelte-check-linux-aarch64.tar.gz"}
+             "darwin-x86_64" {:asset "zvelte-check-darwin-x86_64.tar.gz"}
+             "darwin-aarch64" {:asset "zvelte-check-darwin-aarch64.tar.gz"}}}

@@ -4,4 +4,6 @@
 
 {:description "Docker registry v2 command line client and repo listing generator with security checks",
  :source {:github "genuinetools/reg"}
- :platforms {"linux-x86_64" {:asset "reg-linux-amd64"}}}
+ :platforms {"linux-x86_64" {:asset "reg-linux-amd64"}
+             "linux-aarch64" {:asset "reg-linux-arm64"}
+             "darwin-x86_64" {:asset "reg-darwin-amd64"}}}

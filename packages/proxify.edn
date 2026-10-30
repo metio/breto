@@ -5,4 +5,7 @@
 {:description "A versatile and portable proxy for capturing, manipulating, and replaying HTTP/HTTPS traffic on the go",
  :source {:github "projectdiscovery/proxify"}
  :checksum "proxify_{version}_checksums.txt"
- :platforms {"linux-x86_64" {:asset "proxify_{version}_linux_amd64.zip"}}}
+ :platforms {"linux-x86_64" {:asset "proxify_{version}_linux_amd64.zip"}
+             "linux-aarch64" {:asset "proxify_{version}_linux_arm64.zip"}
+             "darwin-x86_64" {:asset "proxify_{version}_macOS_amd64.zip"}
+             "darwin-aarch64" {:asset "proxify_{version}_macOS_arm64.zip"}}}

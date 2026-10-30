@@ -4,4 +4,6 @@
 
 {:description "`taskwarrior-tui`: A terminal user interface for taskwarrior",
  :source {:github "kdheepak/taskwarrior-tui"}
- :platforms {"linux-x86_64" {:asset "taskwarrior-tui-x86_64-unknown-linux-musl.tar.gz" :checksum "taskwarrior-tui-x86_64-unknown-linux-musl.sha256"}}}
+ :platforms {"linux-x86_64" {:asset "taskwarrior-tui-x86_64-unknown-linux-musl.tar.gz" :checksum "taskwarrior-tui-x86_64-unknown-linux-musl.sha256"}
+             "darwin-x86_64" {:asset "taskwarrior-tui-x86_64-apple-darwin.tar.gz" :checksum "taskwarrior-tui-x86_64-apple-darwin.sha256"}
+             "darwin-aarch64" {:asset "taskwarrior-tui-aarch64-apple-darwin.tar.gz" :checksum "taskwarrior-tui-aarch64-apple-darwin.sha256"}}}

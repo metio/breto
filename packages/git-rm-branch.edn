@@ -6,4 +6,5 @@
  :source {:github "suzuki-shunsuke/git-rm-branch"}
  :tag-prefix ""
  :checksum "git-rm-branch_{tag}_checksums.txt"
- :platforms {"linux-x86_64" {:asset "git-rm-branch_{tag}_linux_amd64.tar.gz"}}}
+ :platforms {"linux-x86_64" {:asset "git-rm-branch_{tag}_linux_amd64.tar.gz"}
+             "darwin-x86_64" {:asset "git-rm-branch_{tag}_darwin_amd64.tar.gz"}}}

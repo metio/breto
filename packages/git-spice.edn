@@ -5,4 +5,7 @@
 {:description "Manage stacked Git branches",
  :source {:github "abhinav/git-spice"}
  :checksum "checksums.txt"
- :platforms {"linux-x86_64" {:asset "git-spice.Linux-x86_64.tar.gz"}}}
+ :platforms {"linux-x86_64" {:asset "git-spice.Linux-x86_64.tar.gz"}
+             "linux-aarch64" {:asset "git-spice.Linux-aarch64.tar.gz"}
+             "darwin-x86_64" {:asset "git-spice.Darwin-x86_64.tar.gz"}
+             "darwin-aarch64" {:asset "git-spice.Darwin-arm64.tar.gz"}}}

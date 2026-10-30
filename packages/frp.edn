@@ -5,4 +5,7 @@
 {:description "A fast reverse proxy to help you expose a local server behind a NAT or firewall to the internet",
  :source {:github "fatedier/frp"}
  :checksum "frp_sha256_checksums.txt"
- :platforms {"linux-x86_64" {:asset "frp_{version}_linux_amd64.tar.gz" :bins {"frpc" "frp_{version}_linux_amd64/frpc", "frps" "frp_{version}_linux_amd64/frps"}}}}
+ :platforms {"linux-x86_64" {:asset "frp_{version}_linux_amd64.tar.gz" :bins {"frpc" "frp_{version}_linux_amd64/frpc", "frps" "frp_{version}_linux_amd64/frps"}}
+             "linux-aarch64" {:asset "frp_{version}_linux_arm64.tar.gz" :bins {"frpc" "frp_{version}_linux_arm64/frpc" "frps" "frp_{version}_linux_arm64/frps"}}
+             "darwin-x86_64" {:asset "frp_{version}_darwin_amd64.tar.gz" :bins {"frpc" "frp_{version}_darwin_amd64/frpc" "frps" "frp_{version}_darwin_amd64/frps"}}
+             "darwin-aarch64" {:asset "frp_{version}_darwin_arm64.tar.gz" :bins {"frpc" "frp_{version}_darwin_arm64/frpc" "frps" "frp_{version}_darwin_arm64/frps"}}}}

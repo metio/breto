@@ -4,4 +4,7 @@
 {:description "Customization of kubernetes YAML configurations",
  :source {:github "kubernetes-sigs/kustomize"},
  :tag-prefix "kustomize/"
- :platforms {"linux-x86_64" {:asset "kustomize_{version}_linux_amd64.tar.gz"}}}
+ :platforms {"linux-x86_64" {:asset "kustomize_{version}_linux_amd64.tar.gz"}
+             "linux-aarch64" {:asset "kustomize_{version}_linux_arm64.tar.gz"}
+             "darwin-x86_64" {:asset "kustomize_{version}_darwin_amd64.tar.gz"}
+             "darwin-aarch64" {:asset "kustomize_{version}_darwin_arm64.tar.gz"}}}

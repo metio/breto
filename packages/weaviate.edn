@@ -4,4 +4,7 @@
 
 {:description "Weaviate is an open-source vector database that stores both objects and vectors, allowing for the combination of vector search with structured filtering with the fault tolerance and scalability of a cloud-native database",
  :source {:github "weaviate/weaviate"}
- :platforms {"linux-x86_64" {:asset "weaviate-{tag}-linux-amd64.tar.gz"}}}
+ :platforms {"linux-x86_64" {:asset "weaviate-{tag}-linux-amd64.tar.gz"}
+             "linux-aarch64" {:asset "weaviate-{tag}-linux-arm64.tar.gz"}
+             "darwin-x86_64" {:asset "weaviate-{tag}-darwin-all.zip"}
+             "darwin-aarch64" {:asset "weaviate-{tag}-darwin-all.zip"}}}

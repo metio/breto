@@ -6,4 +6,7 @@
  :source {:github "godotengine/godot"}
  :tag-prefix ""
  :checksum "SHA512-SUMS.txt"
- :platforms {"linux-x86_64" {:asset "Godot_v{tag}_linux.x86_64.zip" :bins {"godot" "Godot_v{tag}_linux.x86_64"}}}}
+ :platforms {"linux-x86_64" {:asset "Godot_v{tag}_linux.x86_64.zip" :bins {"godot" "Godot_v{tag}_linux.x86_64"}}
+             "linux-aarch64" {:asset "Godot_v{tag}_linux.arm64.zip" :bins {"godot" "Godot_v{tag}_linux.arm64"}}
+             "darwin-x86_64" {:asset "Godot_v{tag}_macos.universal.zip" :bins {"godot" "Godot_v{tag}_macos.universal"}}
+             "darwin-aarch64" {:asset "Godot_v{tag}_macos.universal.zip" :bins {"godot" "Godot_v{tag}_macos.universal"}}}}

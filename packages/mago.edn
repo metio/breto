@@ -5,4 +5,7 @@
 {:description "Mago is a toolchain for PHP that aims to provide a set of tools to help developers write better code",
  :source {:github "carthage-software/mago"}
  :tag-prefix ""
- :platforms {"linux-x86_64" {:asset "mago-{tag}-x86_64-unknown-linux-musl.tar.gz" :bins {"mago" "mago-{tag}-x86_64-unknown-linux-musl/mago"}}}}
+ :platforms {"linux-x86_64" {:asset "mago-{tag}-x86_64-unknown-linux-musl.tar.gz" :bins {"mago" "mago-{tag}-x86_64-unknown-linux-musl/mago"}}
+             "linux-aarch64" {:asset "mago-{tag}-aarch64-unknown-linux-musl.tar.gz" :bins {"mago" "mago-{tag}-aarch64-unknown-linux-musl/mago"}}
+             "darwin-x86_64" {:asset "mago-{tag}-x86_64-apple-darwin.tar.gz" :bins {"mago" "mago-{tag}-x86_64-apple-darwin/mago"}}
+             "darwin-aarch64" {:asset "mago-{tag}-aarch64-apple-darwin.tar.gz" :bins {"mago" "mago-{tag}-aarch64-apple-darwin/mago"}}}}

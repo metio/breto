@@ -5,4 +5,7 @@
 {:description "Fast and customizable vulnerability scanner based on simple YAML based DSL",
  :source {:github "projectdiscovery/nuclei"}
  :checksum "nuclei_{version}_checksums.txt"
- :platforms {"linux-x86_64" {:asset "nuclei_{version}_linux_amd64.zip"}}}
+ :platforms {"linux-x86_64" {:asset "nuclei_{version}_linux_amd64.zip"}
+             "linux-aarch64" {:asset "nuclei_{version}_linux_arm64.zip"}
+             "darwin-x86_64" {:asset "nuclei_{version}_macOS_amd64.zip"}
+             "darwin-aarch64" {:asset "nuclei_{version}_macOS_arm64.zip"}}}

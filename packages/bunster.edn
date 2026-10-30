@@ -5,4 +5,7 @@
 {:description "Compile shell scripts to static binaries",
  :source {:github "yassinebenaid/bunster"}
  :checksum "checksums.txt"
- :platforms {"linux-x86_64" {:asset "bunster_linux-amd64.tar.gz"}}}
+ :platforms {"linux-x86_64" {:asset "bunster_linux-amd64.tar.gz"}
+             "linux-aarch64" {:asset "bunster_linux-arm64.tar.gz"}
+             "darwin-x86_64" {:asset "bunster_darwin-amd64.tar.gz"}
+             "darwin-aarch64" {:asset "bunster_darwin-arm64.tar.gz"}}}

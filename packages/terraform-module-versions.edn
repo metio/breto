@@ -5,4 +5,7 @@
 {:description "CLI tool that checks Terraform code for module updates. Single binary, no dependencies. linux, osx, windows. #golang #cli #terraform",
  :source {:github "keilerkonzept/terraform-module-versions"}
  :checksum "terraform-module-versions_{version}_checksums.txt"
- :platforms {"linux-x86_64" {:asset "terraform-module-versions_Linux_x86_64.tar.gz"}}}
+ :platforms {"linux-x86_64" {:asset "terraform-module-versions_Linux_x86_64.tar.gz"}
+             "linux-aarch64" {:asset "terraform-module-versions_Linux_arm64.tar.gz"}
+             "darwin-x86_64" {:asset "terraform-module-versions_Darwin_x86_64.tar.gz"}
+             "darwin-aarch64" {:asset "terraform-module-versions_Darwin_arm64.tar.gz"}}}

@@ -6,4 +6,6 @@
  :source {:github "awslabs/dynein"}
  :checksum "{asset}.sha256"
  :bins {"dy" "dy"}
- :platforms {"linux-x86_64" {:asset "dynein-linux.tar.gz"}}}
+ :platforms {"linux-x86_64" {:asset "dynein-linux.tar.gz"}
+             "darwin-x86_64" {:asset "dynein-macos.tar.gz"}
+             "darwin-aarch64" {:asset "dynein-macos-arm.tar.gz"}}}

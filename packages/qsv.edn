@@ -5,4 +5,6 @@
 {:description "Blazing-fast Data-Wrangling toolkit",
  :source {:github "dathere/qsv"}
  :tag-prefix ""
- :platforms {"linux-x86_64" {:asset "qsv-{tag}-x86_64-unknown-linux-musl.zip"}}}
+ :platforms {"linux-x86_64" {:asset "qsv-{tag}-x86_64-unknown-linux-musl.zip"}
+             "linux-aarch64" {:asset "qsv-{tag}-aarch64-unknown-linux-musl.zip"}
+             "darwin-aarch64" {:asset "qsv-{tag}-aarch64-apple-darwin.zip"}}}

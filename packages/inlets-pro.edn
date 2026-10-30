@@ -6,4 +6,7 @@
  :source {:github "inlets/inlets-pro"}
  :tag-prefix ""
  :checksum "{asset}.sha256"
- :platforms {"linux-x86_64" {:asset "inlets-pro"}}}
+ :platforms {"linux-x86_64" {:asset "inlets-pro"}
+             "linux-aarch64" {:asset "inlets-pro-arm64"}
+             "darwin-x86_64" {:asset "inlets-pro-darwin"}
+             "darwin-aarch64" {:asset "inlets-pro-darwin-arm64"}}}

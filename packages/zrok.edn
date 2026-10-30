@@ -6,4 +6,7 @@
  :source {:github "openziti/zrok"}
  :checksum "checksums.sha256.txt"
  :bins {"zrok2" "zrok2"}
- :platforms {"linux-x86_64" {:asset "zrok_{version}_linux_amd64.tar.gz"}}}
+ :platforms {"linux-x86_64" {:asset "zrok_{version}_linux_amd64.tar.gz"}
+             "linux-aarch64" {:asset "zrok_{version}_linux_arm64.tar.gz"}
+             "darwin-x86_64" {:asset "zrok_{version}_darwin_amd64.tar.gz"}
+             "darwin-aarch64" {:asset "zrok_{version}_darwin_arm64.tar.gz"}}}

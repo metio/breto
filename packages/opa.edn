@@ -4,4 +4,6 @@
 {:description "Open Policy Agent (OPA) is an open source, general-purpose policy engine",
  :source {:github "open-policy-agent/opa"},
  :checksum "{asset}.sha256"
- :platforms {"linux-x86_64" {:asset "opa_linux_amd64_static"}}}
+ :platforms {"linux-x86_64" {:asset "opa_linux_amd64_static"}
+             "linux-aarch64" {:asset "opa_linux_arm64_static"}
+             "darwin-aarch64" {:asset "opa_darwin_arm64_static"}}}

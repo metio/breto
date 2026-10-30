@@ -6,4 +6,6 @@
  :source {:github "aakso/ssh-inscribe"}
  :tag-prefix ""
  :checksum "checksums.txt"
- :platforms {"linux-x86_64" {:asset "sshi-linux-x86_64"}}}
+ :platforms {"linux-x86_64" {:asset "sshi-linux-x86_64"}
+             "darwin-x86_64" {:asset "sshi-darwin-x86_64"}
+             "darwin-aarch64" {:asset "sshi-darwin-arm64"}}}

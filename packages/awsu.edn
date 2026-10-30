@@ -5,4 +5,5 @@
 {:description "Enhanced account switching for AWS, supports Yubikey as MFA source",
  :source {:github "kreuzwerker/awsu"}
  :checksum "checksums.txt"
- :platforms {"linux-x86_64" {:asset "awsu_Linux_x86_64.tar.gz"}}}
+ :platforms {"linux-x86_64" {:asset "awsu_Linux_x86_64.tar.gz"}
+             "darwin-x86_64" {:asset "awsu_Darwin_x86_64.tar.gz"}}}

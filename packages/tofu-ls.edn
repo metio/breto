@@ -5,4 +5,7 @@
 {:description "OpenTofu Language Server",
  :source {:github "opentofu/tofu-ls"}
  :checksum "tofu-ls_{version}_checksums.txt"
- :platforms {"linux-x86_64" {:asset "tofu-ls_Linux_x86_64.tar.gz"}}}
+ :platforms {"linux-x86_64" {:asset "tofu-ls_Linux_x86_64.tar.gz"}
+             "linux-aarch64" {:asset "tofu-ls_Linux_arm64.tar.gz"}
+             "darwin-x86_64" {:asset "tofu-ls_Darwin_x86_64.tar.gz"}
+             "darwin-aarch64" {:asset "tofu-ls_Darwin_arm64.tar.gz"}}}

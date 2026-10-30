@@ -3,4 +3,7 @@
 ;; SPDX-License-Identifier: MIT
 
 {:source {:github "mattn/cho"}
- :platforms {"linux-x86_64" {:asset "cho_{tag}_linux_amd64.tar.gz" :bins {"cho" "cho_{tag}_linux_amd64/cho"}}}}
+ :platforms {"linux-x86_64" {:asset "cho_{tag}_linux_amd64.tar.gz" :bins {"cho" "cho_{tag}_linux_amd64/cho"}}
+             "linux-aarch64" {:asset "cho_{tag}_linux_arm64.tar.gz" :bins {"cho" "cho_{tag}_linux_arm64/cho"}}
+             "darwin-x86_64" {:asset "cho_{tag}_darwin_amd64.zip" :bins {"cho" "cho_{tag}_darwin_amd64/cho"}}
+             "darwin-aarch64" {:asset "cho_{tag}_darwin_arm64.zip" :bins {"cho" "cho_{tag}_darwin_arm64/cho"}}}}

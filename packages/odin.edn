@@ -7,4 +7,6 @@
  :strip 1
  :layout :tree
  :bins {"odin" "odin"}
- :platforms {"linux-x86_64" {:asset "odin-linux-amd64-dev-{version}.tar.gz"}}}
+ :platforms {"linux-x86_64" {:asset "odin-linux-amd64-dev-{version}.tar.gz"}
+             "linux-aarch64" {:asset "odin-linux-arm64-dev-{version}.tar.gz"}
+             "darwin-aarch64" {:asset "odin-macos-arm64-dev-{version}.tar.gz"}}}

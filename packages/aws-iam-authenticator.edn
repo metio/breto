@@ -5,4 +5,7 @@
 {:description "A tool to use AWS IAM credentials to authenticate to a Kubernetes cluster",
  :source {:github "kubernetes-sigs/aws-iam-authenticator"}
  :checksum "authenticator_{version}_checksums.txt"
- :platforms {"linux-x86_64" {:asset "aws-iam-authenticator_{version}_linux_amd64"}}}
+ :platforms {"linux-x86_64" {:asset "aws-iam-authenticator_{version}_linux_amd64"}
+             "linux-aarch64" {:asset "aws-iam-authenticator_{version}_linux_arm64"}
+             "darwin-x86_64" {:asset "aws-iam-authenticator_{version}_darwin_amd64"}
+             "darwin-aarch64" {:asset "aws-iam-authenticator_{version}_darwin_arm64"}}}

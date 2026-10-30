@@ -5,4 +5,5 @@
 {:description "Monitor a process and trigger a notification",
  :source {:github "variadico/noti"}
  :tag-prefix ""
- :platforms {"linux-x86_64" {:asset "noti{tag}.linux-amd64.tar.gz"}}}
+ :platforms {"linux-x86_64" {:asset "noti{tag}.linux-amd64.tar.gz"}
+             "darwin-x86_64" {:asset "noti{tag}.darwin-amd64.tar.gz"}}}

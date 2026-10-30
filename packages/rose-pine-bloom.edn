@@ -5,4 +5,7 @@
 {:description "Generate Rosé Pine themes",
  :source {:github "rose-pine/rose-pine-bloom"}
  :bins {"bloom" "{asset}"}
- :platforms {"linux-x86_64" {:asset "rose-pine-bloom-linux-amd64"}}}
+ :platforms {"linux-x86_64" {:asset "rose-pine-bloom-linux-amd64"}
+             "linux-aarch64" {:asset "rose-pine-bloom-linux-arm64"}
+             "darwin-x86_64" {:asset "rose-pine-bloom-darwin-amd64"}
+             "darwin-aarch64" {:asset "rose-pine-bloom-darwin-arm64"}}}

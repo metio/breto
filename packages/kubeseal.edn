@@ -4,4 +4,7 @@
 {:description "Client for Sealed Secrets, which encrypts Kubernetes Secrets for a controller in the cluster to decrypt"
  :source {:github "bitnami/sealed-secrets"}
  :checksum "sealed-secrets_{version}_checksums.txt"
- :platforms {"linux-x86_64" {:asset "kubeseal-{version}-linux-amd64.tar.gz"}}}
+ :platforms {"linux-x86_64" {:asset "kubeseal-{version}-linux-amd64.tar.gz"}
+             "linux-aarch64" {:asset "kubeseal-{version}-linux-arm64.tar.gz"}
+             "darwin-x86_64" {:asset "kubeseal-{version}-darwin-amd64.tar.gz"}
+             "darwin-aarch64" {:asset "kubeseal-{version}-darwin-arm64.tar.gz"}}}

@@ -5,4 +5,7 @@
 {:description "A command line tool to work with OIDC tokens",
  :source {:github "ctron/oidc-cli"}
  :bins {"oidc" "{asset}"}
- :platforms {"linux-x86_64" {:asset "oidc-x86_64-unknown-linux-musl"}}}
+ :platforms {"linux-x86_64" {:asset "oidc-x86_64-unknown-linux-musl"}
+             "linux-aarch64" {:asset "oidc-aarch64-unknown-linux-musl"}
+             "darwin-x86_64" {:asset "oidc-x86_64-apple-darwin"}
+             "darwin-aarch64" {:asset "oidc-aarch64-apple-darwin"}}}

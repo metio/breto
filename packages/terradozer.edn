@@ -5,4 +5,5 @@
 {:description "Terraform destroy without configuration files",
  :source {:github "jckuester/terradozer"}
  :checksum "terradozer_{version}_checksums.txt"
- :platforms {"linux-x86_64" {:asset "terradozer_{version}_linux_amd64.tar.gz" :bins {"terradozer" "terradozer_{version}_linux_amd64/terradozer"}}}}
+ :platforms {"linux-x86_64" {:asset "terradozer_{version}_linux_amd64.tar.gz" :bins {"terradozer" "terradozer_{version}_linux_amd64/terradozer"}}
+             "darwin-x86_64" {:asset "terradozer_{version}_darwin_amd64.tar.gz" :bins {"terradozer" "terradozer_{version}_darwin_amd64/terradozer"}}}}

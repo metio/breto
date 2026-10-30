@@ -5,4 +5,7 @@
 {:description "Otel Me If It's Right project",
  :source {:github "grafana/otel-checker"}
  :checksum "checksums.txt"
- :platforms {"linux-x86_64" {:asset "otel-checker_{version}_linux_amd64.tar.gz"}}}
+ :platforms {"linux-x86_64" {:asset "otel-checker_{version}_linux_amd64.tar.gz"}
+             "linux-aarch64" {:asset "otel-checker_{version}_linux_arm64.tar.gz"}
+             "darwin-x86_64" {:asset "otel-checker_{version}_darwin_amd64.tar.gz"}
+             "darwin-aarch64" {:asset "otel-checker_{version}_darwin_arm64.tar.gz"}}}

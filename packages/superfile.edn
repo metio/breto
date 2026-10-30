@@ -5,4 +5,7 @@
 {:description "Pretty fancy and modern terminal file manager",
  :source {:github "yorukot/superfile"}
  :checksum "superfile-{tag}-checksums.txt"
- :platforms {"linux-x86_64" {:asset "superfile-linux-{tag}-amd64.tar.gz" :bins {"spf" "dist/superfile-linux-{tag}-amd64/spf"}}}}
+ :platforms {"linux-x86_64" {:asset "superfile-linux-{tag}-amd64.tar.gz" :bins {"spf" "dist/superfile-linux-{tag}-amd64/spf"}}
+             "linux-aarch64" {:asset "superfile-linux-{tag}-arm64.tar.gz" :bins {"spf" "dist/superfile-linux-{tag}-arm64/spf"}}
+             "darwin-x86_64" {:asset "superfile-darwin-{tag}-amd64.tar.gz" :bins {"spf" "dist/superfile-darwin-{tag}-amd64/spf"}}
+             "darwin-aarch64" {:asset "superfile-darwin-{tag}-arm64.tar.gz" :bins {"spf" "dist/superfile-darwin-{tag}-arm64/spf"}}}}

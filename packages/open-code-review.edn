@@ -6,4 +6,7 @@
  :source {:github "alibaba/open-code-review"}
  :checksum "sha256sum.txt"
  :bins {"ocr" "{asset}"}
- :platforms {"linux-x86_64" {:asset "opencodereview-linux-amd64"}}}
+ :platforms {"linux-x86_64" {:asset "opencodereview-linux-amd64"}
+             "linux-aarch64" {:asset "opencodereview-linux-arm64"}
+             "darwin-x86_64" {:asset "opencodereview-darwin-amd64"}
+             "darwin-aarch64" {:asset "opencodereview-darwin-arm64"}}}

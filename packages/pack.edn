@@ -5,4 +5,7 @@
 {:description "CLI for building apps using Cloud Native Buildpacks",
  :source {:github "buildpacks/pack"}
  :checksum "{asset}.sha256"
- :platforms {"linux-x86_64" {:asset "pack-{tag}-linux.tgz"}}}
+ :platforms {"linux-x86_64" {:asset "pack-{tag}-linux.tgz"}
+             "linux-aarch64" {:asset "pack-{tag}-linux-arm64.tgz"}
+             "darwin-x86_64" {:asset "pack-{tag}-macos.tgz"}
+             "darwin-aarch64" {:asset "pack-{tag}-macos-arm64.tgz"}}}

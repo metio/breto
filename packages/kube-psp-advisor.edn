@@ -6,4 +6,7 @@
  :source {:github "sysdiglabs/kube-psp-advisor"}
  :checksum "kube-psp-advisor_{version}_checksums.txt"
  :bins {"kube-psp-advisor" "kubectl-advise-psp", "kubectl-advise_psp" "kubectl-advise-psp"}
- :platforms {"linux-x86_64" {:asset "kube-psp-advisor_{tag}_linux_amd64.tar.gz"}}}
+ :platforms {"linux-x86_64" {:asset "kube-psp-advisor_{tag}_linux_amd64.tar.gz"}
+             "linux-aarch64" {:asset "kube-psp-advisor_{tag}_linux_arm64.tar.gz"}
+             "darwin-x86_64" {:asset "kube-psp-advisor_{tag}_darwin_amd64.tar.gz"}
+             "darwin-aarch64" {:asset "kube-psp-advisor_{tag}_darwin_arm64.tar.gz"}}}

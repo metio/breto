@@ -5,4 +5,7 @@
 {:description "semantic-release written in Go",
  :source {:github "go-semantic-release/semantic-release"}
  :checksum "semantic-release_{tag}_checksums.txt"
- :platforms {"linux-x86_64" {:asset "semantic-release_{tag}_linux_amd64"}}}
+ :platforms {"linux-x86_64" {:asset "semantic-release_{tag}_linux_amd64"}
+             "linux-aarch64" {:asset "semantic-release_{tag}_linux_arm64"}
+             "darwin-x86_64" {:asset "semantic-release_{tag}_darwin_amd64"}
+             "darwin-aarch64" {:asset "semantic-release_{tag}_darwin_arm64"}}}

@@ -4,4 +4,5 @@
 
 {:description "An OCI container runtime monitor",
  :source {:github "containers/conmon"}
- :platforms {"linux-x86_64" {:asset "conmon.amd64"}}}
+ :platforms {"linux-x86_64" {:asset "conmon.amd64"}
+             "linux-aarch64" {:asset "conmon.arm64"}}}

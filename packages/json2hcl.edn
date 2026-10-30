@@ -5,4 +5,7 @@
 {:description "Convert JSON to HCL, and vice versa. We don't use json2hcl anymore ourselves, so we can't invest time into it. However, we're still welcoming PRs",
  :source {:github "kvz/json2hcl"}
  :checksum "json2hcl_{version}_checksums.txt"
- :platforms {"linux-x86_64" {:asset "json2hcl_{version}_linux_amd64.tar.gz"}}}
+ :platforms {"linux-x86_64" {:asset "json2hcl_{version}_linux_amd64.tar.gz"}
+             "linux-aarch64" {:asset "json2hcl_{version}_linux_arm64.tar.gz"}
+             "darwin-x86_64" {:asset "json2hcl_{version}_darwin_amd64.tar.gz"}
+             "darwin-aarch64" {:asset "json2hcl_{version}_darwin_arm64.tar.gz"}}}

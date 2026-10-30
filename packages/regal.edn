@@ -4,4 +4,7 @@
 {:description "Regal is a linter and language server for Rego, bringing your policy development experience to the next level!",
  :source {:github "StyraInc/regal"},
  :checksum "checksums.txt"
- :platforms {"linux-x86_64" {:asset "regal_Linux_x86_64"}}}
+ :platforms {"linux-x86_64" {:asset "regal_Linux_x86_64"}
+             "linux-aarch64" {:asset "regal_Linux_arm64"}
+             "darwin-x86_64" {:asset "regal_Darwin_x86_64"}
+             "darwin-aarch64" {:asset "regal_Darwin_arm64"}}}

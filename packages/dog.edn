@@ -6,4 +6,5 @@
  :source {:github "ogham/dog"}
  :checksum "SHA256SUMS"
  :bins {"dog" "bin/dog"}
- :platforms {"linux-x86_64" {:asset "dog-{tag}-x86_64-unknown-linux-gnu.zip"}}}
+ :platforms {"linux-x86_64" {:asset "dog-{tag}-x86_64-unknown-linux-gnu.zip"}
+             "darwin-x86_64" {:asset "dog-{tag}-x86_64-apple-darwin.zip"}}}

@@ -5,4 +5,5 @@
 {:description "Deduplicating archiver with compression and authenticated encryption",
  :source {:github "borgbackup/borg"}
  :tag-prefix ""
- :platforms {"linux-x86_64" {:asset "borg-linux-glibc235-x86_64-gh"}}}
+ :platforms {"linux-x86_64" {:asset "borg-linux-glibc235-x86_64-gh"}
+             "linux-aarch64" {:asset "borg-linux-glibc235-arm64-gh"}}}

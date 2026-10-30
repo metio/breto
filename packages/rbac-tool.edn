@@ -5,4 +5,7 @@
 {:description "Rapid7 | insightCloudSec | Kubernetes RBAC Power Toys - Visualize, Analyze, Generate & Query",
  :source {:github "alcideio/rbac-tool"}
  :checksum "rbac-tool_checksums.txt"
- :platforms {"linux-x86_64" {:asset "rbac-tool_{tag}_linux_amd64.tar.gz"}}}
+ :platforms {"linux-x86_64" {:asset "rbac-tool_{tag}_linux_amd64.tar.gz"}
+             "linux-aarch64" {:asset "rbac-tool_{tag}_linux_arm64.tar.gz"}
+             "darwin-x86_64" {:asset "rbac-tool_{tag}_darwin_amd64.tar.gz"}
+             "darwin-aarch64" {:asset "rbac-tool_{tag}_darwin_arm64.tar.gz"}}}

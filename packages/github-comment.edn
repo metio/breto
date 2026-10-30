@@ -5,4 +5,7 @@
 {:description "CLI to create and hide GitHub comments",
  :source {:github "suzuki-shunsuke/github-comment"}
  :checksum "github-comment_{version}_checksums.txt"
- :platforms {"linux-x86_64" {:asset "github-comment_{version}_linux_amd64.tar.gz"}}}
+ :platforms {"linux-x86_64" {:asset "github-comment_{version}_linux_amd64.tar.gz"}
+             "linux-aarch64" {:asset "github-comment_{version}_linux_arm64.tar.gz"}
+             "darwin-x86_64" {:asset "github-comment_{version}_darwin_amd64.tar.gz"}
+             "darwin-aarch64" {:asset "github-comment_{version}_darwin_arm64.tar.gz"}}}

@@ -5,4 +5,7 @@
 {:description "The Prometheus monitoring system and time series database",
  :source {:github "prometheus/prometheus"}
  :checksum "sha256sums.txt"
- :platforms {"linux-x86_64" {:asset "prometheus-{version}.linux-amd64.tar.gz" :bins {"prometheus" "prometheus-{version}.linux-amd64/prometheus", "promtool" "prometheus-{version}.linux-amd64/promtool"}}}}
+ :platforms {"linux-x86_64" {:asset "prometheus-{version}.linux-amd64.tar.gz" :bins {"prometheus" "prometheus-{version}.linux-amd64/prometheus", "promtool" "prometheus-{version}.linux-amd64/promtool"}}
+             "linux-aarch64" {:asset "prometheus-{version}.linux-arm64.tar.gz" :bins {"prometheus" "prometheus-{version}.linux-arm64/prometheus" "promtool" "prometheus-{version}.linux-arm64/promtool"}}
+             "darwin-x86_64" {:asset "prometheus-{version}.darwin-amd64.tar.gz" :bins {"prometheus" "prometheus-{version}.darwin-amd64/prometheus" "promtool" "prometheus-{version}.darwin-amd64/promtool"}}
+             "darwin-aarch64" {:asset "prometheus-{version}.darwin-arm64.tar.gz" :bins {"prometheus" "prometheus-{version}.darwin-arm64/prometheus" "promtool" "prometheus-{version}.darwin-arm64/promtool"}}}}

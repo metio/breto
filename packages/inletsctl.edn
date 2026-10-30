@@ -5,4 +5,7 @@
 {:description "Create inlets servers on the top cloud platforms",
  :source {:github "inlets/inletsctl"}
  :tag-prefix ""
- :platforms {"linux-x86_64" {:asset "inletsctl.tgz"}}}
+ :platforms {"linux-x86_64" {:asset "inletsctl.tgz"}
+             "linux-aarch64" {:asset "inletsctl-arm64.tgz"}
+             "darwin-x86_64" {:asset "inletsctl-darwin.tgz"}
+             "darwin-aarch64" {:asset "inletsctl-darwin-arm64.tgz"}}}

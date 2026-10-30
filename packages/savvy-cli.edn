@@ -7,4 +7,7 @@
  :tag-prefix ""
  :checksum "savvy_{tag}_checksums.txt"
  :bins {"savvy" "{asset}"}
- :platforms {"linux-x86_64" {:asset "savvy_linux_x86_64"}}}
+ :platforms {"linux-x86_64" {:asset "savvy_linux_x86_64"}
+             "linux-aarch64" {:asset "savvy_linux_arm64"}
+             "darwin-x86_64" {:asset "savvy_darwin_x86_64"}
+             "darwin-aarch64" {:asset "savvy_darwin_arm64"}}}

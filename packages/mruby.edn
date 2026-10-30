@@ -6,4 +6,6 @@
  :source {:github "IxDay/mruby"}
  :tag-prefix ""
  :bins {"mrake" "mrake", "mruby" "mruby"}
- :platforms {"linux-x86_64" {:asset "mruby-linux-x86_64.zip"}}}
+ :platforms {"linux-x86_64" {:asset "mruby-linux-x86_64.zip"}
+             "linux-aarch64" {:asset "mruby-linux-aarch64.zip"}
+             "darwin-aarch64" {:asset "mruby-macos-aarch64.zip"}}}

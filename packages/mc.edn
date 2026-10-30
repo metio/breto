@@ -6,4 +6,7 @@
  :source {:github "minio/mc"}
  :tag-prefix ""
  :checksum "{asset}.sha256sum"
- :platforms {"linux-x86_64" {:asset "mc.linux-amd64.{tag}"}}}
+ :platforms {"linux-x86_64" {:asset "mc.linux-amd64.{tag}"}
+             "linux-aarch64" {:asset "mc.linux-arm64.{tag}"}
+             "darwin-x86_64" {:asset "mc.darwin-amd64.{tag}"}
+             "darwin-aarch64" {:asset "mc.darwin-arm64.{tag}"}}}

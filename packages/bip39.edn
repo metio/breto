@@ -5,4 +5,7 @@
 {:description "CLI for generation and verification of mnemonics in BIP39 standard with hash in Argon2id",
  :source {:github "everstake/bip39"}
  :checksum "bip39_{version}_checksums.txt"
- :platforms {"linux-x86_64" {:asset "bip39_{version}_linux_amd64.tar.gz"}}}
+ :platforms {"linux-x86_64" {:asset "bip39_{version}_linux_amd64.tar.gz"}
+             "linux-aarch64" {:asset "bip39_{version}_linux_arm64.tar.gz"}
+             "darwin-x86_64" {:asset "bip39_{version}_darwin_amd64.tar.gz"}
+             "darwin-aarch64" {:asset "bip39_{version}_darwin_arm64.tar.gz"}}}

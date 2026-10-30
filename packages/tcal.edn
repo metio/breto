@@ -7,4 +7,7 @@
  :completions {:bash "share/completions/tcal.bash",
                :zsh "share/completions/_tcal",
                :fish "share/completions/tcal.fish"}
- :platforms {"linux-x86_64" {:asset "tcal.x86_64-linux.tgz"}}}
+ :platforms {"linux-x86_64" {:asset "tcal.x86_64-linux.tgz"}
+             "linux-aarch64" {:asset "tcal.aarch64-linux.tgz"}
+             "darwin-x86_64" {:asset "tcal.x86_64-darwin.tgz"}
+             "darwin-aarch64" {:asset "tcal.aarch64-darwin.tgz"}}}

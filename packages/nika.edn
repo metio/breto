@@ -5,4 +5,7 @@
 {:description "Workflow language and runner for AI jobs - one .nika.yaml file, statically checked before any token is spent, hash-chained run traces",
  :source {:github "supernovae-st/nika"}
  :checksum "SHA256SUMS"
- :platforms {"linux-x86_64" {:asset "nika-linux-x64-{version}.tar.gz"}}}
+ :platforms {"linux-x86_64" {:asset "nika-linux-x64-{version}.tar.gz"}
+             "linux-aarch64" {:asset "nika-linux-arm64-{version}.tar.gz"}
+             "darwin-x86_64" {:asset "nika-macos-x64-{version}.tar.gz"}
+             "darwin-aarch64" {:asset "nika-macos-arm64-{version}.tar.gz"}}}

@@ -5,4 +5,7 @@
 {:description "Fast file synchronization and network forwarding for remote development",
  :source {:github "mutagen-io/mutagen"}
  :checksum "SHA256SUMS"
- :platforms {"linux-x86_64" {:asset "mutagen_linux_amd64_{tag}.tar.gz"}}}
+ :platforms {"linux-x86_64" {:asset "mutagen_linux_amd64_{tag}.tar.gz"}
+             "linux-aarch64" {:asset "mutagen_linux_arm64_{tag}.tar.gz"}
+             "darwin-x86_64" {:asset "mutagen_darwin_amd64_{tag}.tar.gz"}
+             "darwin-aarch64" {:asset "mutagen_darwin_arm64_{tag}.tar.gz"}}}

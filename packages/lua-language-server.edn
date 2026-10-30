@@ -6,4 +6,7 @@
  :source {:github "LuaLS/lua-language-server"}
  :tag-prefix ""
  :bins {"lua-language-server" "bin/lua-language-server"}
- :platforms {"linux-x86_64" {:asset "lua-language-server-{tag}-linux-x64.tar.gz"}}}
+ :platforms {"linux-x86_64" {:asset "lua-language-server-{tag}-linux-x64.tar.gz"}
+             "linux-aarch64" {:asset "lua-language-server-{tag}-linux-arm64.tar.gz"}
+             "darwin-x86_64" {:asset "lua-language-server-{tag}-darwin-x64.tar.gz"}
+             "darwin-aarch64" {:asset "lua-language-server-{tag}-darwin-arm64.tar.gz"}}}

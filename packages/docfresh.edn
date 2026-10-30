@@ -5,4 +5,7 @@
 {:description "Make document maintainable, reusable, and testable",
  :source {:github "suzuki-shunsuke/docfresh"}
  :checksum "docfresh_checksums.txt"
- :platforms {"linux-x86_64" {:asset "docfresh_linux_amd64.tar.gz"}}}
+ :platforms {"linux-x86_64" {:asset "docfresh_linux_amd64.tar.gz"}
+             "linux-aarch64" {:asset "docfresh_linux_arm64.tar.gz"}
+             "darwin-x86_64" {:asset "docfresh_darwin_amd64.tar.gz"}
+             "darwin-aarch64" {:asset "docfresh_darwin_arm64.tar.gz"}}}

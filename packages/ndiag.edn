@@ -5,4 +5,7 @@
 {:description "ndiag is a high-level architecture diagramming/documentation tool",
  :source {:github "k1LoW/ndiag"}
  :checksum "checksums.txt"
- :platforms {"linux-x86_64" {:asset "ndiag_{tag}_linux_amd64.tar.gz"}}}
+ :platforms {"linux-x86_64" {:asset "ndiag_{tag}_linux_amd64.tar.gz"}
+             "linux-aarch64" {:asset "ndiag_{tag}_linux_arm64.tar.gz"}
+             "darwin-x86_64" {:asset "ndiag_{tag}_darwin_amd64.zip"}
+             "darwin-aarch64" {:asset "ndiag_{tag}_darwin_arm64.zip"}}}

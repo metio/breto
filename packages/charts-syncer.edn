@@ -5,4 +5,7 @@
 {:description "Tool for synchronizing Helm Chart repositories",
  :source {:github "bitnami/charts-syncer"}
  :checksum "checksums.txt"
- :platforms {"linux-x86_64" {:asset "charts-syncer_{version}_linux_x86_64.tar.gz"}}}
+ :platforms {"linux-x86_64" {:asset "charts-syncer_{version}_linux_x86_64.tar.gz"}
+             "linux-aarch64" {:asset "charts-syncer_{version}_linux_arm64.tar.gz"}
+             "darwin-x86_64" {:asset "charts-syncer_{version}_darwin_x86_64.tar.gz"}
+             "darwin-aarch64" {:asset "charts-syncer_{version}_darwin_arm64.tar.gz"}}}

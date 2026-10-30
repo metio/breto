@@ -5,4 +5,7 @@
 {:description "Checks whether Kubernetes is deployed according to security best practices as defined in the CIS Kubernetes Benchmark",
  :source {:github "aquasecurity/kube-bench"}
  :checksum "kube-bench_{version}_checksums.txt"
- :platforms {"linux-x86_64" {:asset "kube-bench_{version}_linux_amd64.tar.gz"}}}
+ :platforms {"linux-x86_64" {:asset "kube-bench_{version}_linux_amd64.tar.gz"}
+             "linux-aarch64" {:asset "kube-bench_{version}_linux_arm64.tar.gz"}
+             "darwin-x86_64" {:asset "kube-bench_{version}_darwin_amd64.tar.gz"}
+             "darwin-aarch64" {:asset "kube-bench_{version}_darwin_arm64.tar.gz"}}}

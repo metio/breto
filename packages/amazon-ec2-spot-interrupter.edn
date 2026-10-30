@@ -6,4 +6,7 @@
  :source {:github "aws/amazon-ec2-spot-interrupter"}
  :checksum "ec2-spot-interrupter_{version}_checksums.txt"
  :bins {"ec2-spot-interrupter" "ec2-spot-interrupter"}
- :platforms {"linux-x86_64" {:asset "ec2-spot-interrupter_linux_amd64.tar.gz"}}}
+ :platforms {"linux-x86_64" {:asset "ec2-spot-interrupter_linux_amd64.tar.gz"}
+             "linux-aarch64" {:asset "ec2-spot-interrupter_linux_arm64.tar.gz"}
+             "darwin-x86_64" {:asset "ec2-spot-interrupter_darwin_amd64.tar.gz"}
+             "darwin-aarch64" {:asset "ec2-spot-interrupter_darwin_arm64.tar.gz"}}}

@@ -5,4 +5,7 @@
 {:description "The CLI tool to force delete the entire AWS CloudFormation stack, even if it contains resources that fail to delete by the CloudFormation delete operation",
  :source {:github "go-to-k/delstack"}
  :checksum "checksums.txt"
- :platforms {"linux-x86_64" {:asset "delstack_{version}_Linux_x86_64.tar.gz"}}}
+ :platforms {"linux-x86_64" {:asset "delstack_{version}_Linux_x86_64.tar.gz"}
+             "linux-aarch64" {:asset "delstack_{version}_Linux_arm64.tar.gz"}
+             "darwin-x86_64" {:asset "delstack_{version}_Darwin_x86_64.tar.gz"}
+             "darwin-aarch64" {:asset "delstack_{version}_Darwin_arm64.tar.gz"}}}

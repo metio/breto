@@ -6,4 +6,5 @@
  :source {:github "containerd/fuse-overlayfs-snapshotter"}
  :checksum "SHA256SUMS"
  :bins {"containerd-fuse-overlayfs-grpc" "containerd-fuse-overlayfs-grpc"}
- :platforms {"linux-x86_64" {:asset "containerd-fuse-overlayfs-{version}-linux-amd64.tar.gz"}}}
+ :platforms {"linux-x86_64" {:asset "containerd-fuse-overlayfs-{version}-linux-amd64.tar.gz"}
+             "linux-aarch64" {:asset "containerd-fuse-overlayfs-{version}-linux-arm64.tar.gz"}}}

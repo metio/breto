@@ -7,4 +7,5 @@
  :tag-prefix ""
  :checksum "banzai_checksums.txt"
  :bins {"banzai" "banzai"}
- :platforms {"linux-x86_64" {:asset "banzai_{tag}_linux_amd64.tar.gz"}}}
+ :platforms {"linux-x86_64" {:asset "banzai_{tag}_linux_amd64.tar.gz"}
+             "darwin-x86_64" {:asset "banzai_{tag}_darwin_amd64.tar.gz"}}}

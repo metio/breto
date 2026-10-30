@@ -5,4 +5,7 @@
 {:description "A cookie cutter alternative with in-project scaffolding for generating components, controllers, or other common code patterns",
  :source {:github "hay-kot/scaffold"}
  :checksum "checksums.txt"
- :platforms {"linux-x86_64" {:asset "scaffold_Linux_x86_64.tar.gz"}}}
+ :platforms {"linux-x86_64" {:asset "scaffold_Linux_x86_64.tar.gz"}
+             "linux-aarch64" {:asset "scaffold_Linux_arm64.tar.gz"}
+             "darwin-x86_64" {:asset "scaffold_Darwin_x86_64.tar.gz"}
+             "darwin-aarch64" {:asset "scaffold_Darwin_arm64.tar.gz"}}}

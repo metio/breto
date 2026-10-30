@@ -4,4 +4,7 @@
 
 {:description "A complete terminal user interface (TUI) for LDAP",
  :source {:github "Macmod/godap"}
- :platforms {"linux-x86_64" {:asset "godap-{tag}-linux-amd64.tar.gz"}}}
+ :platforms {"linux-x86_64" {:asset "godap-{tag}-linux-amd64.tar.gz"}
+             "linux-aarch64" {:asset "godap-{tag}-linux-arm64.tar.gz"}
+             "darwin-x86_64" {:asset "godap-{tag}-darwin-amd64.tar.gz"}
+             "darwin-aarch64" {:asset "godap-{tag}-darwin-arm64.tar.gz"}}}

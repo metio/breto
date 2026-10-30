@@ -4,4 +4,7 @@
 {:description "CLI tool for Calico cloud native networking and network security",
  :source {:github "projectcalico/calico"},
  :checksum "SHA256SUMS"
- :platforms {"linux-x86_64" {:asset "calicoctl-linux-amd64"}}}
+ :platforms {"linux-x86_64" {:asset "calicoctl-linux-amd64"}
+             "linux-aarch64" {:asset "calicoctl-linux-arm64"}
+             "darwin-x86_64" {:asset "calicoctl-darwin-amd64"}
+             "darwin-aarch64" {:asset "calicoctl-darwin-arm64"}}}

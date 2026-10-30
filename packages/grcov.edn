@@ -5,4 +5,7 @@
 {:description "Rust tool to collect and aggregate code coverage data for multiple source files",
  :source {:github "mozilla/grcov"}
  :checksum "checksums.sha256"
- :platforms {"linux-x86_64" {:asset "grcov-x86_64-unknown-linux-musl.tar.bz2"}}}
+ :platforms {"linux-x86_64" {:asset "grcov-x86_64-unknown-linux-musl.tar.bz2"}
+             "linux-aarch64" {:asset "grcov-aarch64-unknown-linux-musl.tar.bz2"}
+             "darwin-x86_64" {:asset "grcov-x86_64-apple-darwin.tar.bz2"}
+             "darwin-aarch64" {:asset "grcov-aarch64-apple-darwin.tar.bz2"}}}

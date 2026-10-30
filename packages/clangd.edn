@@ -7,4 +7,6 @@
  :strip 1
  :layout :tree
  :bins {"clangd" "bin/clangd"}
- :platforms {"linux-x86_64" {:asset "clangd-linux-{version}.zip"}}}
+ :platforms {"linux-x86_64" {:asset "clangd-linux-{version}.zip"}
+             "darwin-x86_64" {:asset "clangd-mac-{version}.zip"}
+             "darwin-aarch64" {:asset "clangd-mac-{version}.zip"}}}

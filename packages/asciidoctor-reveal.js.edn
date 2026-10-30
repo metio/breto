@@ -5,4 +5,6 @@
 {:description "A reveal.js converter for Asciidoctor and Asciidoctor.js. Write your slides in AsciiDoc",
  :source {:github "asciidoctor/asciidoctor-reveal.js"}
  :bins {"asciidoctor-revealjs" "{asset}"}
- :platforms {"linux-x86_64" {:asset "asciidoctor-revealjs-linux"}}}
+ :platforms {"linux-x86_64" {:asset "asciidoctor-revealjs-linux"}
+             "darwin-x86_64" {:asset "asciidoctor-revealjs-macos"}
+             "darwin-aarch64" {:asset "asciidoctor-revealjs-macos"}}}

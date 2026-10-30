@@ -4,4 +4,7 @@
 
 {:description "A hackable, minimal, fast TUI file explorer",
  :source {:github "sayanarijit/xplr"}
- :platforms {"linux-x86_64" {:asset "xplr-linux.tar.gz" :checksum "xplr-linux.sha256"}}}
+ :platforms {"linux-x86_64" {:asset "xplr-linux.tar.gz" :checksum "xplr-linux.sha256"}
+             "linux-aarch64" {:asset "xplr-linux-aarch64.tar.gz" :checksum "xplr-linux-aarch64.sha256"}
+             "darwin-x86_64" {:asset "xplr-macos.tar.gz" :checksum "xplr-macos.sha256"}
+             "darwin-aarch64" {:asset "xplr-macos-aarch64.tar.gz" :checksum "xplr-macos-aarch64.sha256"}}}

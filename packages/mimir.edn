@@ -5,4 +5,7 @@
 {:description "Grafana Mimir provides horizontally scalable, highly available, multi-tenant, long-term storage for Prometheus",
  :source {:github "grafana/mimir"}
  :tag-prefix ""
- :platforms {"linux-x86_64" {:asset "mimir-linux-amd64"}}}
+ :platforms {"linux-x86_64" {:asset "mimir-linux-amd64"}
+             "linux-aarch64" {:asset "mimir-linux-arm64"}
+             "darwin-x86_64" {:asset "mimir-darwin-amd64"}
+             "darwin-aarch64" {:asset "mimir-darwin-arm64"}}}

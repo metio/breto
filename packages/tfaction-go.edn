@@ -6,4 +6,7 @@
  :source {:github "suzuki-shunsuke/tfaction-go"}
  :checksum "tfaction_{version}_checksums.txt"
  :bins {"tfaction" "tfaction"}
- :platforms {"linux-x86_64" {:asset "tfaction_linux_amd64.tar.gz"}}}
+ :platforms {"linux-x86_64" {:asset "tfaction_linux_amd64.tar.gz"}
+             "linux-aarch64" {:asset "tfaction_linux_arm64.tar.gz"}
+             "darwin-x86_64" {:asset "tfaction_darwin_amd64.tar.gz"}
+             "darwin-aarch64" {:asset "tfaction_darwin_arm64.tar.gz"}}}

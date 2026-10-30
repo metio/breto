@@ -5,4 +5,5 @@
 {:description "CLI tool to build, test, debug, and deploy Serverless applications using AWS SAM",
  :source {:github "aws/aws-sam-cli"}
  :bins {"sam" "dist/sam"}
- :platforms {"linux-x86_64" {:asset "aws-sam-cli-linux-x86_64.zip"}}}
+ :platforms {"linux-x86_64" {:asset "aws-sam-cli-linux-x86_64.zip"}
+             "linux-aarch64" {:asset "aws-sam-cli-linux-arm64.zip"}}}

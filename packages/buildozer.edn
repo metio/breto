@@ -4,4 +4,7 @@
 
 {:description "Buildozer is a command line tool to rewrite multiple Bazel BUILD files using standard commands",
  :source {:github "bazel-contrib/buildtools"}
- :platforms {"linux-x86_64" {:asset "buildozer-linux-amd64"}}}
+ :platforms {"linux-x86_64" {:asset "buildozer-linux-amd64"}
+             "linux-aarch64" {:asset "buildozer-linux-arm64"}
+             "darwin-x86_64" {:asset "buildozer-darwin-amd64"}
+             "darwin-aarch64" {:asset "buildozer-darwin-arm64"}}}

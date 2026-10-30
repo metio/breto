@@ -5,4 +5,7 @@
 {:description "Automated file organisation and routing for all your machines. :open_file_folder:",
  :source {:github "Cian911/switchboard"}
  :checksum "checksums.txt"
- :platforms {"linux-x86_64" {:asset "switchboard_{version}_linux_amd64.tar.gz"}}}
+ :platforms {"linux-x86_64" {:asset "switchboard_{version}_linux_amd64.tar.gz"}
+             "linux-aarch64" {:asset "switchboard_{version}_linux_arm64.tar.gz"}
+             "darwin-x86_64" {:asset "switchboard_{version}_darwin_amd64.tar.gz"}
+             "darwin-aarch64" {:asset "switchboard_{version}_darwin_arm64.tar.gz"}}}

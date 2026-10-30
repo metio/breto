@@ -4,4 +4,7 @@
 
 {:description "An interactive CLI for creating conventional commits",
  :source {:github "cococonscious/koji"}
- :platforms {"linux-x86_64" {:asset "koji-x86_64-unknown-linux-gnu.tar.gz"}}}
+ :platforms {"linux-x86_64" {:asset "koji-x86_64-unknown-linux-gnu.tar.gz"}
+             "linux-aarch64" {:asset "koji-aarch64-unknown-linux-gnu.tar.gz"}
+             "darwin-x86_64" {:asset "koji-x86_64-apple-darwin.tar.gz"}
+             "darwin-aarch64" {:asset "koji-aarch64-apple-darwin.tar.gz"}}}

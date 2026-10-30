@@ -5,4 +5,7 @@
 {:description "Task runner. It provides useful help messages and supports interactive prompts and validation of arguments",
  :source {:github "suzuki-shunsuke/cmdx"}
  :checksum "cmdx_{version}_checksums.txt"
- :platforms {"linux-x86_64" {:asset "cmdx_linux_amd64.tar.gz"}}}
+ :platforms {"linux-x86_64" {:asset "cmdx_linux_amd64.tar.gz"}
+             "linux-aarch64" {:asset "cmdx_linux_arm64.tar.gz"}
+             "darwin-x86_64" {:asset "cmdx_darwin_amd64.tar.gz"}
+             "darwin-aarch64" {:asset "cmdx_darwin_arm64.tar.gz"}}}

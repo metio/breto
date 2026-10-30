@@ -6,4 +6,7 @@
  :source {:github "cloudposse/github-commenter"}
  :tag-prefix ""
  :checksum "github-commenter_{tag}_SHA256SUMS"
- :platforms {"linux-x86_64" {:asset "github-commenter_{tag}_linux_amd64"}}}
+ :platforms {"linux-x86_64" {:asset "github-commenter_{tag}_linux_amd64"}
+             "linux-aarch64" {:asset "github-commenter_{tag}_linux_arm64"}
+             "darwin-x86_64" {:asset "github-commenter_{tag}_darwin_amd64"}
+             "darwin-aarch64" {:asset "github-commenter_{tag}_darwin_arm64"}}}

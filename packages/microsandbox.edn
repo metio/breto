@@ -6,4 +6,6 @@
  :source {:github "superradcompany/microsandbox"}
  :checksum "checksums.sha256"
  :bins {"msb" "msb"}
- :platforms {"linux-x86_64" {:asset "microsandbox-linux-x86_64.tar.gz"}}}
+ :platforms {"linux-x86_64" {:asset "microsandbox-linux-x86_64.tar.gz"}
+             "linux-aarch64" {:asset "microsandbox-linux-aarch64.tar.gz"}
+             "darwin-aarch64" {:asset "microsandbox-darwin-aarch64.tar.gz"}}}

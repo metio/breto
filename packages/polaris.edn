@@ -5,4 +5,7 @@
 {:description "Validation of best practices in your Kubernetes clusters",
  :source {:github "FairwindsOps/polaris"}
  :checksum "checksums.txt"
- :platforms {"linux-x86_64" {:asset "polaris_{version}_linux_amd64.tar.gz"}}}
+ :platforms {"linux-x86_64" {:asset "polaris_{version}_linux_amd64.tar.gz"}
+             "linux-aarch64" {:asset "polaris_{version}_linux_arm64.tar.gz"}
+             "darwin-x86_64" {:asset "polaris_{version}_darwin_amd64.tar.gz"}
+             "darwin-aarch64" {:asset "polaris_{version}_darwin_arm64.tar.gz"}}}

@@ -6,4 +6,7 @@
  :source {:github "openclarity/vmclarity"}
  :checksum "{asset}.sha256sum"
  :bins {"vmclarity-cli" "vmclarity-cli"}
- :platforms {"linux-x86_64" {:asset "vmclarity-cli-{tag}-linux-amd64.tar.gz"}}}
+ :platforms {"linux-x86_64" {:asset "vmclarity-cli-{tag}-linux-amd64.tar.gz"}
+             "linux-aarch64" {:asset "vmclarity-cli-{tag}-linux-arm64.tar.gz"}
+             "darwin-x86_64" {:asset "vmclarity-cli-{tag}-darwin-amd64.tar.gz"}
+             "darwin-aarch64" {:asset "vmclarity-cli-{tag}-darwin-arm64.tar.gz"}}}

@@ -5,4 +5,7 @@
 {:description "SDLC evidence store and policy engine for your Software Supply Chain attestations, SBOMs, VEX, SARIF, QA reports, and more",
  :source {:github "chainloop-dev/chainloop"}
  :checksum "checksums.txt"
- :platforms {"linux-x86_64" {:asset "chainloop-linux-amd64"}}}
+ :platforms {"linux-x86_64" {:asset "chainloop-linux-amd64"}
+             "linux-aarch64" {:asset "chainloop-linux-arm64"}
+             "darwin-x86_64" {:asset "chainloop-darwin-amd64"}
+             "darwin-aarch64" {:asset "chainloop-darwin-arm64"}}}

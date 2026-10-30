@@ -4,4 +4,7 @@
 
 {:description "dotfiles symbolic links management CLI",
  :source {:github "rhysd/dotfiles"}
- :platforms {"linux-x86_64" {:asset "dotfiles_linux_amd64.zip"}}}
+ :platforms {"linux-x86_64" {:asset "dotfiles_linux_amd64.zip"}
+             "linux-aarch64" {:asset "dotfiles_linux_arm64.zip"}
+             "darwin-x86_64" {:asset "dotfiles_darwin_amd64.zip"}
+             "darwin-aarch64" {:asset "dotfiles_darwin_arm64.zip"}}}

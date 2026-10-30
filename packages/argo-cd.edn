@@ -6,4 +6,7 @@
  :source {:github "argoproj/argo-cd"}
  :checksum "cli_checksums.txt"
  :bins {"argocd" "{asset}"}
- :platforms {"linux-x86_64" {:asset "argocd-linux-amd64"}}}
+ :platforms {"linux-x86_64" {:asset "argocd-linux-amd64"}
+             "linux-aarch64" {:asset "argocd-linux-arm64"}
+             "darwin-x86_64" {:asset "argocd-darwin-amd64"}
+             "darwin-aarch64" {:asset "argocd-darwin-arm64"}}}

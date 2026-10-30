@@ -6,4 +6,7 @@
  :source {:github "livesense-inc/go-simple-http-redirector"}
  :checksum "redirector_{version}_checksums.txt"
  :bins {"redirector" "redirector"}
- :platforms {"linux-x86_64" {:asset "redirector-linux-amd64.zip"}}}
+ :platforms {"linux-x86_64" {:asset "redirector-linux-amd64.zip"}
+             "linux-aarch64" {:asset "redirector-linux-arm64.zip"}
+             "darwin-x86_64" {:asset "redirector-darwin-amd64.zip"}
+             "darwin-aarch64" {:asset "redirector-darwin-arm64.zip"}}}

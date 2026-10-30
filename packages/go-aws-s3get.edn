@@ -6,4 +6,7 @@
  :source {:github "livesense-inc/go-aws-s3get"}
  :checksum "s3get_{version}_checksums.txt"
  :bins {"s3get" "{asset}"}
- :platforms {"linux-x86_64" {:asset "s3get-linux-x86_64"}}}
+ :platforms {"linux-x86_64" {:asset "s3get-linux-x86_64"}
+             "linux-aarch64" {:asset "s3get-linux-arm64"}
+             "darwin-x86_64" {:asset "s3get-darwin-x86_64"}
+             "darwin-aarch64" {:asset "s3get-darwin-arm64"}}}

@@ -5,4 +5,7 @@
 {:description "lamvms is a deployment and lifecycle management tool for AWS Lambda MicroVMs",
  :source {:github "kayac/lamvms"}
  :checksum "checksums.txt"
- :platforms {"linux-x86_64" {:asset "lamvms_{tag}_linux_amd64.tar.gz"}}}
+ :platforms {"linux-x86_64" {:asset "lamvms_{tag}_linux_amd64.tar.gz"}
+             "linux-aarch64" {:asset "lamvms_{tag}_linux_arm64.tar.gz"}
+             "darwin-x86_64" {:asset "lamvms_{tag}_darwin_amd64.tar.gz"}
+             "darwin-aarch64" {:asset "lamvms_{tag}_darwin_arm64.tar.gz"}}}

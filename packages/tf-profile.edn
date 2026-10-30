@@ -4,4 +4,7 @@
 
 {:description "CLI tool to profile Terraform runs, written in Go",
  :source {:github "datarootsio/tf-profile"}
- :platforms {"linux-x86_64" {:asset "tf-profile-{tag}-linux-amd64.zip"}}}
+ :platforms {"linux-x86_64" {:asset "tf-profile-{tag}-linux-amd64.zip"}
+             "linux-aarch64" {:asset "tf-profile-{tag}-linux-arm64.zip"}
+             "darwin-x86_64" {:asset "tf-profile-{tag}-darwin-amd64.zip"}
+             "darwin-aarch64" {:asset "tf-profile-{tag}-darwin-arm64.zip"}}}

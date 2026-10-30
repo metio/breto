@@ -4,4 +4,7 @@
 
 {:description "Fast, deterministic CLI to search and navigate Open Knowledge Format (OKF), or Obsidian style doc bundles — for humans and AI agents. Find by frontmatter, traverse the link graph, surface orphans/deadlinks",
  :source {:github "mikevalstar/okq"}
- :platforms {"linux-x86_64" {:asset "okq-x86_64-unknown-linux-gnu.tar.gz" :checksum "okq-x86_64-unknown-linux-gnu.sha256"}}}
+ :platforms {"linux-x86_64" {:asset "okq-x86_64-unknown-linux-gnu.tar.gz" :checksum "okq-x86_64-unknown-linux-gnu.sha256"}
+             "linux-aarch64" {:asset "okq-aarch64-unknown-linux-gnu.tar.gz" :checksum "okq-aarch64-unknown-linux-gnu.sha256"}
+             "darwin-x86_64" {:asset "okq-x86_64-apple-darwin.tar.gz" :checksum "okq-x86_64-apple-darwin.sha256"}
+             "darwin-aarch64" {:asset "okq-aarch64-apple-darwin.tar.gz" :checksum "okq-aarch64-apple-darwin.sha256"}}}

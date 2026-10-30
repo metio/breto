@@ -6,4 +6,7 @@
  :source {:github "aquasecurity/kubectl-who-can"}
  :checksum "checksums.txt"
  :bins {"kubectl-who_can" "kubectl-who-can"}
- :platforms {"linux-x86_64" {:asset "kubectl-who-can_linux_x86_64.tar.gz"}}}
+ :platforms {"linux-x86_64" {:asset "kubectl-who-can_linux_x86_64.tar.gz"}
+             "linux-aarch64" {:asset "kubectl-who-can_linux_arm64.tar.gz"}
+             "darwin-x86_64" {:asset "kubectl-who-can_darwin_x86_64.tar.gz"}
+             "darwin-aarch64" {:asset "kubectl-who-can_darwin_arm64.tar.gz"}}}

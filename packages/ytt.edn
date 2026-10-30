@@ -5,4 +5,7 @@
 {:description "YAML templating tool that works on YAML structure instead of text",
  :source {:github "carvel-dev/ytt"}
  :checksum "checksums.txt"
- :platforms {"linux-x86_64" {:asset "ytt-linux-amd64"}}}
+ :platforms {"linux-x86_64" {:asset "ytt-linux-amd64"}
+             "linux-aarch64" {:asset "ytt-linux-arm64"}
+             "darwin-x86_64" {:asset "ytt-darwin-amd64"}
+             "darwin-aarch64" {:asset "ytt-darwin-arm64"}}}

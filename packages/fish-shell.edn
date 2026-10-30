@@ -6,4 +6,5 @@
  :source {:github "fish-shell/fish-shell"}
  :tag-prefix ""
  :bins {"fish" "fish"}
- :platforms {"linux-x86_64" {:asset "fish-{tag}-linux-x86_64.tar.xz"}}}
+ :platforms {"linux-x86_64" {:asset "fish-{tag}-linux-x86_64.tar.xz"}
+             "linux-aarch64" {:asset "fish-{tag}-linux-aarch64.tar.xz"}}}

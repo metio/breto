@@ -5,4 +5,7 @@
 {:description "ECS task event/log tracer CLI",
  :source {:github "fujiwara/tracer"}
  :checksum "checksums.txt"
- :platforms {"linux-x86_64" {:asset "tracer_{version}_linux_amd64.tar.gz"}}}
+ :platforms {"linux-x86_64" {:asset "tracer_{version}_linux_amd64.tar.gz"}
+             "linux-aarch64" {:asset "tracer_{version}_linux_arm64.tar.gz"}
+             "darwin-x86_64" {:asset "tracer_{version}_darwin_amd64.tar.gz"}
+             "darwin-aarch64" {:asset "tracer_{version}_darwin_arm64.tar.gz"}}}

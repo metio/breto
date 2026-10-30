@@ -5,4 +5,7 @@
 {:description "A CLI application to accompany on your terraform module journey and sharing your burden of module dependency updates, just as one brave Hobbit helped Frodo carry his :)",
  :source {:github "Darth-Tech/samwise-cli"}
  :checksum "checksums.txt"
- :platforms {"linux-x86_64" {:asset "samwise-cli_{version}_linux_amd64.tar.gz"}}}
+ :platforms {"linux-x86_64" {:asset "samwise-cli_{version}_linux_amd64.tar.gz"}
+             "linux-aarch64" {:asset "samwise-cli_{version}_linux_arm64.tar.gz"}
+             "darwin-x86_64" {:asset "samwise-cli_{version}_darwin_all.tar.gz"}
+             "darwin-aarch64" {:asset "samwise-cli_{version}_darwin_all.tar.gz"}}}

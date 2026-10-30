@@ -5,4 +5,6 @@
 {:description "A fast, spec-compliant WebAssembly runtime written in Zig",
  :source {:github "zwasm/zwasm"}
  :checksum "SHA256SUMS"
- :platforms {"linux-x86_64" {:asset "zwasm-linux-x86_64.tar.gz"}}}
+ :platforms {"linux-x86_64" {:asset "zwasm-linux-x86_64.tar.gz"}
+             "linux-aarch64" {:asset "zwasm-linux-aarch64.tar.gz"}
+             "darwin-aarch64" {:asset "zwasm-macos-aarch64.tar.gz"}}}

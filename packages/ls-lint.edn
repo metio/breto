@@ -5,4 +5,7 @@
 {:description "An extremely fast directory and filename linter - Bring some structure to your project filesystem",
  :source {:github "loeffel-io/ls-lint"}
  :checksum "checksums.txt"
- :platforms {"linux-x86_64" {:asset "ls-lint-linux-amd64"}}}
+ :platforms {"linux-x86_64" {:asset "ls-lint-linux-amd64"}
+             "linux-aarch64" {:asset "ls-lint-linux-arm64"}
+             "darwin-x86_64" {:asset "ls-lint-darwin-amd64"}
+             "darwin-aarch64" {:asset "ls-lint-darwin-arm64"}}}

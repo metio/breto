@@ -5,4 +5,7 @@
 {:description "CLI client (and Golang module) for deps.dev API. Free access to dependencies, licenses, advisories, and other critical health and security signals for open source package versions",
  :source {:github "edoardottt/depsdev"}
  :checksum "depsdev_{version}_checksums.txt"
- :platforms {"linux-x86_64" {:asset "depsdev_{version}_linux_amd64.zip"}}}
+ :platforms {"linux-x86_64" {:asset "depsdev_{version}_linux_amd64.zip"}
+             "linux-aarch64" {:asset "depsdev_{version}_linux_arm64.zip"}
+             "darwin-x86_64" {:asset "depsdev_{version}_macOS_amd64.zip"}
+             "darwin-aarch64" {:asset "depsdev_{version}_macOS_arm64.zip"}}}

@@ -5,4 +5,7 @@
 {:description "Reporter for GitHub comments of GitHub issues or pull requests. It need a result of unity-meta-check from stdin.",
  :source {:github "DeNA/unity-meta-check"}
  :checksum "checksums.txt"
- :platforms {"linux-x86_64" {:asset "unity-meta-check-github-pr-comment-linux-amd64"}}}
+ :platforms {"linux-x86_64" {:asset "unity-meta-check-github-pr-comment-linux-amd64"}
+             "linux-aarch64" {:asset "unity-meta-check-github-pr-comment-linux-arm64"}
+             "darwin-x86_64" {:asset "unity-meta-check-github-pr-comment-darwin-amd64"}
+             "darwin-aarch64" {:asset "unity-meta-check-github-pr-comment-darwin-arm64"}}}

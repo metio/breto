@@ -4,4 +4,7 @@
 
 {:description "An email and SMTP testing tool with API for developers",
  :source {:github "axllent/mailpit"}
- :platforms {"linux-x86_64" {:asset "mailpit-linux-amd64.tar.gz"}}}
+ :platforms {"linux-x86_64" {:asset "mailpit-linux-amd64.tar.gz"}
+             "linux-aarch64" {:asset "mailpit-linux-arm64.tar.gz"}
+             "darwin-x86_64" {:asset "mailpit-darwin-amd64.tar.gz"}
+             "darwin-aarch64" {:asset "mailpit-darwin-arm64.tar.gz"}}}

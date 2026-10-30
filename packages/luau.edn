@@ -6,4 +6,6 @@
  :source {:github "luau-lang/luau"}
  :tag-prefix ""
  :bins {"luau" "luau", "luau-analyze" "luau-analyze", "luau-ast" "luau-ast", "luau-compile" "luau-compile"}
- :platforms {"linux-x86_64" {:asset "luau-ubuntu.zip"}}}
+ :platforms {"linux-x86_64" {:asset "luau-ubuntu.zip"}
+             "darwin-x86_64" {:asset "luau-macos.zip"}
+             "darwin-aarch64" {:asset "luau-macos.zip"}}}

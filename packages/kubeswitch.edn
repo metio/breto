@@ -6,4 +6,7 @@
  :source {:github "danielfoehrKn/kubeswitch"}
  :tag-prefix ""
  :bins {"switcher" "{asset}"}
- :platforms {"linux-x86_64" {:asset "switcher_linux_amd64"}}}
+ :platforms {"linux-x86_64" {:asset "switcher_linux_amd64"}
+             "linux-aarch64" {:asset "switcher_linux_arm64"}
+             "darwin-x86_64" {:asset "switcher_darwin_amd64"}
+             "darwin-aarch64" {:asset "switcher_darwin_arm64"}}}

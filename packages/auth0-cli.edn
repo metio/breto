@@ -6,4 +6,7 @@
  :source {:github "auth0/auth0-cli"}
  :checksum "checksums.txt"
  :bins {"auth0" "auth0"}
- :platforms {"linux-x86_64" {:asset "auth0-cli_{version}_Linux_x86_64.tar.gz"}}}
+ :platforms {"linux-x86_64" {:asset "auth0-cli_{version}_Linux_x86_64.tar.gz"}
+             "linux-aarch64" {:asset "auth0-cli_{version}_Linux_arm64.tar.gz"}
+             "darwin-x86_64" {:asset "auth0-cli_{version}_Darwin_x86_64.tar.gz"}
+             "darwin-aarch64" {:asset "auth0-cli_{version}_Darwin_arm64.tar.gz"}}}

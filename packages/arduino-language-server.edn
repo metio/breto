@@ -6,4 +6,7 @@
  :source {:github "arduino/arduino-language-server"}
  :tag-prefix ""
  :checksum "{tag}-checksums.txt"
- :platforms {"linux-x86_64" {:asset "arduino-language-server_{tag}_Linux_64bit.tar.gz"}}}
+ :platforms {"linux-x86_64" {:asset "arduino-language-server_{tag}_Linux_64bit.tar.gz"}
+             "linux-aarch64" {:asset "arduino-language-server_{tag}_Linux_ARM64.tar.gz"}
+             "darwin-x86_64" {:asset "arduino-language-server_{tag}_macOS_64bit.tar.gz"}
+             "darwin-aarch64" {:asset "arduino-language-server_{tag}_macOS_ARM64.tar.gz"}}}

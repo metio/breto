@@ -5,4 +5,7 @@
 {:description "Directory trees of AWS S3 Bucket",
  :source {:github "orangekame3/stree"}
  :checksum "checksums.txt"
- :platforms {"linux-x86_64" {:asset "stree_{version}_linux_amd64.tar.gz"}}}
+ :platforms {"linux-x86_64" {:asset "stree_{version}_linux_amd64.tar.gz"}
+             "linux-aarch64" {:asset "stree_{version}_linux_arm64.tar.gz"}
+             "darwin-x86_64" {:asset "stree_{version}_darwin_amd64.tar.gz"}
+             "darwin-aarch64" {:asset "stree_{version}_darwin_arm64.tar.gz"}}}

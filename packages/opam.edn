@@ -5,4 +5,7 @@
  :source {:github "ocaml/opam"}
  :tag-prefix ""
  :bins {"opam" "{asset}"}
- :platforms {"linux-x86_64" {:asset "opam-{version}-x86_64-linux"}}}
+ :platforms {"linux-x86_64" {:asset "opam-{version}-x86_64-linux"}
+             "linux-aarch64" {:asset "opam-{version}-arm64-linux"}
+             "darwin-x86_64" {:asset "opam-{version}-x86_64-macos"}
+             "darwin-aarch64" {:asset "opam-{version}-arm64-macos"}}}

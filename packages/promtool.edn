@@ -5,4 +5,7 @@
  :source {:github "prometheus/prometheus"},
  :checksum "sha256sums.txt",
  :strip 1
- :platforms {"linux-x86_64" {:asset "prometheus-{version}.linux-amd64.tar.gz"}}}
+ :platforms {"linux-x86_64" {:asset "prometheus-{version}.linux-amd64.tar.gz"}
+             "linux-aarch64" {:asset "prometheus-{version}.linux-arm64.tar.gz"}
+             "darwin-x86_64" {:asset "prometheus-{version}.darwin-amd64.tar.gz"}
+             "darwin-aarch64" {:asset "prometheus-{version}.darwin-arm64.tar.gz"}}}

@@ -5,4 +5,5 @@
 {:description "Deprecated: Please use aqua",
  :source {:github "suzuki-shunsuke/akoi"}
  :checksum "akoi_{version}_checksums.txt"
- :platforms {"linux-x86_64" {:asset "akoi_{version}_linux_amd64.tar.gz"}}}
+ :platforms {"linux-x86_64" {:asset "akoi_{version}_linux_amd64.tar.gz"}
+             "darwin-x86_64" {:asset "akoi_{version}_darwin_amd64.tar.gz"}}}

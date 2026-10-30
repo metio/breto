@@ -6,4 +6,7 @@
  :source {:github "bufbuild/buf"}
  :checksum "sha256.txt"
  :bins {"buf" "buf/bin/buf", "protoc-gen-buf-breaking" "buf/bin/protoc-gen-buf-breaking", "protoc-gen-buf-lint" "buf/bin/protoc-gen-buf-lint"}
- :platforms {"linux-x86_64" {:asset "buf-Linux-x86_64.tar.gz"}}}
+ :platforms {"linux-x86_64" {:asset "buf-Linux-x86_64.tar.gz"}
+             "linux-aarch64" {:asset "buf-Linux-aarch64.tar.gz"}
+             "darwin-x86_64" {:asset "buf-Darwin-x86_64.tar.gz"}
+             "darwin-aarch64" {:asset "buf-Darwin-arm64.tar.gz"}}}

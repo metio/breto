@@ -5,4 +5,7 @@
 {:description "OpenTelemetry command-line tool for sending events from shell scripts & similar environments",
  :source {:github "equinix-labs/otel-cli"}
  :checksum "checksums.txt"
- :platforms {"linux-x86_64" {:asset "otel-cli_{version}_linux_amd64.tar.gz"}}}
+ :platforms {"linux-x86_64" {:asset "otel-cli_{version}_linux_amd64.tar.gz"}
+             "linux-aarch64" {:asset "otel-cli_{version}_linux_arm64.tar.gz"}
+             "darwin-x86_64" {:asset "otel-cli_{version}_darwin_amd64.tar.gz"}
+             "darwin-aarch64" {:asset "otel-cli_{version}_darwin_arm64.tar.gz"}}}

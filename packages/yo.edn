@@ -5,4 +5,7 @@
 {:description "yo is a command-line tool to generate Go code for Google Cloud Spanner",
  :source {:github "cloudspannerecosystem/yo"}
  :checksum "checksums.txt"
- :platforms {"linux-x86_64" {:asset "yo-{version}-linux-amd64.tar.gz" :bins {"yo" "yo-{version}-linux-amd64/yo"}}}}
+ :platforms {"linux-x86_64" {:asset "yo-{version}-linux-amd64.tar.gz" :bins {"yo" "yo-{version}-linux-amd64/yo"}}
+             "linux-aarch64" {:asset "yo-{version}-linux-arm64.tar.gz" :bins {"yo" "yo-{version}-linux-arm64/yo"}}
+             "darwin-x86_64" {:asset "yo-{version}-darwin-amd64.tar.gz" :bins {"yo" "yo-{version}-darwin-amd64/yo"}}
+             "darwin-aarch64" {:asset "yo-{version}-darwin-arm64.tar.gz" :bins {"yo" "yo-{version}-darwin-arm64/yo"}}}}

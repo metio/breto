@@ -5,4 +5,7 @@
 {:description "extract internal monitoring data from application logs for collection in a timeseries database",
  :source {:github "google/mtail"}
  :checksum "checksums.txt"
- :platforms {"linux-x86_64" {:asset "mtail_{version}_linux_amd64.tar.gz"}}}
+ :platforms {"linux-x86_64" {:asset "mtail_{version}_linux_amd64.tar.gz"}
+             "linux-aarch64" {:asset "mtail_{version}_linux_arm64.tar.gz"}
+             "darwin-x86_64" {:asset "mtail_{version}_darwin_amd64.tar.gz"}
+             "darwin-aarch64" {:asset "mtail_{version}_darwin_arm64.tar.gz"}}}

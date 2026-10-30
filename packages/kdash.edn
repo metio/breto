@@ -4,4 +4,6 @@
 
 {:description "A simple and fast dashboard for Kubernetes",
  :source {:github "kdash-rs/kdash"}
- :platforms {"linux-x86_64" {:asset "kdash-linux.tar.gz" :checksum "kdash-linux.sha256"}}}
+ :platforms {"linux-x86_64" {:asset "kdash-linux.tar.gz" :checksum "kdash-linux.sha256"}
+             "darwin-x86_64" {:asset "kdash-macos.tar.gz" :checksum "kdash-macos.sha256"}
+             "darwin-aarch64" {:asset "kdash-macos-arm64.tar.gz" :checksum "kdash-macos-arm64.sha256"}}}

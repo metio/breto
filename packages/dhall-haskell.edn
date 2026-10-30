@@ -6,4 +6,6 @@
  :source {:github "dhall-lang/dhall-haskell"}
  :tag-prefix ""
  :bins {"dhall" "bin/dhall"}
- :platforms {"linux-x86_64" {:asset "dhall-{tag}-x86_64-linux.tar.bz2"}}}
+ :platforms {"linux-x86_64" {:asset "dhall-{tag}-x86_64-linux.tar.bz2"}
+             "darwin-x86_64" {:asset "dhall-{tag}-x86_64-darwin.tar.bz2"}
+             "darwin-aarch64" {:asset "dhall-{tag}-aarch64-darwin.tar.bz2"}}}

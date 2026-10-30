@@ -5,4 +5,5 @@
 {:description "Log file navigator",
  :source {:github "tstack/lnav"}
  :bins {"lnav" "lnav-{version}/lnav"}
- :platforms {"linux-x86_64" {:asset "lnav-{version}-linux-musl-x86_64.zip"}}}
+ :platforms {"linux-x86_64" {:asset "lnav-{version}-linux-musl-x86_64.zip"}
+             "linux-aarch64" {:asset "lnav-{version}-linux-musl-arm64.zip"}}}

@@ -6,4 +6,6 @@
  :strip 1
  :layout :tree
  :bins {"c3c" "c3c" "c3fmt" "c3fmt"}
- :platforms {"linux-x86_64" {:asset "c3-linux-static.tar.gz"}}}
+ :platforms {"linux-x86_64" {:asset "c3-linux-static.tar.gz"}
+             "darwin-x86_64" {:asset "c3-macos.zip"}
+             "darwin-aarch64" {:asset "c3-macos.zip"}}}

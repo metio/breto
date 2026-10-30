@@ -5,4 +5,7 @@
 {:description "A cli tool to automatically generate action.yaml for DeNA/unity-meta-check",
  :source {:github "DeNA/unity-meta-check"}
  :checksum "checksums.txt"
- :platforms {"linux-x86_64" {:asset "gh-action-yaml-gen-linux-amd64"}}}
+ :platforms {"linux-x86_64" {:asset "gh-action-yaml-gen-linux-amd64"}
+             "linux-aarch64" {:asset "gh-action-yaml-gen-linux-arm64"}
+             "darwin-x86_64" {:asset "gh-action-yaml-gen-darwin-amd64"}
+             "darwin-aarch64" {:asset "gh-action-yaml-gen-darwin-arm64"}}}

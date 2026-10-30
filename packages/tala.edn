@@ -5,4 +5,7 @@
 {:description "A diagram layout engine designed specifically for software architecture diagrams",
  :source {:github "terrastruct/tala"}
  :bins {"d2plugin-tala" "tala-{tag}/bin/d2plugin-tala"}
- :platforms {"linux-x86_64" {:asset "tala-{tag}-linux-amd64.tar.gz"}}}
+ :platforms {"linux-x86_64" {:asset "tala-{tag}-linux-amd64.tar.gz"}
+             "linux-aarch64" {:asset "tala-{tag}-linux-arm64.tar.gz"}
+             "darwin-x86_64" {:asset "tala-{tag}-macos-amd64.tar.gz"}
+             "darwin-aarch64" {:asset "tala-{tag}-macos-arm64.tar.gz"}}}

@@ -6,4 +6,7 @@
  :source {:github "jenkins-zh/jenkins-cli"}
  :checksum "checksums.txt"
  :bins {"jcli" "jcli"}
- :platforms {"linux-x86_64" {:asset "jcli-linux-amd64.tar.gz"}}}
+ :platforms {"linux-x86_64" {:asset "jcli-linux-amd64.tar.gz"}
+             "linux-aarch64" {:asset "jcli-linux-arm64.tar.gz"}
+             "darwin-x86_64" {:asset "jcli-darwin-amd64.tar.gz"}
+             "darwin-aarch64" {:asset "jcli-darwin-arm64.tar.gz"}}}

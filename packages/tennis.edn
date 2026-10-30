@@ -4,4 +4,6 @@
 
 {:description "stylish CSV tables in your terminal",
  :source {:github "gurgeous/tennis"}
- :platforms {"linux-x86_64" {:asset "tennis_{version}_linux_amd64.tar.gz" :bins {"tennis" "tennis_{version}_linux_amd64/tennis"}}}}
+ :platforms {"linux-x86_64" {:asset "tennis_{version}_linux_amd64.tar.gz" :bins {"tennis" "tennis_{version}_linux_amd64/tennis"}}
+             "darwin-x86_64" {:asset "tennis_{version}_darwin_amd64.tar.gz" :bins {"tennis" "tennis_{version}_darwin_amd64/tennis"}}
+             "darwin-aarch64" {:asset "tennis_{version}_darwin_arm64.tar.gz" :bins {"tennis" "tennis_{version}_darwin_arm64/tennis"}}}}

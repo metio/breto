@@ -5,4 +5,6 @@
 {:description "A syntax-highlighting pager for git, diff, grep, and blame output",
  :source {:github "dandavison/delta"}
  :tag-prefix ""
- :platforms {"linux-x86_64" {:asset "delta-{tag}-x86_64-unknown-linux-musl.tar.gz" :bins {"delta" "delta-{tag}-x86_64-unknown-linux-musl/delta"}}}}
+ :platforms {"linux-x86_64" {:asset "delta-{tag}-x86_64-unknown-linux-musl.tar.gz" :bins {"delta" "delta-{tag}-x86_64-unknown-linux-musl/delta"}}
+             "linux-aarch64" {:asset "delta-{tag}-aarch64-unknown-linux-gnu.tar.gz" :bins {"delta" "delta-{tag}-aarch64-unknown-linux-gnu/delta"}}
+             "darwin-aarch64" {:asset "delta-{tag}-aarch64-apple-darwin.tar.gz" :bins {"delta" "delta-{tag}-aarch64-apple-darwin/delta"}}}}

@@ -6,4 +6,7 @@
  :source {:github "che-incubator/chectl"}
  :tag-prefix ""
  :bins {"chectl" "chectl/bin/chectl"}
- :platforms {"linux-x86_64" {:asset "chectl-linux-x64.tar.gz"}}}
+ :platforms {"linux-x86_64" {:asset "chectl-linux-x64.tar.gz"}
+             "linux-aarch64" {:asset "chectl-linux-arm64.tar.gz"}
+             "darwin-x86_64" {:asset "chectl-darwin-x64.tar.gz"}
+             "darwin-aarch64" {:asset "chectl-darwin-arm64.tar.gz"}}}

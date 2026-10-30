@@ -5,4 +5,7 @@
 {:description "Command line interface to JMESPath - http://jmespath.org",
  :source {:github "jmespath/jp"}
  :tag-prefix ""
- :platforms {"linux-x86_64" {:asset "jp-linux-amd64"}}}
+ :platforms {"linux-x86_64" {:asset "jp-linux-amd64"}
+             "linux-aarch64" {:asset "jp-linux-arm64"}
+             "darwin-x86_64" {:asset "jp-darwin-amd64"}
+             "darwin-aarch64" {:asset "jp-darwin-arm64"}}}

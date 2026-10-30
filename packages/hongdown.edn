@@ -5,4 +5,7 @@
 {:description "A Markdown formatter that enforces Hong Minhee's Markdown style conventions",
  :source {:github "dahlia/hongdown"}
  :tag-prefix ""
- :platforms {"linux-x86_64" {:asset "hongdown-{tag}-x86_64-unknown-linux-musl.tar.bz2"}}}
+ :platforms {"linux-x86_64" {:asset "hongdown-{tag}-x86_64-unknown-linux-musl.tar.bz2"}
+             "linux-aarch64" {:asset "hongdown-{tag}-aarch64-unknown-linux-musl.tar.bz2"}
+             "darwin-x86_64" {:asset "hongdown-{tag}-x86_64-apple-darwin.tar.bz2"}
+             "darwin-aarch64" {:asset "hongdown-{tag}-aarch64-apple-darwin.tar.bz2"}}}

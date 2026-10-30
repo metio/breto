@@ -5,4 +5,7 @@
 {:description "A simple to deploy but feature rich S3 object storage server for your filesystem",
  :source {:github "versity/versitygw"}
  :checksum "checksums.txt"
- :platforms {"linux-x86_64" {:asset "versitygw_{tag}_Linux_x86_64.tar.gz" :bins {"versitygw" "versitygw_{tag}_Linux_x86_64/versitygw"}}}}
+ :platforms {"linux-x86_64" {:asset "versitygw_{tag}_Linux_x86_64.tar.gz" :bins {"versitygw" "versitygw_{tag}_Linux_x86_64/versitygw"}}
+             "linux-aarch64" {:asset "versitygw_{tag}_Linux_arm64.tar.gz" :bins {"versitygw" "versitygw_{tag}_Linux_arm64/versitygw"}}
+             "darwin-x86_64" {:asset "versitygw_{tag}_Darwin_x86_64.tar.gz" :bins {"versitygw" "versitygw_{tag}_Darwin_x86_64/versitygw"}}
+             "darwin-aarch64" {:asset "versitygw_{tag}_Darwin_arm64.tar.gz" :bins {"versitygw" "versitygw_{tag}_Darwin_arm64/versitygw"}}}}

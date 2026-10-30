@@ -5,4 +5,7 @@
 {:description "Correct commonly misspelled English words in source files",
  :source {:github "golangci/misspell"}
  :checksum "misspell_{version}_checksums.txt"
- :platforms {"linux-x86_64" {:asset "misspell_{version}_linux_amd64.tar.gz" :bins {"misspell" "misspell_{version}_linux_amd64/misspell"}}}}
+ :platforms {"linux-x86_64" {:asset "misspell_{version}_linux_amd64.tar.gz" :bins {"misspell" "misspell_{version}_linux_amd64/misspell"}}
+             "linux-aarch64" {:asset "misspell_{version}_linux_arm64.tar.gz" :bins {"misspell" "misspell_{version}_linux_arm64/misspell"}}
+             "darwin-x86_64" {:asset "misspell_{version}_darwin_amd64.tar.gz" :bins {"misspell" "misspell_{version}_darwin_amd64/misspell"}}
+             "darwin-aarch64" {:asset "misspell_{version}_darwin_arm64.tar.gz" :bins {"misspell" "misspell_{version}_darwin_arm64/misspell"}}}}

@@ -6,4 +6,7 @@
  :source {:github "sunny0826/kubectl-pod-lens"}
  :checksum "pod-lens_{version}_checksums.txt"
  :bins {"kubectl-pod_lens" "pod-lens", "pod-lens" "pod-lens"}
- :platforms {"linux-x86_64" {:asset "pod-lens_linux_amd64.tar.gz"}}}
+ :platforms {"linux-x86_64" {:asset "pod-lens_linux_amd64.tar.gz"}
+             "linux-aarch64" {:asset "pod-lens_linux_arm64.tar.gz"}
+             "darwin-x86_64" {:asset "pod-lens_darwin_amd64.tar.gz"}
+             "darwin-aarch64" {:asset "pod-lens_darwin_arm64.tar.gz"}}}

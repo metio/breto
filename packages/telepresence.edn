@@ -4,4 +4,7 @@
 
 {:description "Local development against a remote Kubernetes or OpenShift cluster",
  :source {:github "telepresenceio/telepresence"}
- :platforms {"linux-x86_64" {:asset "telepresence-linux-amd64"}}}
+ :platforms {"linux-x86_64" {:asset "telepresence-linux-amd64"}
+             "linux-aarch64" {:asset "telepresence-linux-arm64"}
+             "darwin-x86_64" {:asset "telepresence-darwin-amd64"}
+             "darwin-aarch64" {:asset "telepresence-darwin-arm64"}}}

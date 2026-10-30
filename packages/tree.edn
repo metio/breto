@@ -4,4 +4,7 @@
 
 {:description "tree is an open-source cross-platform tree cli implemented in Rust",
  :source {:github "peteretelej/tree"}
- :platforms {"linux-x86_64" {:asset "tree-{tag}-Linux-amd64.tar.gz"}}}
+ :platforms {"linux-x86_64" {:asset "tree-{tag}-Linux-amd64.tar.gz"}
+             "linux-aarch64" {:asset "tree-{tag}-Linux-arm64.tar.gz"}
+             "darwin-x86_64" {:asset "tree-{tag}-macOS-amd64.tar.gz"}
+             "darwin-aarch64" {:asset "tree-{tag}-macOS-arm64.tar.gz"}}}

@@ -8,4 +8,7 @@
              :identity "https://github.com/anchore/syft/.github/workflows/release.yaml@refs/heads/main",
              :issuer "https://token.actions.githubusercontent.com",
              :of :checksum}
- :platforms {"linux-x86_64" {:asset "syft_{version}_linux_amd64.tar.gz"}}}
+ :platforms {"linux-x86_64" {:asset "syft_{version}_linux_amd64.tar.gz"}
+             "linux-aarch64" {:asset "syft_{version}_linux_arm64.tar.gz"}
+             "darwin-x86_64" {:asset "syft_{version}_darwin_amd64.tar.gz"}
+             "darwin-aarch64" {:asset "syft_{version}_darwin_arm64.tar.gz"}}}

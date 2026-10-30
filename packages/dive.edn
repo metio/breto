@@ -5,4 +5,7 @@
 {:description "A tool for exploring each layer in a docker image",
  :source {:github "wagoodman/dive"}
  :checksum "dive_{version}_checksums.txt"
- :platforms {"linux-x86_64" {:asset "dive_{version}_linux_amd64.tar.gz"}}}
+ :platforms {"linux-x86_64" {:asset "dive_{version}_linux_amd64.tar.gz"}
+             "linux-aarch64" {:asset "dive_{version}_linux_arm64.tar.gz"}
+             "darwin-x86_64" {:asset "dive_{version}_darwin_amd64.tar.gz"}
+             "darwin-aarch64" {:asset "dive_{version}_darwin_arm64.tar.gz"}}}

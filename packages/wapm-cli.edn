@@ -5,4 +5,7 @@
 {:description "WebAssembly Package Manager (CLI)",
  :source {:github "wasmerio/wapm-cli"}
  :bins {"wapm" "bin/wapm", "wax" "bin/wax"}
- :platforms {"linux-x86_64" {:asset "wapm-cli-linux-amd64.tar.gz"}}}
+ :platforms {"linux-x86_64" {:asset "wapm-cli-linux-amd64.tar.gz"}
+             "linux-aarch64" {:asset "wapm-cli-linux-aarch64.tar.gz"}
+             "darwin-x86_64" {:asset "wapm-cli-darwin-amd64.tar.gz"}
+             "darwin-aarch64" {:asset "wapm-cli-darwin-aarch64.tar.gz"}}}

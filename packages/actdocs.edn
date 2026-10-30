@@ -5,4 +5,7 @@
 {:description "Generate documentation from Actions and Reusable Workflows",
  :source {:github "tmknom/actdocs"}
  :checksum "actdocs_{version}_checksums.txt"
- :platforms {"linux-x86_64" {:asset "actdocs_{version}_linux_amd64"}}}
+ :platforms {"linux-x86_64" {:asset "actdocs_{version}_linux_amd64"}
+             "linux-aarch64" {:asset "actdocs_{version}_linux_arm64"}
+             "darwin-x86_64" {:asset "actdocs_{version}_darwin_amd64"}
+             "darwin-aarch64" {:asset "actdocs_{version}_darwin_arm64"}}}

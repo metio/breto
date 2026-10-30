@@ -6,4 +6,7 @@
  :source {:github "alexellis/k3sup"}
  :tag-prefix ""
  :checksum "{asset}.sha256"
- :platforms {"linux-x86_64" {:asset "k3sup"}}}
+ :platforms {"linux-x86_64" {:asset "k3sup"}
+             "linux-aarch64" {:asset "k3sup-arm64"}
+             "darwin-x86_64" {:asset "k3sup-darwin"}
+             "darwin-aarch64" {:asset "k3sup-darwin-arm64"}}}

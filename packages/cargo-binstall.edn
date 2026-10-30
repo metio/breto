@@ -3,4 +3,7 @@
 
 {:description "Installs Rust binaries from their release artifacts instead of building them from source"
  :source {:github "cargo-bins/cargo-binstall"}
- :platforms {"linux-x86_64" {:asset "cargo-binstall-x86_64-unknown-linux-musl.tgz"}}}
+ :platforms {"linux-x86_64" {:asset "cargo-binstall-x86_64-unknown-linux-musl.tgz"}
+             "linux-aarch64" {:asset "cargo-binstall-aarch64-unknown-linux-musl.tgz"}
+             "darwin-x86_64" {:asset "cargo-binstall-x86_64-apple-darwin.zip"}
+             "darwin-aarch64" {:asset "cargo-binstall-aarch64-apple-darwin.zip"}}}

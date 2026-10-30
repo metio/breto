@@ -6,4 +6,7 @@
  :source {:github "viaduct-ai/kustomize-sops"}
  :checksum "checksums.txt"
  :bins {"ksops" "ksops"}
- :platforms {"linux-x86_64" {:asset "ksops_{version}_Linux_x86_64.tar.gz"}}}
+ :platforms {"linux-x86_64" {:asset "ksops_{version}_Linux_x86_64.tar.gz"}
+             "linux-aarch64" {:asset "ksops_{version}_Linux_arm64.tar.gz"}
+             "darwin-x86_64" {:asset "ksops_{version}_Darwin_x86_64.tar.gz"}
+             "darwin-aarch64" {:asset "ksops_{version}_Darwin_arm64.tar.gz"}}}

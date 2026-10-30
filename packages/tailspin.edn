@@ -6,4 +6,7 @@
  :source {:github "bensadeh/tailspin"}
  :tag-prefix ""
  :bins {"tspin" "tspin"}
- :platforms {"linux-x86_64" {:asset "tailspin-x86_64-unknown-linux-musl.tar.gz"}}}
+ :platforms {"linux-x86_64" {:asset "tailspin-x86_64-unknown-linux-musl.tar.gz"}
+             "linux-aarch64" {:asset "tailspin-aarch64-unknown-linux-musl.tar.gz"}
+             "darwin-x86_64" {:asset "tailspin-x86_64-apple-darwin.tar.gz"}
+             "darwin-aarch64" {:asset "tailspin-aarch64-apple-darwin.tar.gz"}}}

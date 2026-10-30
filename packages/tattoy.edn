@@ -4,4 +4,7 @@
 
 {:description "A text-based compositor for modern terminals",
  :source {:github "tattoy-org/tattoy"}
- :platforms {"linux-x86_64" {:asset "tattoy-x86_64-unknown-linux-gnu.tar.gz" :checksum "tattoy-x86_64-unknown-linux-gnu.sha256"}}}
+ :platforms {"linux-x86_64" {:asset "tattoy-x86_64-unknown-linux-gnu.tar.gz" :checksum "tattoy-x86_64-unknown-linux-gnu.sha256"}
+             "linux-aarch64" {:asset "tattoy-aarch64-unknown-linux-gnu.tar.gz" :checksum "tattoy-aarch64-unknown-linux-gnu.sha256"}
+             "darwin-x86_64" {:asset "tattoy-x86_64-apple-darwin.tar.gz" :checksum "tattoy-x86_64-apple-darwin.sha256"}
+             "darwin-aarch64" {:asset "tattoy-aarch64-apple-darwin.tar.gz" :checksum "tattoy-aarch64-apple-darwin.sha256"}}}

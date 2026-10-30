@@ -5,4 +5,7 @@
 {:description "CLI tool to manage Kubernetes Secrets easily",
  :source {:github "dtan4/k8sec"}
  :checksum "checksums.txt"
- :platforms {"linux-x86_64" {:asset "k8sec_linux_amd64.tar.gz"}}}
+ :platforms {"linux-x86_64" {:asset "k8sec_linux_amd64.tar.gz"}
+             "linux-aarch64" {:asset "k8sec_linux_arm64.tar.gz"}
+             "darwin-x86_64" {:asset "k8sec_darwin_amd64.tar.gz"}
+             "darwin-aarch64" {:asset "k8sec_darwin_arm64.tar.gz"}}}

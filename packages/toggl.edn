@@ -5,4 +5,5 @@
 {:description "Toggl CLI Client",
  :source {:github "sachaos/toggl"}
  :checksum "checksums.txt"
- :platforms {"linux-x86_64" {:asset "toggl_{version}_Linux_x86_64.tar.gz"}}}
+ :platforms {"linux-x86_64" {:asset "toggl_{version}_Linux_x86_64.tar.gz"}
+             "darwin-x86_64" {:asset "toggl_{version}_Darwin_x86_64.tar.gz"}}}

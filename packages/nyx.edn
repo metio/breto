@@ -5,4 +5,7 @@
 {:description "The one stop semantic release tool",
  :source {:github "mooltiverse/nyx"}
  :tag-prefix ""
- :platforms {"linux-x86_64" {:asset "nyx-linux-amd64"}}}
+ :platforms {"linux-x86_64" {:asset "nyx-linux-amd64"}
+             "linux-aarch64" {:asset "nyx-linux-arm64"}
+             "darwin-x86_64" {:asset "nyx-darwin-amd64"}
+             "darwin-aarch64" {:asset "nyx-darwin-arm64"}}}

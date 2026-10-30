@@ -5,4 +5,7 @@
 {:description "Self-contained Japanese Morphological Analyzer written in pure Go",
  :source {:github "ikawaha/kagome"}
  :checksum "kagome_{version}_checksums.txt"
- :platforms {"linux-x86_64" {:asset "kagome_{version}_linux_amd64.tar.gz"}}}
+ :platforms {"linux-x86_64" {:asset "kagome_{version}_linux_amd64.tar.gz"}
+             "linux-aarch64" {:asset "kagome_{version}_linux_arm64.tar.gz"}
+             "darwin-x86_64" {:asset "kagome_{version}_darwin_all.tar.gz"}
+             "darwin-aarch64" {:asset "kagome_{version}_darwin_all.tar.gz"}}}

@@ -5,4 +5,7 @@
 {:description "Language Server for protocol buffers",
  :source {:github "coder3101/protols"}
  :tag-prefix ""
- :platforms {"linux-x86_64" {:asset "protols-x86_64-unknown-linux-gnu.tar.gz"}}}
+ :platforms {"linux-x86_64" {:asset "protols-x86_64-unknown-linux-gnu.tar.gz"}
+             "linux-aarch64" {:asset "protols-aarch64-unknown-linux-gnu.tar.gz"}
+             "darwin-x86_64" {:asset "protols-x86_64-apple-darwin.tar.gz"}
+             "darwin-aarch64" {:asset "protols-aarch64-apple-darwin.tar.gz"}}}

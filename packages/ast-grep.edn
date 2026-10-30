@@ -5,4 +5,7 @@
  :source {:github "ast-grep/ast-grep"},
  :tag-prefix "",
  :bins {"sg" "sg"}
- :platforms {"linux-x86_64" {:asset "app-x86_64-unknown-linux-gnu.zip"}}}
+ :platforms {"linux-x86_64" {:asset "app-x86_64-unknown-linux-gnu.zip"}
+             "linux-aarch64" {:asset "app-aarch64-unknown-linux-gnu.zip"}
+             "darwin-x86_64" {:asset "app-x86_64-apple-darwin.zip"}
+             "darwin-aarch64" {:asset "app-aarch64-apple-darwin.zip"}}}

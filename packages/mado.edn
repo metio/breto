@@ -5,4 +5,5 @@
 {:description "A fast Markdown linter written in Rust",
  :source {:github "akiomik/mado"}
  :checksum "{asset}.sha256"
- :platforms {"linux-x86_64" {:asset "mado-Linux-gnu-x86_64.tar.gz"}}}
+ :platforms {"linux-x86_64" {:asset "mado-Linux-gnu-x86_64.tar.gz"}
+             "linux-aarch64" {:asset "mado-Linux-gnu-arm64.tar.gz"}}}

@@ -5,4 +5,7 @@
 {:description "Watches over your Cargo project's source",
  :source {:github "watchexec/cargo-watch"}
  :checksum "SHA512SUMS"
- :platforms {"linux-x86_64" {:asset "cargo-watch-{tag}-x86_64-unknown-linux-musl.tar.xz" :bins {"cargo-watch" "cargo-watch-{tag}-x86_64-unknown-linux-musl/cargo-watch"}}}}
+ :platforms {"linux-x86_64" {:asset "cargo-watch-{tag}-x86_64-unknown-linux-musl.tar.xz" :bins {"cargo-watch" "cargo-watch-{tag}-x86_64-unknown-linux-musl/cargo-watch"}}
+             "linux-aarch64" {:asset "cargo-watch-{tag}-aarch64-unknown-linux-gnu.tar.xz" :bins {"cargo-watch" "cargo-watch-{tag}-aarch64-unknown-linux-gnu/cargo-watch"}}
+             "darwin-x86_64" {:asset "cargo-watch-{tag}-x86_64-apple-darwin.tar.xz" :bins {"cargo-watch" "cargo-watch-{tag}-x86_64-apple-darwin/cargo-watch"}}
+             "darwin-aarch64" {:asset "cargo-watch-{tag}-aarch64-apple-darwin.tar.xz" :bins {"cargo-watch" "cargo-watch-{tag}-aarch64-apple-darwin/cargo-watch"}}}}

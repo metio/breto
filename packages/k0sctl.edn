@@ -5,4 +5,7 @@
 {:description "A bootstrapping and management tool for k0s clusters",
  :source {:github "k0sproject/k0sctl"}
  :checksum "checksums.txt"
- :platforms {"linux-x86_64" {:asset "k0sctl-linux-amd64"}}}
+ :platforms {"linux-x86_64" {:asset "k0sctl-linux-amd64"}
+             "linux-aarch64" {:asset "k0sctl-linux-arm64"}
+             "darwin-x86_64" {:asset "k0sctl-darwin-amd64"}
+             "darwin-aarch64" {:asset "k0sctl-darwin-arm64"}}}

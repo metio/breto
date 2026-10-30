@@ -7,4 +7,7 @@
  :signature {:bundle "{asset}.sigstore.json",
              :identity "https://github.com/kyverno/chainsaw/.github/workflows/release.yaml@refs/tags/{tag}",
              :issuer "https://token.actions.githubusercontent.com"}
- :platforms {"linux-x86_64" {:asset "chainsaw_linux_amd64.tar.gz"}}}
+ :platforms {"linux-x86_64" {:asset "chainsaw_linux_amd64.tar.gz"}
+             "linux-aarch64" {:asset "chainsaw_linux_arm64.tar.gz"}
+             "darwin-x86_64" {:asset "chainsaw_darwin_amd64.tar.gz"}
+             "darwin-aarch64" {:asset "chainsaw_darwin_arm64.tar.gz"}}}

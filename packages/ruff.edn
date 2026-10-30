@@ -6,4 +6,7 @@
  :source {:github "astral-sh/ruff"}
  :tag-prefix ""
  :checksum "{asset}.sha256"
- :platforms {"linux-x86_64" {:asset "ruff-x86_64-unknown-linux-musl.tar.gz" :bins {"ruff" "ruff-x86_64-unknown-linux-musl/ruff"}}}}
+ :platforms {"linux-x86_64" {:asset "ruff-x86_64-unknown-linux-musl.tar.gz" :bins {"ruff" "ruff-x86_64-unknown-linux-musl/ruff"}}
+             "linux-aarch64" {:asset "ruff-aarch64-unknown-linux-musl.tar.gz" :bins {"ruff" "ruff-aarch64-unknown-linux-musl/ruff"}}
+             "darwin-x86_64" {:asset "ruff-x86_64-apple-darwin.tar.gz" :bins {"ruff" "ruff-x86_64-apple-darwin/ruff"}}
+             "darwin-aarch64" {:asset "ruff-aarch64-apple-darwin.tar.gz" :bins {"ruff" "ruff-aarch64-apple-darwin/ruff"}}}}

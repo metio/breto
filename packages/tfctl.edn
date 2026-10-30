@@ -5,4 +5,7 @@
 {:description "A GitOps OpenTofu and Terraform controller for Flux",
  :source {:github "flux-iac/tofu-controller"}
  :checksum "tofu-controller_{version}_checksums.txt"
- :platforms {"linux-x86_64" {:asset "tfctl_Linux_amd64.tar.gz"}}}
+ :platforms {"linux-x86_64" {:asset "tfctl_Linux_amd64.tar.gz"}
+             "linux-aarch64" {:asset "tfctl_Linux_arm64.tar.gz"}
+             "darwin-x86_64" {:asset "tfctl_Darwin_amd64.tar.gz"}
+             "darwin-aarch64" {:asset "tfctl_Darwin_arm64.tar.gz"}}}

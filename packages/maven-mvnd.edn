@@ -5,4 +5,7 @@
 {:description "Apache Maven Daemon",
  :source {:github "apache/maven-mvnd"}
  :tag-prefix ""
- :platforms {"linux-x86_64" {:asset "maven-mvnd-{tag}-linux-amd64.tar.gz" :bins {"mvnd" "maven-mvnd-{tag}-linux-amd64/bin/mvnd"}}}}
+ :platforms {"linux-x86_64" {:asset "maven-mvnd-{tag}-linux-amd64.tar.gz" :bins {"mvnd" "maven-mvnd-{tag}-linux-amd64/bin/mvnd"}}
+             "linux-aarch64" {:asset "maven-mvnd-{tag}-linux-aarch64.tar.gz" :bins {"mvnd" "maven-mvnd-{tag}-linux-aarch64/bin/mvnd"}}
+             "darwin-x86_64" {:asset "maven-mvnd-{tag}-darwin-amd64.tar.gz" :bins {"mvnd" "maven-mvnd-{tag}-darwin-amd64/bin/mvnd"}}
+             "darwin-aarch64" {:asset "maven-mvnd-{tag}-darwin-aarch64.tar.gz" :bins {"mvnd" "maven-mvnd-{tag}-darwin-aarch64/bin/mvnd"}}}}

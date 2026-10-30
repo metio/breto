@@ -5,4 +5,7 @@
 {:description "Interactive coding agent CLI",
  :source {:github "earendil-works/pi"}
  :bins {"pi" "pi/pi"}
- :platforms {"linux-x86_64" {:asset "pi-linux-x64.tar.gz"}}}
+ :platforms {"linux-x86_64" {:asset "pi-linux-x64.tar.gz"}
+             "linux-aarch64" {:asset "pi-linux-arm64.tar.gz"}
+             "darwin-x86_64" {:asset "pi-darwin-x64.tar.gz"}
+             "darwin-aarch64" {:asset "pi-darwin-arm64.tar.gz"}}}

@@ -6,4 +6,5 @@
  :source {:github "bcicen/slackcat"}
  :tag-prefix ""
  :checksum "sha256sums.txt"
- :platforms {"linux-x86_64" {:asset "slackcat-{tag}-linux-amd64"}}}
+ :platforms {"linux-x86_64" {:asset "slackcat-{tag}-linux-amd64"}
+             "darwin-x86_64" {:asset "slackcat-{tag}-darwin-amd64"}}}

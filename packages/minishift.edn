@@ -5,4 +5,5 @@
 {:description "Run OpenShift 3.x locally",
  :source {:github "minishift/minishift"}
  :checksum "{asset}.sha256"
- :platforms {"linux-x86_64" {:asset "minishift-{version}-linux-amd64.tgz" :bins {"minishift" "minishift-{version}-linux-amd64/minishift"}}}}
+ :platforms {"linux-x86_64" {:asset "minishift-{version}-linux-amd64.tgz" :bins {"minishift" "minishift-{version}-linux-amd64/minishift"}}
+             "darwin-x86_64" {:asset "minishift-{version}-darwin-amd64.tgz" :bins {"minishift" "minishift-{version}-darwin-amd64/minishift"}}}}

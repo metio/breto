@@ -4,4 +4,7 @@
 
 {:description "mitamae is a fast, simple, and single-binary configuration management tool with a DSL like Chef",
  :source {:github "itamae-kitchen/mitamae"}
- :platforms {"linux-x86_64" {:asset "mitamae-x86_64-linux"}}}
+ :platforms {"linux-x86_64" {:asset "mitamae-x86_64-linux"}
+             "linux-aarch64" {:asset "mitamae-aarch64-linux"}
+             "darwin-x86_64" {:asset "mitamae-x86_64-darwin"}
+             "darwin-aarch64" {:asset "mitamae-aarch64-darwin"}}}

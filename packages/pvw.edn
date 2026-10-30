@@ -5,4 +5,7 @@
 {:description "A port viewer TUI made with BubbleTea in Go",
  :source {:github "allyring/pvw"}
  :checksum "pvw_{version}_checksums.txt"
- :platforms {"linux-x86_64" {:asset "pvw_{version}_linux_amd64.tar.gz"}}}
+ :platforms {"linux-x86_64" {:asset "pvw_{version}_linux_amd64.tar.gz"}
+             "linux-aarch64" {:asset "pvw_{version}_linux_arm64.tar.gz"}
+             "darwin-x86_64" {:asset "pvw_{version}_darwin_amd64.tar.gz"}
+             "darwin-aarch64" {:asset "pvw_{version}_darwin_arm64.tar.gz"}}}

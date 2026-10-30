@@ -6,4 +6,7 @@
  :source {:github "docker/buildx"}
  :checksum "checksums.txt"
  :bins {"docker-cli-plugin-docker-buildx" "{asset}"}
- :platforms {"linux-x86_64" {:asset "buildx-{tag}.linux-amd64"}}}
+ :platforms {"linux-x86_64" {:asset "buildx-{tag}.linux-amd64"}
+             "linux-aarch64" {:asset "buildx-{tag}.linux-arm64"}
+             "darwin-x86_64" {:asset "buildx-{tag}.darwin-amd64"}
+             "darwin-aarch64" {:asset "buildx-{tag}.darwin-arm64"}}}

@@ -7,4 +7,7 @@
  :tag-prefix ""
  :checksum "{asset}.sha256"
  :bins {"ark" "{asset}", "arkade" "{asset}"}
- :platforms {"linux-x86_64" {:asset "arkade"}}}
+ :platforms {"linux-x86_64" {:asset "arkade"}
+             "linux-aarch64" {:asset "arkade-arm64"}
+             "darwin-x86_64" {:asset "arkade-darwin"}
+             "darwin-aarch64" {:asset "arkade-darwin-arm64"}}}

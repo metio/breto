@@ -6,4 +6,7 @@
  :source {:github "bazelbuild/bazel"}
  :tag-prefix ""
  :checksum "{asset}.sha256"
- :platforms {"linux-x86_64" {:asset "bazel-{tag}-linux-x86_64"}}}
+ :platforms {"linux-x86_64" {:asset "bazel-{tag}-linux-x86_64"}
+             "linux-aarch64" {:asset "bazel-{tag}-linux-arm64"}
+             "darwin-x86_64" {:asset "bazel-{tag}-darwin-x86_64"}
+             "darwin-aarch64" {:asset "bazel-{tag}-darwin-arm64"}}}

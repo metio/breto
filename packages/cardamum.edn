@@ -7,4 +7,7 @@
  :completions {:bash "share/completions/cardamum.bash",
                :zsh "share/completions/_cardamum",
                :fish "share/completions/cardamum.fish"}
- :platforms {"linux-x86_64" {:asset "cardamum.x86_64-linux.tgz"}}}
+ :platforms {"linux-x86_64" {:asset "cardamum.x86_64-linux.tgz"}
+             "linux-aarch64" {:asset "cardamum.aarch64-linux.tgz"}
+             "darwin-x86_64" {:asset "cardamum.x86_64-darwin.tgz"}
+             "darwin-aarch64" {:asset "cardamum.aarch64-darwin.tgz"}}}

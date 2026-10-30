@@ -4,4 +4,6 @@
 
 {:description "Open a web search in your terminal",
  :source {:github "zquestz/s"}
- :platforms {"linux-x86_64" {:asset "s-linux_amd64.zip" :bins {"s" "s-linux_amd64/s"}}}}
+ :platforms {"linux-x86_64" {:asset "s-linux_amd64.zip" :bins {"s" "s-linux_amd64/s"}}
+             "darwin-x86_64" {:asset "s-darwin_amd64.zip" :bins {"s" "s-darwin_amd64/s"}}
+             "darwin-aarch64" {:asset "s-darwin_arm64.zip" :bins {"s" "s-darwin_arm64/s"}}}}

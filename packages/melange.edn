@@ -5,4 +5,7 @@
 {:description "build APKs from source code",
  :source {:github "chainguard-dev/melange"}
  :checksum "checksums.txt"
- :platforms {"linux-x86_64" {:asset "melange_{version}_linux_amd64.tar.gz" :bins {"melange" "melange_{version}_linux_amd64/melange"}}}}
+ :platforms {"linux-x86_64" {:asset "melange_{version}_linux_amd64.tar.gz" :bins {"melange" "melange_{version}_linux_amd64/melange"}}
+             "linux-aarch64" {:asset "melange_{version}_linux_arm64.tar.gz" :bins {"melange" "melange_{version}_linux_arm64/melange"}}
+             "darwin-x86_64" {:asset "melange_{version}_darwin_amd64.tar.gz" :bins {"melange" "melange_{version}_darwin_amd64/melange"}}
+             "darwin-aarch64" {:asset "melange_{version}_darwin_arm64.tar.gz" :bins {"melange" "melange_{version}_darwin_arm64/melange"}}}}

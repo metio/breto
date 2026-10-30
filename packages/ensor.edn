@@ -6,4 +6,7 @@
  :source {:github "pratyay360/ensor"}
  :tag-prefix ""
  :checksum "checksums.txt"
- :platforms {"linux-x86_64" {:asset "ensor_Linux_x86_64.tar.gz"}}}
+ :platforms {"linux-x86_64" {:asset "ensor_Linux_x86_64.tar.gz"}
+             "linux-aarch64" {:asset "ensor_Linux_arm64.tar.gz"}
+             "darwin-x86_64" {:asset "ensor_Darwin_x86_64.tar.gz"}
+             "darwin-aarch64" {:asset "ensor_Darwin_arm64.tar.gz"}}}

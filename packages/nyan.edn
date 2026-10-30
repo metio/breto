@@ -5,4 +5,7 @@
 {:description "Colored `cat` command",
  :source {:github "toshimaru/nyan"}
  :checksum "checksums.txt"
- :platforms {"linux-x86_64" {:asset "nyan_Linux_amd64.tar.gz"}}}
+ :platforms {"linux-x86_64" {:asset "nyan_Linux_amd64.tar.gz"}
+             "linux-aarch64" {:asset "nyan_Linux_arm64.tar.gz"}
+             "darwin-x86_64" {:asset "nyan_Darwin_amd64.tar.gz"}
+             "darwin-aarch64" {:asset "nyan_Darwin_arm64.tar.gz"}}}

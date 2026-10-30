@@ -5,4 +5,6 @@
 {:description "Copy/paste anything over the network",
  :source {:github "jedisct1/piknik"}
  :tag-prefix ""
- :platforms {"linux-x86_64" {:asset "piknik-linux_x86_64-{tag}.tar.gz" :bins {"piknik" "linux-x86_64/piknik"}}}}
+ :platforms {"linux-x86_64" {:asset "piknik-linux_x86_64-{tag}.tar.gz" :bins {"piknik" "linux-x86_64/piknik"}}
+             "darwin-x86_64" {:asset "piknik-macos-{tag}.tar.gz" :bins {"piknik" "macos/piknik"}}
+             "darwin-aarch64" {:asset "piknik-macos-{tag}.tar.gz" :bins {"piknik" "macos/piknik"}}}}

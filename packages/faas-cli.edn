@@ -6,4 +6,7 @@
  :source {:github "openfaas/faas-cli"}
  :tag-prefix ""
  :checksum "{asset}.sha256"
- :platforms {"linux-x86_64" {:asset "faas-cli"}}}
+ :platforms {"linux-x86_64" {:asset "faas-cli"}
+             "linux-aarch64" {:asset "faas-cli-arm64"}
+             "darwin-x86_64" {:asset "faas-cli-darwin"}
+             "darwin-aarch64" {:asset "faas-cli-darwin-arm64"}}}

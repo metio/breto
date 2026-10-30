@@ -5,4 +5,7 @@
 {:description "GoPro Cloud Downloader",
  :source {:github "mvisonneau/gpcd"}
  :checksum "gpcd_{tag}_sha512sums.txt"
- :platforms {"linux-x86_64" {:asset "gpcd_{tag}_linux_amd64.tar.gz"}}}
+ :platforms {"linux-x86_64" {:asset "gpcd_{tag}_linux_amd64.tar.gz"}
+             "linux-aarch64" {:asset "gpcd_{tag}_linux_arm64.tar.gz"}
+             "darwin-x86_64" {:asset "gpcd_{tag}_darwin_amd64.tar.gz"}
+             "darwin-aarch64" {:asset "gpcd_{tag}_darwin_arm64.tar.gz"}}}

@@ -6,4 +6,5 @@
  :source {:github "sass/dart-sass"}
  :tag-prefix ""
  :bins {"sass" "dart-sass/sass"}
- :platforms {"linux-x86_64" {:asset "dart-sass-{tag}-linux-x64-musl.tar.gz"}}}
+ :platforms {"linux-x86_64" {:asset "dart-sass-{tag}-linux-x64-musl.tar.gz"}
+             "linux-aarch64" {:asset "dart-sass-{tag}-linux-arm64-musl.tar.gz"}}}

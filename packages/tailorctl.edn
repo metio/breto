@@ -4,4 +4,7 @@
 
 {:description "Command line tool for Tailor Platform",
  :source {:github "tailor-platform/tailorctl"}
- :platforms {"linux-x86_64" {:asset "tailorctl_linux_{tag}_x86_64.tar.gz"}}}
+ :platforms {"linux-x86_64" {:asset "tailorctl_linux_{tag}_x86_64.tar.gz"}
+             "linux-aarch64" {:asset "tailorctl_linux_{tag}_arm64.tar.gz"}
+             "darwin-x86_64" {:asset "tailorctl_darwin_{tag}_x86_64.tar.gz"}
+             "darwin-aarch64" {:asset "tailorctl_darwin_{tag}_arm64.tar.gz"}}}

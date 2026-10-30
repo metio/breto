@@ -4,4 +4,7 @@
 
 {:description "Command-line client for WebSockets, like netcat (or curl) for ws:// with advanced socat-like functions",
  :source {:github "vi/websocat"}
- :platforms {"linux-x86_64" {:asset "websocat.x86_64-unknown-linux-musl"}}}
+ :platforms {"linux-x86_64" {:asset "websocat.x86_64-unknown-linux-musl"}
+             "linux-aarch64" {:asset "websocat.aarch64-unknown-linux-musl"}
+             "darwin-x86_64" {:asset "websocat.x86_64-apple-darwin"}
+             "darwin-aarch64" {:asset "websocat.aarch64-apple-darwin"}}}

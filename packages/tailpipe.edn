@@ -5,4 +5,7 @@
 {:description "select * from logs! Tailpipe is an open source SIEM for instant log insights, powered by DuckDB. Analyze millions of events in seconds, right from your terminal",
  :source {:github "turbot/tailpipe"}
  :checksum "checksums.txt"
- :platforms {"linux-x86_64" {:asset "tailpipe.linux.amd64.tar.gz"}}}
+ :platforms {"linux-x86_64" {:asset "tailpipe.linux.amd64.tar.gz"}
+             "linux-aarch64" {:asset "tailpipe.linux.arm64.tar.gz"}
+             "darwin-x86_64" {:asset "tailpipe.darwin.amd64.tar.gz"}
+             "darwin-aarch64" {:asset "tailpipe.darwin.arm64.tar.gz"}}}

@@ -4,4 +4,5 @@
 
 {:description "Git Explorer: cross-platform git workflow improvement tool inspired by Magit",
  :source {:github "Piturnah/gex"}
- :platforms {"linux-x86_64" {:asset "gex-x86_64-unknown-linux-gnu.tar.gz"}}}
+ :platforms {"linux-x86_64" {:asset "gex-x86_64-unknown-linux-gnu.tar.gz"}
+             "darwin-x86_64" {:asset "gex-x86_64-apple-darwin.tar.gz"}}}

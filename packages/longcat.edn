@@ -4,4 +4,7 @@
 
 {:description "Looooooooooooooooooooooooooooooooooooooooooooooong cat",
  :source {:github "mattn/longcat"}
- :platforms {"linux-x86_64" {:asset "longcat_{tag}_linux_amd64.tar.gz" :bins {"longcat" "longcat_{tag}_linux_amd64/longcat"}}}}
+ :platforms {"linux-x86_64" {:asset "longcat_{tag}_linux_amd64.tar.gz" :bins {"longcat" "longcat_{tag}_linux_amd64/longcat"}}
+             "linux-aarch64" {:asset "longcat_{tag}_linux_arm64.tar.gz" :bins {"longcat" "longcat_{tag}_linux_arm64/longcat"}}
+             "darwin-x86_64" {:asset "longcat_{tag}_darwin_amd64.zip" :bins {"longcat" "longcat_{tag}_darwin_amd64/longcat"}}
+             "darwin-aarch64" {:asset "longcat_{tag}_darwin_arm64.zip" :bins {"longcat" "longcat_{tag}_darwin_arm64/longcat"}}}}

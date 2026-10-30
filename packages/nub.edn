@@ -6,4 +6,5 @@
  :source {:github "nubjs/nub"}
  :checksum "{asset}.sha256"
  :bins {"nub" "bin/nub", "nubr" "bin/nub", "nubx" "bin/nub"}
- :platforms {"linux-x86_64" {:asset "nub-linux-x64-musl.tar.gz"}}}
+ :platforms {"linux-x86_64" {:asset "nub-linux-x64-musl.tar.gz"}
+             "linux-aarch64" {:asset "nub-linux-arm64-musl.tar.gz"}}}

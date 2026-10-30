@@ -5,4 +5,7 @@
 {:description "trzsz-ssh ( tssh ) is an ssh client designed as a drop-in replacement for the openssh client. It aims to provide complete compatibility with openssh, mirroring all its features, while also offering additional useful features. Such as login prompt, batch login, remember password, automated interaction, trzsz, zmodem(rz/sz), udp mode like mosh, etc",
  :source {:github "trzsz/trzsz-ssh"}
  :checksum "tssh_{version}_checksums.txt"
- :platforms {"linux-x86_64" {:asset "tssh_{version}_linux_x86_64.tar.gz" :bins {"tssh" "tssh_{version}_linux_x86_64/tssh"}}}}
+ :platforms {"linux-x86_64" {:asset "tssh_{version}_linux_x86_64.tar.gz" :bins {"tssh" "tssh_{version}_linux_x86_64/tssh"}}
+             "linux-aarch64" {:asset "tssh_{version}_linux_aarch64.tar.gz" :bins {"tssh" "tssh_{version}_linux_aarch64/tssh"}}
+             "darwin-x86_64" {:asset "tssh_{version}_macos_x86_64.tar.gz" :bins {"tssh" "tssh_{version}_macos_x86_64/tssh"}}
+             "darwin-aarch64" {:asset "tssh_{version}_macos_aarch64.tar.gz" :bins {"tssh" "tssh_{version}_macos_aarch64/tssh"}}}}

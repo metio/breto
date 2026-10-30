@@ -5,4 +5,7 @@
 {:description "Run agents in containers with credential injection and full observability",
  :source {:github "majorcontext/moat"}
  :checksum "checksums.txt"
- :platforms {"linux-x86_64" {:asset "moat_{version}_linux_amd64.tar.gz"}}}
+ :platforms {"linux-x86_64" {:asset "moat_{version}_linux_amd64.tar.gz"}
+             "linux-aarch64" {:asset "moat_{version}_linux_arm64.tar.gz"}
+             "darwin-x86_64" {:asset "moat_{version}_darwin_amd64.tar.gz"}
+             "darwin-aarch64" {:asset "moat_{version}_darwin_arm64.tar.gz"}}}

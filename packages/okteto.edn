@@ -6,4 +6,7 @@
  :source {:github "okteto/okteto"}
  :tag-prefix ""
  :checksum "{asset}.sha256"
- :platforms {"linux-x86_64" {:asset "okteto-Linux-x86_64"}}}
+ :platforms {"linux-x86_64" {:asset "okteto-Linux-x86_64"}
+             "linux-aarch64" {:asset "okteto-Linux-arm64"}
+             "darwin-x86_64" {:asset "okteto-Darwin-x86_64"}
+             "darwin-aarch64" {:asset "okteto-Darwin-arm64"}}}

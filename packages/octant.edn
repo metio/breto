@@ -5,4 +5,7 @@
 {:description "Highly extensible platform for developers to better understand the complexity of Kubernetes clusters",
  :source {:github "vmware-archive/octant"}
  :checksum "checksums.txt"
- :platforms {"linux-x86_64" {:asset "octant_{version}_Linux-64bit.tar.gz" :bins {"octant" "octant_{version}_Linux-64bit/octant"}}}}
+ :platforms {"linux-x86_64" {:asset "octant_{version}_Linux-64bit.tar.gz" :bins {"octant" "octant_{version}_Linux-64bit/octant"}}
+             "linux-aarch64" {:asset "octant_{version}_Linux-arm64.tar.gz" :bins {"octant" "octant_{version}_Linux-arm64/octant"}}
+             "darwin-x86_64" {:asset "octant_{version}_macOS-64bit.tar.gz" :bins {"octant" "octant_{version}_macOS-64bit/octant"}}
+             "darwin-aarch64" {:asset "octant_{version}_macOS-arm64.tar.gz" :bins {"octant" "octant_{version}_macOS-arm64/octant"}}}}

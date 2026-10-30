@@ -5,4 +5,7 @@
 {:description "wrench - Schema management tool for Cloud Spanner -",
  :source {:github "cloudspannerecosystem/wrench"}
  :checksum "checksums.txt"
- :platforms {"linux-x86_64" {:asset "wrench-{version}-linux-amd64.tar.gz"}}}
+ :platforms {"linux-x86_64" {:asset "wrench-{version}-linux-amd64.tar.gz"}
+             "linux-aarch64" {:asset "wrench-{version}-linux-arm64.tar.gz"}
+             "darwin-x86_64" {:asset "wrench-{version}-darwin-amd64.tar.gz"}
+             "darwin-aarch64" {:asset "wrench-{version}-darwin-arm64.tar.gz"}}}

@@ -6,4 +6,7 @@
  :source {:github "Traackr/binnacle"}
  :tag-prefix ""
  :checksum "SHA256SUM.txt"
- :platforms {"linux-x86_64" {:asset "binnacle-linux_amd64.tar.gz"}}}
+ :platforms {"linux-x86_64" {:asset "binnacle-linux_amd64.tar.gz"}
+             "linux-aarch64" {:asset "binnacle-linux_arm64.tar.gz"}
+             "darwin-x86_64" {:asset "binnacle-darwin_amd64.tar.gz"}
+             "darwin-aarch64" {:asset "binnacle-darwin_arm64.tar.gz"}}}

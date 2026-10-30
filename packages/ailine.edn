@@ -6,4 +6,7 @@
  :source {:github "lexfrei/ailine"}
  :checksum "checksums.txt"
  :bins {"ailine" "ailine", "claudeline" "ailine"}
- :platforms {"linux-x86_64" {:asset "ailine_linux_amd64.tar.gz"}}}
+ :platforms {"linux-x86_64" {:asset "ailine_linux_amd64.tar.gz"}
+             "linux-aarch64" {:asset "ailine_linux_arm64.tar.gz"}
+             "darwin-x86_64" {:asset "ailine_darwin_amd64.tar.gz"}
+             "darwin-aarch64" {:asset "ailine_darwin_arm64.tar.gz"}}}

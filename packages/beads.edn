@@ -6,4 +6,7 @@
  :source {:github "gastownhall/beads"}
  :checksum "checksums.txt"
  :bins {"bd" "bd"}
- :platforms {"linux-x86_64" {:asset "beads_{version}_linux_amd64.tar.gz"}}}
+ :platforms {"linux-x86_64" {:asset "beads_{version}_linux_amd64.tar.gz"}
+             "linux-aarch64" {:asset "beads_{version}_linux_arm64.tar.gz"}
+             "darwin-x86_64" {:asset "beads_{version}_darwin_amd64.tar.gz"}
+             "darwin-aarch64" {:asset "beads_{version}_darwin_arm64.tar.gz"}}}

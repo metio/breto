@@ -5,4 +5,5 @@
 {:description "A configuration file validator for Kubernetes",
  :source {:github "cloud66-oss/copper"}
  :tag-prefix ""
- :platforms {"linux-x86_64" {:asset "linux_amd64_{tag}"}}}
+ :platforms {"linux-x86_64" {:asset "linux_amd64_{tag}"}
+             "darwin-x86_64" {:asset "darwin_amd64_{tag}"}}}

@@ -5,4 +5,6 @@
 {:description "A live-updating version of the UNIX wc command",
  :source {:github "timdp/lwc"}
  :checksum "lwc-checksums.txt"
- :platforms {"linux-x86_64" {:asset "lwc-{version}-linux-amd64.tar.gz"}}}
+ :platforms {"linux-x86_64" {:asset "lwc-{version}-linux-amd64.tar.gz"}
+             "linux-aarch64" {:asset "lwc-{version}-linux-arm64.tar.gz"}
+             "darwin-x86_64" {:asset "lwc-{version}-darwin-amd64.tar.gz"}}}

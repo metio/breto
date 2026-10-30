@@ -5,4 +5,7 @@
 {:description "A Utility CLI for AI Coding Agents",
  :source {:github "dyoshikawa/rulesync"}
  :checksum "SHA256SUMS"
- :platforms {"linux-x86_64" {:asset "rulesync-linux-x64"}}}
+ :platforms {"linux-x86_64" {:asset "rulesync-linux-x64"}
+             "linux-aarch64" {:asset "rulesync-linux-arm64"}
+             "darwin-x86_64" {:asset "rulesync-darwin-x64"}
+             "darwin-aarch64" {:asset "rulesync-darwin-arm64"}}}

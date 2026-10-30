@@ -4,4 +4,5 @@
 
 {:description "Like pigz, but rust",
  :source {:github "sstadick/crabz"}
- :platforms {"linux-x86_64" {:asset "crabz-linux-amd64"}}}
+ :platforms {"linux-x86_64" {:asset "crabz-linux-amd64"}
+             "darwin-x86_64" {:asset "crabz-macos-amd64"}}}

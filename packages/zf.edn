@@ -5,4 +5,7 @@
 {:description "a commandline fuzzy finder designed for filtering filepaths",
  :source {:github "natecraddock/zf"}
  :tag-prefix ""
- :platforms {"linux-x86_64" {:asset "zf-{tag}-x86_64-linux.tar.xz" :bins {"zf" "zf-{tag}-x86_64-linux"}}}}
+ :platforms {"linux-x86_64" {:asset "zf-{tag}-x86_64-linux.tar.xz" :bins {"zf" "zf-{tag}-x86_64-linux"}}
+             "linux-aarch64" {:asset "zf-{tag}-aarch64-linux.tar.xz" :bins {"zf" "zf-{tag}-aarch64-linux"}}
+             "darwin-x86_64" {:asset "zf-{tag}-x86_64-macos.tar.xz" :bins {"zf" "zf-{tag}-x86_64-macos"}}
+             "darwin-aarch64" {:asset "zf-{tag}-aarch64-macos.tar.xz" :bins {"zf" "zf-{tag}-aarch64-macos"}}}}

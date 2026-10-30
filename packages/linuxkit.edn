@@ -5,4 +5,5 @@
 {:description "A toolkit for building secure, portable and lean operating systems for containers",
  :source {:github "linuxkit/linuxkit"}
  :checksum "checksums.txt"
- :platforms {"linux-x86_64" {:asset "linuxkit-linux-amd64"}}}
+ :platforms {"linux-x86_64" {:asset "linuxkit-linux-amd64"}
+             "linux-aarch64" {:asset "linuxkit-linux-arm64"}}}

@@ -6,4 +6,7 @@
  :source {:github "openshift-online/ocm-cli"}
  :checksum "{asset}.sha256"
  :bins {"ocm" "{asset}"}
- :platforms {"linux-x86_64" {:asset "ocm-linux-amd64"}}}
+ :platforms {"linux-x86_64" {:asset "ocm-linux-amd64"}
+             "linux-aarch64" {:asset "ocm-linux-arm64"}
+             "darwin-x86_64" {:asset "ocm-darwin-amd64"}
+             "darwin-aarch64" {:asset "ocm-darwin-arm64"}}}

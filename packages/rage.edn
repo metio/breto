@@ -5,4 +5,7 @@
 {:description "A simple, secure and modern file encryption tool (and Rust library) with small explicit keys, no config options, and UNIX-style composability",
  :source {:github "str4d/rage"}
  :bins {"rage" "rage/rage", "rage-keygen" "rage/rage-keygen", "rage-mount" "rage/rage-mount"}
- :platforms {"linux-x86_64" {:asset "rage-{tag}-x86_64-linux.tar.gz"}}}
+ :platforms {"linux-x86_64" {:asset "rage-{tag}-x86_64-linux.tar.gz"}
+             "linux-aarch64" {:asset "rage-{tag}-arm64-linux.tar.gz"}
+             "darwin-x86_64" {:asset "rage-{tag}-x86_64-darwin.tar.gz"}
+             "darwin-aarch64" {:asset "rage-{tag}-arm64-darwin.tar.gz"}}}

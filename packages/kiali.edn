@@ -4,4 +4,5 @@
 
 {:description "Kiali project, observability for the Istio service mesh",
  :source {:github "kiali/kiali"}
- :platforms {"linux-x86_64" {:asset "kiali-linux-amd64"}}}
+ :platforms {"linux-x86_64" {:asset "kiali-linux-amd64"}
+             "linux-aarch64" {:asset "kiali-linux-arm64"}}}

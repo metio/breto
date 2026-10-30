@@ -6,4 +6,5 @@
  :source {:github "awslabs/soci-snapshotter"}
  :checksum "{asset}.sha256sum"
  :bins {"soci" "soci", "soci-snapshotter-grpc" "soci-snapshotter-grpc"}
- :platforms {"linux-x86_64" {:asset "soci-snapshotter-{version}-linux-amd64-static.tar.gz"}}}
+ :platforms {"linux-x86_64" {:asset "soci-snapshotter-{version}-linux-amd64-static.tar.gz"}
+             "linux-aarch64" {:asset "soci-snapshotter-{version}-linux-arm64-static.tar.gz"}}}

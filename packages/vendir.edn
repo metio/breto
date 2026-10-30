@@ -5,4 +5,7 @@
 {:description "Easy way to vendor portions of git repos, github releases, helm charts, docker image contents, etc. declaratively",
  :source {:github "carvel-dev/vendir"}
  :checksum "checksums.txt"
- :platforms {"linux-x86_64" {:asset "vendir-linux-amd64"}}}
+ :platforms {"linux-x86_64" {:asset "vendir-linux-amd64"}
+             "linux-aarch64" {:asset "vendir-linux-arm64"}
+             "darwin-x86_64" {:asset "vendir-darwin-amd64"}
+             "darwin-aarch64" {:asset "vendir-darwin-arm64"}}}

@@ -5,4 +5,7 @@
 {:description "An enum generator for go",
  :source {:github "abice/go-enum"}
  :checksum "go-enum_checksums.txt"
- :platforms {"linux-x86_64" {:asset "go-enum_Linux_x86_64"}}}
+ :platforms {"linux-x86_64" {:asset "go-enum_Linux_x86_64"}
+             "linux-aarch64" {:asset "go-enum_Linux_aarch64"}
+             "darwin-x86_64" {:asset "go-enum_Darwin_x86_64"}
+             "darwin-aarch64" {:asset "go-enum_Darwin_aarch64"}}}

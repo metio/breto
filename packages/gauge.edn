@@ -4,4 +4,7 @@
 
 {:description "Light weight cross-platform test automation",
  :source {:github "getgauge/gauge"}
- :platforms {"linux-x86_64" {:asset "gauge-{version}-linux.x86_64.zip"}}}
+ :platforms {"linux-x86_64" {:asset "gauge-{version}-linux.x86_64.zip"}
+             "linux-aarch64" {:asset "gauge-{version}-linux.arm64.zip"}
+             "darwin-x86_64" {:asset "gauge-{version}-darwin.x86_64.zip"}
+             "darwin-aarch64" {:asset "gauge-{version}-darwin.arm64.zip"}}}

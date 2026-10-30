@@ -4,4 +4,7 @@
 
 {:description "falco is a VCL developer tool dedicated to Fastly",
  :source {:github "ysugimoto/falco"}
- :platforms {"linux-x86_64" {:asset "falco-linux-amd64.tar.gz"}}}
+ :platforms {"linux-x86_64" {:asset "falco-linux-amd64.tar.gz"}
+             "linux-aarch64" {:asset "falco-linux-arm64.tar.gz"}
+             "darwin-x86_64" {:asset "falco-darwin-amd64.tar.gz"}
+             "darwin-aarch64" {:asset "falco-darwin-arm64.tar.gz"}}}

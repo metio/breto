@@ -5,4 +5,7 @@
 {:description "DevSpace - The Fastest Developer Tool for Kubernetes  Automate your deployment workflow with DevSpace and develop software directly inside Kubernetes",
  :source {:github "devspace-sh/devspace"}
  :checksum "{asset}.sha256"
- :platforms {"linux-x86_64" {:asset "devspace-linux-amd64"}}}
+ :platforms {"linux-x86_64" {:asset "devspace-linux-amd64"}
+             "linux-aarch64" {:asset "devspace-linux-arm64"}
+             "darwin-x86_64" {:asset "devspace-darwin-amd64"}
+             "darwin-aarch64" {:asset "devspace-darwin-arm64"}}}

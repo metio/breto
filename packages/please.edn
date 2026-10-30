@@ -6,4 +6,7 @@
  :source {:github "thought-machine/please"}
  :checksum "{asset}.sha256"
  :bins {"please" "please/please"}
- :platforms {"linux-x86_64" {:asset "please_{version}_linux_amd64.tar.gz"}}}
+ :platforms {"linux-x86_64" {:asset "please_{version}_linux_amd64.tar.gz"}
+             "linux-aarch64" {:asset "please_{version}_linux_arm64.tar.gz"}
+             "darwin-x86_64" {:asset "please_{version}_darwin_amd64.tar.gz"}
+             "darwin-aarch64" {:asset "please_{version}_darwin_arm64.tar.gz"}}}

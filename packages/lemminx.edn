@@ -4,4 +4,7 @@
 {:description "Language server for XML"
  :source {:github "redhat-developer/vscode-xml"}
  :tag-prefix ""
- :platforms {"linux-x86_64" {:asset "lemminx-linux-x86_64.zip" :bins {"lemminx" "lemminx-linux-x86_64"}}}}
+ :platforms {"linux-x86_64" {:asset "lemminx-linux-x86_64.zip" :bins {"lemminx" "lemminx-linux-x86_64"}}
+             "linux-aarch64" {:asset "lemminx-linux-aarch_64.zip" :bins {"lemminx" "lemminx-linux-aarch_64"}}
+             "darwin-x86_64" {:asset "lemminx-osx-x86_64.zip" :bins {"lemminx" "lemminx-osx-x86_64"}}
+             "darwin-aarch64" {:asset "lemminx-osx-aarch_64.zip" :bins {"lemminx" "lemminx-osx-aarch_64"}}}}

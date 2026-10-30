@@ -5,4 +5,7 @@
 {:description "Subfinder is a subdomain discovery tool that discovers valid subdomains for websites. Designed as a passive framework to be useful for bug bounties and safe for penetration testing",
  :source {:github "projectdiscovery/subfinder"}
  :checksum "subfinder_{version}_checksums.txt"
- :platforms {"linux-x86_64" {:asset "subfinder_{version}_linux_amd64.zip"}}}
+ :platforms {"linux-x86_64" {:asset "subfinder_{version}_linux_amd64.zip"}
+             "linux-aarch64" {:asset "subfinder_{version}_linux_arm64.zip"}
+             "darwin-x86_64" {:asset "subfinder_{version}_macOS_amd64.zip"}
+             "darwin-aarch64" {:asset "subfinder_{version}_macOS_arm64.zip"}}}

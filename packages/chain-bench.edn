@@ -5,4 +5,7 @@
 {:description "An open-source tool for auditing your software supply chain stack for security compliance based on a new CIS Software Supply Chain benchmark",
  :source {:github "aquasecurity/chain-bench"}
  :checksum "checksums.txt"
- :platforms {"linux-x86_64" {:asset "chain-bench_{version}_Linux-64bit.tar.gz"}}}
+ :platforms {"linux-x86_64" {:asset "chain-bench_{version}_Linux-64bit.tar.gz"}
+             "linux-aarch64" {:asset "chain-bench_{version}_Linux-ARM64.tar.gz"}
+             "darwin-x86_64" {:asset "chain-bench_{version}_macOS-64bit.tar.gz"}
+             "darwin-aarch64" {:asset "chain-bench_{version}_macOS-ARM64.tar.gz"}}}

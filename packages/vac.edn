@@ -5,4 +5,7 @@
 {:description "AWS credentials management leveraging Vault",
  :source {:github "mvisonneau/vac"}
  :checksum "vac_{tag}_sha512sums.txt"
- :platforms {"linux-x86_64" {:asset "vac_{tag}_linux_amd64.tar.gz"}}}
+ :platforms {"linux-x86_64" {:asset "vac_{tag}_linux_amd64.tar.gz"}
+             "linux-aarch64" {:asset "vac_{tag}_linux_arm64.tar.gz"}
+             "darwin-x86_64" {:asset "vac_{tag}_darwin_amd64.tar.gz"}
+             "darwin-aarch64" {:asset "vac_{tag}_darwin_arm64.tar.gz"}}}

@@ -5,4 +5,7 @@
 {:description "Run one-shot Kubernetes Job from CronJob template and tail logs",
  :source {:github "int128/cronjob-runner"}
  :checksum "{asset}.sha256"
- :platforms {"linux-x86_64" {:asset "cronjob-runner_linux_amd64.zip"}}}
+ :platforms {"linux-x86_64" {:asset "cronjob-runner_linux_amd64.zip"}
+             "linux-aarch64" {:asset "cronjob-runner_linux_arm64.zip"}
+             "darwin-x86_64" {:asset "cronjob-runner_darwin_amd64.zip"}
+             "darwin-aarch64" {:asset "cronjob-runner_darwin_arm64.zip"}}}

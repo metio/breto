@@ -5,4 +5,5 @@
 {:description "SQL formatter with width-aware output",
  :source {:github "madelynnblue/sqlfmt"}
  :checksum "checksums.txt"
- :platforms {"linux-x86_64" {:asset "sqlfmt_Linux_x86_64.tar.gz"}}}
+ :platforms {"linux-x86_64" {:asset "sqlfmt_Linux_x86_64.tar.gz"}
+             "darwin-x86_64" {:asset "sqlfmt_Darwin_x86_64.tar.gz"}}}

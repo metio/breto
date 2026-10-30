@@ -5,4 +5,7 @@
 {:description "MCP server for Grafana",
  :source {:github "grafana/mcp-grafana"}
  :checksum "mcp-grafana_{version}_checksums.txt"
- :platforms {"linux-x86_64" {:asset "mcp-grafana_Linux_x86_64.tar.gz"}}}
+ :platforms {"linux-x86_64" {:asset "mcp-grafana_Linux_x86_64.tar.gz"}
+             "linux-aarch64" {:asset "mcp-grafana_Linux_arm64.tar.gz"}
+             "darwin-x86_64" {:asset "mcp-grafana_Darwin_x86_64.tar.gz"}
+             "darwin-aarch64" {:asset "mcp-grafana_Darwin_arm64.tar.gz"}}}

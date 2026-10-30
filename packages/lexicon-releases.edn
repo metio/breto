@@ -5,4 +5,6 @@
 {:description "CLI that builds a shared, indexed cache of vendor library/API documentation for coding agents",
  :source {:github "syntax-sh/lexicon-releases"}
  :checksum "{asset}.sha256"
- :platforms {"linux-x86_64" {:asset "lexicon-x86_64-unknown-linux-gnu.tar.gz" :bins {"lexicon" "lexicon-x86_64-unknown-linux-gnu/lexicon"}}}}
+ :platforms {"linux-x86_64" {:asset "lexicon-x86_64-unknown-linux-gnu.tar.gz" :bins {"lexicon" "lexicon-x86_64-unknown-linux-gnu/lexicon"}}
+             "darwin-x86_64" {:asset "lexicon-x86_64-apple-darwin.tar.gz" :bins {"lexicon" "lexicon-x86_64-apple-darwin/lexicon"}}
+             "darwin-aarch64" {:asset "lexicon-aarch64-apple-darwin.tar.gz" :bins {"lexicon" "lexicon-aarch64-apple-darwin/lexicon"}}}}

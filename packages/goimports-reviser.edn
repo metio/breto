@@ -5,4 +5,7 @@
 {:description "Right imports sorting & code formatting tool (goimports alternative)",
  :source {:github "incu6us/goimports-reviser"}
  :checksum "checksums.txt"
- :platforms {"linux-x86_64" {:asset "goimports-reviser_{version}_linux_amd64.tar.gz"}}}
+ :platforms {"linux-x86_64" {:asset "goimports-reviser_{version}_linux_amd64.tar.gz"}
+             "linux-aarch64" {:asset "goimports-reviser_{version}_linux_arm64.tar.gz"}
+             "darwin-x86_64" {:asset "goimports-reviser_{version}_darwin_amd64.tar.gz"}
+             "darwin-aarch64" {:asset "goimports-reviser_{version}_darwin_arm64.tar.gz"}}}

@@ -4,4 +4,7 @@
 
 {:description "KubeLinter is a static analysis tool that checks Kubernetes YAML files and Helm charts to ensure the applications represented in them adhere to best practices",
  :source {:github "stackrox/kube-linter"}
- :platforms {"linux-x86_64" {:asset "kube-linter-linux"}}}
+ :platforms {"linux-x86_64" {:asset "kube-linter-linux"}
+             "linux-aarch64" {:asset "kube-linter-linux_arm64"}
+             "darwin-x86_64" {:asset "kube-linter-darwin"}
+             "darwin-aarch64" {:asset "kube-linter-darwin_arm64"}}}

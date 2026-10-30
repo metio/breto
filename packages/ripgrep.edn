@@ -6,4 +6,7 @@
  :source {:github "BurntSushi/ripgrep"}
  :tag-prefix ""
  :checksum "{asset}.sha256"
- :platforms {"linux-x86_64" {:asset "ripgrep-{tag}-x86_64-unknown-linux-musl.tar.gz" :bins {"rg" "ripgrep-{tag}-x86_64-unknown-linux-musl/rg"}}}}
+ :platforms {"linux-x86_64" {:asset "ripgrep-{tag}-x86_64-unknown-linux-musl.tar.gz" :bins {"rg" "ripgrep-{tag}-x86_64-unknown-linux-musl/rg"}}
+             "linux-aarch64" {:asset "ripgrep-{tag}-aarch64-unknown-linux-musl.tar.gz" :bins {"rg" "ripgrep-{tag}-aarch64-unknown-linux-musl/rg"}}
+             "darwin-x86_64" {:asset "ripgrep-{tag}-x86_64-apple-darwin.tar.gz" :bins {"rg" "ripgrep-{tag}-x86_64-apple-darwin/rg"}}
+             "darwin-aarch64" {:asset "ripgrep-{tag}-aarch64-apple-darwin.tar.gz" :bins {"rg" "ripgrep-{tag}-aarch64-apple-darwin/rg"}}}}

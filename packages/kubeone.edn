@@ -5,4 +5,7 @@
 {:description "Kubermatic KubeOne automate cluster operations on all your cloud, on-prem, edge, and IoT environments",
  :source {:github "kubermatic/kubeone"}
  :checksum "kubeone_{version}_checksums.txt"
- :platforms {"linux-x86_64" {:asset "kubeone_{version}_linux_amd64.zip"}}}
+ :platforms {"linux-x86_64" {:asset "kubeone_{version}_linux_amd64.zip"}
+             "linux-aarch64" {:asset "kubeone_{version}_linux_arm64.zip"}
+             "darwin-x86_64" {:asset "kubeone_{version}_darwin_amd64.zip"}
+             "darwin-aarch64" {:asset "kubeone_{version}_darwin_arm64.zip"}}}

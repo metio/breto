@@ -5,4 +5,5 @@
 {:description "Prebuilt binaries of `qemu` built with zig cc",
  :source {:github "takumin/qemu-bin"}
  :checksum "SHA256SUMS"
- :platforms {"linux-x86_64" {:asset "qemu-x86_64-linux-gnu.tar.gz" :bins {"qemu-edid" "bin/qemu-edid", "qemu-img" "bin/qemu-img", "qemu-io" "bin/qemu-io", "qemu-nbd" "bin/qemu-nbd", "qemu-pr-helper" "bin/qemu-pr-helper", "qemu-storage-daemon" "bin/qemu-storage-daemon", "qemu-system-aarch64" "bin/qemu-system-aarch64", "qemu-system-x86_64" "bin/qemu-system-x86_64", "qemu-vmsr-helper" "bin/qemu-vmsr-helper"}}}}
+ :platforms {"linux-x86_64" {:asset "qemu-x86_64-linux-gnu.tar.gz" :bins {"qemu-edid" "bin/qemu-edid", "qemu-img" "bin/qemu-img", "qemu-io" "bin/qemu-io", "qemu-nbd" "bin/qemu-nbd", "qemu-pr-helper" "bin/qemu-pr-helper", "qemu-storage-daemon" "bin/qemu-storage-daemon", "qemu-system-aarch64" "bin/qemu-system-aarch64", "qemu-system-x86_64" "bin/qemu-system-x86_64", "qemu-vmsr-helper" "bin/qemu-vmsr-helper"}}
+             "linux-aarch64" {:asset "qemu-aarch64-linux-gnu.tar.gz" :bins {"qemu-vmsr-helper" "bin/qemu-vmsr-helper" "qemu-system-aarch64" "bin/qemu-system-aarch64" "qemu-img" "bin/qemu-img" "qemu-edid" "bin/qemu-edid" "qemu-system-x86_64" "bin/qemu-system-aarch64" "qemu-io" "bin/qemu-io" "qemu-storage-daemon" "bin/qemu-storage-daemon" "qemu-pr-helper" "bin/qemu-pr-helper" "qemu-nbd" "bin/qemu-nbd"}}}}

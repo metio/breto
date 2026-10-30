@@ -4,4 +4,6 @@
 
 {:description "A code snippets manager for your terminal",
  :source {:github "out-of-cheese-error/the-way"}
- :platforms {"linux-x86_64" {:asset "the-way-linux.tar.gz" :checksum "the-way-linux.sha256"}}}
+ :platforms {"linux-x86_64" {:asset "the-way-linux.tar.gz" :checksum "the-way-linux.sha256"}
+             "darwin-x86_64" {:asset "the-way-macos.tar.gz" :checksum "the-way-macos.sha256"}
+             "darwin-aarch64" {:asset "the-way-macos.tar.gz" :checksum "the-way-macos.sha256"}}}

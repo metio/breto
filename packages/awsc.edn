@@ -5,4 +5,7 @@
 {:description "awsc (AWS cli with Caution) is wrapper for AWS CLI. It displays AWS account information before running any AWS CLI subcommands",
  :source {:github "handlename/awsc"}
  :checksum "awsc_{version}_checksums.txt"
- :platforms {"linux-x86_64" {:asset "awsc_{version}_linux_amd64.tar.gz"}}}
+ :platforms {"linux-x86_64" {:asset "awsc_{version}_linux_amd64.tar.gz"}
+             "linux-aarch64" {:asset "awsc_{version}_linux_arm64.tar.gz"}
+             "darwin-x86_64" {:asset "awsc_{version}_darwin_amd64.tar.gz"}
+             "darwin-aarch64" {:asset "awsc_{version}_darwin_arm64.tar.gz"}}}

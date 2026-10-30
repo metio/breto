@@ -5,4 +5,5 @@
 {:description "Fast, disk space efficient package manager",
  :source {:github "pnpm/pnpm"}
  :bins {"pn" "pnpm", "pnpm" "pnpm", "pnpx" "pnpm", "pnx" "pnpm"}
- :platforms {"linux-x86_64" {:asset "pnpm-linux-x64-musl.tar.gz"}}}
+ :platforms {"linux-x86_64" {:asset "pnpm-linux-x64-musl.tar.gz"}
+             "linux-aarch64" {:asset "pnpm-linux-arm64-musl.tar.gz"}}}

@@ -5,4 +5,7 @@
 {:description "Cron daemon written in golang (for eg. usage in docker images)",
  :source {:github "webdevops/go-crond"}
  :tag-prefix ""
- :platforms {"linux-x86_64" {:asset "go-crond.linux.amd64"}}}
+ :platforms {"linux-x86_64" {:asset "go-crond.linux.amd64"}
+             "linux-aarch64" {:asset "go-crond.linux.arm64"}
+             "darwin-x86_64" {:asset "go-crond.darwin.amd64"}
+             "darwin-aarch64" {:asset "go-crond.darwin.arm64"}}}

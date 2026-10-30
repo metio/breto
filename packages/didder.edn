@@ -5,4 +5,7 @@
 {:description "An extensive, fast, and accurate command-line image dithering tool",
  :source {:github "makew0rld/didder"}
  :checksum "didder_{version}_checksums.txt"
- :platforms {"linux-x86_64" {:asset "didder_{version}_linux_64-bit"}}}
+ :platforms {"linux-x86_64" {:asset "didder_{version}_linux_64-bit"}
+             "linux-aarch64" {:asset "didder_{version}_linux_arm64"}
+             "darwin-x86_64" {:asset "didder_{version}_macOS_64-bit"}
+             "darwin-aarch64" {:asset "didder_{version}_macOS_arm64"}}}

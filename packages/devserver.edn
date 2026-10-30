@@ -4,4 +4,6 @@
 
 {:description "A simple HTTPS server for local development. Implemented in Rust",
  :source {:github "kettle11/devserver"}
- :platforms {"linux-x86_64" {:asset "devserver-x86_64-unknown-linux-gnu.tar.gz" :checksum "devserver-x86_64-unknown-linux-gnu.sha512"}}}
+ :platforms {"linux-x86_64" {:asset "devserver-x86_64-unknown-linux-gnu.tar.gz" :checksum "devserver-x86_64-unknown-linux-gnu.sha512"}
+             "darwin-x86_64" {:asset "devserver-x86_64-apple-darwin.tar.gz" :checksum "devserver-x86_64-apple-darwin.sha512"}
+             "darwin-aarch64" {:asset "devserver-aarch64-apple-darwin.tar.gz" :checksum "devserver-aarch64-apple-darwin.sha512"}}}

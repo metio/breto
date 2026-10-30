@@ -4,4 +4,7 @@
 
 {:description "A more intuitive version of du in rust",
  :source {:github "bootandy/dust"}
- :platforms {"linux-x86_64" {:asset "dust-{tag}-x86_64-unknown-linux-musl.tar.gz" :bins {"dust" "dust-{tag}-x86_64-unknown-linux-musl/dust"}}}}
+ :platforms {"linux-x86_64" {:asset "dust-{tag}-x86_64-unknown-linux-musl.tar.gz" :bins {"dust" "dust-{tag}-x86_64-unknown-linux-musl/dust"}}
+             "linux-aarch64" {:asset "dust-{tag}-aarch64-unknown-linux-musl.tar.gz" :bins {"dust" "dust-{tag}-aarch64-unknown-linux-musl/dust"}}
+             "darwin-x86_64" {:asset "dust-{tag}-x86_64-apple-darwin.tar.gz" :bins {"dust" "dust-{tag}-x86_64-apple-darwin/dust"}}
+             "darwin-aarch64" {:asset "dust-{tag}-aarch64-apple-darwin.tar.gz" :bins {"dust" "dust-{tag}-aarch64-apple-darwin/dust"}}}}

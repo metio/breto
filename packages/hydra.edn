@@ -5,4 +5,7 @@
 {:description "OpenID Certified OpenID Connect and OAuth Provider written in Go - cloud native, security-first, open source API security for your infrastructure. SDKs for any language. Works with Hardware Security Modules. Compatible with MITREid",
  :source {:github "ory/hydra"}
  :checksum "checksums.txt"
- :platforms {"linux-x86_64" {:asset "hydra_{version}-linux_64bit.tar.gz"}}}
+ :platforms {"linux-x86_64" {:asset "hydra_{version}-linux_64bit.tar.gz"}
+             "linux-aarch64" {:asset "hydra_{version}-linux_arm64.tar.gz"}
+             "darwin-x86_64" {:asset "hydra_{version}-macOS_64bit.tar.gz"}
+             "darwin-aarch64" {:asset "hydra_{version}-macOS_arm64.tar.gz"}}}

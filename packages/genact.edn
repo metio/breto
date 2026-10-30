@@ -4,4 +4,6 @@
 
 {:description "A nonsense activity generator",
  :source {:github "svenstaro/genact"}
- :platforms {"linux-x86_64" {:asset "genact-{version}-x86_64-unknown-linux-musl"}}}
+ :platforms {"linux-x86_64" {:asset "genact-{version}-x86_64-unknown-linux-musl"}
+             "linux-aarch64" {:asset "genact-{version}-aarch64-unknown-linux-musl"}
+             "darwin-x86_64" {:asset "genact-{version}-x86_64-apple-darwin"}}}

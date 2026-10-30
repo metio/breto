@@ -5,4 +5,7 @@
 {:description "CLI to update multiple repositories in bulk",
  :source {:github "lindell/multi-gitter"}
  :checksum "checksums.txt"
- :platforms {"linux-x86_64" {:asset "multi-gitter_{version}_Linux_x86_64.tar.gz"}}}
+ :platforms {"linux-x86_64" {:asset "multi-gitter_{version}_Linux_x86_64.tar.gz"}
+             "linux-aarch64" {:asset "multi-gitter_{version}_Linux_ARM64.tar.gz"}
+             "darwin-x86_64" {:asset "multi-gitter_{version}_Darwin_x86_64.tar.gz"}
+             "darwin-aarch64" {:asset "multi-gitter_{version}_Darwin_ARM64.tar.gz"}}}

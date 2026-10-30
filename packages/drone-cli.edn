@@ -6,4 +6,7 @@
  :source {:github "harness/drone-cli"}
  :checksum "drone_checksums.txt"
  :bins {"drone" "drone"}
- :platforms {"linux-x86_64" {:asset "drone_linux_amd64.tar.gz"}}}
+ :platforms {"linux-x86_64" {:asset "drone_linux_amd64.tar.gz"}
+             "linux-aarch64" {:asset "drone_linux_arm64.tar.gz"}
+             "darwin-x86_64" {:asset "drone_darwin_amd64.tar.gz"}
+             "darwin-aarch64" {:asset "drone_darwin_arm64.tar.gz"}}}

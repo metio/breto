@@ -5,4 +5,7 @@
 {:description "A network diagnostic tool",
  :source {:github "fujiapple852/trippy"}
  :tag-prefix ""
- :platforms {"linux-x86_64" {:asset "trippy-{tag}-x86_64-unknown-linux-musl.tar.gz" :bins {"trip" "trippy-{tag}-x86_64-unknown-linux-musl/trip"}}}}
+ :platforms {"linux-x86_64" {:asset "trippy-{tag}-x86_64-unknown-linux-musl.tar.gz" :bins {"trip" "trippy-{tag}-x86_64-unknown-linux-musl/trip"}}
+             "linux-aarch64" {:asset "trippy-{tag}-aarch64-unknown-linux-musl.tar.gz" :bins {"trip" "trippy-{tag}-aarch64-unknown-linux-musl/trip"}}
+             "darwin-x86_64" {:asset "trippy-{tag}-x86_64-apple-darwin.tar.gz" :bins {"trip" "trippy-{tag}-x86_64-apple-darwin/trip"}}
+             "darwin-aarch64" {:asset "trippy-{tag}-aarch64-apple-darwin.tar.gz" :bins {"trip" "trippy-{tag}-aarch64-apple-darwin/trip"}}}}

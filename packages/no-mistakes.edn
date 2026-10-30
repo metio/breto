@@ -5,4 +5,7 @@
 {:description "git push no-mistakes",
  :source {:github "kunchenguid/no-mistakes"}
  :checksum "checksums.txt"
- :platforms {"linux-x86_64" {:asset "no-mistakes-{tag}-linux-amd64.tar.gz"}}}
+ :platforms {"linux-x86_64" {:asset "no-mistakes-{tag}-linux-amd64.tar.gz"}
+             "linux-aarch64" {:asset "no-mistakes-{tag}-linux-arm64.tar.gz"}
+             "darwin-x86_64" {:asset "no-mistakes-{tag}-darwin-amd64.tar.gz"}
+             "darwin-aarch64" {:asset "no-mistakes-{tag}-darwin-arm64.tar.gz"}}}

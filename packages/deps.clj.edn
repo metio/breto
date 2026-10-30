@@ -5,4 +5,5 @@
  :source {:github "borkdude/deps.clj"}
  :checksum "{asset}.sha256"
  :bins {"deps" "deps" "clojure" "deps"}
- :platforms {"linux-x86_64" {:asset "deps.clj-{version}-linux-amd64.zip"}}}
+ :platforms {"linux-x86_64" {:asset "deps.clj-{version}-linux-amd64.zip"}
+             "darwin-x86_64" {:asset "deps.clj-{version}-macos-amd64.zip"}}}

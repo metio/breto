@@ -5,4 +5,6 @@
 {:description "A command line tool for the Wren programming language",
  :source {:github "wren-lang/wren-cli"}
  :tag-prefix ""
- :platforms {"linux-x86_64" {:asset "wren-cli-linux-{tag}.zip" :bins {"wren_cli" "wren-cli-linux-{tag}/wren_cli"}}}}
+ :platforms {"linux-x86_64" {:asset "wren-cli-linux-{tag}.zip" :bins {"wren_cli" "wren-cli-linux-{tag}/wren_cli"}}
+             "darwin-x86_64" {:asset "wren-cli-mac-{tag}.zip" :bins {"wren_cli" "wren-cli-mac-{tag}/wren_cli"}}
+             "darwin-aarch64" {:asset "wren-cli-mac-{tag}.zip" :bins {"wren_cli" "wren-cli-mac-{tag}/wren_cli"}}}}

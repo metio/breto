@@ -6,4 +6,7 @@
  :source {:github "mitsuhiko/insta"}
  :tag-prefix ""
  :checksum "{asset}.sha256"
- :platforms {"linux-x86_64" {:asset "cargo-insta-x86_64-unknown-linux-musl.tar.xz" :bins {"cargo-insta" "cargo-insta-x86_64-unknown-linux-musl/cargo-insta"}}}}
+ :platforms {"linux-x86_64" {:asset "cargo-insta-x86_64-unknown-linux-musl.tar.xz" :bins {"cargo-insta" "cargo-insta-x86_64-unknown-linux-musl/cargo-insta"}}
+             "linux-aarch64" {:asset "cargo-insta-aarch64-unknown-linux-gnu.tar.xz" :bins {"cargo-insta" "cargo-insta-aarch64-unknown-linux-gnu/cargo-insta"}}
+             "darwin-x86_64" {:asset "cargo-insta-x86_64-apple-darwin.tar.xz" :bins {"cargo-insta" "cargo-insta-x86_64-apple-darwin/cargo-insta"}}
+             "darwin-aarch64" {:asset "cargo-insta-aarch64-apple-darwin.tar.xz" :bins {"cargo-insta" "cargo-insta-aarch64-apple-darwin/cargo-insta"}}}}

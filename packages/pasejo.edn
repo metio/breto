@@ -6,4 +6,7 @@
  :tag-prefix "",
  :checksum "SHA256SUMS",
  :completions {:bash {:env {"COMPLETE" "bash"}}}
- :platforms {"linux-x86_64" {:asset "pasejo-x86_64-unknown-linux-gnu.tar.gz"}}}
+ :platforms {"linux-x86_64" {:asset "pasejo-x86_64-unknown-linux-gnu.tar.gz"}
+             "linux-aarch64" {:asset "pasejo-aarch64-unknown-linux-gnu.tar.gz"}
+             "darwin-x86_64" {:asset "pasejo-x86_64-apple-darwin.tar.gz"}
+             "darwin-aarch64" {:asset "pasejo-aarch64-apple-darwin.tar.gz"}}}

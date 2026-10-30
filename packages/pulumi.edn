@@ -6,4 +6,7 @@
  :source {:github "pulumi/pulumi"}
  :checksum "SHA512SUMS"
  :bins {"pulumi" "pulumi/pulumi"}
- :platforms {"linux-x86_64" {:asset "pulumi-{tag}-linux-x64.tar.gz"}}}
+ :platforms {"linux-x86_64" {:asset "pulumi-{tag}-linux-x64.tar.gz"}
+             "linux-aarch64" {:asset "pulumi-{tag}-linux-arm64.tar.gz"}
+             "darwin-x86_64" {:asset "pulumi-{tag}-darwin-x64.tar.gz"}
+             "darwin-aarch64" {:asset "pulumi-{tag}-darwin-arm64.tar.gz"}}}

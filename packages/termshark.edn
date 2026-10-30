@@ -5,4 +5,7 @@
 {:description "A terminal UI for tshark, inspired by Wireshark",
  :source {:github "gcla/termshark"}
  :checksum "checksums.txt"
- :platforms {"linux-x86_64" {:asset "termshark_{version}_linux_x64.tar.gz" :bins {"termshark" "termshark_{version}_linux_x64/termshark"}}}}
+ :platforms {"linux-x86_64" {:asset "termshark_{version}_linux_x64.tar.gz" :bins {"termshark" "termshark_{version}_linux_x64/termshark"}}
+             "linux-aarch64" {:asset "termshark_{version}_linux_arm64.tar.gz" :bins {"termshark" "termshark_{version}_linux_arm64/termshark"}}
+             "darwin-x86_64" {:asset "termshark_{version}_macOS_x64.tar.gz" :bins {"termshark" "termshark_{version}_macOS_x64/termshark"}}
+             "darwin-aarch64" {:asset "termshark_{version}_macOS_arm64.tar.gz" :bins {"termshark" "termshark_{version}_macOS_arm64/termshark"}}}}

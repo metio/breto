@@ -5,4 +5,7 @@
 {:description "Distributed reliable key-value store for the most critical data of a distributed system",
  :source {:github "etcd-io/etcd"}
  :checksum "SHA256SUMS"
- :platforms {"linux-x86_64" {:asset "etcd-{tag}-linux-amd64.tar.gz" :bins {"etcd" "etcd-{tag}-linux-amd64/etcd", "etcdctl" "etcd-{tag}-linux-amd64/etcdctl"}}}}
+ :platforms {"linux-x86_64" {:asset "etcd-{tag}-linux-amd64.tar.gz" :bins {"etcd" "etcd-{tag}-linux-amd64/etcd", "etcdctl" "etcd-{tag}-linux-amd64/etcdctl"}}
+             "linux-aarch64" {:asset "etcd-{tag}-linux-arm64.tar.gz" :bins {"etcd" "etcd-{tag}-linux-arm64/etcd" "etcdctl" "etcd-{tag}-linux-arm64/etcdctl"}}
+             "darwin-x86_64" {:asset "etcd-{tag}-darwin-amd64.zip" :bins {"etcd" "etcd-{tag}-darwin-amd64/etcd" "etcdctl" "etcd-{tag}-darwin-amd64/etcdctl"}}
+             "darwin-aarch64" {:asset "etcd-{tag}-darwin-arm64.zip" :bins {"etcd" "etcd-{tag}-darwin-arm64/etcd" "etcdctl" "etcd-{tag}-darwin-arm64/etcdctl"}}}}

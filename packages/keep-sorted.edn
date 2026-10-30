@@ -4,4 +4,7 @@
 
 {:description "keep-sorted is a language-agnostic formatter that sorts lines between two markers in a larger file",
  :source {:github "google/keep-sorted"}
- :platforms {"linux-x86_64" {:asset "keep-sorted_linux_amd64"}}}
+ :platforms {"linux-x86_64" {:asset "keep-sorted_linux_amd64"}
+             "linux-aarch64" {:asset "keep-sorted_linux_arm64"}
+             "darwin-x86_64" {:asset "keep-sorted_darwin_amd64"}
+             "darwin-aarch64" {:asset "keep-sorted_darwin_arm64"}}}

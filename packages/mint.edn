@@ -5,4 +5,7 @@
 {:description "minT(oolkit): Mint awesome, secure and production ready containers just the way you need them! Don't change anything in your container image and minify it by up to 30x (and for compiled languages even more) making it secure too! (free and open source)",
  :source {:github "mintoolkit/mint"}
  :tag-prefix ""
- :platforms {"linux-x86_64" {:asset "dist_linux.tar.gz" :bins {"docker-slim" "dist_linux/docker-slim", "mint" "dist_linux/mint", "mint-sensor" "dist_linux/mint-sensor", "slim" "dist_linux/slim"}}}}
+ :platforms {"linux-x86_64" {:asset "dist_linux.tar.gz" :bins {"docker-slim" "dist_linux/docker-slim", "mint" "dist_linux/mint", "mint-sensor" "dist_linux/mint-sensor", "slim" "dist_linux/slim"}}
+             "linux-aarch64" {:asset "dist_linux_arm64.tar.gz" :bins {"docker-slim" "dist_linux_arm64/docker-slim" "mint" "dist_linux_arm64/mint" "mint-sensor" "dist_linux_arm64/mint-sensor" "slim" "dist_linux_arm64/slim"}}
+             "darwin-x86_64" {:asset "dist_mac.zip" :bins {"docker-slim" "dist_mac/docker-slim" "mint" "dist_mac/mint" "mint-sensor" "dist_mac/mint-sensor" "slim" "dist_mac/slim"}}
+             "darwin-aarch64" {:asset "dist_mac_m1.zip" :bins {"docker-slim" "dist_mac_m1/docker-slim" "mint" "dist_mac_m1/mint" "mint-sensor" "dist_mac_m1/mint-sensor" "slim" "dist_mac_m1/slim"}}}}

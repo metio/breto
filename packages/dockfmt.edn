@@ -4,4 +4,6 @@
 
 {:description "Dockerfile format and parser. Like `gofmt` but for Dockerfiles",
  :source {:github "jessfraz/dockfmt"}
- :platforms {"linux-x86_64" {:asset "dockfmt-linux-amd64"}}}
+ :platforms {"linux-x86_64" {:asset "dockfmt-linux-amd64"}
+             "linux-aarch64" {:asset "dockfmt-linux-arm64"}
+             "darwin-x86_64" {:asset "dockfmt-darwin-amd64"}}}

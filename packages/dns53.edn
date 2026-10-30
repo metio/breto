@@ -5,4 +5,7 @@
 {:description "Dynamic DNS within Amazon Route53. Expose your EC2 quickly, easily and privately",
  :source {:github "purpleclay/dns53"}
  :checksum "checksums.txt"
- :platforms {"linux-x86_64" {:asset "dns53_{version}_linux-x86_64.tar.gz"}}}
+ :platforms {"linux-x86_64" {:asset "dns53_{version}_linux-x86_64.tar.gz"}
+             "linux-aarch64" {:asset "dns53_{version}_linux-arm64.tar.gz"}
+             "darwin-x86_64" {:asset "dns53_{version}_darwin-x86_64.tar.gz"}
+             "darwin-aarch64" {:asset "dns53_{version}_darwin-arm64.tar.gz"}}}

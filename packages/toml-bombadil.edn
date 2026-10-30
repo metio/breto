@@ -5,4 +5,6 @@
 {:description "A dotfile manager with templating",
  :source {:github "oknozor/toml-bombadil"}
  :tag-prefix ""
- :platforms {"linux-x86_64" {:asset "bombadil-{tag}-x86_64-unknown-linux-musl.tar.gz" :bins {"bombadil" "x86_64-unknown-linux-musl/bombadil"}}}}
+ :platforms {"linux-x86_64" {:asset "bombadil-{tag}-x86_64-unknown-linux-musl.tar.gz" :bins {"bombadil" "x86_64-unknown-linux-musl/bombadil"}}
+             "darwin-x86_64" {:asset "bombadil-{tag}-x86_64-apple-darwin.tar.gz" :bins {"bombadil" "x86_64-apple-darwin/bombadil"}}
+             "darwin-aarch64" {:asset "bombadil-{tag}-aarch64-apple-darwin.tar.gz" :bins {"bombadil" "aarch64-apple-darwin/bombadil"}}}}

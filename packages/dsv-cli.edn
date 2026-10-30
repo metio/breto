@@ -6,4 +6,6 @@
  :source {:github "DelineaXPM/dsv-cli"}
  :checksum "checksums-sha256.txt"
  :bins {"dsv" "{asset}"}
- :platforms {"linux-x86_64" {:asset "dsv-linux-x64"}}}
+ :platforms {"linux-x86_64" {:asset "dsv-linux-x64"}
+             "darwin-x86_64" {:asset "dsv-darwin-x64"}
+             "darwin-aarch64" {:asset "dsv-darwin-arm64"}}}

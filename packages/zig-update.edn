@@ -4,4 +4,7 @@
 
 {:description "Zig updator",
  :source {:github "mattn/zig-update"}
- :platforms {"linux-x86_64" {:asset "zig-update_{tag}_linux_amd64.tar.gz" :bins {"zig-update" "zig-update_{tag}_linux_amd64/zig-update"}}}}
+ :platforms {"linux-x86_64" {:asset "zig-update_{tag}_linux_amd64.tar.gz" :bins {"zig-update" "zig-update_{tag}_linux_amd64/zig-update"}}
+             "linux-aarch64" {:asset "zig-update_{tag}_linux_arm64.tar.gz" :bins {"zig-update" "zig-update_{tag}_linux_arm64/zig-update"}}
+             "darwin-x86_64" {:asset "zig-update_{tag}_darwin_amd64.zip" :bins {"zig-update" "zig-update_{tag}_darwin_amd64/zig-update"}}
+             "darwin-aarch64" {:asset "zig-update_{tag}_darwin_arm64.zip" :bins {"zig-update" "zig-update_{tag}_darwin_arm64/zig-update"}}}}

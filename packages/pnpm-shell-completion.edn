@@ -4,4 +4,7 @@
 
 {:description "Complete your pnpm command fastly\n\n## Set up\n\nYou need to execute a script within the running shell's process.\nFor details, please see the document.\n\nhttps://github.com/g-plane/pnpm-shell-completion#installation\n\nZsh:\n\n```sh\nlocal plugin_path_dir=$(dirname $(aqua which pnpm-shell-completion))\nlocal plugin_path=\"${plugin_path_dir}/pnpm-shell-completion.plugin.zsh\"\nsource $plugin_path\n```",
  :source {:github "g-plane/pnpm-shell-completion"}
- :platforms {"linux-x86_64" {:asset "pnpm-shell-completion_x86_64-unknown-linux-musl.tar.gz"}}}
+ :platforms {"linux-x86_64" {:asset "pnpm-shell-completion_x86_64-unknown-linux-musl.tar.gz"}
+             "linux-aarch64" {:asset "pnpm-shell-completion_aarch64-unknown-linux-gnu.tar.gz"}
+             "darwin-x86_64" {:asset "pnpm-shell-completion_x86_64-apple-darwin.tar.gz"}
+             "darwin-aarch64" {:asset "pnpm-shell-completion_aarch64-apple-darwin.tar.gz"}}}

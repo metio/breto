@@ -4,4 +4,5 @@
 
 {:description "A tiny but valid `init` for containers",
  :source {:github "krallin/tini"}
- :platforms {"linux-x86_64" {:asset "tini-static-amd64"}}}
+ :platforms {"linux-x86_64" {:asset "tini-static-amd64"}
+             "linux-aarch64" {:asset "tini-static-arm64"}}}

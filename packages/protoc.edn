@@ -5,4 +5,7 @@
 {:description "Protocol Buffers - Google's data interchange format",
  :source {:github "protocolbuffers/protobuf"}
  :bins {"protoc" "bin/protoc"}
- :platforms {"linux-x86_64" {:asset "protoc-{version}-linux-x86_64.zip"}}}
+ :platforms {"linux-x86_64" {:asset "protoc-{version}-linux-x86_64.zip"}
+             "linux-aarch64" {:asset "protoc-{version}-linux-aarch_64.zip"}
+             "darwin-x86_64" {:asset "protoc-{version}-osx-x86_64.zip"}
+             "darwin-aarch64" {:asset "protoc-{version}-osx-aarch_64.zip"}}}

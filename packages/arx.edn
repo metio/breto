@@ -6,4 +6,5 @@
  :source {:github "jubako/arx"}
  :tag-prefix ""
  :checksum "{asset}.sha256"
- :platforms {"linux-x86_64" {:asset "arx-{tag}-linux.tar.gz" :bins {"arx" "arx-{tag}-linux/arx"}}}}
+ :platforms {"linux-x86_64" {:asset "arx-{tag}-linux.tar.gz" :bins {"arx" "arx-{tag}-linux/arx"}}
+             "darwin-x86_64" {:asset "arx-{tag}-macos.tar.gz" :bins {"arx" "arx-{tag}-macos/arx"}}}}

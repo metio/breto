@@ -5,4 +5,7 @@
 {:description "Terminal file manager",
  :source {:github "gokcehan/lf"}
  :tag-prefix ""
- :platforms {"linux-x86_64" {:asset "lf-linux-amd64.tar.gz"}}}
+ :platforms {"linux-x86_64" {:asset "lf-linux-amd64.tar.gz"}
+             "linux-aarch64" {:asset "lf-linux-arm64.tar.gz"}
+             "darwin-x86_64" {:asset "lf-darwin-amd64.tar.gz"}
+             "darwin-aarch64" {:asset "lf-darwin-arm64.tar.gz"}}}

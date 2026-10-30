@@ -4,4 +4,7 @@
 
 {:description "Pure Go implementation of jq",
  :source {:github "itchyny/gojq"}
- :platforms {"linux-x86_64" {:asset "gojq_{tag}_linux_amd64.tar.gz" :bins {"gojq" "gojq_{tag}_linux_amd64/gojq"}}}}
+ :platforms {"linux-x86_64" {:asset "gojq_{tag}_linux_amd64.tar.gz" :bins {"gojq" "gojq_{tag}_linux_amd64/gojq"}}
+             "linux-aarch64" {:asset "gojq_{tag}_linux_arm64.tar.gz" :bins {"gojq" "gojq_{tag}_linux_arm64/gojq"}}
+             "darwin-x86_64" {:asset "gojq_{tag}_darwin_amd64.zip" :bins {"gojq" "gojq_{tag}_darwin_amd64/gojq"}}
+             "darwin-aarch64" {:asset "gojq_{tag}_darwin_arm64.zip" :bins {"gojq" "gojq_{tag}_darwin_arm64/gojq"}}}}

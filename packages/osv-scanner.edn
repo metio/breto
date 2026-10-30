@@ -5,4 +5,7 @@
 {:description "Vulnerability scanner written in Go which uses the data provided by https://osv.dev",
  :source {:github "google/osv-scanner"}
  :checksum "osv-scanner_SHA256SUMS"
- :platforms {"linux-x86_64" {:asset "osv-scanner_linux_amd64"}}}
+ :platforms {"linux-x86_64" {:asset "osv-scanner_linux_amd64"}
+             "linux-aarch64" {:asset "osv-scanner_linux_arm64"}
+             "darwin-x86_64" {:asset "osv-scanner_darwin_amd64"}
+             "darwin-aarch64" {:asset "osv-scanner_darwin_arm64"}}}

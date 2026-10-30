@@ -6,4 +6,5 @@
  :source {:github "tomohiro/gyazo-cli"}
  :tag-prefix ""
  :checksum "{tag}_SHA256SUMS"
- :platforms {"linux-x86_64" {:asset "gyazo-cli_{tag}_linux_amd64.zip" :bins {"gyazo-cli" "gyazo-cli_{tag}_linux_amd64/gyazo-cli"}}}}
+ :platforms {"linux-x86_64" {:asset "gyazo-cli_{tag}_linux_amd64.zip" :bins {"gyazo-cli" "gyazo-cli_{tag}_linux_amd64/gyazo-cli"}}
+             "darwin-x86_64" {:asset "gyazo-cli_{tag}_darwin_amd64.zip" :bins {"gyazo-cli" "gyazo-cli_{tag}_darwin_amd64/gyazo-cli"}}}}

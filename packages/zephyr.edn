@@ -5,4 +5,6 @@
 {:description "Tree shaking breeze for PureScript CoreFn AST",
  :source {:github "MaybeJustJames/zephyr"}
  :bins {"zephyr" "zephyr/zephyr"}
- :platforms {"linux-x86_64" {:asset "Linux.tar.gz"}}}
+ :platforms {"linux-x86_64" {:asset "Linux.tar.gz"}
+             "darwin-x86_64" {:asset "macOS.tar.gz"}
+             "darwin-aarch64" {:asset "macOS.tar.gz"}}}

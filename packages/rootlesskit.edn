@@ -6,4 +6,5 @@
  :source {:github "rootless-containers/rootlesskit"}
  :checksum "SHA256SUMS"
  :bins {"rootlessctl" "rootlessctl", "rootlesskit" "rootlesskit", "rootlesskit-docker-proxy" "rootlesskit-docker-proxy"}
- :platforms {"linux-x86_64" {:asset "rootlesskit-x86_64.tar.gz"}}}
+ :platforms {"linux-x86_64" {:asset "rootlesskit-x86_64.tar.gz"}
+             "linux-aarch64" {:asset "rootlesskit-aarch64.tar.gz"}}}

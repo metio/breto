@@ -6,4 +6,7 @@
  :source {:github "redpanda-data/redpanda"}
  :checksum "rpk_{version}_checksums.txt"
  :bins {"rpk" "rpk"}
- :platforms {"linux-x86_64" {:asset "rpk-linux-amd64.zip"}}}
+ :platforms {"linux-x86_64" {:asset "rpk-linux-amd64.zip"}
+             "linux-aarch64" {:asset "rpk-linux-arm64.zip"}
+             "darwin-x86_64" {:asset "rpk-darwin-amd64.zip"}
+             "darwin-aarch64" {:asset "rpk-darwin-arm64.zip"}}}

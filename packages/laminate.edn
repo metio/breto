@@ -5,4 +5,7 @@
 {:description "A command-line bridge tool that orchestrates external image generation commands to convert text/code strings to images",
  :source {:github "Songmu/laminate"}
  :checksum "SHA256SUMS"
- :platforms {"linux-x86_64" {:asset "laminate_{tag}_linux_amd64.tar.gz" :bins {"laminate" "laminate_{tag}_linux_amd64/laminate"}}}}
+ :platforms {"linux-x86_64" {:asset "laminate_{tag}_linux_amd64.tar.gz" :bins {"laminate" "laminate_{tag}_linux_amd64/laminate"}}
+             "linux-aarch64" {:asset "laminate_{tag}_linux_arm64.tar.gz" :bins {"laminate" "laminate_{tag}_linux_arm64/laminate"}}
+             "darwin-x86_64" {:asset "laminate_{tag}_darwin_amd64.zip" :bins {"laminate" "laminate_{tag}_darwin_amd64/laminate"}}
+             "darwin-aarch64" {:asset "laminate_{tag}_darwin_arm64.zip" :bins {"laminate" "laminate_{tag}_darwin_arm64/laminate"}}}}

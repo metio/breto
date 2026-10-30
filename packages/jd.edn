@@ -4,4 +4,7 @@
 
 {:description "JSON diff and patch",
  :source {:github "josephburnett/jd"}
- :platforms {"linux-x86_64" {:asset "jd-amd64-linux"}}}
+ :platforms {"linux-x86_64" {:asset "jd-amd64-linux"}
+             "linux-aarch64" {:asset "jd-arm64-linux"}
+             "darwin-x86_64" {:asset "jd-amd64-darwin"}
+             "darwin-aarch64" {:asset "jd-arm64-darwin"}}}

@@ -5,4 +5,6 @@
 {:description "Krab is a migration and automation tool for PostgreSQL based on HCL syntax",
  :source {:github "ohkrab/krab"}
  :checksum "krab_{version}_checksums.txt"
- :platforms {"linux-x86_64" {:asset "krab_{version}_linux_amd64.tar.gz"}}}
+ :platforms {"linux-x86_64" {:asset "krab_{version}_linux_amd64.tar.gz"}
+             "darwin-x86_64" {:asset "krab_{version}_darwin_amd64.tar.gz"}
+             "darwin-aarch64" {:asset "krab_{version}_darwin_arm64.tar.gz"}}}

@@ -5,4 +5,7 @@
 {:source {:github "protonpass/pass-cli"}
  :tag-prefix ""
  :checksum "{asset}.sha256"
- :platforms {"linux-x86_64" {:asset "pass-cli-linux-x86_64"}}}
+ :platforms {"linux-x86_64" {:asset "pass-cli-linux-x86_64"}
+             "linux-aarch64" {:asset "pass-cli-linux-aarch64"}
+             "darwin-x86_64" {:asset "pass-cli-macos-x86_64"}
+             "darwin-aarch64" {:asset "pass-cli-macos-aarch64"}}}

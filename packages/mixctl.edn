@@ -6,4 +6,7 @@
  :source {:github "inlets/mixctl"}
  :tag-prefix ""
  :checksum "{asset}.sha256"
- :platforms {"linux-x86_64" {:asset "mixctl"}}}
+ :platforms {"linux-x86_64" {:asset "mixctl"}
+             "linux-aarch64" {:asset "mixctl-arm64"}
+             "darwin-x86_64" {:asset "mixctl-darwin"}
+             "darwin-aarch64" {:asset "mixctl-darwin-arm64"}}}

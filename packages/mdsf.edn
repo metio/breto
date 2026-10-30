@@ -5,4 +5,6 @@
 {:description "Format markdown code blocks using your favorite tools",
  :source {:github "hougesen/mdsf"}
  :checksum "{asset}.sha256"
- :platforms {"linux-x86_64" {:asset "mdsf-x86_64-unknown-linux-gnu.tar.gz" :bins {"mdsf" "mdsf-x86_64-unknown-linux-gnu/mdsf"}}}}
+ :platforms {"linux-x86_64" {:asset "mdsf-x86_64-unknown-linux-gnu.tar.gz" :bins {"mdsf" "mdsf-x86_64-unknown-linux-gnu/mdsf"}}
+             "darwin-x86_64" {:asset "mdsf-x86_64-apple-darwin.tar.gz" :bins {"mdsf" "mdsf-x86_64-apple-darwin/mdsf"}}
+             "darwin-aarch64" {:asset "mdsf-aarch64-apple-darwin.tar.gz" :bins {"mdsf" "mdsf-aarch64-apple-darwin/mdsf"}}}}

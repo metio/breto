@@ -5,4 +5,7 @@
 {:description "'go test' runner with output optimized for humans, JUnit XML for CI integration, and a summary of the test results",
  :source {:github "gotestyourself/gotestsum"}
  :checksum "gotestsum-{version}-checksums.txt"
- :platforms {"linux-x86_64" {:asset "gotestsum_{version}_linux_amd64.tar.gz"}}}
+ :platforms {"linux-x86_64" {:asset "gotestsum_{version}_linux_amd64.tar.gz"}
+             "linux-aarch64" {:asset "gotestsum_{version}_linux_arm64.tar.gz"}
+             "darwin-x86_64" {:asset "gotestsum_{version}_darwin_amd64.tar.gz"}
+             "darwin-aarch64" {:asset "gotestsum_{version}_darwin_arm64.tar.gz"}}}

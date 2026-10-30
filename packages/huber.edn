@@ -5,4 +5,7 @@
 {:description "Huber: A package installer for GitHub repository releases",
  :source {:github "innobead/huber"}
  :checksum "{asset}.sha256sum"
- :platforms {"linux-x86_64" {:asset "huber-x86_64-unknown-linux-musl"}}}
+ :platforms {"linux-x86_64" {:asset "huber-x86_64-unknown-linux-musl"}
+             "linux-aarch64" {:asset "huber-aarch64-unknown-linux-musl"}
+             "darwin-x86_64" {:asset "huber-x86_64-apple-darwin"}
+             "darwin-aarch64" {:asset "huber-aarch64-apple-darwin"}}}

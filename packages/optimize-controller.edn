@@ -6,4 +6,6 @@
  :source {:github "thestormforge/optimize-controller"}
  :checksum "checksums.txt"
  :bins {"stormforge" "stormforge"}
- :platforms {"linux-x86_64" {:asset "stormforge-linux-amd64.tar.gz"}}}
+ :platforms {"linux-x86_64" {:asset "stormforge-linux-amd64.tar.gz"}
+             "darwin-x86_64" {:asset "stormforge-darwin-amd64.tar.gz"}
+             "darwin-aarch64" {:asset "stormforge-darwin-arm64.tar.gz"}}}

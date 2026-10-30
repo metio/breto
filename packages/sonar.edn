@@ -4,4 +4,7 @@
 
 {:description "CLI tool for inspecting and managing services listening on localhost ports",
  :source {:github "RasKrebs/sonar"}
- :platforms {"linux-x86_64" {:asset "sonar_linux_amd64.tar.gz"}}}
+ :platforms {"linux-x86_64" {:asset "sonar_linux_amd64.tar.gz"}
+             "linux-aarch64" {:asset "sonar_linux_arm64.tar.gz"}
+             "darwin-x86_64" {:asset "sonar_darwin_amd64.tar.gz"}
+             "darwin-aarch64" {:asset "sonar_darwin_arm64.tar.gz"}}}

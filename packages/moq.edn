@@ -5,4 +5,7 @@
 {:description "Interface mocking tool for go generate",
  :source {:github "matryer/moq"}
  :checksum "checksums.txt"
- :platforms {"linux-x86_64" {:asset "moq_Linux_x86_64.tar.gz"}}}
+ :platforms {"linux-x86_64" {:asset "moq_Linux_x86_64.tar.gz"}
+             "linux-aarch64" {:asset "moq_Linux_arm64.tar.gz"}
+             "darwin-x86_64" {:asset "moq_macOS_x86_64.tar.gz"}
+             "darwin-aarch64" {:asset "moq_macOS_arm64.tar.gz"}}}

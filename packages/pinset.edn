@@ -6,4 +6,6 @@
  :source {:github "Future-Element/pinset"}
  :checksum "SHA256SUMS"
  :bins {"pinset" "pinset", "pinset-shim" "pinset-shim"}
- :platforms {"linux-x86_64" {:asset "pinset-{tag}-linux-x86_64.zip"}}}
+ :platforms {"linux-x86_64" {:asset "pinset-{tag}-linux-x86_64.zip"}
+             "linux-aarch64" {:asset "pinset-{tag}-linux-aarch64.zip"}
+             "darwin-aarch64" {:asset "pinset-{tag}-macos-aarch64.zip"}}}

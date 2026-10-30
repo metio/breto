@@ -6,4 +6,5 @@
  :source {:github "container2wasm/container2wasm"}
  :checksum "SHA256SUMS"
  :bins {"c2w" "c2w"}
- :platforms {"linux-x86_64" {:asset "container2wasm-{tag}-linux-amd64.tar.gz"}}}
+ :platforms {"linux-x86_64" {:asset "container2wasm-{tag}-linux-amd64.tar.gz"}
+             "linux-aarch64" {:asset "container2wasm-{tag}-linux-arm64.tar.gz"}}}

@@ -6,4 +6,7 @@
  :source {:github "openclarity/kubeclarity"}
  :checksum "checksums.txt"
  :bins {"kubeclarity-cli" "kubeclarity-cli"}
- :platforms {"linux-x86_64" {:asset "kubeclarity-cli-{version}-linux-amd64.tar.gz"}}}
+ :platforms {"linux-x86_64" {:asset "kubeclarity-cli-{version}-linux-amd64.tar.gz"}
+             "linux-aarch64" {:asset "kubeclarity-cli-{version}-linux-arm64.tar.gz"}
+             "darwin-x86_64" {:asset "kubeclarity-cli-{version}-darwin-amd64.tar.gz"}
+             "darwin-aarch64" {:asset "kubeclarity-cli-{version}-darwin-arm64.tar.gz"}}}

@@ -4,4 +4,7 @@
 
 {:source {:github "Songmu/podbard"}
  :checksum "SHA256SUMS"
- :platforms {"linux-x86_64" {:asset "podbard_{tag}_linux_amd64.tar.gz" :bins {"podbard" "podbard_{tag}_linux_amd64/podbard"}}}}
+ :platforms {"linux-x86_64" {:asset "podbard_{tag}_linux_amd64.tar.gz" :bins {"podbard" "podbard_{tag}_linux_amd64/podbard"}}
+             "linux-aarch64" {:asset "podbard_{tag}_linux_arm64.tar.gz" :bins {"podbard" "podbard_{tag}_linux_arm64/podbard"}}
+             "darwin-x86_64" {:asset "podbard_{tag}_darwin_amd64.zip" :bins {"podbard" "podbard_{tag}_darwin_amd64/podbard"}}
+             "darwin-aarch64" {:asset "podbard_{tag}_darwin_arm64.zip" :bins {"podbard" "podbard_{tag}_darwin_arm64/podbard"}}}}

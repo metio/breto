@@ -3,4 +3,7 @@
 
 {:description "Kubernetes WithOut Kubelet -  Simulates thousands of Nodes and Clusters",
  :source {:github "kubernetes-sigs/kwok"}
- :platforms {"linux-x86_64" {:asset "kwokctl-linux-amd64"}}}
+ :platforms {"linux-x86_64" {:asset "kwokctl-linux-amd64"}
+             "linux-aarch64" {:asset "kwokctl-linux-arm64"}
+             "darwin-x86_64" {:asset "kwokctl-darwin-amd64"}
+             "darwin-aarch64" {:asset "kwokctl-darwin-arm64"}}}

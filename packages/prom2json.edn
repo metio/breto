@@ -5,4 +5,7 @@
 {:description "A tool to scrape a Prometheus client and dump the result as JSON",
  :source {:github "prometheus/prom2json"}
  :checksum "sha256sums.txt"
- :platforms {"linux-x86_64" {:asset "prom2json-{version}.linux-amd64.tar.gz" :bins {"prom2json" "prom2json-{version}.linux-amd64/prom2json"}}}}
+ :platforms {"linux-x86_64" {:asset "prom2json-{version}.linux-amd64.tar.gz" :bins {"prom2json" "prom2json-{version}.linux-amd64/prom2json"}}
+             "linux-aarch64" {:asset "prom2json-{version}.linux-arm64.tar.gz" :bins {"prom2json" "prom2json-{version}.linux-arm64/prom2json"}}
+             "darwin-x86_64" {:asset "prom2json-{version}.darwin-amd64.tar.gz" :bins {"prom2json" "prom2json-{version}.darwin-amd64/prom2json"}}
+             "darwin-aarch64" {:asset "prom2json-{version}.darwin-arm64.tar.gz" :bins {"prom2json" "prom2json-{version}.darwin-arm64/prom2json"}}}}

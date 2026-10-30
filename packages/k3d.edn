@@ -5,4 +5,7 @@
 {:description "Little helper to run CNCF's k3s in Docker",
  :source {:github "k3d-io/k3d"}
  :checksum "checksums.txt"
- :platforms {"linux-x86_64" {:asset "k3d-linux-amd64"}}}
+ :platforms {"linux-x86_64" {:asset "k3d-linux-amd64"}
+             "linux-aarch64" {:asset "k3d-linux-arm64"}
+             "darwin-x86_64" {:asset "k3d-darwin-amd64"}
+             "darwin-aarch64" {:asset "k3d-darwin-arm64"}}}

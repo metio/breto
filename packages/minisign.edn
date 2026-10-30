@@ -5,4 +5,6 @@
 {:description "A dead simple tool to sign files and verify digital signatures",
  :source {:github "jedisct1/minisign"}
  :tag-prefix ""
- :platforms {"linux-x86_64" {:asset "minisign-{tag}-linux.tar.gz" :bins {"minisign" "minisign-linux/x86_64/minisign"}}}}
+ :platforms {"linux-x86_64" {:asset "minisign-{tag}-linux.tar.gz" :bins {"minisign" "minisign-linux/x86_64/minisign"}}
+             "darwin-x86_64" {:asset "minisign-{tag}-macos.zip" :bins {"minisign" "minisign-macos/x86_64/minisign"}}
+             "darwin-aarch64" {:asset "minisign-{tag}-macos.zip" :bins {"minisign" "minisign-macos/x86_64/minisign"}}}}

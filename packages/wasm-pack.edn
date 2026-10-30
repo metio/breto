@@ -4,4 +4,7 @@
 
 {:description "your favorite rust -> wasm workflow tool",
  :source {:github "wasm-bindgen/wasm-pack"}
- :platforms {"linux-x86_64" {:asset "wasm-pack-{tag}-x86_64-unknown-linux-musl.tar.gz" :bins {"wasm-pack" "wasm-pack-{tag}-x86_64-unknown-linux-musl/wasm-pack"}}}}
+ :platforms {"linux-x86_64" {:asset "wasm-pack-{tag}-x86_64-unknown-linux-musl.tar.gz" :bins {"wasm-pack" "wasm-pack-{tag}-x86_64-unknown-linux-musl/wasm-pack"}}
+             "linux-aarch64" {:asset "wasm-pack-{tag}-aarch64-unknown-linux-musl.tar.gz" :bins {"wasm-pack" "wasm-pack-{tag}-aarch64-unknown-linux-musl/wasm-pack"}}
+             "darwin-x86_64" {:asset "wasm-pack-{tag}-x86_64-apple-darwin.tar.gz" :bins {"wasm-pack" "wasm-pack-{tag}-x86_64-apple-darwin/wasm-pack"}}
+             "darwin-aarch64" {:asset "wasm-pack-{tag}-aarch64-apple-darwin.tar.gz" :bins {"wasm-pack" "wasm-pack-{tag}-aarch64-apple-darwin/wasm-pack"}}}}

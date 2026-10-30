@@ -4,4 +4,7 @@
 
 {:description "aptly - Debian repository management tool",
  :source {:github "aptly-dev/aptly"}
- :platforms {"linux-x86_64" {:asset "aptly_{version}_linux_amd64.zip" :bins {"aptly" "aptly_{version}_linux_amd64/aptly"}}}}
+ :platforms {"linux-x86_64" {:asset "aptly_{version}_linux_amd64.zip" :bins {"aptly" "aptly_{version}_linux_amd64/aptly"}}
+             "linux-aarch64" {:asset "aptly_{version}_linux_arm64.zip" :bins {"aptly" "aptly_{version}_linux_arm64/aptly"}}
+             "darwin-x86_64" {:asset "aptly_{version}_darwin_amd64.zip" :bins {"aptly" "aptly_{version}_darwin_amd64/aptly"}}
+             "darwin-aarch64" {:asset "aptly_{version}_darwin_arm64.zip" :bins {"aptly" "aptly_{version}_darwin_arm64/aptly"}}}}

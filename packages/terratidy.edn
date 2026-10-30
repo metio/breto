@@ -5,4 +5,7 @@
 {:description "A comprehensive quality platform for Terraform and Terragrunt",
  :source {:github "santosr2/TerraTidy"}
  :checksum "checksums.txt"
- :platforms {"linux-x86_64" {:asset "terratidy-{version}-linux-amd64.tar.gz"}}}
+ :platforms {"linux-x86_64" {:asset "terratidy-{version}-linux-amd64.tar.gz"}
+             "linux-aarch64" {:asset "terratidy-{version}-linux-arm64.tar.gz"}
+             "darwin-x86_64" {:asset "terratidy-{version}-darwin-amd64.tar.gz"}
+             "darwin-aarch64" {:asset "terratidy-{version}-darwin-arm64.tar.gz"}}}

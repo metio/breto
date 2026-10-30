@@ -5,4 +5,7 @@
 {:description "A Better Secrets Scanner built for configurability and speed",
  :source {:github "betterleaks/betterleaks"}
  :checksum "checksums.txt"
- :platforms {"linux-x86_64" {:asset "betterleaks_{version}_linux_x64.tar.gz"}}}
+ :platforms {"linux-x86_64" {:asset "betterleaks_{version}_linux_x64.tar.gz"}
+             "linux-aarch64" {:asset "betterleaks_{version}_linux_arm64.tar.gz"}
+             "darwin-x86_64" {:asset "betterleaks_{version}_darwin_x64.tar.gz"}
+             "darwin-aarch64" {:asset "betterleaks_{version}_darwin_arm64.tar.gz"}}}

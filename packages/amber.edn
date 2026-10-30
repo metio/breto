@@ -5,4 +5,7 @@
 {:description "Amber the programming language compiled to bash",
  :source {:github "amber-lang/amber"}
  :tag-prefix ""
- :platforms {"linux-x86_64" {:asset "amber-linux-musl-x86_64.tar.xz"}}}
+ :platforms {"linux-x86_64" {:asset "amber-linux-musl-x86_64.tar.xz"}
+             "linux-aarch64" {:asset "amber-linux-musl-aarch64.tar.xz"}
+             "darwin-x86_64" {:asset "amber-macos-x86_64.tar.xz"}
+             "darwin-aarch64" {:asset "amber-macos-aarch64.tar.xz"}}}

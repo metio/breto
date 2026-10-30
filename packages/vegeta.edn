@@ -5,4 +5,7 @@
 {:description "HTTP load testing tool and library. It's over 9000",
  :source {:github "tsenart/vegeta"}
  :checksum "vegeta_{version}_checksums.txt"
- :platforms {"linux-x86_64" {:asset "vegeta_{version}_linux_amd64.tar.gz"}}}
+ :platforms {"linux-x86_64" {:asset "vegeta_{version}_linux_amd64.tar.gz"}
+             "linux-aarch64" {:asset "vegeta_{version}_linux_arm64.tar.gz"}
+             "darwin-x86_64" {:asset "vegeta_{version}_darwin_amd64.tar.gz"}
+             "darwin-aarch64" {:asset "vegeta_{version}_darwin_arm64.tar.gz"}}}

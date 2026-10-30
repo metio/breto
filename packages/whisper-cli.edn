@@ -6,4 +6,7 @@
  :source {:github "whisper-sec/whisper-cli"}
  :checksum "{asset}.sha256"
  :bins {"whisper" "{asset}"}
- :platforms {"linux-x86_64" {:asset "whisper-linux-amd64"}}}
+ :platforms {"linux-x86_64" {:asset "whisper-linux-amd64"}
+             "linux-aarch64" {:asset "whisper-linux-arm64"}
+             "darwin-x86_64" {:asset "whisper-darwin-amd64"}
+             "darwin-aarch64" {:asset "whisper-darwin-arm64"}}}

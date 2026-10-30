@@ -4,4 +4,7 @@
 
 {:description "Command to convert from color text (ANSI or 256) to image",
  :source {:github "jiro4989/textimg"}
- :platforms {"linux-x86_64" {:asset "textimg-linux-amd64.tar.gz"}}}
+ :platforms {"linux-x86_64" {:asset "textimg-linux-amd64.tar.gz"}
+             "linux-aarch64" {:asset "textimg-linux-arm64.tar.gz"}
+             "darwin-x86_64" {:asset "textimg-darwin-amd64.tar.gz"}
+             "darwin-aarch64" {:asset "textimg-darwin-arm64.tar.gz"}}}

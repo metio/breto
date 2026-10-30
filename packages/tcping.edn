@@ -4,4 +4,5 @@
 
 {:description "ping over a tcp connection",
  :source {:github "cloverstd/tcping"}
- :platforms {"linux-x86_64" {:asset "tcping-linux-amd64-{tag}.tar.gz"}}}
+ :platforms {"linux-x86_64" {:asset "tcping-linux-amd64-{tag}.tar.gz"}
+             "darwin-x86_64" {:asset "tcping-darwin-amd64-{tag}.tar.gz"}}}

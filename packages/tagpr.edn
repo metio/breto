@@ -5,4 +5,7 @@
 {:description "The tagpr automatically creates and updates a pull request for unreleased items, tag them when they are merged, and create releases",
  :source {:github "Songmu/tagpr"}
  :checksum "SHA256SUMS"
- :platforms {"linux-x86_64" {:asset "tagpr_{tag}_linux_amd64.tar.gz" :bins {"tagpr" "tagpr_{tag}_linux_amd64/tagpr"}}}}
+ :platforms {"linux-x86_64" {:asset "tagpr_{tag}_linux_amd64.tar.gz" :bins {"tagpr" "tagpr_{tag}_linux_amd64/tagpr"}}
+             "linux-aarch64" {:asset "tagpr_{tag}_linux_arm64.tar.gz" :bins {"tagpr" "tagpr_{tag}_linux_arm64/tagpr"}}
+             "darwin-x86_64" {:asset "tagpr_{tag}_darwin_amd64.zip" :bins {"tagpr" "tagpr_{tag}_darwin_amd64/tagpr"}}
+             "darwin-aarch64" {:asset "tagpr_{tag}_darwin_arm64.zip" :bins {"tagpr" "tagpr_{tag}_darwin_arm64/tagpr"}}}}

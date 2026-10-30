@@ -5,4 +5,7 @@
 {:description "Sync your markdown files with Confluence pages",
  :source {:github "kovetskiy/mark"}
  :checksum "checksums.txt"
- :platforms {"linux-x86_64" {:asset "mark_Linux_x86_64.tar.gz"}}}
+ :platforms {"linux-x86_64" {:asset "mark_Linux_x86_64.tar.gz"}
+             "linux-aarch64" {:asset "mark_Linux_arm64.tar.gz"}
+             "darwin-x86_64" {:asset "mark_Darwin_x86_64.tar.gz"}
+             "darwin-aarch64" {:asset "mark_Darwin_arm64.tar.gz"}}}

@@ -3,4 +3,5 @@
 
 {:description "Language server for Crystal"
  :source {:github "elbywan/crystalline"}
- :platforms {"linux-x86_64" {:asset "crystalline_x86_64-unknown-linux-musl.gz" :bins {"crystalline" "crystalline_x86_64-unknown-linux-musl"}}}}
+ :platforms {"linux-x86_64" {:asset "crystalline_x86_64-unknown-linux-musl.gz" :bins {"crystalline" "crystalline_x86_64-unknown-linux-musl"}}
+             "darwin-aarch64" {:asset "crystalline_arm64-apple-darwin.gz" :bins {"crystalline" "crystalline_arm64-apple-darwin"}}}}

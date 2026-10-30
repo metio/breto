@@ -5,4 +5,7 @@
 {:description "Marvin is a CLI tool that scans a k8s cluster by performing CEL expressions to report potential issues, misconfigurations and vulnerabilities",
  :source {:github "undistro/marvin"}
  :checksum "checksums.txt"
- :platforms {"linux-x86_64" {:asset "marvin_Linux_x86_64.tar.gz"}}}
+ :platforms {"linux-x86_64" {:asset "marvin_Linux_x86_64.tar.gz"}
+             "linux-aarch64" {:asset "marvin_Linux_arm64.tar.gz"}
+             "darwin-x86_64" {:asset "marvin_Darwin_x86_64.tar.gz"}
+             "darwin-aarch64" {:asset "marvin_Darwin_arm64.tar.gz"}}}

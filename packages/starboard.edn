@@ -6,4 +6,7 @@
  :source {:github "aquasecurity/starboard"}
  :checksum "checksums.txt"
  :bins {"kubectl-starboard" "starboard", "starboard" "starboard"}
- :platforms {"linux-x86_64" {:asset "starboard_linux_x86_64.tar.gz"}}}
+ :platforms {"linux-x86_64" {:asset "starboard_linux_x86_64.tar.gz"}
+             "linux-aarch64" {:asset "starboard_linux_ARM64.tar.gz"}
+             "darwin-x86_64" {:asset "starboard_darwin_x86_64.tar.gz"}
+             "darwin-aarch64" {:asset "starboard_darwin_ARM64.tar.gz"}}}

@@ -4,4 +4,7 @@
 
 {:description "Universal JSON, BSON, YAML, CSV, XML converter with templates",
  :source {:github "mmalcek/bafi"}
- :platforms {"linux-x86_64" {:asset "bafi_{tag}_linux_amd64.tgz"}}}
+ :platforms {"linux-x86_64" {:asset "bafi_{tag}_linux_amd64.tgz"}
+             "linux-aarch64" {:asset "bafi_{tag}_linux_arm64.tgz"}
+             "darwin-x86_64" {:asset "bafi_{tag}_darwin_amd64.tgz"}
+             "darwin-aarch64" {:asset "bafi_{tag}_darwin_arm64.tgz"}}}

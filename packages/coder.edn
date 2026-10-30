@@ -5,4 +5,7 @@
 {:description "Provision remote development environments via Terraform",
  :source {:github "coder/coder"}
  :checksum "coder_{version}_checksums.txt"
- :platforms {"linux-x86_64" {:asset "coder_{version}_linux_amd64.tar.gz"}}}
+ :platforms {"linux-x86_64" {:asset "coder_{version}_linux_amd64.tar.gz"}
+             "linux-aarch64" {:asset "coder_{version}_linux_arm64.tar.gz"}
+             "darwin-x86_64" {:asset "coder_{version}_darwin_amd64.zip"}
+             "darwin-aarch64" {:asset "coder_{version}_darwin_arm64.zip"}}}

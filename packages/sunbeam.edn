@@ -5,4 +5,7 @@
 {:description "Command-line launcher",
  :source {:github "pomdtr/sunbeam"}
  :checksum "checksums.txt"
- :platforms {"linux-x86_64" {:asset "sunbeam-linux_amd64.tar.gz"}}}
+ :platforms {"linux-x86_64" {:asset "sunbeam-linux_amd64.tar.gz"}
+             "linux-aarch64" {:asset "sunbeam-linux_arm64.tar.gz"}
+             "darwin-x86_64" {:asset "sunbeam-darwin_amd64.tar.gz"}
+             "darwin-aarch64" {:asset "sunbeam-darwin_arm64.tar.gz"}}}

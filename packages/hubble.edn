@@ -5,4 +5,7 @@
 {:description "Hubble - Network, Service & Security Observability for Kubernetes using eBPF",
  :source {:github "cilium/hubble"}
  :checksum "{asset}.sha256sum"
- :platforms {"linux-x86_64" {:asset "hubble-linux-amd64.tar.gz"}}}
+ :platforms {"linux-x86_64" {:asset "hubble-linux-amd64.tar.gz"}
+             "linux-aarch64" {:asset "hubble-linux-arm64.tar.gz"}
+             "darwin-x86_64" {:asset "hubble-darwin-amd64.tar.gz"}
+             "darwin-aarch64" {:asset "hubble-darwin-arm64.tar.gz"}}}

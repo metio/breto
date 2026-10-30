@@ -7,4 +7,6 @@
  :tag-prefix ""
  :checksum "SHA256SUMS"
  :bins {"nixfmt" "{asset}"}
- :platforms {"linux-x86_64" {:asset "nixfmt-x86_64-linux"}}}
+ :platforms {"linux-x86_64" {:asset "nixfmt-x86_64-linux"}
+             "linux-aarch64" {:asset "nixfmt-aarch64-linux"}
+             "darwin-aarch64" {:asset "nixfmt-aarch64-darwin"}}}

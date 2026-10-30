@@ -4,4 +4,7 @@
 
 {:description "Terraform-style, declarative schema migration CLI for Postgres. Agent friendly",
  :source {:github "pgplex/pgschema"}
- :platforms {"linux-x86_64" {:asset "pgschema-{version}-linux-amd64"}}}
+ :platforms {"linux-x86_64" {:asset "pgschema-{version}-linux-amd64"}
+             "linux-aarch64" {:asset "pgschema-{version}-linux-arm64"}
+             "darwin-x86_64" {:asset "pgschema-{version}-darwin-amd64"}
+             "darwin-aarch64" {:asset "pgschema-{version}-darwin-arm64"}}}

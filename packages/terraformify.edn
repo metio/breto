@@ -5,4 +5,7 @@
 {:description "An experimental CLI that generates Terraform files for managing existing Fastly services",
  :source {:github "hrmsk66/terraformify"}
  :checksum "checksums.txt"
- :platforms {"linux-x86_64" {:asset "terraformify_linux_amd64.zip" :bins {"terraformify" "terraformify_linux_amd64/terraformify"}}}}
+ :platforms {"linux-x86_64" {:asset "terraformify_linux_amd64.zip" :bins {"terraformify" "terraformify_linux_amd64/terraformify"}}
+             "linux-aarch64" {:asset "terraformify_linux_arm64.zip" :bins {"terraformify" "terraformify_linux_arm64/terraformify"}}
+             "darwin-x86_64" {:asset "terraformify_darwin_amd64.zip" :bins {"terraformify" "terraformify_darwin_amd64/terraformify"}}
+             "darwin-aarch64" {:asset "terraformify_darwin_arm64.zip" :bins {"terraformify" "terraformify_darwin_arm64/terraformify"}}}}

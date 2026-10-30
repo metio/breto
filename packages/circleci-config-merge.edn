@@ -5,4 +5,7 @@
 {:description "Generate .circleci/config.yml by merging multiple files",
  :source {:github "suzuki-shunsuke/circleci-config-merge"}
  :checksum "circleci-config-merge_{version}_checksums.txt"
- :platforms {"linux-x86_64" {:asset "circleci-config-merge_{version}_linux_amd64.tar.gz"}}}
+ :platforms {"linux-x86_64" {:asset "circleci-config-merge_{version}_linux_amd64.tar.gz"}
+             "linux-aarch64" {:asset "circleci-config-merge_{version}_linux_arm64.tar.gz"}
+             "darwin-x86_64" {:asset "circleci-config-merge_{version}_darwin_amd64.tar.gz"}
+             "darwin-aarch64" {:asset "circleci-config-merge_{version}_darwin_arm64.tar.gz"}}}

@@ -5,4 +5,7 @@
 {:description "Package manager to provide declaretive way to manage CLI commands and shell plugins as code",
  :source {:github "babarot/afx"}
  :checksum "afx_{version}_checksums.txt"
- :platforms {"linux-x86_64" {:asset "afx_Linux_x86_64.tar.gz"}}}
+ :platforms {"linux-x86_64" {:asset "afx_Linux_x86_64.tar.gz"}
+             "linux-aarch64" {:asset "afx_Linux_arm64.tar.gz"}
+             "darwin-x86_64" {:asset "afx_Darwin_x86_64.tar.gz"}
+             "darwin-aarch64" {:asset "afx_Darwin_arm64.tar.gz"}}}

@@ -4,4 +4,7 @@
 
 {:description "Manage and run your integration tests with efficiency - Venom run executors (script, HTTP Request, web, imap, etc... ) and assertions",
  :source {:github "ovh/venom"}
- :platforms {"linux-x86_64" {:asset "venom.linux-amd64"}}}
+ :platforms {"linux-x86_64" {:asset "venom.linux-amd64"}
+             "linux-aarch64" {:asset "venom.linux-arm64"}
+             "darwin-x86_64" {:asset "venom.darwin-amd64"}
+             "darwin-aarch64" {:asset "venom.darwin-arm64"}}}

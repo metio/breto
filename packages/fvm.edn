@@ -6,4 +6,7 @@
  :source {:github "btwld/fvm"}
  :tag-prefix ""
  :bins {"fvm" "fvm/fvm"}
- :platforms {"linux-x86_64" {:asset "fvm-{tag}-linux-x64.tar.gz"}}}
+ :platforms {"linux-x86_64" {:asset "fvm-{tag}-linux-x64.tar.gz"}
+             "linux-aarch64" {:asset "fvm-{tag}-linux-arm64.tar.gz"}
+             "darwin-x86_64" {:asset "fvm-{tag}-macos-x64.tar.gz"}
+             "darwin-aarch64" {:asset "fvm-{tag}-macos-arm64.tar.gz"}}}

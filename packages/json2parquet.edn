@@ -5,4 +5,6 @@
 {:description "Convert JSON files to Apache Parquet. This package is part of Arrow CLI tools",
  :source {:github "domoritz/arrow-tools"}
  :checksum "{asset}.sha256"
- :platforms {"linux-x86_64" {:asset "json2parquet-x86_64-unknown-linux-gnu.tar.xz" :bins {"json2parquet" "json2parquet-x86_64-unknown-linux-gnu/json2parquet"}}}}
+ :platforms {"linux-x86_64" {:asset "json2parquet-x86_64-unknown-linux-gnu.tar.xz" :bins {"json2parquet" "json2parquet-x86_64-unknown-linux-gnu/json2parquet"}}
+             "linux-aarch64" {:asset "json2parquet-aarch64-unknown-linux-gnu.tar.xz" :bins {"json2parquet" "json2parquet-aarch64-unknown-linux-gnu/json2parquet"}}
+             "darwin-aarch64" {:asset "json2parquet-aarch64-apple-darwin.tar.xz" :bins {"json2parquet" "json2parquet-aarch64-apple-darwin/json2parquet"}}}}

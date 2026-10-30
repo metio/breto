@@ -4,4 +4,5 @@
 {:description "A sharp cut, which splits fields by regular expressions and selects them by header"
  :source {:github "sstadick/hck"}
  :bins {"hck" "{asset}"}
- :platforms {"linux-x86_64" {:asset "hck-linux-amd64"}}}
+ :platforms {"linux-x86_64" {:asset "hck-linux-amd64"}
+             "darwin-x86_64" {:asset "hck-macos-amd64"}}}

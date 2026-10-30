@@ -6,4 +6,6 @@
  :source {:github "cloudfoundry/credhub-cli"}
  :tag-prefix ""
  :bins {"credhub" "credhub"}
- :platforms {"linux-x86_64" {:asset "credhub-linux-amd64-{tag}.tgz"}}}
+ :platforms {"linux-x86_64" {:asset "credhub-linux-amd64-{tag}.tgz"}
+             "darwin-x86_64" {:asset "credhub-darwin-amd64-{tag}.tgz"}
+             "darwin-aarch64" {:asset "credhub-darwin-arm64-{tag}.tgz"}}}

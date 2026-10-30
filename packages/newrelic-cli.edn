@@ -6,4 +6,7 @@
  :source {:github "newrelic/newrelic-cli"}
  :checksum "newrelic-cli_{version}_checksums.txt"
  :bins {"newrelic" "newrelic"}
- :platforms {"linux-x86_64" {:asset "newrelic-cli_{version}_Linux_x86_64.tar.gz"}}}
+ :platforms {"linux-x86_64" {:asset "newrelic-cli_{version}_Linux_x86_64.tar.gz"}
+             "linux-aarch64" {:asset "newrelic-cli_{version}_Linux_arm64.tar.gz"}
+             "darwin-x86_64" {:asset "newrelic-cli_{version}_Darwin_x86_64.tar.gz"}
+             "darwin-aarch64" {:asset "newrelic-cli_{version}_Darwin_arm64.tar.gz"}}}

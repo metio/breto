@@ -6,4 +6,7 @@
  :source {:github "terramate-io/terramate"}
  :checksum "checksums.txt"
  :bins {"terramate" "terramate", "terramate-ls" "terramate-ls"}
- :platforms {"linux-x86_64" {:asset "terramate_{version}_linux_x86_64.tar.gz"}}}
+ :platforms {"linux-x86_64" {:asset "terramate_{version}_linux_x86_64.tar.gz"}
+             "linux-aarch64" {:asset "terramate_{version}_linux_arm64.tar.gz"}
+             "darwin-x86_64" {:asset "terramate_{version}_darwin_x86_64.tar.gz"}
+             "darwin-aarch64" {:asset "terramate_{version}_darwin_arm64.tar.gz"}}}

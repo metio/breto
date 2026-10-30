@@ -5,4 +5,5 @@
  :source {:github "DavHau/nix-portable"},
  :tag-prefix "",
  :history [{:before "v013" :verify false}]
- :platforms {"linux-x86_64" {:asset "nix-portable-x86_64"}}}
+ :platforms {"linux-x86_64" {:asset "nix-portable-x86_64"}
+             "linux-aarch64" {:asset "nix-portable-aarch64"}}}

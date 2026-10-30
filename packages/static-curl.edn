@@ -5,4 +5,7 @@
 {:description "static builds cURL with HTTP3",
  :source {:github "stunnel/static-curl"}
  :tag-prefix ""
- :platforms {"linux-x86_64" {:asset "curl-linux-x86_64-dev-{tag}.tar.xz" :bins {"curl" "curl-x86_64/bin/curl", "curl-config" "curl-x86_64/bin/curl-config"}}}}
+ :platforms {"linux-x86_64" {:asset "curl-linux-x86_64-dev-{tag}.tar.xz" :bins {"curl" "curl-x86_64/bin/curl", "curl-config" "curl-x86_64/bin/curl-config"}}
+             "linux-aarch64" {:asset "curl-linux-aarch64-dev-{tag}.tar.xz" :bins {"curl" "curl-aarch64/bin/curl" "curl-config" "curl-aarch64/bin/curl-config"}}
+             "darwin-x86_64" {:asset "curl-macos-x86_64-dev-{tag}.tar.xz" :bins {"curl" "curl-x86_64/bin/curl" "curl-config" "curl-x86_64/bin/curl-config"}}
+             "darwin-aarch64" {:asset "curl-macos-arm64-dev-{tag}.tar.xz" :bins {"curl" "curl-arm64/bin/curl" "curl-config" "curl-arm64/bin/curl-config"}}}}

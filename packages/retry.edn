@@ -5,4 +5,7 @@
 {:description "Rerun a command until it eventually succeeds, or doesn't",
  :source {:github "joshdk/retry"}
  :checksum "checksums.txt"
- :platforms {"linux-x86_64" {:asset "retry-linux-amd64.tar.gz"}}}
+ :platforms {"linux-x86_64" {:asset "retry-linux-amd64.tar.gz"}
+             "linux-aarch64" {:asset "retry-linux-arm64.tar.gz"}
+             "darwin-x86_64" {:asset "retry-darwin-amd64.tar.gz"}
+             "darwin-aarch64" {:asset "retry-darwin-arm64.tar.gz"}}}

@@ -5,4 +5,7 @@
 {:description "Because `docker ps` is annoying and does not fit my monitor/terminal width",
  :source {:github "Mikescher/better-docker-ps"}
  :bins {"dops" "{asset}"}
- :platforms {"linux-x86_64" {:asset "dops_linux-amd64"}}}
+ :platforms {"linux-x86_64" {:asset "dops_linux-amd64"}
+             "linux-aarch64" {:asset "dops_linux-arm64"}
+             "darwin-x86_64" {:asset "dops_macos-amd64"}
+             "darwin-aarch64" {:asset "dops_macos-arm64"}}}

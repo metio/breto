@@ -4,4 +4,7 @@
 
 {:description "A next-generation crawling and spidering framework",
  :source {:github "projectdiscovery/katana"}
- :platforms {"linux-x86_64" {:asset "katana_{version}_linux_amd64.zip" :checksum "katana-linux-checksums.txt"}}}
+ :platforms {"linux-x86_64" {:asset "katana_{version}_linux_amd64.zip" :checksum "katana-linux-checksums.txt"}
+             "linux-aarch64" {:asset "katana_{version}_linux_arm64.zip" :checksum "katana-linux-checksums.txt"}
+             "darwin-x86_64" {:asset "katana_{version}_macOS_amd64.zip" :checksum "katana-macOS-checksums.txt"}
+             "darwin-aarch64" {:asset "katana_{version}_macOS_arm64.zip" :checksum "katana-macOS-checksums.txt"}}}

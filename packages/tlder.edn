@@ -5,4 +5,7 @@
 {:description "TLDs finder — check domain name availability across all valid top-level domains",
  :source {:github "dwisiswant0/tlder"}
  :checksum "tlder_{version}_checksums.txt"
- :platforms {"linux-x86_64" {:asset "tlder_{tag}-linux_x86_64"}}}
+ :platforms {"linux-x86_64" {:asset "tlder_{tag}-linux_x86_64"}
+             "linux-aarch64" {:asset "tlder_{tag}-linux_arm64"}
+             "darwin-x86_64" {:asset "tlder_{tag}-darwin_x86_64"}
+             "darwin-aarch64" {:asset "tlder_{tag}-darwin_arm64"}}}

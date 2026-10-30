@@ -5,4 +5,7 @@
 {:description "Calm & reliable automated deployments. No more coffee breaks to deploy your code",
  :source {:github "levibostian/decaf"}
  :tag-prefix ""
- :platforms {"linux-x86_64" {:asset "bin-x86_64-Linux"}}}
+ :platforms {"linux-x86_64" {:asset "bin-x86_64-Linux"}
+             "linux-aarch64" {:asset "bin-aarch64-Linux"}
+             "darwin-x86_64" {:asset "bin-x86_64-Darwin"}
+             "darwin-aarch64" {:asset "bin-aarch64-Darwin"}}}

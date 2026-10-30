@@ -6,4 +6,6 @@
  :source {:github "Getdeck/getdeck"}
  :tag-prefix ""
  :bins {"deck" "deck"}
- :platforms {"linux-x86_64" {:asset "deck-{tag}-linux-amd64.zip"}}}
+ :platforms {"linux-x86_64" {:asset "deck-{tag}-linux-amd64.zip"}
+             "darwin-x86_64" {:asset "deck-{tag}-darwin-universal.zip"}
+             "darwin-aarch64" {:asset "deck-{tag}-darwin-universal.zip"}}}

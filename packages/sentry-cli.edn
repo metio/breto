@@ -5,4 +5,7 @@
 {:description "A command line utility to work with Sentry",
  :source {:github "getsentry/sentry-cli"}
  :tag-prefix ""
- :platforms {"linux-x86_64" {:asset "sentry-cli-Linux-x86_64"}}}
+ :platforms {"linux-x86_64" {:asset "sentry-cli-Linux-x86_64"}
+             "linux-aarch64" {:asset "sentry-cli-Linux-aarch64"}
+             "darwin-x86_64" {:asset "sentry-cli-Darwin-x86_64"}
+             "darwin-aarch64" {:asset "sentry-cli-Darwin-arm64"}}}

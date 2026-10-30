@@ -5,4 +5,7 @@
 {:description "Woodpecker is a simple yet powerful CI/CD engine with great extensibility",
  :source {:github "woodpecker-ci/woodpecker"}
  :checksum "checksums.txt"
- :platforms {"linux-x86_64" {:asset "woodpecker-cli_linux_amd64.tar.gz"}}}
+ :platforms {"linux-x86_64" {:asset "woodpecker-cli_linux_amd64.tar.gz"}
+             "linux-aarch64" {:asset "woodpecker-cli_linux_arm64.tar.gz"}
+             "darwin-x86_64" {:asset "woodpecker-cli_darwin_amd64.tar.gz"}
+             "darwin-aarch64" {:asset "woodpecker-cli_darwin_arm64.tar.gz"}}}

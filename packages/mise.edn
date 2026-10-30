@@ -7,4 +7,7 @@
  :strip 1
  :bins {"mise" "bin/mise"}
  :man ["man/man1/mise.1"]
- :platforms {"linux-x86_64" {:asset "mise-v{version}-linux-x64.tar.gz"}}}
+ :platforms {"linux-x86_64" {:asset "mise-v{version}-linux-x64.tar.gz"}
+             "linux-aarch64" {:asset "mise-v{version}-linux-arm64.tar.gz"}
+             "darwin-x86_64" {:asset "mise-v{version}-macos-x64.tar.gz"}
+             "darwin-aarch64" {:asset "mise-v{version}-macos-arm64.tar.gz"}}}

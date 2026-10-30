@@ -5,4 +5,7 @@
 {:description "A command-line utility to print the summary of the terraform plan",
  :source {:github "dineshba/tf-summarize"}
  :checksum "tf-summarize_SHA256SUMS"
- :platforms {"linux-x86_64" {:asset "tf-summarize_linux_amd64.tar.gz"}}}
+ :platforms {"linux-x86_64" {:asset "tf-summarize_linux_amd64.tar.gz"}
+             "linux-aarch64" {:asset "tf-summarize_linux_arm64.tar.gz"}
+             "darwin-x86_64" {:asset "tf-summarize_darwin_amd64.tar.gz"}
+             "darwin-aarch64" {:asset "tf-summarize_darwin_arm64.tar.gz"}}}

@@ -5,4 +5,5 @@
 {:description "Language Server Protocol for Terraform",
  :source {:github "juliosueiras/terraform-lsp"}
  :checksum "terraform-lsp_{version}_checksums.txt"
- :platforms {"linux-x86_64" {:asset "terraform-lsp_{version}_linux_amd64.tar.gz"}}}
+ :platforms {"linux-x86_64" {:asset "terraform-lsp_{version}_linux_amd64.tar.gz"}
+             "darwin-x86_64" {:asset "terraform-lsp_{version}_darwin_amd64.tar.gz"}}}

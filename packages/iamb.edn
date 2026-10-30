@@ -6,4 +6,7 @@
  :strip 1
  :platforms {"linux-x86_64" {:asset "iamb-{version}-x86_64-unknown-linux-musl.tar.gz"
                              :history [{:before "0.0.13" :asset "iamb-x86_64-unknown-linux-musl-binary.zip" :strip 0}
-                                       {:before "0.0.12" :asset "iamb-x86_64-unknown-linux-musl.tgz" :strip 1}]}}}
+                                       {:before "0.0.12" :asset "iamb-x86_64-unknown-linux-musl.tgz" :strip 1}]}
+             "linux-aarch64" {:asset "iamb-{version}-aarch64-unknown-linux-gnu.tar.gz" :history [{:before "0.0.13" :asset "iamb-aarch64-unknown-linux-gnu-binary.zip" :strip 0} {:before "0.0.12" :asset "iamb-aarch64-unknown-linux-gnu.tgz" :strip 1}]}
+             "darwin-x86_64" {:asset "iamb-{version}-x86_64-apple-darwin.tar.gz" :history [{:before "0.0.13" :asset "iamb-x86_64-apple-darwin-binary.zip" :strip 0} {:before "0.0.12" :asset "iamb-x86_64-apple-darwin.tgz" :strip 1}]}
+             "darwin-aarch64" {:asset "iamb-{version}-aarch64-apple-darwin.tar.gz" :history [{:before "0.0.13" :asset "iamb-aarch64-apple-darwin-binary.zip" :strip 0} {:before "0.0.12" :asset "iamb-aarch64-apple-darwin.tgz" :strip 1}]}}}

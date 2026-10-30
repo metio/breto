@@ -5,4 +5,7 @@
 {:description "Faster way to switch between clusters and namespaces in kubectl",
  :source {:github "ahmetb/kubectx"}
  :checksum "checksums.txt"
- :platforms {"linux-x86_64" {:asset "kubectx_{tag}_linux_x86_64.tar.gz"}}}
+ :platforms {"linux-x86_64" {:asset "kubectx_{tag}_linux_x86_64.tar.gz"}
+             "linux-aarch64" {:asset "kubectx_{tag}_linux_arm64.tar.gz"}
+             "darwin-x86_64" {:asset "kubectx_{tag}_darwin_x86_64.tar.gz"}
+             "darwin-aarch64" {:asset "kubectx_{tag}_darwin_arm64.tar.gz"}}}

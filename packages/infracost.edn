@@ -5,4 +5,7 @@
 {:description "Cloud cost estimates for Terraform in pull requests. Love your cloud bill",
  :source {:github "infracost/infracost"}
  :checksum "{asset}.sha256"
- :platforms {"linux-x86_64" {:asset "infracost-linux-amd64.tar.gz" :bins {"infracost" "infracost-linux-amd64"}}}}
+ :platforms {"linux-x86_64" {:asset "infracost-linux-amd64.tar.gz" :bins {"infracost" "infracost-linux-amd64"}}
+             "linux-aarch64" {:asset "infracost-linux-arm64.tar.gz" :bins {"infracost" "infracost-linux-arm64"}}
+             "darwin-x86_64" {:asset "infracost-darwin-amd64.tar.gz" :bins {"infracost" "infracost-darwin-amd64"}}
+             "darwin-aarch64" {:asset "infracost-darwin-arm64.tar.gz" :bins {"infracost" "infracost-darwin-arm64"}}}}

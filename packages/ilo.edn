@@ -7,4 +7,6 @@
  :checksum "{asset}.sha512",
  :strip 1,
  :completions {:bash {:args ["generate-completion"]}}
- :platforms {"linux-x86_64" {:asset "ilo-{version}-linux.tar.gz"}}}
+ :platforms {"linux-x86_64" {:asset "ilo-{version}-linux.tar.gz"}
+             "darwin-x86_64" {:asset "ilo-{version}-mac.tar.gz"}
+             "darwin-aarch64" {:asset "ilo-{version}-mac.tar.gz"}}}

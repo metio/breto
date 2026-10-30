@@ -4,4 +4,5 @@
 
 {:description "Docker and OCI Registry Client",
  :source {:github "regclient/regclient"}
- :platforms {"linux-x86_64" {:asset "regctl-linux-amd64"}}}
+ :platforms {"linux-x86_64" {:asset "regctl-linux-amd64"}
+             "linux-aarch64" {:asset "regctl-linux-arm64"}}}

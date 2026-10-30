@@ -5,4 +5,7 @@
 {:description "The CLI tool "cls3" is to CLear S3 Buckets. It empties (so deletes all objects and versions/delete-markers in) S3 Buckets or deletes the buckets themselves",
  :source {:github "go-to-k/cls3"}
  :checksum "checksums.txt"
- :platforms {"linux-x86_64" {:asset "cls3_{version}_Linux_x86_64.tar.gz"}}}
+ :platforms {"linux-x86_64" {:asset "cls3_{version}_Linux_x86_64.tar.gz"}
+             "linux-aarch64" {:asset "cls3_{version}_Linux_arm64.tar.gz"}
+             "darwin-x86_64" {:asset "cls3_{version}_Darwin_x86_64.tar.gz"}
+             "darwin-aarch64" {:asset "cls3_{version}_Darwin_arm64.tar.gz"}}}

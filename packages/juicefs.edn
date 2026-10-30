@@ -5,4 +5,7 @@
 {:description "JuiceFS is a distributed POSIX file system built on top of Redis and S3",
  :source {:github "juicedata/juicefs"}
  :checksum "checksums.txt"
- :platforms {"linux-x86_64" {:asset "juicefs-{version}-linux-amd64.tar.gz"}}}
+ :platforms {"linux-x86_64" {:asset "juicefs-{version}-linux-amd64.tar.gz"}
+             "linux-aarch64" {:asset "juicefs-{version}-linux-arm64.tar.gz"}
+             "darwin-x86_64" {:asset "juicefs-{version}-darwin-amd64.tar.gz"}
+             "darwin-aarch64" {:asset "juicefs-{version}-darwin-arm64.tar.gz"}}}

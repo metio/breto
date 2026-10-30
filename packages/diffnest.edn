@@ -5,4 +5,7 @@
 {:description "A diff tool for structured data files like YAML, JSON",
  :source {:github "sters/diffnest"}
  :checksum "diffnest_{version}_checksums.txt"
- :platforms {"linux-x86_64" {:asset "diffnest_{version}_linux-amd64.tar.gz"}}}
+ :platforms {"linux-x86_64" {:asset "diffnest_{version}_linux-amd64.tar.gz"}
+             "linux-aarch64" {:asset "diffnest_{version}_linux-aarch64.tar.gz"}
+             "darwin-x86_64" {:asset "diffnest_{version}_darwin-amd64.tar.gz"}
+             "darwin-aarch64" {:asset "diffnest_{version}_darwin-aarch64.tar.gz"}}}

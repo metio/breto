@@ -6,4 +6,7 @@
  :source {:github "dprint/dprint"}
  :tag-prefix ""
  :checksum "SHASUMS256.txt"
- :platforms {"linux-x86_64" {:asset "dprint-x86_64-unknown-linux-musl.zip"}}}
+ :platforms {"linux-x86_64" {:asset "dprint-x86_64-unknown-linux-musl.zip"}
+             "linux-aarch64" {:asset "dprint-aarch64-unknown-linux-musl.zip"}
+             "darwin-x86_64" {:asset "dprint-x86_64-apple-darwin.zip"}
+             "darwin-aarch64" {:asset "dprint-aarch64-apple-darwin.zip"}}}

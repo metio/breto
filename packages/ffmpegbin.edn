@@ -6,4 +6,7 @@
  :source {:github "Tyrrrz/FFmpegBin"}
  :tag-prefix ""
  :bins {"ffmpeg" "ffmpeg", "ffplay" "ffplay", "ffprobe" "ffprobe"}
- :platforms {"linux-x86_64" {:asset "ffmpeg-linux-x64.zip"}}}
+ :platforms {"linux-x86_64" {:asset "ffmpeg-linux-x64.zip"}
+             "linux-aarch64" {:asset "ffmpeg-linux-arm64.zip"}
+             "darwin-x86_64" {:asset "ffmpeg-osx-x64.zip"}
+             "darwin-aarch64" {:asset "ffmpeg-osx-arm64.zip"}}}

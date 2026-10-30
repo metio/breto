@@ -5,4 +5,7 @@
 {:description "Terminal user interface for SSH",
  :source {:github "quantumsheep/sshs"}
  :tag-prefix ""
- :platforms {"linux-x86_64" {:asset "sshs-linux-amd64"}}}
+ :platforms {"linux-x86_64" {:asset "sshs-linux-amd64"}
+             "linux-aarch64" {:asset "sshs-linux-arm64"}
+             "darwin-x86_64" {:asset "sshs-darwin-amd64"}
+             "darwin-aarch64" {:asset "sshs-darwin-arm64"}}}

@@ -5,4 +5,5 @@
 {:description "Kubernetes CLI plugin for syncing and executing local files in Pod on Kubernetes",
  :source {:github "ernoaapa/kubectl-warp"}
  :checksum "checksums.txt"
- :platforms {"linux-x86_64" {:asset "kubectl-warp_{version}_linux_amd64.tar.gz"}}}
+ :platforms {"linux-x86_64" {:asset "kubectl-warp_{version}_linux_amd64.tar.gz"}
+             "darwin-x86_64" {:asset "kubectl-warp_{version}_darwin_amd64.tar.gz"}}}

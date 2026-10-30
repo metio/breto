@@ -5,4 +5,7 @@
 {:description "Programming in YAML",
  :source {:github "yaml/yamlscript"}
  :tag-prefix ""
- :platforms {"linux-x86_64" {:asset "ys-{tag}-linux-x64.tar.xz" :bins {"ys" "ys-{tag}-linux-x64/ys"}}}}
+ :platforms {"linux-x86_64" {:asset "ys-{tag}-linux-x64.tar.xz" :bins {"ys" "ys-{tag}-linux-x64/ys"}}
+             "linux-aarch64" {:asset "ys-{tag}-linux-aarch64.tar.xz" :bins {"ys" "ys-{tag}-linux-aarch64/ys"}}
+             "darwin-x86_64" {:asset "ys-{tag}-macos-x64.tar.xz" :bins {"ys" "ys-{tag}-macos-x64/ys"}}
+             "darwin-aarch64" {:asset "ys-{tag}-macos-arm64.tar.xz" :bins {"ys" "ys-{tag}-macos-arm64/ys"}}}}

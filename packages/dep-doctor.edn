@@ -5,4 +5,7 @@
 {:description "Diagnose whether your software dependency libraries are maintained",
  :source {:github "kyoshidajp/dep-doctor"}
  :checksum "dep-doctor_{version}_checksums.txt"
- :platforms {"linux-x86_64" {:asset "dep-doctor_Linux_x86_64.tar.gz"}}}
+ :platforms {"linux-x86_64" {:asset "dep-doctor_Linux_x86_64.tar.gz"}
+             "linux-aarch64" {:asset "dep-doctor_Linux_arm64.tar.gz"}
+             "darwin-x86_64" {:asset "dep-doctor_Darwin_x86_64.tar.gz"}
+             "darwin-aarch64" {:asset "dep-doctor_Darwin_arm64.tar.gz"}}}

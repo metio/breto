@@ -6,4 +6,7 @@
  :source {:github "superbrothers/ksort"}
  :checksum "checksums.txt"
  :bins {"ksort" "ksort", "kubectl-sort_manifests" "ksort"}
- :platforms {"linux-x86_64" {:asset "ksort-linux-amd64.zip"}}}
+ :platforms {"linux-x86_64" {:asset "ksort-linux-amd64.zip"}
+             "linux-aarch64" {:asset "ksort-linux-arm64.zip"}
+             "darwin-x86_64" {:asset "ksort-darwin-amd64.zip"}
+             "darwin-aarch64" {:asset "ksort-darwin-arm64.zip"}}}

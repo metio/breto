@@ -6,4 +6,7 @@
  :source {:github "int128/kubectl-external-forward"}
  :checksum "{asset}.sha256"
  :bins {"kubectl-external_forward" "kubectl-external_forward"}
- :platforms {"linux-x86_64" {:asset "kubectl-external_forward_linux_amd64.zip"}}}
+ :platforms {"linux-x86_64" {:asset "kubectl-external_forward_linux_amd64.zip"}
+             "linux-aarch64" {:asset "kubectl-external_forward_linux_arm64.zip"}
+             "darwin-x86_64" {:asset "kubectl-external_forward_darwin_amd64.zip"}
+             "darwin-aarch64" {:asset "kubectl-external_forward_darwin_arm64.zip"}}}

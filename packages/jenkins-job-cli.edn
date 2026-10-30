@@ -6,4 +6,6 @@
  :source {:github "artemsalimov/jenkins-job-cli"}
  :checksum "sha256sums.txt"
  :bins {"jj" "{asset}"}
- :platforms {"linux-x86_64" {:asset "jenkins-job-cli-{version}-linux-amd64"}}}
+ :platforms {"linux-x86_64" {:asset "jenkins-job-cli-{version}-linux-amd64"}
+             "linux-aarch64" {:asset "jenkins-job-cli-{version}-linux-arm64"}
+             "darwin-x86_64" {:asset "jenkins-job-cli-{version}-darwin-amd64"}}}

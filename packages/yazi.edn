@@ -4,4 +4,7 @@
 
 {:description "Blazing fast terminal file manager written in Rust, based on async I/O",
  :source {:github "sxyazi/yazi"}
- :platforms {"linux-x86_64" {:asset "yazi-x86_64-unknown-linux-musl.zip" :bins {"ya" "yazi-x86_64-unknown-linux-musl/ya", "yazi" "yazi-x86_64-unknown-linux-musl/yazi"}}}}
+ :platforms {"linux-x86_64" {:asset "yazi-x86_64-unknown-linux-musl.zip" :bins {"ya" "yazi-x86_64-unknown-linux-musl/ya", "yazi" "yazi-x86_64-unknown-linux-musl/yazi"}}
+             "linux-aarch64" {:asset "yazi-aarch64-unknown-linux-musl.zip" :bins {"ya" "yazi-aarch64-unknown-linux-musl/ya" "yazi" "yazi-aarch64-unknown-linux-musl/yazi"}}
+             "darwin-x86_64" {:asset "yazi-x86_64-apple-darwin.zip" :bins {"ya" "yazi-x86_64-apple-darwin/ya" "yazi" "yazi-x86_64-apple-darwin/yazi"}}
+             "darwin-aarch64" {:asset "yazi-aarch64-apple-darwin.zip" :bins {"ya" "yazi-aarch64-apple-darwin/ya" "yazi" "yazi-aarch64-apple-darwin/yazi"}}}}

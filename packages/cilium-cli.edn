@@ -6,4 +6,7 @@
  :source {:github "cilium/cilium-cli"}
  :checksum "{asset}.sha256sum"
  :bins {"cilium" "cilium"}
- :platforms {"linux-x86_64" {:asset "cilium-linux-amd64.tar.gz"}}}
+ :platforms {"linux-x86_64" {:asset "cilium-linux-amd64.tar.gz"}
+             "linux-aarch64" {:asset "cilium-linux-arm64.tar.gz"}
+             "darwin-x86_64" {:asset "cilium-darwin-amd64.tar.gz"}
+             "darwin-aarch64" {:asset "cilium-darwin-arm64.tar.gz"}}}

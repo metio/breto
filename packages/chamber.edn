@@ -5,4 +5,7 @@
 {:description "CLI for managing secrets",
  :source {:github "segmentio/chamber"}
  :checksum "chamber-{tag}.sha256sums"
- :platforms {"linux-x86_64" {:asset "chamber-{tag}-linux-amd64"}}}
+ :platforms {"linux-x86_64" {:asset "chamber-{tag}-linux-amd64"}
+             "linux-aarch64" {:asset "chamber-{tag}-linux-arm64"}
+             "darwin-x86_64" {:asset "chamber-{tag}-darwin-amd64"}
+             "darwin-aarch64" {:asset "chamber-{tag}-darwin-arm64"}}}

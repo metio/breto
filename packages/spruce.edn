@@ -4,4 +4,7 @@
 
 {:description "Standalone, daemon-less, unprivileged Dockerfile and OCI compatible container image builder",
  :source {:github "geofffranks/spruce"}
- :platforms {"linux-x86_64" {:asset "spruce-linux-amd64"}}}
+ :platforms {"linux-x86_64" {:asset "spruce-linux-amd64"}
+             "linux-aarch64" {:asset "spruce-linux-arm64"}
+             "darwin-x86_64" {:asset "spruce-darwin-amd64"}
+             "darwin-aarch64" {:asset "spruce-darwin-arm64"}}}

@@ -5,4 +5,7 @@
 {:description "Clean up Kubernetes yaml and json output to make it readable",
  :source {:github "itaysk/kubectl-neat"}
  :checksum "checksums.txt"
- :platforms {"linux-x86_64" {:asset "kubectl-neat_linux_amd64.tar.gz"}}}
+ :platforms {"linux-x86_64" {:asset "kubectl-neat_linux_amd64.tar.gz"}
+             "linux-aarch64" {:asset "kubectl-neat_linux_arm64.tar.gz"}
+             "darwin-x86_64" {:asset "kubectl-neat_darwin_amd64.tar.gz"}
+             "darwin-aarch64" {:asset "kubectl-neat_darwin_arm64.tar.gz"}}}

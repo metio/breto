@@ -5,4 +5,6 @@
 {:description "Like `kubectl get all`, but get really all resources",
  :source {:github "corneliusweig/ketall"}
  :checksum "{asset}.sha256"
- :platforms {"linux-x86_64" {:asset "ketall-amd64-linux.tar.gz" :bins {"ketall" "ketall-amd64-linux", "kubectl-get_all" "ketall-amd64-linux"}}}}
+ :platforms {"linux-x86_64" {:asset "ketall-amd64-linux.tar.gz" :bins {"ketall" "ketall-amd64-linux", "kubectl-get_all" "ketall-amd64-linux"}}
+             "darwin-x86_64" {:asset "ketall-amd64-darwin.tar.gz" :bins {"ketall" "ketall-amd64-darwin" "kubectl-get_all" "ketall-amd64-darwin"}}
+             "darwin-aarch64" {:asset "ketall-arm64-darwin.tar.gz" :bins {"ketall" "ketall-arm64-darwin" "kubectl-get_all" "ketall-arm64-darwin"}}}}

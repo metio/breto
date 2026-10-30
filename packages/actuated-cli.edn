@@ -4,4 +4,7 @@
 
 {:description "CLI for actuated",
  :source {:github "self-actuated/actuated-cli"}
- :platforms {"linux-x86_64" {:asset "actuated-cli"}}}
+ :platforms {"linux-x86_64" {:asset "actuated-cli"}
+             "linux-aarch64" {:asset "actuated-cli-arm64"}
+             "darwin-x86_64" {:asset "actuated-cli-darwin"}
+             "darwin-aarch64" {:asset "actuated-cli-darwin-arm64"}}}

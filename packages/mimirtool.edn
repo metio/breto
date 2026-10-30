@@ -5,4 +5,7 @@
  :source {:github "grafana/mimir"},
  :tag-prefix "mimir-",
  :checksum "{asset}-sha-256"
- :platforms {"linux-x86_64" {:asset "mimirtool-linux-amd64"}}}
+ :platforms {"linux-x86_64" {:asset "mimirtool-linux-amd64"}
+             "linux-aarch64" {:asset "mimirtool-linux-arm64"}
+             "darwin-x86_64" {:asset "mimirtool-darwin-amd64"}
+             "darwin-aarch64" {:asset "mimirtool-darwin-arm64"}}}

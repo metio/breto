@@ -5,4 +5,7 @@
 {:description "Run common networking tests against any site",
  :source {:github "ycd/dstp"}
  :checksum "checksums.txt"
- :platforms {"linux-x86_64" {:asset "dstp_{version}_Linux_amd64.tar.gz"}}}
+ :platforms {"linux-x86_64" {:asset "dstp_{version}_Linux_amd64.tar.gz"}
+             "linux-aarch64" {:asset "dstp_{version}_Linux_arm64.tar.gz"}
+             "darwin-x86_64" {:asset "dstp_{version}_Darwin_amd64.tar.gz"}
+             "darwin-aarch64" {:asset "dstp_{version}_Darwin_arm64.tar.gz"}}}

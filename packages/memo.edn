@@ -4,4 +4,7 @@
 
 {:description "Memo Life For You",
  :source {:github "mattn/memo"}
- :platforms {"linux-x86_64" {:asset "memo_{tag}_linux_amd64.tar.gz" :bins {"memo" "memo_{tag}_linux_amd64/memo"}}}}
+ :platforms {"linux-x86_64" {:asset "memo_{tag}_linux_amd64.tar.gz" :bins {"memo" "memo_{tag}_linux_amd64/memo"}}
+             "linux-aarch64" {:asset "memo_{tag}_linux_arm64.tar.gz" :bins {"memo" "memo_{tag}_linux_arm64/memo"}}
+             "darwin-x86_64" {:asset "memo_{tag}_darwin_amd64.zip" :bins {"memo" "memo_{tag}_darwin_amd64/memo"}}
+             "darwin-aarch64" {:asset "memo_{tag}_darwin_arm64.zip" :bins {"memo" "memo_{tag}_darwin_arm64/memo"}}}}

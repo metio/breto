@@ -4,4 +4,7 @@
 
 {:description "Just do cross building and archiving go tools conventionally",
  :source {:github "Songmu/goxz"}
- :platforms {"linux-x86_64" {:asset "goxz_{tag}_linux_amd64.tar.gz" :bins {"goxz" "goxz_{tag}_linux_amd64/goxz"}}}}
+ :platforms {"linux-x86_64" {:asset "goxz_{tag}_linux_amd64.tar.gz" :bins {"goxz" "goxz_{tag}_linux_amd64/goxz"}}
+             "linux-aarch64" {:asset "goxz_{tag}_linux_arm64.tar.gz" :bins {"goxz" "goxz_{tag}_linux_arm64/goxz"}}
+             "darwin-x86_64" {:asset "goxz_{tag}_darwin_amd64.zip" :bins {"goxz" "goxz_{tag}_darwin_amd64/goxz"}}
+             "darwin-aarch64" {:asset "goxz_{tag}_darwin_arm64.zip" :bins {"goxz" "goxz_{tag}_darwin_arm64/goxz"}}}}

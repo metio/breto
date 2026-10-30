@@ -5,4 +5,7 @@
 {:description "Go Assembler Formatter",
  :source {:github "klauspost/asmfmt"}
  :checksum "checksums.txt"
- :platforms {"linux-x86_64" {:asset "asmfmt-Linux_x86_64_{version}.tar.gz"}}}
+ :platforms {"linux-x86_64" {:asset "asmfmt-Linux_x86_64_{version}.tar.gz"}
+             "linux-aarch64" {:asset "asmfmt-Linux_arm64_{version}.tar.gz"}
+             "darwin-x86_64" {:asset "asmfmt-OSX_x86_64_{version}.tar.gz"}
+             "darwin-aarch64" {:asset "asmfmt-OSX_arm64_{version}.tar.gz"}}}

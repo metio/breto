@@ -5,4 +5,7 @@
 {:description "A CLI that shows attribute-level diffs between Terraform modules with clean, diff-like output",
  :source {:github "takaishi/tfdiff"}
  :checksum "checksums.txt"
- :platforms {"linux-x86_64" {:asset "tfdiff_Linux_x86_64.tar.gz"}}}
+ :platforms {"linux-x86_64" {:asset "tfdiff_Linux_x86_64.tar.gz"}
+             "linux-aarch64" {:asset "tfdiff_Linux_arm64.tar.gz"}
+             "darwin-x86_64" {:asset "tfdiff_Darwin_x86_64.tar.gz"}
+             "darwin-aarch64" {:asset "tfdiff_Darwin_arm64.tar.gz"}}}

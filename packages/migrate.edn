@@ -5,4 +5,7 @@
 {:description "Database migrations. CLI and Golang library",
  :source {:github "golang-migrate/migrate"}
  :checksum "sha256sum.txt"
- :platforms {"linux-x86_64" {:asset "migrate.linux-amd64.tar.gz"}}}
+ :platforms {"linux-x86_64" {:asset "migrate.linux-amd64.tar.gz"}
+             "linux-aarch64" {:asset "migrate.linux-arm64.tar.gz"}
+             "darwin-x86_64" {:asset "migrate.darwin-amd64.tar.gz"}
+             "darwin-aarch64" {:asset "migrate.darwin-arm64.tar.gz"}}}

@@ -5,4 +5,5 @@
 {:description "Get (security) info about IP addresses",
  :source {:github "jreisinger/checkip"}
  :checksum "checksums.txt"
- :platforms {"linux-x86_64" {:asset "checkip_{version}_linux_amd64.tar.gz"}}}
+ :platforms {"linux-x86_64" {:asset "checkip_{version}_linux_amd64.tar.gz"}
+             "darwin-x86_64" {:asset "checkip_{version}_darwin_amd64.tar.gz"}}}

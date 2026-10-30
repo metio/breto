@@ -6,4 +6,7 @@
  :source {:github "crazywhalecc/static-php-cli"}
  :tag-prefix ""
  :bins {"spc" "spc"}
- :platforms {"linux-x86_64" {:asset "spc-linux-x86_64.tar.gz"}}}
+ :platforms {"linux-x86_64" {:asset "spc-linux-x86_64.tar.gz"}
+             "linux-aarch64" {:asset "spc-linux-aarch64.tar.gz"}
+             "darwin-x86_64" {:asset "spc-macos-x86_64.tar.gz"}
+             "darwin-aarch64" {:asset "spc-macos-aarch64.tar.gz"}}}

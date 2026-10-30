@@ -6,4 +6,7 @@
  :source {:github "jonwiggins/xmloxide"}
  :checksum "SHA256SUMS"
  :bins {"xmllint" "{asset}"}
- :platforms {"linux-x86_64" {:asset "xmllint_linux-x86-64"}}}
+ :platforms {"linux-x86_64" {:asset "xmllint_linux-x86-64"}
+             "linux-aarch64" {:asset "xmllint_linux-aarch64"}
+             "darwin-x86_64" {:asset "xmllint_darwin-x86-64"}
+             "darwin-aarch64" {:asset "xmllint_darwin-aarch64"}}}

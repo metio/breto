@@ -5,4 +5,7 @@
 {:description "Fast linters runner for Go",
  :source {:github "golangci/golangci-lint"}
  :checksum "golangci-lint-{version}-checksums.txt"
- :platforms {"linux-x86_64" {:asset "golangci-lint-{version}-linux-amd64.tar.gz" :bins {"golangci-lint" "golangci-lint-{version}-linux-amd64/golangci-lint"}}}}
+ :platforms {"linux-x86_64" {:asset "golangci-lint-{version}-linux-amd64.tar.gz" :bins {"golangci-lint" "golangci-lint-{version}-linux-amd64/golangci-lint"}}
+             "linux-aarch64" {:asset "golangci-lint-{version}-linux-arm64.tar.gz" :bins {"golangci-lint" "golangci-lint-{version}-linux-arm64/golangci-lint"}}
+             "darwin-x86_64" {:asset "golangci-lint-{version}-darwin-amd64.tar.gz" :bins {"golangci-lint" "golangci-lint-{version}-darwin-amd64/golangci-lint"}}
+             "darwin-aarch64" {:asset "golangci-lint-{version}-darwin-arm64.tar.gz" :bins {"golangci-lint" "golangci-lint-{version}-darwin-arm64/golangci-lint"}}}}

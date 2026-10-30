@@ -5,4 +5,7 @@
 {:description "Seamless nginx builder",
  :source {:github "cubicdaiya/nginx-build"}
  :checksum "nginx-build_{version}_checksums.txt"
- :platforms {"linux-x86_64" {:asset "nginx-build-linux-amd64-{version}.tar.gz"}}}
+ :platforms {"linux-x86_64" {:asset "nginx-build-linux-amd64-{version}.tar.gz"}
+             "linux-aarch64" {:asset "nginx-build-linux-arm64-{version}.tar.gz"}
+             "darwin-x86_64" {:asset "nginx-build-darwin-amd64-{version}.tar.gz"}
+             "darwin-aarch64" {:asset "nginx-build-darwin-arm64-{version}.tar.gz"}}}

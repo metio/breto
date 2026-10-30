@@ -5,4 +5,7 @@
 {:description "Terragrunt is a flexible orchestration tool that allows Infrastructure as Code written in OpenTofu/Terraform to scale",
  :source {:github "gruntwork-io/terragrunt"}
  :checksum "SHA256SUMS"
- :platforms {"linux-x86_64" {:asset "terragrunt_linux_amd64.tar.gz" :bins {"terragrunt" "terragrunt_linux_amd64"}}}}
+ :platforms {"linux-x86_64" {:asset "terragrunt_linux_amd64.tar.gz" :bins {"terragrunt" "terragrunt_linux_amd64"}}
+             "linux-aarch64" {:asset "terragrunt_linux_arm64.tar.gz" :bins {"terragrunt" "terragrunt_linux_arm64"}}
+             "darwin-x86_64" {:asset "terragrunt_darwin_amd64.tar.gz" :bins {"terragrunt" "terragrunt_darwin_amd64"}}
+             "darwin-aarch64" {:asset "terragrunt_darwin_arm64.tar.gz" :bins {"terragrunt" "terragrunt_darwin_arm64"}}}}

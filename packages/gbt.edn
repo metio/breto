@@ -6,4 +6,6 @@
  :source {:github "jtyr/gbt"}
  :checksum "gbt-{version}-checksums-sha256.txt"
  :bins {"gbt" "gbt-{version}/gbt"}
- :platforms {"linux-x86_64" {:asset "gbt-{version}-linux-amd64.tar.gz"}}}
+ :platforms {"linux-x86_64" {:asset "gbt-{version}-linux-amd64.tar.gz"}
+             "linux-aarch64" {:asset "gbt-{version}-linux-arm64.tar.gz"}
+             "darwin-x86_64" {:asset "gbt-{version}-darwin-amd64.tar.gz"}}}

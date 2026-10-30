@@ -5,4 +5,7 @@
 {:description "A Language Server Protocol (LSP) server for Jsonnet (https://jsonnet.org)",
  :source {:github "grafana/jsonnet-language-server"}
  :checksum "jsonnet-language-server_{version}_checksums.txt"
- :platforms {"linux-x86_64" {:asset "jsonnet-language-server_{version}_linux_amd64"}}}
+ :platforms {"linux-x86_64" {:asset "jsonnet-language-server_{version}_linux_amd64"}
+             "linux-aarch64" {:asset "jsonnet-language-server_{version}_linux_arm64"}
+             "darwin-x86_64" {:asset "jsonnet-language-server_{version}_darwin_amd64"}
+             "darwin-aarch64" {:asset "jsonnet-language-server_{version}_darwin_arm64"}}}

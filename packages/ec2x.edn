@@ -5,4 +5,7 @@
 {:description "A cli tool of connect to ec2 instance with Session Manager",
  :source {:github "ponkio-o/ec2x"}
  :checksum "checksums.txt"
- :platforms {"linux-x86_64" {:asset "ec2x_linux_amd64.tar.gz"}}}
+ :platforms {"linux-x86_64" {:asset "ec2x_linux_amd64.tar.gz"}
+             "linux-aarch64" {:asset "ec2x_linux_arm64.tar.gz"}
+             "darwin-x86_64" {:asset "ec2x_darwin_amd64.tar.gz"}
+             "darwin-aarch64" {:asset "ec2x_darwin_arm64.tar.gz"}}}

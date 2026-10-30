@@ -7,4 +7,6 @@
  :strip 1
  :layout :tree
  :bins {"v" "v"}
- :platforms {"linux-x86_64" {:asset "v_linux.zip"}}}
+ :platforms {"linux-x86_64" {:asset "v_linux.zip"}
+             "linux-aarch64" {:asset "v_linux_arm64.zip"}
+             "darwin-aarch64" {:asset "v_macos_arm64.zip"}}}

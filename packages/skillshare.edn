@@ -5,4 +5,7 @@
 {:description "Sync skills across all AI CLI tools with one command and simplify team sharing. Supporting Claude Code, OpenClaw, OpenCode & more",
  :source {:github "runkids/skillshare"}
  :checksum "checksums.txt"
- :platforms {"linux-x86_64" {:asset "skillshare_{version}_linux_amd64.tar.gz"}}}
+ :platforms {"linux-x86_64" {:asset "skillshare_{version}_linux_amd64.tar.gz"}
+             "linux-aarch64" {:asset "skillshare_{version}_linux_arm64.tar.gz"}
+             "darwin-x86_64" {:asset "skillshare_{version}_darwin_amd64.tar.gz"}
+             "darwin-aarch64" {:asset "skillshare_{version}_darwin_arm64.tar.gz"}}}

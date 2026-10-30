@@ -5,4 +5,7 @@
 {:description "PowerShell for every system",
  :source {:github "PowerShell/PowerShell"}
  :bins {"pwsh" "pwsh"}
- :platforms {"linux-x86_64" {:asset "powershell-{version}-linux-x64.tar.gz"}}}
+ :platforms {"linux-x86_64" {:asset "powershell-{version}-linux-x64.tar.gz"}
+             "linux-aarch64" {:asset "powershell-{version}-linux-arm64.tar.gz"}
+             "darwin-x86_64" {:asset "powershell-{version}-osx-x64.tar.gz"}
+             "darwin-aarch64" {:asset "powershell-{version}-osx-arm64.tar.gz"}}}

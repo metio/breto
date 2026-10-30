@@ -5,4 +5,5 @@
 {:description "Query git repositories with SQL. Generate reports, perform status checks, analyze codebases",
  :source {:github "mergestat/mergestat-lite"}
  :bins {"mergestat" "mergestat"}
- :platforms {"linux-x86_64" {:asset "mergestat-linux-amd64.tar.gz"}}}
+ :platforms {"linux-x86_64" {:asset "mergestat-linux-amd64.tar.gz"}
+             "darwin-x86_64" {:asset "mergestat-macos-amd64.tar.gz"}}}

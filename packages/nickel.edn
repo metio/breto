@@ -5,4 +5,6 @@
 {:description "Better configuration for less",
  :source {:github "nickel-lang/nickel"}
  :tag-prefix ""
- :platforms {"linux-x86_64" {:asset "nickel-x86_64-linux"}}}
+ :platforms {"linux-x86_64" {:asset "nickel-x86_64-linux"}
+             "linux-aarch64" {:asset "nickel-arm64-linux"}
+             "darwin-aarch64" {:asset "nickel-arm64-macos"}}}

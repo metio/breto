@@ -4,4 +4,7 @@
 
 {:description "Effortless remote mini environments generated directly from docker compose config",
  :source {:github "robgonnella/minienv"}
- :platforms {"linux-x86_64" {:asset "minienv-{tag}-linux-amd64.tgz"}}}
+ :platforms {"linux-x86_64" {:asset "minienv-{tag}-linux-amd64.tgz"}
+             "linux-aarch64" {:asset "minienv-{tag}-linux-arm64.tgz"}
+             "darwin-x86_64" {:asset "minienv-{tag}-darwin-amd64.tgz"}
+             "darwin-aarch64" {:asset "minienv-{tag}-darwin-arm64.tgz"}}}

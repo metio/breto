@@ -5,4 +5,7 @@
  :source {:github "kubetail-org/kubetail"}
  :tag-prefix "cli/v"
  :checksum "SHA256SUMS"
- :platforms {"linux-x86_64" {:asset "kubetail-linux-amd64.tar.gz"}}}
+ :platforms {"linux-x86_64" {:asset "kubetail-linux-amd64.tar.gz"}
+             "linux-aarch64" {:asset "kubetail-linux-arm64.tar.gz"}
+             "darwin-x86_64" {:asset "kubetail-darwin-amd64.tar.gz"}
+             "darwin-aarch64" {:asset "kubetail-darwin-arm64.tar.gz"}}}

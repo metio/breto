@@ -3,4 +3,7 @@
 
 {:description "Language server for Nim"
  :source {:github "nim-lang/langserver"}
- :platforms {"linux-x86_64" {:asset "nimlangserver-linux-amd64.tar.gz"}}}
+ :platforms {"linux-x86_64" {:asset "nimlangserver-linux-amd64.tar.gz"}
+             "linux-aarch64" {:asset "nimlangserver-linux-arm64.tar.gz"}
+             "darwin-x86_64" {:asset "nimlangserver-macos-amd64.zip"}
+             "darwin-aarch64" {:asset "nimlangserver-macos-arm64.zip"}}}

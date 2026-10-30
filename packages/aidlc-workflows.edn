@@ -6,4 +6,7 @@
  :source {:github "awslabs/aidlc-workflows"}
  :checksum "checksums.txt"
  :bins {"aidlc" "{asset}"}
- :platforms {"linux-x86_64" {:asset "aidlc-linux-x64"}}}
+ :platforms {"linux-x86_64" {:asset "aidlc-linux-x64"}
+             "linux-aarch64" {:asset "aidlc-linux-arm64"}
+             "darwin-x86_64" {:asset "aidlc-darwin-x64"}
+             "darwin-aarch64" {:asset "aidlc-darwin-arm64"}}}

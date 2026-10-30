@@ -5,4 +5,7 @@
 {:description "Command line tool for Amazon Route 53",
  :source {:github "barnybug/cli53"}
  :checksum "cli53_{version}_checksums.txt"
- :platforms {"linux-x86_64" {:asset "cli53-linux-amd64"}}}
+ :platforms {"linux-x86_64" {:asset "cli53-linux-amd64"}
+             "linux-aarch64" {:asset "cli53-linux-arm64"}
+             "darwin-x86_64" {:asset "cli53-mac-amd64"}
+             "darwin-aarch64" {:asset "cli53-mac-arm64"}}}

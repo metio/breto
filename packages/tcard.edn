@@ -7,4 +7,7 @@
  :completions {:bash "share/completions/tcard.bash",
                :zsh "share/completions/_tcard",
                :fish "share/completions/tcard.fish"}
- :platforms {"linux-x86_64" {:asset "tcard.x86_64-linux.tgz"}}}
+ :platforms {"linux-x86_64" {:asset "tcard.x86_64-linux.tgz"}
+             "linux-aarch64" {:asset "tcard.aarch64-linux.tgz"}
+             "darwin-x86_64" {:asset "tcard.x86_64-darwin.tgz"}
+             "darwin-aarch64" {:asset "tcard.aarch64-darwin.tgz"}}}

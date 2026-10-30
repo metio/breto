@@ -5,4 +5,7 @@
 {:description "nFPM is Not FPM - a simple deb, rpm, apk, ipk, and arch linux packager written in Go",
  :source {:github "goreleaser/nfpm"}
  :checksum "checksums.txt"
- :platforms {"linux-x86_64" {:asset "nfpm_{version}_Linux_x86_64.tar.gz"}}}
+ :platforms {"linux-x86_64" {:asset "nfpm_{version}_Linux_x86_64.tar.gz"}
+             "linux-aarch64" {:asset "nfpm_{version}_Linux_arm64.tar.gz"}
+             "darwin-x86_64" {:asset "nfpm_{version}_Darwin_x86_64.tar.gz"}
+             "darwin-aarch64" {:asset "nfpm_{version}_Darwin_arm64.tar.gz"}}}

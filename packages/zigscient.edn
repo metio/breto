@@ -5,4 +5,7 @@
 {:description "A Zig Language Server",
  :source {:github "llogick/zigscient"}
  :tag-prefix ""
- :platforms {"linux-x86_64" {:asset "zigscient-x86_64-linux.zip" :bins {"zls" "zigscient-x86_64-linux"}}}}
+ :platforms {"linux-x86_64" {:asset "zigscient-x86_64-linux.zip" :bins {"zls" "zigscient-x86_64-linux"}}
+             "linux-aarch64" {:asset "zigscient-aarch64-linux.zip" :bins {"zls" "zigscient-aarch64-linux"}}
+             "darwin-x86_64" {:asset "zigscient-x86_64-macos.zip" :bins {"zls" "zigscient-x86_64-macos"}}
+             "darwin-aarch64" {:asset "zigscient-aarch64-macos.zip" :bins {"zls" "zigscient-aarch64-macos"}}}}

@@ -4,4 +4,7 @@
 
 {:description "“run anything” from the creator of `brew`",
  :source {:github "pkgxdev/pkgx"}
- :platforms {"linux-x86_64" {:asset "pkgx-{version}+linux+x86-64.tar.xz"}}}
+ :platforms {"linux-x86_64" {:asset "pkgx-{version}+linux+x86-64.tar.xz"}
+             "linux-aarch64" {:asset "pkgx-{version}+linux+aarch64.tar.xz"}
+             "darwin-x86_64" {:asset "pkgx-{version}+darwin+x86-64.tar.xz"}
+             "darwin-aarch64" {:asset "pkgx-{version}+darwin+aarch64.tar.xz"}}}

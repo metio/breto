@@ -4,4 +4,7 @@
 
 {:description "Kubernetes Virtualization API and runtime in order to define and manage virtual machines",
  :source {:github "kubevirt/kubevirt"}
- :platforms {"linux-x86_64" {:asset "virtctl-{tag}-linux-amd64"}}}
+ :platforms {"linux-x86_64" {:asset "virtctl-{tag}-linux-amd64"}
+             "linux-aarch64" {:asset "virtctl-{tag}-linux-arm64"}
+             "darwin-x86_64" {:asset "virtctl-{tag}-darwin-amd64"}
+             "darwin-aarch64" {:asset "virtctl-{tag}-darwin-arm64"}}}

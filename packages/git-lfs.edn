@@ -5,4 +5,7 @@
 {:description "Git extension for versioning large files",
  :source {:github "git-lfs/git-lfs"}
  :bins {"git-lfs" "git-lfs-{version}/git-lfs"}
- :platforms {"linux-x86_64" {:asset "git-lfs-linux-amd64-{tag}.tar.gz"}}}
+ :platforms {"linux-x86_64" {:asset "git-lfs-linux-amd64-{tag}.tar.gz"}
+             "linux-aarch64" {:asset "git-lfs-linux-arm64-{tag}.tar.gz"}
+             "darwin-x86_64" {:asset "git-lfs-darwin-amd64-{tag}.zip"}
+             "darwin-aarch64" {:asset "git-lfs-darwin-arm64-{tag}.zip"}}}

@@ -5,4 +5,7 @@
 {:description "A fast and configurable Markdown linter written in Go",
  :source {:github "shinagawa-web/gomarklint"}
  :checksum "gomarklint_{version}_checksums.txt"
- :platforms {"linux-x86_64" {:asset "gomarklint_Linux_x86_64.tar.gz"}}}
+ :platforms {"linux-x86_64" {:asset "gomarklint_Linux_x86_64.tar.gz"}
+             "linux-aarch64" {:asset "gomarklint_Linux_arm64.tar.gz"}
+             "darwin-x86_64" {:asset "gomarklint_Darwin_x86_64.tar.gz"}
+             "darwin-aarch64" {:asset "gomarklint_Darwin_arm64.tar.gz"}}}

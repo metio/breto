@@ -5,4 +5,7 @@
 {:description "PostgreSQL zero-downtime migrations made easy",
  :source {:github "xataio/pgroll"}
  :checksum "pgroll_{version}_checksums.txt"
- :platforms {"linux-x86_64" {:asset "pgroll.linux.amd64"}}}
+ :platforms {"linux-x86_64" {:asset "pgroll.linux.amd64"}
+             "linux-aarch64" {:asset "pgroll.linux.arm64"}
+             "darwin-x86_64" {:asset "pgroll.macos.amd64"}
+             "darwin-aarch64" {:asset "pgroll.macos.arm64"}}}

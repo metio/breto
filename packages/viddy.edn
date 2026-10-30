@@ -4,4 +4,7 @@
 
 {:description "A modern watch command. Time machine and pager etc",
  :source {:github "sachaos/viddy"}
- :platforms {"linux-x86_64" {:asset "viddy-{tag}-linux-x86_64.tar.gz" :checksum "viddy-{tag}-linux-x86_64.sha256"}}}
+ :platforms {"linux-x86_64" {:asset "viddy-{tag}-linux-x86_64.tar.gz" :checksum "viddy-{tag}-linux-x86_64.sha256"}
+             "linux-aarch64" {:asset "viddy-{tag}-linux-arm64.tar.gz" :checksum "viddy-{tag}-linux-arm64.sha256"}
+             "darwin-x86_64" {:asset "viddy-{tag}-macos-x86_64.tar.gz" :checksum "viddy-{tag}-macos-x86_64.sha256"}
+             "darwin-aarch64" {:asset "viddy-{tag}-macos-arm64.tar.gz" :checksum "viddy-{tag}-macos-arm64.sha256"}}}

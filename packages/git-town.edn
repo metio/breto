@@ -5,4 +5,7 @@
 {:description "Git workflow automation to keep branches in sync and reduce merge conflicts",
  :source {:github "git-town/git-town"}
  :checksum "checksums.txt"
- :platforms {"linux-x86_64" {:asset "git-town_linux_intel_64.tar.gz"}}}
+ :platforms {"linux-x86_64" {:asset "git-town_linux_intel_64.tar.gz"}
+             "linux-aarch64" {:asset "git-town_linux_arm_64.tar.gz"}
+             "darwin-x86_64" {:asset "git-town_macos_intel_64.tar.gz"}
+             "darwin-aarch64" {:asset "git-town_macos_arm_64.tar.gz"}}}

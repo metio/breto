@@ -4,4 +4,7 @@
 
 {:description "Intuitive find & replace CLI (sed alternative)",
  :source {:github "chmln/sd"}
- :platforms {"linux-x86_64" {:asset "sd-{tag}-x86_64-unknown-linux-musl.tar.gz" :bins {"sd" "sd-{tag}-x86_64-unknown-linux-musl/sd"}}}}
+ :platforms {"linux-x86_64" {:asset "sd-{tag}-x86_64-unknown-linux-musl.tar.gz" :bins {"sd" "sd-{tag}-x86_64-unknown-linux-musl/sd"}}
+             "linux-aarch64" {:asset "sd-{tag}-aarch64-unknown-linux-musl.tar.gz" :bins {"sd" "sd-{tag}-aarch64-unknown-linux-musl/sd"}}
+             "darwin-x86_64" {:asset "sd-{tag}-x86_64-apple-darwin.tar.gz" :bins {"sd" "sd-{tag}-x86_64-apple-darwin/sd"}}
+             "darwin-aarch64" {:asset "sd-{tag}-aarch64-apple-darwin.tar.gz" :bins {"sd" "sd-{tag}-aarch64-apple-darwin/sd"}}}}

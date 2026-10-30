@@ -5,4 +5,7 @@
 {:description "EKS Node Viewer",
  :source {:github "awslabs/eks-node-viewer"}
  :checksum "eks-node-viewer_{version}_sha256_checksums.txt"
- :platforms {"linux-x86_64" {:asset "eks-node-viewer_Linux_x86_64"}}}
+ :platforms {"linux-x86_64" {:asset "eks-node-viewer_Linux_x86_64"}
+             "linux-aarch64" {:asset "eks-node-viewer_Linux_arm64"}
+             "darwin-x86_64" {:asset "eks-node-viewer_Darwin_all"}
+             "darwin-aarch64" {:asset "eks-node-viewer_Darwin_all"}}}

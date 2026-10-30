@@ -5,4 +5,7 @@
 {:description "Keyless Git signing using Sigstore",
  :source {:github "sigstore/gitsign"}
  :checksum "checksums.txt"
- :platforms {"linux-x86_64" {:asset "gitsign_{version}_linux_amd64"}}}
+ :platforms {"linux-x86_64" {:asset "gitsign_{version}_linux_amd64"}
+             "linux-aarch64" {:asset "gitsign_{version}_linux_arm64"}
+             "darwin-x86_64" {:asset "gitsign_{version}_darwin_amd64"}
+             "darwin-aarch64" {:asset "gitsign_{version}_darwin_arm64"}}}

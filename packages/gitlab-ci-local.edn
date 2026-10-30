@@ -5,4 +5,7 @@
 {:description "Tired of pushing to test your .gitlab-ci.yml",
  :source {:github "firecow/gitlab-ci-local"}
  :tag-prefix ""
- :platforms {"linux-x86_64" {:asset "gitlab-ci-local-linux-amd64.tar.gz"}}}
+ :platforms {"linux-x86_64" {:asset "gitlab-ci-local-linux-amd64.tar.gz"}
+             "linux-aarch64" {:asset "gitlab-ci-local-linux-arm64.tar.gz"}
+             "darwin-x86_64" {:asset "gitlab-ci-local-darwin-amd64.tar.gz"}
+             "darwin-aarch64" {:asset "gitlab-ci-local-darwin-arm64.tar.gz"}}}

@@ -5,4 +5,7 @@
 {:description "A modern and intuitive terminal-based text editor",
  :source {:github "micro-editor/micro"}
  :bins {"micro" "micro-{version}/micro"}
- :platforms {"linux-x86_64" {:asset "micro-{version}-linux64-static.tar.gz"}}}
+ :platforms {"linux-x86_64" {:asset "micro-{version}-linux64-static.tar.gz"}
+             "linux-aarch64" {:asset "micro-{version}-linux-arm64.tar.gz"}
+             "darwin-x86_64" {:asset "micro-{version}-osx.tar.gz"}
+             "darwin-aarch64" {:asset "micro-{version}-macos-arm64.tar.gz"}}}

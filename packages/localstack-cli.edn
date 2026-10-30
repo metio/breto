@@ -6,4 +6,7 @@
  :source {:github "localstack/localstack-cli"}
  :checksum "localstack-cli-{version}-checksums.txt"
  :bins {"localstack" "localstack"}
- :platforms {"linux-x86_64" {:asset "localstack-cli-{version}-linux-amd64-onefile.tar.gz"}}}
+ :platforms {"linux-x86_64" {:asset "localstack-cli-{version}-linux-amd64-onefile.tar.gz"}
+             "linux-aarch64" {:asset "localstack-cli-{version}-linux-arm64-onefile.tar.gz"}
+             "darwin-x86_64" {:asset "localstack-cli-{version}-darwin-amd64-onefile.tar.gz"}
+             "darwin-aarch64" {:asset "localstack-cli-{version}-darwin-arm64-onefile.tar.gz"}}}

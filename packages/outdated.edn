@@ -6,4 +6,7 @@
  :source {:github "replicatedhq/outdated"}
  :checksum "outdated_{version}_checksums.txt"
  :bins {"kubectl-outdated" "outdated"}
- :platforms {"linux-x86_64" {:asset "outdated_linux_amd64.tar.gz"}}}
+ :platforms {"linux-x86_64" {:asset "outdated_linux_amd64.tar.gz"}
+             "linux-aarch64" {:asset "outdated_linux_arm64.tar.gz"}
+             "darwin-x86_64" {:asset "outdated_darwin_amd64.tar.gz"}
+             "darwin-aarch64" {:asset "outdated_darwin_arm64.tar.gz"}}}

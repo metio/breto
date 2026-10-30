@@ -4,4 +4,7 @@
 
 {:description "Utility for self-documented Makefile",
  :source {:github "Songmu/make2help"}
- :platforms {"linux-x86_64" {:asset "make2help_{tag}_linux_amd64.tar.gz" :bins {"make2help" "make2help_{tag}_linux_amd64/make2help"}}}}
+ :platforms {"linux-x86_64" {:asset "make2help_{tag}_linux_amd64.tar.gz" :bins {"make2help" "make2help_{tag}_linux_amd64/make2help"}}
+             "linux-aarch64" {:asset "make2help_{tag}_linux_arm64.tar.gz" :bins {"make2help" "make2help_{tag}_linux_arm64/make2help"}}
+             "darwin-x86_64" {:asset "make2help_{tag}_darwin_amd64.zip" :bins {"make2help" "make2help_{tag}_darwin_amd64/make2help"}}
+             "darwin-aarch64" {:asset "make2help_{tag}_darwin_arm64.zip" :bins {"make2help" "make2help_{tag}_darwin_arm64/make2help"}}}}

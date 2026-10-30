@@ -7,4 +7,7 @@
  :tag-prefix ""
  :checksum "sha256sums.txt"
  :bins {"floci" "{asset}"}
- :platforms {"linux-x86_64" {:asset "floci-linux-amd64"}}}
+ :platforms {"linux-x86_64" {:asset "floci-linux-amd64"}
+             "linux-aarch64" {:asset "floci-linux-arm64"}
+             "darwin-x86_64" {:asset "floci-darwin-amd64"}
+             "darwin-aarch64" {:asset "floci-darwin-arm64"}}}

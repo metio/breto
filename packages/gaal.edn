@@ -5,4 +5,7 @@
 {:description "A single CLI to keep your local repositories, AI agent skills, and MCP server configurations in sync",
  :source {:github "getgaal/gaal"}
  :checksum "SHA256SUMS"
- :platforms {"linux-x86_64" {:asset "gaal-linux-amd64"}}}
+ :platforms {"linux-x86_64" {:asset "gaal-linux-amd64"}
+             "linux-aarch64" {:asset "gaal-linux-arm64"}
+             "darwin-x86_64" {:asset "gaal-darwin-amd64"}
+             "darwin-aarch64" {:asset "gaal-darwin-arm64"}}}

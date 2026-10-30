@@ -4,4 +4,5 @@
 
 {:description "This is not a package manager",
  :source {:github "Fusion/gogo"}
- :platforms {"linux-x86_64" {:asset "gogo-linux-amd64"}}}
+ :platforms {"linux-x86_64" {:asset "gogo-linux-amd64"}
+             "darwin-aarch64" {:asset "gogo-darwin-arm64"}}}

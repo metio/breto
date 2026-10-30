@@ -5,4 +5,6 @@
 {:description "Build retro games using WebAssembly for a fantasy console",
  :source {:github "aduros/wasm4"}
  :bins {"w4" "w4"}
- :platforms {"linux-x86_64" {:asset "w4-linux.zip"}}}
+ :platforms {"linux-x86_64" {:asset "w4-linux.zip"}
+             "darwin-x86_64" {:asset "w4-mac.zip"}
+             "darwin-aarch64" {:asset "w4-mac.zip"}}}

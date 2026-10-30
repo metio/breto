@@ -6,4 +6,7 @@
  :source {:github "julian7/redact"}
  :checksum "SHA256SUMS.redact-{version}"
  :bins {"redact" "redact", "redact-ext-aws" "redact-ext-aws", "redact-ext-azure" "redact-ext-azure"}
- :platforms {"linux-x86_64" {:asset "redact-linux-amd64-{version}.tgz"}}}
+ :platforms {"linux-x86_64" {:asset "redact-linux-amd64-{version}.tgz"}
+             "linux-aarch64" {:asset "redact-linux-arm64-{version}.tgz"}
+             "darwin-x86_64" {:asset "redact-darwin-all-{version}.tgz"}
+             "darwin-aarch64" {:asset "redact-darwin-all-{version}.tgz"}}}

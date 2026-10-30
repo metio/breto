@@ -6,4 +6,7 @@
  :source {:github "tofuutils/tenv"}
  :checksum "tenv_{tag}_checksums.txt"
  :bins {"atmos" "atmos", "tenv" "tenv", "terraform" "terraform", "terragrunt" "terragrunt", "tf" "tf", "tofu" "tofu"}
- :platforms {"linux-x86_64" {:asset "tenv_{tag}_Linux_x86_64.tar.gz"}}}
+ :platforms {"linux-x86_64" {:asset "tenv_{tag}_Linux_x86_64.tar.gz"}
+             "linux-aarch64" {:asset "tenv_{tag}_Linux_arm64.tar.gz"}
+             "darwin-x86_64" {:asset "tenv_{tag}_Darwin_x86_64.tar.gz"}
+             "darwin-aarch64" {:asset "tenv_{tag}_Darwin_arm64.tar.gz"}}}

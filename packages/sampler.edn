@@ -4,4 +4,5 @@
 
 {:description "Tool for shell commands execution, visualization and alerting. Configured with a simple YAML file",
  :source {:github "sqshq/sampler"}
- :platforms {"linux-x86_64" {:asset "sampler-{version}-linux-amd64"}}}
+ :platforms {"linux-x86_64" {:asset "sampler-{version}-linux-amd64"}
+             "darwin-x86_64" {:asset "sampler-{version}-darwin-amd64"}}}

@@ -5,4 +5,5 @@
 {:description "FUSE implementation for overlayfs",
  :source {:github "containers/fuse-overlayfs"}
  :checksum "SHA256SUMS"
- :platforms {"linux-x86_64" {:asset "fuse-overlayfs-x86_64"}}}
+ :platforms {"linux-x86_64" {:asset "fuse-overlayfs-x86_64"}
+             "linux-aarch64" {:asset "fuse-overlayfs-aarch64"}}}

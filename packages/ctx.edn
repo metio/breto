@@ -5,4 +5,7 @@
 {:description "Search the coding agent history already on your machine",
  :source {:github "ctxrs/ctx"}
  :checksum "SHA256SUMS"
- :platforms {"linux-x86_64" {:asset "ctx-linux-x64"}}}
+ :platforms {"linux-x86_64" {:asset "ctx-linux-x64"}
+             "linux-aarch64" {:asset "ctx-linux-aarch64"}
+             "darwin-x86_64" {:asset "ctx-macos-x64"}
+             "darwin-aarch64" {:asset "ctx-macos-arm64"}}}

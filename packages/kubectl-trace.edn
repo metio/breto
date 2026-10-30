@@ -5,4 +5,5 @@
 {:description "Schedule bpftrace programs on your kubernetes cluster using the kubectl",
  :source {:github "iovisor/kubectl-trace"}
  :checksum "kubectl-trace_{version}_checksums.txt"
- :platforms {"linux-x86_64" {:asset "kubectl-trace_{tag}_linux_amd64.tar.gz"}}}
+ :platforms {"linux-x86_64" {:asset "kubectl-trace_{tag}_linux_amd64.tar.gz"}
+             "darwin-x86_64" {:asset "kubectl-trace_{tag}_darwin_amd64.tar.gz"}}}

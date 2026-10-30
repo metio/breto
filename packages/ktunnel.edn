@@ -6,4 +6,7 @@
  :source {:github "omrikiei/ktunnel"}
  :checksum "checksums.txt"
  :bins {"ktunnel" "ktunnel", "kubectl-tunnel" "ktunnel"}
- :platforms {"linux-x86_64" {:asset "ktunnel_{version}_Linux_x86_64.tar.gz"}}}
+ :platforms {"linux-x86_64" {:asset "ktunnel_{version}_Linux_x86_64.tar.gz"}
+             "linux-aarch64" {:asset "ktunnel_{version}_Linux_arm64.tar.gz"}
+             "darwin-x86_64" {:asset "ktunnel_{version}_Darwin_x86_64.tar.gz"}
+             "darwin-aarch64" {:asset "ktunnel_{version}_Darwin_arm64.tar.gz"}}}

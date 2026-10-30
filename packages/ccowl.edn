@@ -5,4 +5,7 @@
 {:description "A cross-platform status bar application that monitors Claude Code usage in real-time",
  :source {:github "sivchari/ccowl"}
  :checksum "{asset}.sha256"
- :platforms {"linux-x86_64" {:asset "ccowl-linux-amd64.tar.gz" :bins {"ccowl" "ccowl-linux-amd64"}}}}
+ :platforms {"linux-x86_64" {:asset "ccowl-linux-amd64.tar.gz" :bins {"ccowl" "ccowl-linux-amd64"}}
+             "linux-aarch64" {:asset "ccowl-linux-arm64.tar.gz" :bins {"ccowl" "ccowl-linux-arm64"}}
+             "darwin-x86_64" {:asset "ccowl-darwin-amd64.tar.gz" :bins {"ccowl" "ccowl-darwin-amd64"}}
+             "darwin-aarch64" {:asset "ccowl-darwin-arm64.tar.gz" :bins {"ccowl" "ccowl-darwin-arm64"}}}}

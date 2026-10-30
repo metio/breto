@@ -3,4 +3,7 @@
 
 {:description "AI coding agent for the terminal"
  :source {:github "anomalyco/opencode"}
- :platforms {"linux-x86_64" {:asset "opencode-linux-x64.tar.gz"}}}
+ :platforms {"linux-x86_64" {:asset "opencode-linux-x64.tar.gz"}
+             "linux-aarch64" {:asset "opencode-linux-arm64.tar.gz"}
+             "darwin-x86_64" {:asset "opencode-darwin-x64.zip"}
+             "darwin-aarch64" {:asset "opencode-darwin-arm64.zip"}}}

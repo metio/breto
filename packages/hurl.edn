@@ -6,4 +6,7 @@
  :source {:github "Orange-OpenSource/hurl"}
  :tag-prefix ""
  :checksum "{asset}.sha256"
- :platforms {"linux-x86_64" {:asset "hurl-{tag}-x86_64-unknown-linux-gnu.tar.gz" :bins {"hurl" "hurl-{tag}-x86_64-unknown-linux-gnu/bin/hurl", "hurlfmt" "hurl-{tag}-x86_64-unknown-linux-gnu/bin/hurlfmt"}}}}
+ :platforms {"linux-x86_64" {:asset "hurl-{tag}-x86_64-unknown-linux-gnu.tar.gz" :bins {"hurl" "hurl-{tag}-x86_64-unknown-linux-gnu/bin/hurl", "hurlfmt" "hurl-{tag}-x86_64-unknown-linux-gnu/bin/hurlfmt"}}
+             "linux-aarch64" {:asset "hurl-{tag}-aarch64-unknown-linux-gnu.tar.gz" :bins {"hurl" "hurl-{tag}-aarch64-unknown-linux-gnu/bin/hurl" "hurlfmt" "hurl-{tag}-aarch64-unknown-linux-gnu/bin/hurlfmt"}}
+             "darwin-x86_64" {:asset "hurl-{tag}-x86_64-apple-darwin.tar.gz" :bins {"hurl" "hurl-{tag}-x86_64-apple-darwin/bin/hurl" "hurlfmt" "hurl-{tag}-x86_64-apple-darwin/bin/hurlfmt"}}
+             "darwin-aarch64" {:asset "hurl-{tag}-aarch64-apple-darwin.tar.gz" :bins {"hurl" "hurl-{tag}-aarch64-apple-darwin/bin/hurl" "hurlfmt" "hurl-{tag}-aarch64-apple-darwin/bin/hurlfmt"}}}}

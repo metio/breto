@@ -6,4 +6,7 @@
  :source {:github "acorn-io/runtime"}
  :checksum "checksums.txt"
  :bins {"acorn" "acorn"}
- :platforms {"linux-x86_64" {:asset "acorn-{tag}-linux-amd64.tar.gz"}}}
+ :platforms {"linux-x86_64" {:asset "acorn-{tag}-linux-amd64.tar.gz"}
+             "linux-aarch64" {:asset "acorn-{tag}-linux-arm64.tar.gz"}
+             "darwin-x86_64" {:asset "acorn-{tag}-macOS-universal.tar.gz"}
+             "darwin-aarch64" {:asset "acorn-{tag}-macOS-universal.tar.gz"}}}

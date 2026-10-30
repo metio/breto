@@ -5,4 +5,7 @@
 {:description "About gitlab-comment is a CLI command to post Merge Request Note",
  :source {:github "yuyaban/gitlab-comment"}
  :checksum "gitlab-comment_{version}_checksums.txt"
- :platforms {"linux-x86_64" {:asset "gitlab-comment_{version}_linux_amd64.tar.gz"}}}
+ :platforms {"linux-x86_64" {:asset "gitlab-comment_{version}_linux_amd64.tar.gz"}
+             "linux-aarch64" {:asset "gitlab-comment_{version}_linux_arm64.tar.gz"}
+             "darwin-x86_64" {:asset "gitlab-comment_{version}_darwin_amd64.tar.gz"}
+             "darwin-aarch64" {:asset "gitlab-comment_{version}_darwin_arm64.tar.gz"}}}

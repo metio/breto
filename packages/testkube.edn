@@ -10,4 +10,7 @@
              :bundle "checksums.txt.sigstore.json"
              :identity "https://github.com/kubeshop/testkube/.github/workflows/release.yaml@refs/tags/{tag}"
              :issuer "https://token.actions.githubusercontent.com"}
- :platforms {"linux-x86_64" {:asset "testkube_{version}_Linux_x86_64.tar.gz"}}}
+ :platforms {"linux-x86_64" {:asset "testkube_{version}_Linux_x86_64.tar.gz"}
+             "linux-aarch64" {:asset "testkube_{version}_Linux_arm64.tar.gz"}
+             "darwin-x86_64" {:asset "testkube_{version}_Darwin_x86_64.tar.gz"}
+             "darwin-aarch64" {:asset "testkube_{version}_Darwin_arm64.tar.gz"}}}

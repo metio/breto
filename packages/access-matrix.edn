@@ -5,4 +5,6 @@
 {:description "Review Access - kubectl plugin to show an access matrix for k8s server resources",
  :source {:github "corneliusweig/rakkess"}
  :checksum "{asset}.sha256"
- :platforms {"linux-x86_64" {:asset "access-matrix-amd64-linux.tar.gz" :bins {"kubectl-access_matrix" "access-matrix-amd64-linux"}}}}
+ :platforms {"linux-x86_64" {:asset "access-matrix-amd64-linux.tar.gz" :bins {"kubectl-access_matrix" "access-matrix-amd64-linux"}}
+             "darwin-x86_64" {:asset "access-matrix-amd64-darwin.tar.gz" :bins {"kubectl-access_matrix" "access-matrix-amd64-darwin"}}
+             "darwin-aarch64" {:asset "access-matrix-arm64-darwin.tar.gz" :bins {"kubectl-access_matrix" "access-matrix-arm64-darwin"}}}}

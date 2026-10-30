@@ -4,4 +4,6 @@
 
 {:description "Dockerfile format and parser. a modern dockfmt",
  :source {:github "reteps/dockerfmt"}
- :platforms {"linux-x86_64" {:asset "dockerfmt-{tag}-linux-amd64.tar.gz"}}}
+ :platforms {"linux-x86_64" {:asset "dockerfmt-{tag}-linux-amd64.tar.gz"}
+             "linux-aarch64" {:asset "dockerfmt-{tag}-linux-arm64.tar.gz"}
+             "darwin-aarch64" {:asset "dockerfmt-{tag}-darwin-arm64.tar.gz"}}}

@@ -5,4 +5,7 @@
 {:description "Making local Kubernetes clusters fun and easy to set up",
  :source {:github "tilt-dev/ctlptl"}
  :checksum "checksums.txt"
- :platforms {"linux-x86_64" {:asset "ctlptl.{version}.linux.x86_64.tar.gz"}}}
+ :platforms {"linux-x86_64" {:asset "ctlptl.{version}.linux.x86_64.tar.gz"}
+             "linux-aarch64" {:asset "ctlptl.{version}.linux.arm64.tar.gz"}
+             "darwin-x86_64" {:asset "ctlptl.{version}.mac.x86_64.tar.gz"}
+             "darwin-aarch64" {:asset "ctlptl.{version}.mac.arm64.tar.gz"}}}

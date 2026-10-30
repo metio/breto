@@ -6,4 +6,7 @@
  :source {:github "yoheimuta/protolint"}
  :checksum "checksums.txt"
  :bins {"protoc-gen-protolint" "protoc-gen-protolint", "protolint" "protolint"}
- :platforms {"linux-x86_64" {:asset "protolint_{version}_linux_amd64.tar.gz"}}}
+ :platforms {"linux-x86_64" {:asset "protolint_{version}_linux_amd64.tar.gz"}
+             "linux-aarch64" {:asset "protolint_{version}_linux_arm64.tar.gz"}
+             "darwin-x86_64" {:asset "protolint_{version}_darwin_amd64.tar.gz"}
+             "darwin-aarch64" {:asset "protolint_{version}_darwin_arm64.tar.gz"}}}

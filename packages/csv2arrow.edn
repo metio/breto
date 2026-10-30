@@ -5,4 +5,6 @@
 {:description "A collection of handy CLI tools to convert CSV and JSON to Apache Arrow and Parquet",
  :source {:github "domoritz/arrow-tools"}
  :checksum "{asset}.sha256"
- :platforms {"linux-x86_64" {:asset "csv2arrow-x86_64-unknown-linux-gnu.tar.xz" :bins {"csv2arrow" "csv2arrow-x86_64-unknown-linux-gnu/csv2arrow"}}}}
+ :platforms {"linux-x86_64" {:asset "csv2arrow-x86_64-unknown-linux-gnu.tar.xz" :bins {"csv2arrow" "csv2arrow-x86_64-unknown-linux-gnu/csv2arrow"}}
+             "linux-aarch64" {:asset "csv2arrow-aarch64-unknown-linux-gnu.tar.xz" :bins {"csv2arrow" "csv2arrow-aarch64-unknown-linux-gnu/csv2arrow"}}
+             "darwin-aarch64" {:asset "csv2arrow-aarch64-apple-darwin.tar.xz" :bins {"csv2arrow" "csv2arrow-aarch64-apple-darwin/csv2arrow"}}}}

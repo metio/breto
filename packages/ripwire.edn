@@ -5,4 +5,6 @@
 {:description "A zero-dependency CLI and MCP server for finding context in codebases",
  :source {:github "redhat-et/ripwire"}
  :checksum "{asset}.sha256"
- :platforms {"linux-x86_64" {:asset "ripwire-{version}-linux-x64.tar.gz" :bins {"ripwire" "ripwire-{version}-linux-x64/ripwire"}}}}
+ :platforms {"linux-x86_64" {:asset "ripwire-{version}-linux-x64.tar.gz" :bins {"ripwire" "ripwire-{version}-linux-x64/ripwire"}}
+             "linux-aarch64" {:asset "ripwire-{version}-linux-arm64.tar.gz" :bins {"ripwire" "ripwire-{version}-linux-arm64/ripwire"}}
+             "darwin-aarch64" {:asset "ripwire-{version}-macos-arm64.tar.gz" :bins {"ripwire" "ripwire-{version}-macos-arm64/ripwire"}}}}

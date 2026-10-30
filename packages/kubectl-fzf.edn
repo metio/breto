@@ -6,4 +6,5 @@
  :source {:github "bonnefoa/kubectl-fzf"}
  :checksum "kubectl-fzf_checksums.txt"
  :bins {"kubectl-fzf-completion" "kubectl-fzf-completion", "kubectl-fzf-server" "kubectl-fzf-server"}
- :platforms {"linux-x86_64" {:asset "kubectl-fzf_linux_amd64.tar.gz"}}}
+ :platforms {"linux-x86_64" {:asset "kubectl-fzf_linux_amd64.tar.gz"}
+             "darwin-x86_64" {:asset "kubectl-fzf_darwin_amd64.tar.gz"}}}

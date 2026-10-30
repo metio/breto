@@ -6,4 +6,7 @@
  :source {:github "gittower/git-flow-next"}
  :checksum "git-flow-next-{tag}-checksums.txt"
  :bins {"git-flow" "git-flow"}
- :platforms {"linux-x86_64" {:asset "git-flow-next-{tag}-linux-amd64.tar.gz"}}}
+ :platforms {"linux-x86_64" {:asset "git-flow-next-{tag}-linux-amd64.tar.gz"}
+             "linux-aarch64" {:asset "git-flow-next-{tag}-linux-arm64.tar.gz"}
+             "darwin-x86_64" {:asset "git-flow-next-{tag}-darwin-amd64.tar.gz"}
+             "darwin-aarch64" {:asset "git-flow-next-{tag}-darwin-arm64.tar.gz"}}}

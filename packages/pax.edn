@@ -4,4 +4,5 @@
 
 {:description "CLI tool for PKCS7 padding oracle attacks",
  :source {:github "liamg/pax"}
- :platforms {"linux-x86_64" {:asset "pax-linux-amd64"}}}
+ :platforms {"linux-x86_64" {:asset "pax-linux-amd64"}
+             "darwin-x86_64" {:asset "pax-darwin-amd64"}}}

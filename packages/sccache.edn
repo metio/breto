@@ -5,4 +5,7 @@
 {:description "Sccache is a ccache-like tool. It is used as a compiler wrapper and avoids compilation when possible. Sccache has the capability to utilize caching in remote storage environments, including various cloud storage options, or alternatively, in local storage",
  :source {:github "mozilla/sccache"}
  :checksum "{asset}.sha256"
- :platforms {"linux-x86_64" {:asset "sccache-{tag}-x86_64-unknown-linux-musl.tar.gz" :bins {"sccache" "sccache-{tag}-x86_64-unknown-linux-musl/sccache"}}}}
+ :platforms {"linux-x86_64" {:asset "sccache-{tag}-x86_64-unknown-linux-musl.tar.gz" :bins {"sccache" "sccache-{tag}-x86_64-unknown-linux-musl/sccache"}}
+             "linux-aarch64" {:asset "sccache-{tag}-aarch64-unknown-linux-musl.tar.gz" :bins {"sccache" "sccache-{tag}-aarch64-unknown-linux-musl/sccache"}}
+             "darwin-x86_64" {:asset "sccache-{tag}-x86_64-apple-darwin.tar.gz" :bins {"sccache" "sccache-{tag}-x86_64-apple-darwin/sccache"}}
+             "darwin-aarch64" {:asset "sccache-{tag}-aarch64-apple-darwin.tar.gz" :bins {"sccache" "sccache-{tag}-aarch64-apple-darwin/sccache"}}}}

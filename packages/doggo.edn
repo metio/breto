@@ -5,4 +5,7 @@
 {:description "Command-line DNS Client for Humans. Written in Golang",
  :source {:github "mr-karan/doggo"}
  :checksum "doggo_{version}_checksums.txt"
- :platforms {"linux-x86_64" {:asset "doggo-linux-x86_64.tar.gz"}}}
+ :platforms {"linux-x86_64" {:asset "doggo-linux-x86_64.tar.gz"}
+             "linux-aarch64" {:asset "doggo-linux-aarch64.tar.gz"}
+             "darwin-x86_64" {:asset "doggo-darwin-x86_64.tar.gz"}
+             "darwin-aarch64" {:asset "doggo-darwin-aarch64.tar.gz"}}}

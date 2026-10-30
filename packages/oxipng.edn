@@ -4,4 +4,7 @@
 
 {:description "Multithreaded PNG optimizer written in Rust",
  :source {:github "oxipng/oxipng"}
- :platforms {"linux-x86_64" {:asset "oxipng-{version}-x86_64-unknown-linux-musl.tar.gz" :bins {"oxipng" "oxipng-{version}-x86_64-unknown-linux-musl/oxipng"}}}}
+ :platforms {"linux-x86_64" {:asset "oxipng-{version}-x86_64-unknown-linux-musl.tar.gz" :bins {"oxipng" "oxipng-{version}-x86_64-unknown-linux-musl/oxipng"}}
+             "linux-aarch64" {:asset "oxipng-{version}-aarch64-unknown-linux-musl.tar.gz" :bins {"oxipng" "oxipng-{version}-aarch64-unknown-linux-musl/oxipng"}}
+             "darwin-x86_64" {:asset "oxipng-{version}-x86_64-apple-darwin.tar.gz" :bins {"oxipng" "oxipng-{version}-x86_64-apple-darwin/oxipng"}}
+             "darwin-aarch64" {:asset "oxipng-{version}-aarch64-apple-darwin.tar.gz" :bins {"oxipng" "oxipng-{version}-aarch64-apple-darwin/oxipng"}}}}

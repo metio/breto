@@ -4,4 +4,7 @@
 
 {:description "Lightning-fast linter for .env files. Written in Rust",
  :source {:github "dotenv-linter/dotenv-linter"}
- :platforms {"linux-x86_64" {:asset "dotenv-linter-linux-x86_64.tar.gz"}}}
+ :platforms {"linux-x86_64" {:asset "dotenv-linter-linux-x86_64.tar.gz"}
+             "linux-aarch64" {:asset "dotenv-linter-linux-aarch64.tar.gz"}
+             "darwin-x86_64" {:asset "dotenv-linter-darwin-x86_64.tar.gz"}
+             "darwin-aarch64" {:asset "dotenv-linter-darwin-arm64.tar.gz"}}}

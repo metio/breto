@@ -4,4 +4,5 @@
 
 {:description "Generate difference sql of two mysql schema",
  :source {:github "schemalex/schemalex"}
- :platforms {"linux-x86_64" {:asset "schemalex_linux_amd64.tar.gz" :bins {"schemadiff" "schemalex_linux_amd64/schemadiff", "schemalex" "schemalex_linux_amd64/schemalex", "schemalint" "schemalex_linux_amd64/schemalint"}}}}
+ :platforms {"linux-x86_64" {:asset "schemalex_linux_amd64.tar.gz" :bins {"schemadiff" "schemalex_linux_amd64/schemadiff", "schemalex" "schemalex_linux_amd64/schemalex", "schemalint" "schemalex_linux_amd64/schemalint"}}
+             "darwin-x86_64" {:asset "schemalex_darwin_amd64.zip" :bins {"schemadiff" "schemalex_darwin_amd64/schemadiff" "schemalex" "schemalex_darwin_amd64/schemalex" "schemalint" "schemalex_darwin_amd64/schemalint"}}}}

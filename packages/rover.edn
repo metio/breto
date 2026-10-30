@@ -6,4 +6,7 @@
  :source {:github "im2nguyen/rover"}
  :checksum "rover_{version}_SHA256SUMS"
  :bins {"rover" "rover_{tag}"}
- :platforms {"linux-x86_64" {:asset "rover_{version}_linux_amd64.zip"}}}
+ :platforms {"linux-x86_64" {:asset "rover_{version}_linux_amd64.zip"}
+             "linux-aarch64" {:asset "rover_{version}_linux_arm64.zip"}
+             "darwin-x86_64" {:asset "rover_{version}_darwin_amd64.zip"}
+             "darwin-aarch64" {:asset "rover_{version}_darwin_arm64.zip"}}}

@@ -4,4 +4,7 @@
 
 {:description "A tree-sitter based AST difftool to get meaningful semantic diffs",
  :source {:github "afnanenayet/diffsitter"}
- :platforms {"linux-x86_64" {:asset "diffsitter-x86_64-unknown-linux-gnu.tar.gz" :checksum "diffsitter-x86_64-unknown-linux-gnu.sha256"}}}
+ :platforms {"linux-x86_64" {:asset "diffsitter-x86_64-unknown-linux-gnu.tar.gz" :checksum "diffsitter-x86_64-unknown-linux-gnu.sha256"}
+             "linux-aarch64" {:asset "diffsitter-aarch64-unknown-linux-gnu.tar.gz" :checksum "diffsitter-aarch64-unknown-linux-gnu.sha256"}
+             "darwin-x86_64" {:asset "diffsitter-x86_64-apple-darwin.tar.gz" :checksum "diffsitter-x86_64-apple-darwin.sha256"}
+             "darwin-aarch64" {:asset "diffsitter-aarch64-apple-darwin.tar.gz" :checksum "diffsitter-aarch64-apple-darwin.sha256"}}}

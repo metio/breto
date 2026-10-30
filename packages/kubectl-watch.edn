@@ -4,4 +4,6 @@
 
 {:description "A kubectl plugin to provide a pretty delta change view of being watched kubernetes resources",
  :source {:github "imuxin/kubectl-watch"}
- :platforms {"linux-x86_64" {:asset "kubectl-watch-x86_64-unknown-linux-gnu.tar.gz"}}}
+ :platforms {"linux-x86_64" {:asset "kubectl-watch-x86_64-unknown-linux-gnu.tar.gz"}
+             "linux-aarch64" {:asset "kubectl-watch-aarch64-unknown-linux-gnu.tar.gz"}
+             "darwin-x86_64" {:asset "kubectl-watch-x86_64-apple-darwin.tar.gz"}}}

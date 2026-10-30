@@ -5,4 +5,7 @@
 {:description "Worktrunk is a CLI for Git worktree management, designed for parallel AI agent workflows",
  :source {:github "max-sixty/worktrunk"}
  :checksum "{asset}.sha256"
- :platforms {"linux-x86_64" {:asset "worktrunk-x86_64-unknown-linux-musl.tar.xz" :bins {"git-wt" "worktrunk-x86_64-unknown-linux-musl/git-wt", "wt" "worktrunk-x86_64-unknown-linux-musl/wt"}}}}
+ :platforms {"linux-x86_64" {:asset "worktrunk-x86_64-unknown-linux-musl.tar.xz" :bins {"git-wt" "worktrunk-x86_64-unknown-linux-musl/git-wt", "wt" "worktrunk-x86_64-unknown-linux-musl/wt"}}
+             "linux-aarch64" {:asset "worktrunk-aarch64-unknown-linux-musl.tar.xz" :bins {"git-wt" "worktrunk-aarch64-unknown-linux-musl/git-wt" "wt" "worktrunk-aarch64-unknown-linux-musl/wt"}}
+             "darwin-x86_64" {:asset "worktrunk-x86_64-apple-darwin.tar.xz" :bins {"git-wt" "worktrunk-x86_64-apple-darwin/git-wt" "wt" "worktrunk-x86_64-apple-darwin/wt"}}
+             "darwin-aarch64" {:asset "worktrunk-aarch64-apple-darwin.tar.xz" :bins {"git-wt" "worktrunk-aarch64-apple-darwin/git-wt" "wt" "worktrunk-aarch64-apple-darwin/wt"}}}}

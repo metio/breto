@@ -5,4 +5,7 @@
 {:description "Network Kanji Filter by Golang",
  :source {:github "goark/gnkf"}
  :checksum "gnkf_{version}_checksums.txt"
- :platforms {"linux-x86_64" {:asset "gnkf_{version}_Linux_64bit.tar.gz"}}}
+ :platforms {"linux-x86_64" {:asset "gnkf_{version}_Linux_64bit.tar.gz"}
+             "linux-aarch64" {:asset "gnkf_{version}_Linux_ARM64.tar.gz"}
+             "darwin-x86_64" {:asset "gnkf_{version}_Darwin_64bit.tar.gz"}
+             "darwin-aarch64" {:asset "gnkf_{version}_Darwin_ARM64.tar.gz"}}}

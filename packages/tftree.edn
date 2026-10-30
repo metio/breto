@@ -5,4 +5,7 @@
 {:description "Display your Terraform module call stack in your terminal",
  :source {:github "busser/tftree"}
  :checksum "checksums.txt"
- :platforms {"linux-x86_64" {:asset "tftree_{version}_linux_amd64.tar.gz"}}}
+ :platforms {"linux-x86_64" {:asset "tftree_{version}_linux_amd64.tar.gz"}
+             "linux-aarch64" {:asset "tftree_{version}_linux_arm64.tar.gz"}
+             "darwin-x86_64" {:asset "tftree_{version}_darwin_amd64.tar.gz"}
+             "darwin-aarch64" {:asset "tftree_{version}_darwin_arm64.tar.gz"}}}

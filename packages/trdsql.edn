@@ -4,4 +4,7 @@
 
 {:description "CLI tool that can execute SQL queries on CSV, LTSV, JSON and TBLN. Can output to various formats",
  :source {:github "noborus/trdsql"}
- :platforms {"linux-x86_64" {:asset "trdsql_{tag}_linux_amd64.zip" :bins {"trdsql" "trdsql_{tag}_linux_amd64/trdsql"}}}}
+ :platforms {"linux-x86_64" {:asset "trdsql_{tag}_linux_amd64.zip" :bins {"trdsql" "trdsql_{tag}_linux_amd64/trdsql"}}
+             "linux-aarch64" {:asset "trdsql_{tag}_linux_arm64.zip" :bins {"trdsql" "trdsql_{tag}_linux_arm64/trdsql"}}
+             "darwin-x86_64" {:asset "trdsql_{tag}_darwin_amd64.zip" :bins {"trdsql" "trdsql_{tag}_darwin_amd64/trdsql"}}
+             "darwin-aarch64" {:asset "trdsql_{tag}_darwin_arm64.zip" :bins {"trdsql" "trdsql_{tag}_darwin_arm64/trdsql"}}}}

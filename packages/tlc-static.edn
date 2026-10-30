@@ -6,4 +6,6 @@
  :source {:github "yashikota/tlc-static"}
  :checksum "SHA256SUMS"
  :bins {"tlc" "tlc"}
- :platforms {"linux-x86_64" {:asset "tlc-linux-amd64.tar.gz"}}}
+ :platforms {"linux-x86_64" {:asset "tlc-linux-amd64.tar.gz"}
+             "linux-aarch64" {:asset "tlc-linux-arm64.tar.gz"}
+             "darwin-aarch64" {:asset "tlc-macos-arm64.tar.gz"}}}

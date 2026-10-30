@@ -5,4 +5,7 @@
  :source {:github "purescript/purescript"}
  :strip 1
  :bins {"purs" "purs"}
- :platforms {"linux-x86_64" {:asset "linux64.tar.gz"}}}
+ :platforms {"linux-x86_64" {:asset "linux64.tar.gz"}
+             "linux-aarch64" {:asset "linux-arm64.tar.gz"}
+             "darwin-x86_64" {:asset "macos.tar.gz"}
+             "darwin-aarch64" {:asset "macos-arm64.tar.gz"}}}

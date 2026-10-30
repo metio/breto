@@ -5,4 +5,7 @@
 {:description "tftarget is a CLI tool for Terraform ( plan | apply | destroy ) with target option. You can interactivity select resource to ( plan | apply | destroy )  with target option",
  :source {:github "future-architect/tftarget"}
  :checksum "checksums.txt"
- :platforms {"linux-x86_64" {:asset "tftarget_{version}_linux_amd64.tar.gz"}}}
+ :platforms {"linux-x86_64" {:asset "tftarget_{version}_linux_amd64.tar.gz"}
+             "linux-aarch64" {:asset "tftarget_{version}_linux_arm64.tar.gz"}
+             "darwin-x86_64" {:asset "tftarget_{version}_darwin_amd64.tar.gz"}
+             "darwin-aarch64" {:asset "tftarget_{version}_darwin_arm64.tar.gz"}}}

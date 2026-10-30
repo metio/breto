@@ -4,4 +4,7 @@
 
 {:description "Verify provenance from SLSA compliant builders",
  :source {:github "slsa-framework/slsa-verifier"}
- :platforms {"linux-x86_64" {:asset "slsa-verifier-linux-amd64"}}}
+ :platforms {"linux-x86_64" {:asset "slsa-verifier-linux-amd64"}
+             "linux-aarch64" {:asset "slsa-verifier-linux-arm64"}
+             "darwin-x86_64" {:asset "slsa-verifier-darwin-amd64"}
+             "darwin-aarch64" {:asset "slsa-verifier-darwin-arm64"}}}

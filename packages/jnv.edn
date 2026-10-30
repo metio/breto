@@ -5,4 +5,7 @@
 {:description "Interactive JSON filter using jq",
  :source {:github "ynqa/jnv"}
  :checksum "{asset}.sha256"
- :platforms {"linux-x86_64" {:asset "jnv-x86_64-unknown-linux-musl.tar.xz" :bins {"jnv" "jnv-x86_64-unknown-linux-musl/jnv"}}}}
+ :platforms {"linux-x86_64" {:asset "jnv-x86_64-unknown-linux-musl.tar.xz" :bins {"jnv" "jnv-x86_64-unknown-linux-musl/jnv"}}
+             "linux-aarch64" {:asset "jnv-aarch64-unknown-linux-gnu.tar.xz" :bins {"jnv" "jnv-aarch64-unknown-linux-gnu/jnv"}}
+             "darwin-x86_64" {:asset "jnv-x86_64-apple-darwin.tar.xz" :bins {"jnv" "jnv-x86_64-apple-darwin/jnv"}}
+             "darwin-aarch64" {:asset "jnv-aarch64-apple-darwin.tar.xz" :bins {"jnv" "jnv-aarch64-apple-darwin/jnv"}}}}

@@ -4,4 +4,7 @@
 
 {:description "Repeatable builds",
  :source {:github "earthly/earthly"}
- :platforms {"linux-x86_64" {:asset "earthly-linux-amd64"}}}
+ :platforms {"linux-x86_64" {:asset "earthly-linux-amd64"}
+             "linux-aarch64" {:asset "earthly-linux-arm64"}
+             "darwin-x86_64" {:asset "earthly-darwin-amd64"}
+             "darwin-aarch64" {:asset "earthly-darwin-arm64"}}}

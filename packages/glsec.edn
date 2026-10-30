@@ -5,4 +5,7 @@
 {:description "Static security scanner and linter for GitLab CI. Finds .gitlab-ci.yml misconfigurations, supply-chain risks, and leaked secrets. Offline, SARIF output, OWASP CICD-SEC and CWE mappings",
  :source {:github "glsec/glsec"}
  :checksum "checksums.txt"
- :platforms {"linux-x86_64" {:asset "glsec_{version}_linux_amd64.tar.gz"}}}
+ :platforms {"linux-x86_64" {:asset "glsec_{version}_linux_amd64.tar.gz"}
+             "linux-aarch64" {:asset "glsec_{version}_linux_arm64.tar.gz"}
+             "darwin-x86_64" {:asset "glsec_{version}_darwin_amd64.tar.gz"}
+             "darwin-aarch64" {:asset "glsec_{version}_darwin_arm64.tar.gz"}}}

@@ -5,4 +5,7 @@
 {:description "jq for binary formats - tool, language and decoders for working with binary and text formats",
  :source {:github "wader/fq"}
  :checksum "checksums.txt"
- :platforms {"linux-x86_64" {:asset "fq_{version}_linux_amd64.tar.gz"}}}
+ :platforms {"linux-x86_64" {:asset "fq_{version}_linux_amd64.tar.gz"}
+             "linux-aarch64" {:asset "fq_{version}_linux_arm64.tar.gz"}
+             "darwin-x86_64" {:asset "fq_{version}_macos_amd64.zip"}
+             "darwin-aarch64" {:asset "fq_{version}_macos_arm64.zip"}}}

@@ -5,4 +5,7 @@
 {:description "Web File Browser",
  :source {:github "filebrowser/filebrowser"}
  :checksum "filebrowser_{version}_checksums.txt"
- :platforms {"linux-x86_64" {:asset "linux-amd64-filebrowser.tar.gz"}}}
+ :platforms {"linux-x86_64" {:asset "linux-amd64-filebrowser.tar.gz"}
+             "linux-aarch64" {:asset "linux-arm64-filebrowser.tar.gz"}
+             "darwin-x86_64" {:asset "darwin-amd64-filebrowser.tar.gz"}
+             "darwin-aarch64" {:asset "darwin-arm64-filebrowser.tar.gz"}}}

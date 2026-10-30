@@ -7,4 +7,7 @@
  :strip 1,
  :bins {"sk" "sk"},
  :man ["man/man1/*.1"]
- :platforms {"linux-x86_64" {:asset "skim-x86_64-unknown-linux-musl.tar.xz"}}}
+ :platforms {"linux-x86_64" {:asset "skim-x86_64-unknown-linux-musl.tar.xz"}
+             "linux-aarch64" {:asset "skim-aarch64-unknown-linux-musl.tar.xz"}
+             "darwin-x86_64" {:asset "skim-x86_64-apple-darwin.tar.xz"}
+             "darwin-aarch64" {:asset "skim-aarch64-apple-darwin.tar.xz"}}}

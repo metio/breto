@@ -4,4 +4,7 @@
 
 {:description "A brand-new language server for Typst, plus a VS Code extension",
  :source {:github "nvarner/typst-lsp"}
- :platforms {"linux-x86_64" {:asset "typst-lsp-x86_64-unknown-linux-gnu"}}}
+ :platforms {"linux-x86_64" {:asset "typst-lsp-x86_64-unknown-linux-gnu"}
+             "linux-aarch64" {:asset "typst-lsp-aarch64-unknown-linux-gnu"}
+             "darwin-x86_64" {:asset "typst-lsp-x86_64-apple-darwin"}
+             "darwin-aarch64" {:asset "typst-lsp-aarch64-apple-darwin"}}}

@@ -7,4 +7,6 @@
  :checksum "{asset}.sha256"
  :layout :tree
  :bins {"codium" "codium"}
- :platforms {"linux-x86_64" {:asset "VSCodium-linux-x64-{version}.tar.gz"}}}
+ :platforms {"linux-x86_64" {:asset "VSCodium-linux-x64-{version}.tar.gz"}
+             "linux-aarch64" {:asset "VSCodium-linux-arm64-{version}.tar.gz"}
+             "darwin-aarch64" {:asset "VSCodium-darwin-arm64-{version}.zip"}}}

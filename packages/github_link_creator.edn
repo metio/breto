@@ -6,4 +6,5 @@
  :source {:github "po3rin/github_link_creator"}
  :checksum "github_link_creator_{version}_checksums.txt"
  :bins {"repoimg" "repoimg"}
- :platforms {"linux-x86_64" {:asset "github_link_creator_{version}_linux_amd64.tar.gz"}}}
+ :platforms {"linux-x86_64" {:asset "github_link_creator_{version}_linux_amd64.tar.gz"}
+             "darwin-x86_64" {:asset "github_link_creator_{version}_darwin_amd64.tar.gz"}}}

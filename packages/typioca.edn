@@ -5,4 +5,6 @@
 {:description "Cozy typing speed tester in terminal",
  :source {:github "bloznelis/typioca"}
  :tag-prefix ""
- :platforms {"linux-x86_64" {:asset "typioca-linux-amd64"}}}
+ :platforms {"linux-x86_64" {:asset "typioca-linux-amd64"}
+             "darwin-x86_64" {:asset "typioca-mac-amd64"}
+             "darwin-aarch64" {:asset "typioca-mac-arm64"}}}

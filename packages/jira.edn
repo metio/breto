@@ -4,4 +4,5 @@
 
 {:description "simple jira command line client in Go",
  :source {:github "go-jira/jira"}
- :platforms {"linux-x86_64" {:asset "jira-linux-amd64"}}}
+ :platforms {"linux-x86_64" {:asset "jira-linux-amd64"}
+             "darwin-x86_64" {:asset "jira-darwin-amd64"}}}

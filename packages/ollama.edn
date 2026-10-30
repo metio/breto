@@ -6,4 +6,5 @@
  :checksum "sha256sum.txt"
  :layout :tree
  :bins {"ollama" "bin/ollama"}
- :platforms {"linux-x86_64" {:asset "ollama-linux-amd64.tar.zst"}}}
+ :platforms {"linux-x86_64" {:asset "ollama-linux-amd64.tar.zst"}
+             "linux-aarch64" {:asset "ollama-linux-arm64.tar.zst"}}}

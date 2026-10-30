@@ -6,4 +6,7 @@
  :source {:github "doitintl/kube-no-trouble"}
  :tag-prefix ""
  :bins {"kubent" "kubent"}
- :platforms {"linux-x86_64" {:asset "kubent-{tag}-linux-amd64.tar.gz"}}}
+ :platforms {"linux-x86_64" {:asset "kubent-{tag}-linux-amd64.tar.gz"}
+             "linux-aarch64" {:asset "kubent-{tag}-linux-arm64.tar.gz"}
+             "darwin-x86_64" {:asset "kubent-{tag}-darwin-amd64.tar.gz"}
+             "darwin-aarch64" {:asset "kubent-{tag}-darwin-arm64.tar.gz"}}}

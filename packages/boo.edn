@@ -5,4 +5,7 @@
 {:description "A GNU screen style terminal multiplexer built on libghostty",
  :source {:github "coder/boo"}
  :checksum "SHA256SUMS"
- :platforms {"linux-x86_64" {:asset "boo-x86_64-linux.tar.gz"}}}
+ :platforms {"linux-x86_64" {:asset "boo-x86_64-linux.tar.gz"}
+             "linux-aarch64" {:asset "boo-aarch64-linux.tar.gz"}
+             "darwin-x86_64" {:asset "boo-x86_64-macos.tar.gz"}
+             "darwin-aarch64" {:asset "boo-aarch64-macos.tar.gz"}}}

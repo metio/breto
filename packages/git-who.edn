@@ -4,4 +4,7 @@
 
 {:description "Git blame for file trees",
  :source {:github "sinclairtarget/git-who"}
- :platforms {"linux-x86_64" {:asset "gitwho_{tag}_linux_amd64.tar.gz" :bins {"git-who" "linux_amd64/git-who"}}}}
+ :platforms {"linux-x86_64" {:asset "gitwho_{tag}_linux_amd64.tar.gz" :bins {"git-who" "linux_amd64/git-who"}}
+             "linux-aarch64" {:asset "gitwho_{tag}_linux_arm64.tar.gz" :bins {"git-who" "linux_arm64/git-who"}}
+             "darwin-x86_64" {:asset "gitwho_{tag}_darwin_amd64.tar.gz" :bins {"git-who" "darwin_amd64/git-who"}}
+             "darwin-aarch64" {:asset "gitwho_{tag}_darwin_arm64.tar.gz" :bins {"git-who" "darwin_arm64/git-who"}}}}

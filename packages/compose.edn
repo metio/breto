@@ -6,4 +6,7 @@
  :source {:github "docker/compose"}
  :checksum "{asset}.sha256"
  :bins {"docker-cli-plugin-docker-compose" "{asset}"}
- :platforms {"linux-x86_64" {:asset "docker-compose-linux-x86_64"}}}
+ :platforms {"linux-x86_64" {:asset "docker-compose-linux-x86_64"}
+             "linux-aarch64" {:asset "docker-compose-linux-aarch64"}
+             "darwin-x86_64" {:asset "docker-compose-darwin-x86_64"}
+             "darwin-aarch64" {:asset "docker-compose-darwin-aarch64"}}}

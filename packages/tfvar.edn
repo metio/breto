@@ -5,4 +5,7 @@
 {:description "Terraform's variable definitions template generator",
  :source {:github "shihanng/tfvar"}
  :checksum "tfvar_checksums.txt"
- :platforms {"linux-x86_64" {:asset "tfvar_linux_amd64.tar.gz"}}}
+ :platforms {"linux-x86_64" {:asset "tfvar_linux_amd64.tar.gz"}
+             "linux-aarch64" {:asset "tfvar_linux_arm64.tar.gz"}
+             "darwin-x86_64" {:asset "tfvar_darwin_amd64.tar.gz"}
+             "darwin-aarch64" {:asset "tfvar_darwin_arm64.tar.gz"}}}

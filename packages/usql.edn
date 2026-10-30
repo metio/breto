@@ -4,4 +4,7 @@
 
 {:description "Universal command-line interface for SQL databases",
  :source {:github "xo/usql"}
- :platforms {"linux-x86_64" {:asset "usql-{version}-linux-amd64.tar.bz2"}}}
+ :platforms {"linux-x86_64" {:asset "usql-{version}-linux-amd64.tar.bz2"}
+             "linux-aarch64" {:asset "usql-{version}-linux-arm64.tar.bz2"}
+             "darwin-x86_64" {:asset "usql-{version}-darwin-amd64.tar.bz2"}
+             "darwin-aarch64" {:asset "usql-{version}-darwin-arm64.tar.bz2"}}}

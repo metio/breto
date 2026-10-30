@@ -5,4 +5,7 @@
 {:description "Painless compression and decompression in the terminal",
  :source {:github "ouch-org/ouch"}
  :tag-prefix ""
- :platforms {"linux-x86_64" {:asset "ouch-x86_64-unknown-linux-musl.tar.gz" :bins {"ouch" "ouch-x86_64-unknown-linux-musl/ouch"}}}}
+ :platforms {"linux-x86_64" {:asset "ouch-x86_64-unknown-linux-musl.tar.gz" :bins {"ouch" "ouch-x86_64-unknown-linux-musl/ouch"}}
+             "linux-aarch64" {:asset "ouch-aarch64-unknown-linux-musl.tar.gz" :bins {"ouch" "ouch-aarch64-unknown-linux-musl/ouch"}}
+             "darwin-x86_64" {:asset "ouch-x86_64-apple-darwin.tar.gz" :bins {"ouch" "ouch-x86_64-apple-darwin/ouch"}}
+             "darwin-aarch64" {:asset "ouch-aarch64-apple-darwin.tar.gz" :bins {"ouch" "ouch-aarch64-apple-darwin/ouch"}}}}

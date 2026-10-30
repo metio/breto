@@ -5,4 +5,7 @@
 {:description "A CLI tool to manage Cloud Spanner databases for testing",
  :source {:github "cloudspannerecosystem/spool"}
  :checksum "checksums.txt"
- :platforms {"linux-x86_64" {:asset "spool-{version}-linux-amd64.tar.gz"}}}
+ :platforms {"linux-x86_64" {:asset "spool-{version}-linux-amd64.tar.gz"}
+             "linux-aarch64" {:asset "spool-{version}-linux-arm64.tar.gz"}
+             "darwin-x86_64" {:asset "spool-{version}-darwin-amd64.tar.gz"}
+             "darwin-aarch64" {:asset "spool-{version}-darwin-arm64.tar.gz"}}}

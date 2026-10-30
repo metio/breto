@@ -5,4 +5,6 @@
 {:description "kubectl cluster triage plugin for k8s - (brew doctor equivalent)",
  :source {:github "emirozer/kubectl-doctor"}
  :tag-prefix ""
- :platforms {"linux-x86_64" {:asset "kubectl-doctor_linux_amd64"}}}
+ :platforms {"linux-x86_64" {:asset "kubectl-doctor_linux_amd64"}
+             "darwin-x86_64" {:asset "kubectl-doctor_darwin_amd64"}
+             "darwin-aarch64" {:asset "kubectl-doctor_darwin_arm64"}}}

@@ -6,4 +6,7 @@
  :source {:github "controlplaneio/kubectl-kubesec"}
  :checksum "kubectl-kubesec_checksums.txt"
  :bins {"kubectl-kubesec_scan" "kubectl-scan"}
- :platforms {"linux-x86_64" {:asset "kubectl-kubesec_linux_amd64.tar.gz"}}}
+ :platforms {"linux-x86_64" {:asset "kubectl-kubesec_linux_amd64.tar.gz"}
+             "linux-aarch64" {:asset "kubectl-kubesec_linux_arm64.tar.gz"}
+             "darwin-x86_64" {:asset "kubectl-kubesec_darwin_amd64.tar.gz"}
+             "darwin-aarch64" {:asset "kubectl-kubesec_darwin_arm64.tar.gz"}}}

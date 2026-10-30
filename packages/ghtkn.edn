@@ -5,4 +5,7 @@
 {:description "A CLI to create GitHub App User Access Token for secure local development",
  :source {:github "suzuki-shunsuke/ghtkn"}
  :checksum "ghtkn_checksums.txt"
- :platforms {"linux-x86_64" {:asset "ghtkn_linux_amd64.tar.gz"}}}
+ :platforms {"linux-x86_64" {:asset "ghtkn_linux_amd64.tar.gz"}
+             "linux-aarch64" {:asset "ghtkn_linux_arm64.tar.gz"}
+             "darwin-x86_64" {:asset "ghtkn_darwin_amd64.tar.gz"}
+             "darwin-aarch64" {:asset "ghtkn_darwin_arm64.tar.gz"}}}

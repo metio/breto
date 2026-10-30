@@ -5,4 +5,7 @@
 {:description "Use SQL to instantly query your cloud services (AWS, Azure, GCP and more). Open source CLI. No DB required",
  :source {:github "turbot/steampipe"}
  :checksum "checksums.txt"
- :platforms {"linux-x86_64" {:asset "steampipe_linux_amd64.tar.gz"}}}
+ :platforms {"linux-x86_64" {:asset "steampipe_linux_amd64.tar.gz"}
+             "linux-aarch64" {:asset "steampipe_linux_arm64.tar.gz"}
+             "darwin-x86_64" {:asset "steampipe_darwin_amd64.zip"}
+             "darwin-aarch64" {:asset "steampipe_darwin_arm64.zip"}}}

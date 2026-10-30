@@ -4,4 +4,7 @@
 
 {:description "A lightweight, framework-agnostic database migration tool",
  :source {:github "amacneil/dbmate"}
- :platforms {"linux-x86_64" {:asset "dbmate-linux-amd64"}}}
+ :platforms {"linux-x86_64" {:asset "dbmate-linux-amd64"}
+             "linux-aarch64" {:asset "dbmate-linux-arm64"}
+             "darwin-x86_64" {:asset "dbmate-macos-amd64"}
+             "darwin-aarch64" {:asset "dbmate-macos-arm64"}}}

@@ -5,4 +5,7 @@
 {:description "An LSP proxy that lazily scopes gopls to open files, keeping large monorepos fast",
  :source {:github "sivchari/gopls-lazy"}
  :checksum "gopls-lazy_{version}_checksums.txt"
- :platforms {"linux-x86_64" {:asset "gopls-lazy_{version}_linux_amd64.tar.gz"}}}
+ :platforms {"linux-x86_64" {:asset "gopls-lazy_{version}_linux_amd64.tar.gz"}
+             "linux-aarch64" {:asset "gopls-lazy_{version}_linux_arm64.tar.gz"}
+             "darwin-x86_64" {:asset "gopls-lazy_{version}_darwin_amd64.tar.gz"}
+             "darwin-aarch64" {:asset "gopls-lazy_{version}_darwin_arm64.tar.gz"}}}

@@ -5,4 +5,7 @@
 {:description "Uptime monitoring CLI tool with alerting and advanced settings",
  :source {:github "Owloops/updo"}
  :checksum "checksums.txt"
- :platforms {"linux-x86_64" {:asset "updo_Linux_x86_64"}}}
+ :platforms {"linux-x86_64" {:asset "updo_Linux_x86_64"}
+             "linux-aarch64" {:asset "updo_Linux_arm64"}
+             "darwin-x86_64" {:asset "updo_Darwin_x86_64"}
+             "darwin-aarch64" {:asset "updo_Darwin_arm64"}}}

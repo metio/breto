@@ -5,4 +5,5 @@
 {:description "A global DNS propagation checker that gives pretty output. Written in dotnet core",
  :source {:github "unfrl/dug"}
  :tag-prefix ""
- :platforms {"linux-x86_64" {:asset "dug.{tag}.linux-x64.tar.gz"}}}
+ :platforms {"linux-x86_64" {:asset "dug.{tag}.linux-x64.tar.gz"}
+             "darwin-x86_64" {:asset "dug.{tag}.osx-x64.tar.gz"}}}

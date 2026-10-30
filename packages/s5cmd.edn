@@ -5,4 +5,7 @@
 {:description "Parallel S3 and local filesystem execution tool",
  :source {:github "peak/s5cmd"}
  :checksum "s5cmd_checksums.txt"
- :platforms {"linux-x86_64" {:asset "s5cmd_{version}_Linux-64bit.tar.gz"}}}
+ :platforms {"linux-x86_64" {:asset "s5cmd_{version}_Linux-64bit.tar.gz"}
+             "linux-aarch64" {:asset "s5cmd_{version}_Linux-arm64.tar.gz"}
+             "darwin-x86_64" {:asset "s5cmd_{version}_macOS-64bit.tar.gz"}
+             "darwin-aarch64" {:asset "s5cmd_{version}_macOS-arm64.tar.gz"}}}

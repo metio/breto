@@ -5,4 +5,6 @@
 {:description "Golang linter checking the canonicality of the http header",
  :source {:github "lasiar/canonicalheader"}
  :checksum "canonicalheader_{version}_checksums.txt"
- :platforms {"linux-x86_64" {:asset "canonicalheader_{version}_linux_amd64.tar.gz"}}}
+ :platforms {"linux-x86_64" {:asset "canonicalheader_{version}_linux_amd64.tar.gz"}
+             "darwin-x86_64" {:asset "canonicalheader_{version}_darwin_amd64.tar.gz"}
+             "darwin-aarch64" {:asset "canonicalheader_{version}_darwin_arm64.tar.gz"}}}

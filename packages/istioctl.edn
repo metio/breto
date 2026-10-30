@@ -6,4 +6,7 @@
  :source {:github "istio/istio"}
  :tag-prefix ""
  :checksum "{asset}.sha256"
- :platforms {"linux-x86_64" {:asset "istioctl-{tag}-linux-amd64.tar.gz"}}}
+ :platforms {"linux-x86_64" {:asset "istioctl-{tag}-linux-amd64.tar.gz"}
+             "linux-aarch64" {:asset "istioctl-{tag}-linux-arm64.tar.gz"}
+             "darwin-x86_64" {:asset "istioctl-{tag}-osx-amd64.tar.gz"}
+             "darwin-aarch64" {:asset "istioctl-{tag}-osx-arm64.tar.gz"}}}

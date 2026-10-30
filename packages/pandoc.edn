@@ -6,4 +6,5 @@
  :source {:github "jgm/pandoc"}
  :tag-prefix ""
  :bins {"pandoc" "pandoc-{tag}/bin/pandoc", "pandoc-lua" "pandoc-{tag}/bin/pandoc-lua", "pandoc-server" "pandoc-{tag}/bin/pandoc-server"}
- :platforms {"linux-x86_64" {:asset "pandoc-{tag}-linux-amd64.tar.gz"}}}
+ :platforms {"linux-x86_64" {:asset "pandoc-{tag}-linux-amd64.tar.gz"}
+             "linux-aarch64" {:asset "pandoc-{tag}-linux-arm64.tar.gz"}}}

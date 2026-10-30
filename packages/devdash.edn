@@ -5,4 +5,6 @@
 {:description "Highly Configurable Terminal Dashboard for Developers and Creators",
  :source {:github "Phantas0s/devdash"}
  :checksum "checksums.txt"
- :platforms {"linux-x86_64" {:asset "devdash_{version}_Linux_x86_64.tar.gz"}}}
+ :platforms {"linux-x86_64" {:asset "devdash_{version}_Linux_x86_64.tar.gz"}
+             "linux-aarch64" {:asset "devdash_{version}_Linux_arm64.tar.gz"}
+             "darwin-x86_64" {:asset "devdash_{version}_Darwin_x86_64.tar.gz"}}}

@@ -5,4 +5,7 @@
 {:description "Terratag is a CLI tool that enables users of Terraform to automatically create and maintain tags across their entire set of AWS, Azure, and GCP resources",
  :source {:github "env0/terratag"}
  :checksum "terratag_{version}_checksums.txt"
- :platforms {"linux-x86_64" {:asset "terratag_{version}_linux_amd64.tar.gz"}}}
+ :platforms {"linux-x86_64" {:asset "terratag_{version}_linux_amd64.tar.gz"}
+             "linux-aarch64" {:asset "terratag_{version}_linux_arm64.tar.gz"}
+             "darwin-x86_64" {:asset "terratag_{version}_darwin_amd64.tar.gz"}
+             "darwin-aarch64" {:asset "terratag_{version}_darwin_arm64.tar.gz"}}}

@@ -5,4 +5,7 @@
 {:description "vacuum is the worlds fastest OpenAPI 3, OpenAPI 2 / Swagger linter and quality analysis tool. Built in go, it tears through API specs faster than you can think. vacuum is compatible with Spectral rulesets and generates compatible reports",
  :source {:github "daveshanley/vacuum"}
  :checksum "checksums.txt"
- :platforms {"linux-x86_64" {:asset "vacuum_{version}_linux_x86_64.tar.gz"}}}
+ :platforms {"linux-x86_64" {:asset "vacuum_{version}_linux_x86_64.tar.gz"}
+             "linux-aarch64" {:asset "vacuum_{version}_linux_arm64.tar.gz"}
+             "darwin-x86_64" {:asset "vacuum_{version}_darwin_x86_64.tar.gz"}
+             "darwin-aarch64" {:asset "vacuum_{version}_darwin_arm64.tar.gz"}}}

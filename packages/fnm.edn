@@ -4,4 +4,6 @@
 
 {:description "Fast and simple Node.js version manager, built in Rust",
  :source {:github "Schniz/fnm"}
- :platforms {"linux-x86_64" {:asset "fnm-linux.zip"}}}
+ :platforms {"linux-x86_64" {:asset "fnm-linux.zip"}
+             "darwin-x86_64" {:asset "fnm-macos.zip"}
+             "darwin-aarch64" {:asset "fnm-macos.zip"}}}

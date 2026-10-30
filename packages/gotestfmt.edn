@@ -5,4 +5,7 @@
 {:description "go test output for humans",
  :source {:github "GoTestTools/gotestfmt"}
  :checksum "gotestfmt_{version}_checksums.txt"
- :platforms {"linux-x86_64" {:asset "gotestfmt_{version}_linux_amd64.tar.gz"}}}
+ :platforms {"linux-x86_64" {:asset "gotestfmt_{version}_linux_amd64.tar.gz"}
+             "linux-aarch64" {:asset "gotestfmt_{version}_linux_arm64.tar.gz"}
+             "darwin-x86_64" {:asset "gotestfmt_{version}_darwin_amd64.tar.gz"}
+             "darwin-aarch64" {:asset "gotestfmt_{version}_darwin_arm64.tar.gz"}}}

@@ -5,4 +5,7 @@
 {:description "Zeitgeist: the language-agnostic dependency checker",
  :source {:github "kubernetes-sigs/zeitgeist"}
  :checksum "checksums.txt"
- :platforms {"linux-x86_64" {:asset "zeitgeist-amd64-linux"}}}
+ :platforms {"linux-x86_64" {:asset "zeitgeist-amd64-linux"}
+             "linux-aarch64" {:asset "zeitgeist-arm64-linux"}
+             "darwin-x86_64" {:asset "zeitgeist-amd64-darwin"}
+             "darwin-aarch64" {:asset "zeitgeist-arm64-darwin"}}}

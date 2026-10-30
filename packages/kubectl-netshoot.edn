@@ -5,4 +5,7 @@
  :source {:github "nilic/kubectl-netshoot"},
  :checksum "kubectl-netshoot_{tag}_sha256_checksums.txt",
  :completions {:bash {:args ["completion" "bash"]}}
- :platforms {"linux-x86_64" {:asset "kubectl-netshoot_{tag}_linux_amd64.tar.gz"}}}
+ :platforms {"linux-x86_64" {:asset "kubectl-netshoot_{tag}_linux_amd64.tar.gz"}
+             "linux-aarch64" {:asset "kubectl-netshoot_{tag}_linux_arm64.tar.gz"}
+             "darwin-x86_64" {:asset "kubectl-netshoot_{tag}_darwin_amd64.tar.gz"}
+             "darwin-aarch64" {:asset "kubectl-netshoot_{tag}_darwin_arm64.tar.gz"}}}

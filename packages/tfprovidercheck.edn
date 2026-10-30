@@ -5,4 +5,7 @@
 {:description "Censor Terraform Providers",
  :source {:github "suzuki-shunsuke/tfprovidercheck"}
  :checksum "tfprovidercheck_{version}_checksums.txt"
- :platforms {"linux-x86_64" {:asset "tfprovidercheck_linux_amd64.tar.gz"}}}
+ :platforms {"linux-x86_64" {:asset "tfprovidercheck_linux_amd64.tar.gz"}
+             "linux-aarch64" {:asset "tfprovidercheck_linux_arm64.tar.gz"}
+             "darwin-x86_64" {:asset "tfprovidercheck_darwin_amd64.tar.gz"}
+             "darwin-aarch64" {:asset "tfprovidercheck_darwin_arm64.tar.gz"}}}

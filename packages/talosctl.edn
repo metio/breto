@@ -8,4 +8,7 @@
  :signature {:bundle "{asset}.bundle"
              :identity "https://github.com/siderolabs/talos/.github/workflows/ci.yaml@refs/tags/{tag}"
              :issuer "https://token.actions.githubusercontent.com"}
- :platforms {"linux-x86_64" {:asset "talosctl-linux-amd64"}}}
+ :platforms {"linux-x86_64" {:asset "talosctl-linux-amd64"}
+             "linux-aarch64" {:asset "talosctl-linux-arm64"}
+             "darwin-x86_64" {:asset "talosctl-darwin-amd64"}
+             "darwin-aarch64" {:asset "talosctl-darwin-arm64"}}}

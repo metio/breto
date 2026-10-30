@@ -6,4 +6,5 @@
  :source {:github "thazelart/terraform-validator"}
  :tag-prefix ""
  :checksum "terraform-validator_checksums.txt"
- :platforms {"linux-x86_64" {:asset "terraform-validator_Linux_x86_64.tar.gz"}}}
+ :platforms {"linux-x86_64" {:asset "terraform-validator_Linux_x86_64.tar.gz"}
+             "darwin-x86_64" {:asset "terraform-validator_Darwin_x86_64.tar.gz"}}}

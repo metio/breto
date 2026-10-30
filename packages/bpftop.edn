@@ -4,4 +4,5 @@
 
 {:description "A dynamic real-time view of running eBPF programs",
  :source {:github "jfernandez/bpftop"}
- :platforms {"linux-x86_64" {:asset "bpftop-x86_64-unknown-linux-gnu"}}}
+ :platforms {"linux-x86_64" {:asset "bpftop-x86_64-unknown-linux-gnu"}
+             "linux-aarch64" {:asset "bpftop-aarch64-unknown-linux-gnu"}}}

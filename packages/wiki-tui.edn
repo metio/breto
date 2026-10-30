@@ -4,4 +4,6 @@
 
 {:description "A simple and easy to use Wikipedia Text User Interface",
  :source {:github "Builditluc/wiki-tui"}
- :platforms {"linux-x86_64" {:asset "wiki-tui-linux.tar.gz" :checksum "wiki-tui-linux.sha256"}}}
+ :platforms {"linux-x86_64" {:asset "wiki-tui-linux.tar.gz" :checksum "wiki-tui-linux.sha256"}
+             "darwin-x86_64" {:asset "wiki-tui-macos.tar.gz" :checksum "wiki-tui-macos.sha256"}
+             "darwin-aarch64" {:asset "wiki-tui-macos.tar.gz" :checksum "wiki-tui-macos.sha256"}}}

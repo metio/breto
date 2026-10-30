@@ -4,4 +4,6 @@
 
 {:description "A command-line tool to batch rename files and directories",
  :source {:github "ismaelgv/rnr"}
- :platforms {"linux-x86_64" {:asset "rnr-{tag}-x86_64-unknown-linux-musl.tar.gz" :bins {"rnr" "rnr-{tag}-x86_64-unknown-linux-musl/rnr"}}}}
+ :platforms {"linux-x86_64" {:asset "rnr-{tag}-x86_64-unknown-linux-musl.tar.gz" :bins {"rnr" "rnr-{tag}-x86_64-unknown-linux-musl/rnr"}}
+             "linux-aarch64" {:asset "rnr-{tag}-aarch64-unknown-linux-gnu.tar.gz" :bins {"rnr" "rnr-{tag}-aarch64-unknown-linux-gnu/rnr"}}
+             "darwin-x86_64" {:asset "rnr-{tag}-x86_64-apple-darwin.tar.gz" :bins {"rnr" "rnr-{tag}-x86_64-apple-darwin/rnr"}}}}

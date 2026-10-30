@@ -5,4 +5,7 @@
 {:description "A simple, modern and secure encryption tool (and Go library) with small explicit keys, no config options, and UNIX-style composability",
  :source {:github "FiloSottile/age"}
  :bins {"age" "age/age", "age-keygen" "age/age-keygen"}
- :platforms {"linux-x86_64" {:asset "age-{tag}-linux-amd64.tar.gz"}}}
+ :platforms {"linux-x86_64" {:asset "age-{tag}-linux-amd64.tar.gz"}
+             "linux-aarch64" {:asset "age-{tag}-linux-arm64.tar.gz"}
+             "darwin-x86_64" {:asset "age-{tag}-darwin-amd64.tar.gz"}
+             "darwin-aarch64" {:asset "age-{tag}-darwin-arm64.tar.gz"}}}

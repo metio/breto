@@ -6,4 +6,7 @@
  :source {:github "SimonTheLeg/konf-go"}
  :checksum "konf-go_{version}_checksums.txt"
  :bins {"konf" "konf-go", "konf-go" "konf-go"}
- :platforms {"linux-x86_64" {:asset "konf-go_{version}_linux_amd64.tar.gz"}}}
+ :platforms {"linux-x86_64" {:asset "konf-go_{version}_linux_amd64.tar.gz"}
+             "linux-aarch64" {:asset "konf-go_{version}_linux_arm64.tar.gz"}
+             "darwin-x86_64" {:asset "konf-go_{version}_darwin_amd64.tar.gz"}
+             "darwin-aarch64" {:asset "konf-go_{version}_darwin_arm64.tar.gz"}}}

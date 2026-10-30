@@ -10,4 +10,7 @@
         "leanmake" "elan-init"
         "leanpkg" "elan-init"
         "leanchecker" "elan-init"}
- :platforms {"linux-x86_64" {:asset "elan-x86_64-unknown-linux-gnu.tar.gz"}}}
+ :platforms {"linux-x86_64" {:asset "elan-x86_64-unknown-linux-gnu.tar.gz"}
+             "linux-aarch64" {:asset "elan-aarch64-unknown-linux-gnu.tar.gz"}
+             "darwin-x86_64" {:asset "elan-x86_64-apple-darwin.tar.gz"}
+             "darwin-aarch64" {:asset "elan-aarch64-apple-darwin.tar.gz"}}}

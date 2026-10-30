@@ -4,4 +4,6 @@
 
 {:description "Find the minimum supported Rust version (MSRV) for your project",
  :source {:github "foresterre/cargo-msrv"}
- :platforms {"linux-x86_64" {:asset "cargo-msrv-x86_64-unknown-linux-musl-{tag}.tgz" :bins {"cargo-msrv" "cargo-msrv-x86_64-unknown-linux-musl-{tag}/cargo-msrv"}}}}
+ :platforms {"linux-x86_64" {:asset "cargo-msrv-x86_64-unknown-linux-musl-{tag}.tgz" :bins {"cargo-msrv" "cargo-msrv-x86_64-unknown-linux-musl-{tag}/cargo-msrv"}}
+             "darwin-x86_64" {:asset "cargo-msrv-x86_64-apple-darwin-{tag}.tgz" :bins {"cargo-msrv" "cargo-msrv-x86_64-apple-darwin-{tag}/cargo-msrv"}}
+             "darwin-aarch64" {:asset "cargo-msrv-aarch64-apple-darwin-{tag}.tgz" :bins {"cargo-msrv" "cargo-msrv-aarch64-apple-darwin-{tag}/cargo-msrv"}}}}

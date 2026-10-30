@@ -5,4 +5,7 @@
 {:description "Generate Podman Quadlet files from a Podman command, compose file, or existing object",
  :source {:github "containers/podlet"}
  :checksum "{asset}.sha256"
- :platforms {"linux-x86_64" {:asset "podlet-x86_64-unknown-linux-musl.tar.xz" :bins {"podlet" "podlet-x86_64-unknown-linux-musl/podlet"}}}}
+ :platforms {"linux-x86_64" {:asset "podlet-x86_64-unknown-linux-musl.tar.xz" :bins {"podlet" "podlet-x86_64-unknown-linux-musl/podlet"}}
+             "linux-aarch64" {:asset "podlet-aarch64-unknown-linux-gnu.tar.xz" :bins {"podlet" "podlet-aarch64-unknown-linux-gnu/podlet"}}
+             "darwin-x86_64" {:asset "podlet-x86_64-apple-darwin.tar.xz" :bins {"podlet" "podlet-x86_64-apple-darwin/podlet"}}
+             "darwin-aarch64" {:asset "podlet-aarch64-apple-darwin.tar.xz" :bins {"podlet" "podlet-aarch64-apple-darwin/podlet"}}}}
