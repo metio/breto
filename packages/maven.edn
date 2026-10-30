@@ -11,4 +11,5 @@
  :strip 1
  :layout :tree
  :bins {"mvn" "bin/mvn" "mvnDebug" "bin/mvnDebug"}
- :platforms {"linux-x86_64" {:asset "apache-maven-{version}-bin.tar.gz"}}}
+ :asset "apache-maven-{version}-bin.tar.gz"
+ :platforms {"linux-x86_64" {} "linux-aarch64" {} "darwin-x86_64" {} "darwin-aarch64" {}}}

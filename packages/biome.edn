@@ -5,4 +5,7 @@
  :source {:github "biomejs/biome"}
  :tag-prefix "@biomejs/biome@"
  :bins {"biome" "{asset}"}
- :platforms {"linux-x86_64" {:asset "biome-linux-x64"}}}
+ :platforms {"linux-x86_64" {:asset "biome-linux-x64"}
+             "linux-aarch64" {:asset "biome-linux-arm64"}
+             "darwin-x86_64" {:asset "biome-darwin-x64"}
+             "darwin-aarch64" {:asset "biome-darwin-arm64"}}}

@@ -4,4 +4,7 @@
 {:description "A markup-aware linter for prose built with speed and extensibility in mind.",
  :source {:github "errata-ai/vale"},
  :checksum "vale_{version}_checksums.txt"
- :platforms {"linux-x86_64" {:asset "vale_{version}_Linux_64-bit.tar.gz"}}}
+ :platforms {"linux-x86_64" {:asset "vale_{version}_Linux_64-bit.tar.gz"}
+             "linux-aarch64" {:asset "vale_{version}_Linux_arm64.tar.gz"}
+             "darwin-x86_64" {:asset "vale_{version}_macOS_64-bit.tar.gz"}
+             "darwin-aarch64" {:asset "vale_{version}_macOS_arm64.tar.gz"}}}

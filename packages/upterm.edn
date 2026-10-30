@@ -4,4 +4,7 @@
 {:description "Secure Terminal Sharing",
  :source {:github "owenthereal/upterm"},
  :checksum "checksums.txt"
- :platforms {"linux-x86_64" {:asset "upterm_linux_amd64.tar.gz"}}}
+ :platforms {"linux-x86_64" {:asset "upterm_linux_amd64.tar.gz"}
+             "linux-aarch64" {:asset "upterm_linux_arm64.tar.gz"}
+             "darwin-x86_64" {:asset "upterm_darwin_amd64.tar.gz"}
+             "darwin-aarch64" {:asset "upterm_darwin_arm64.tar.gz"}}}

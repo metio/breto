@@ -5,4 +5,8 @@
  :source {:text "https://dl.k8s.io/release/stable.txt"}
  :checksum "{asset}.sha256",
  :completions {:bash {:args ["completion" "bash"]}}
- :platforms {"linux-x86_64" {:asset "kubectl" :url "https://dl.k8s.io/release/{tag}/bin/linux/amd64/{asset}"}}}
+ :asset "kubectl"
+ :platforms {"linux-x86_64" {:url "https://dl.k8s.io/release/{tag}/bin/linux/amd64/{asset}"}
+             "linux-aarch64" {:url "https://dl.k8s.io/release/{tag}/bin/linux/arm64/{asset}"}
+             "darwin-x86_64" {:url "https://dl.k8s.io/release/{tag}/bin/darwin/amd64/{asset}"}
+             "darwin-aarch64" {:url "https://dl.k8s.io/release/{tag}/bin/darwin/arm64/{asset}"}}}

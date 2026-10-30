@@ -4,4 +4,7 @@
 {:description "Fast, secure, efficient backup program"
  :source {:github "restic/restic"}
  :checksum "SHA256SUMS"
- :platforms {"linux-x86_64" {:asset "restic_{version}_linux_amd64.bz2"}}}
+ :platforms {"linux-x86_64" {:asset "restic_{version}_linux_amd64.bz2"}
+             "linux-aarch64" {:asset "restic_{version}_linux_arm64.bz2"}
+             "darwin-x86_64" {:asset "restic_{version}_darwin_amd64.bz2"}
+             "darwin-aarch64" {:asset "restic_{version}_darwin_arm64.bz2"}}}

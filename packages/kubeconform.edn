@@ -4,4 +4,7 @@
 {:description "A FAST Kubernetes manifests validator, with support for Custom Resources",
  :source {:github "yannh/kubeconform"},
  :checksum "CHECKSUMS"
- :platforms {"linux-x86_64" {:asset "kubeconform-linux-amd64.tar.gz"}}}
+ :platforms {"linux-x86_64" {:asset "kubeconform-linux-amd64.tar.gz"}
+             "linux-aarch64" {:asset "kubeconform-linux-arm64.tar.gz"}
+             "darwin-x86_64" {:asset "kubeconform-darwin-amd64.tar.gz"}
+             "darwin-aarch64" {:asset "kubeconform-darwin-arm64.tar.gz"}}}

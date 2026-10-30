@@ -5,4 +5,9 @@
 {:description "Executes commands in response to file modifications",
  :source {:github "watchexec/watchexec"}
  :checksum "{asset}.sha512"
- :platforms {"linux-x86_64" {:asset "watchexec-{version}-x86_64-unknown-linux-musl.tar.xz" :bins {"watchexec" "watchexec-{version}-x86_64-unknown-linux-musl/watchexec"}}}}
+ :strip 1
+ :bins {"watchexec" "watchexec"}
+ :platforms {"linux-x86_64" {:asset "watchexec-{version}-x86_64-unknown-linux-musl.tar.xz"}
+             "linux-aarch64" {:asset "watchexec-{version}-aarch64-unknown-linux-musl.tar.xz"}
+             "darwin-x86_64" {:asset "watchexec-{version}-x86_64-apple-darwin.tar.xz"}
+             "darwin-aarch64" {:asset "watchexec-{version}-aarch64-apple-darwin.tar.xz"}}}

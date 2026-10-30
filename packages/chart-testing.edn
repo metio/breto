@@ -6,4 +6,7 @@
  :source {:github "helm/chart-testing"}
  :checksum "checksums.txt"
  :bins {"ct" "ct"}
- :platforms {"linux-x86_64" {:asset "chart-testing_{version}_linux_amd64.tar.gz"}}}
+ :platforms {"linux-x86_64" {:asset "chart-testing_{version}_linux_amd64.tar.gz"}
+             "linux-aarch64" {:asset "chart-testing_{version}_linux_arm64.tar.gz"}
+             "darwin-x86_64" {:asset "chart-testing_{version}_darwin_amd64.tar.gz"}
+             "darwin-aarch64" {:asset "chart-testing_{version}_darwin_arm64.tar.gz"}}}

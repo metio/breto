@@ -5,4 +5,7 @@
 {:description "Find and install kubectl plugins",
  :source {:github "kubernetes-sigs/krew"}
  :checksum "{asset}.sha256"
- :platforms {"linux-x86_64" {:asset "krew-linux_amd64.tar.gz" :bins {"krew" "krew-linux_amd64"}}}}
+ :platforms {"linux-x86_64" {:asset "krew-linux_amd64.tar.gz" :bins {"krew" "krew-linux_amd64"}}
+             "linux-aarch64" {:asset "krew-linux_arm64.tar.gz" :bins {"krew" "krew-linux_arm64"}}
+             "darwin-x86_64" {:asset "krew-darwin_amd64.tar.gz" :bins {"krew" "krew-darwin_amd64"}}
+             "darwin-aarch64" {:asset "krew-darwin_arm64.tar.gz" :bins {"krew" "krew-darwin_arm64"}}}}

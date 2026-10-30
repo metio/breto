@@ -5,4 +5,7 @@
  :source {:github "jsonnet-bundler/jsonnet-bundler"},
  :bins {"jb" "{asset}"},
  :history [{:before "0.6.1" :verify false}]
- :platforms {"linux-x86_64" {:asset "jb-linux-amd64"}}}
+ :platforms {"linux-x86_64" {:asset "jb-linux-amd64"}
+             "linux-aarch64" {:asset "jb-linux-arm64"}
+             "darwin-x86_64" {:asset "jb-darwin-amd64"}
+             "darwin-aarch64" {:asset "jb-darwin-arm64"}}}

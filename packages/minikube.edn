@@ -5,4 +5,7 @@
  :source {:github "kubernetes/minikube"}
  :checksum "{asset}.sha256"
  :bins {"minikube" "{asset}"}
- :platforms {"linux-x86_64" {:asset "minikube-linux-amd64"}}}
+ :platforms {"linux-x86_64" {:asset "minikube-linux-amd64"}
+             "linux-aarch64" {:asset "minikube-linux-arm64"}
+             "darwin-x86_64" {:asset "minikube-darwin-amd64"}
+             "darwin-aarch64" {:asset "minikube-darwin-arm64"}}}

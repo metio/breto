@@ -1,0 +1,10 @@
+;; SPDX-FileCopyrightText: The breto Authors
+;; SPDX-License-Identifier: 0BSD
+
+{:description "Test generated HTML for problems"
+ :source {:github "wjdp/htmltest"}
+ :checksum "htmltest_{version}_checksums.txt"
+ :platforms {"linux-x86_64" {:asset "htmltest_{version}_linux_amd64.tar.gz"}
+             "linux-aarch64" {:asset "htmltest_{version}_linux_arm64.tar.gz"}
+             "darwin-x86_64" {:asset "htmltest_{version}_macos_amd64.tar.gz"}
+             "darwin-aarch64" {:asset "htmltest_{version}_macos_arm64.tar.gz"}}}

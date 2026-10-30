@@ -8,4 +8,7 @@
  :bins {"gh" "bin/gh"}
  :man ["share/man/man1/*.1"]
  :completions {:bash {:args ["completion" "--shell" "bash"]}}
- :platforms {"linux-x86_64" {:asset "gh_{version}_linux_amd64.tar.gz"}}}
+ :platforms {"linux-x86_64" {:asset "gh_{version}_linux_amd64.tar.gz"}
+             "linux-aarch64" {:asset "gh_{version}_linux_arm64.tar.gz"}
+             "darwin-x86_64" {:asset "gh_{version}_macOS_amd64.zip"}
+             "darwin-aarch64" {:asset "gh_{version}_macOS_arm64.zip"}}}
