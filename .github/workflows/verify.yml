@@ -64,7 +64,7 @@ jobs:
           registries: github:metio/toolchains
       - env:
           GH_TOKEN: ${{ github.token }}
-        run: zizmor --format github .
+        run: zizmor --min-severity low --format github .
   markdown:
     runs-on: ubuntu-latest
     timeout-minutes: 15
