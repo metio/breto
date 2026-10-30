@@ -182,8 +182,9 @@ Every failure is explained with what to do; --debug adds each request and stack 
   #{"--dir" "--config" "--platform" "--platforms" "--delay" "--keep" "--query" "--shell"})
 
 (defn- parse
-  "The command line as {:args :opts}. breto run stops reading options at the
-  name of the command it runs, so that command gets the rest as given."
+  "The command line as {:args :opts}, options read wherever they stand. breto
+  run stops reading options at the name of the command it runs, so that
+  command gets the rest as given."
   [args]
   (let [options (fn [tokens]
                   (loop [own [] [a & more :as remaining] tokens]
@@ -195,7 +196,12 @@ Every failure is explained with what to do; --debug adds each request and stack 
     (if (= "run" command)
       (let [[own rest-args] (options after)]
         {:args (into ["run"] rest-args) :opts (:opts (cli/parse-args (into before own) parse-spec))})
-      (cli/parse-args (concat (when command [command]) after before) parse-spec))))
+      (let [[own positional] (loop [own [] positional [] [a & more :as tokens] args]
+                               (cond (empty? tokens) [own positional]
+                                     (valued a) (recur (conj own a (first more)) positional (rest more))
+                                     (str/starts-with? a "-") (recur (conj own a) positional more)
+                                     :else (recur own (conj positional a) more)))]
+        {:args positional :opts (:opts (cli/parse-args own parse-spec))}))))
 
 (def ^:private reported
   "Commands whose last run breto report shows."
