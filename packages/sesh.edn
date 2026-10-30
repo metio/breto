@@ -5,4 +5,7 @@
 {:description "Smart session manager for the terminal",
  :source {:github "joshmedeski/sesh"}
  :checksum "sesh_{version}_checksums.txt"
- :platforms {"linux-x86_64" {:asset "sesh_Linux_x86_64.tar.gz"}}}
+ :platforms {"linux-x86_64" {:asset "sesh_Linux_x86_64.tar.gz"}
+             "linux-aarch64" {:asset "sesh_Linux_arm64.tar.gz"}
+             "darwin-x86_64" {:asset "sesh_Darwin_x86_64.tar.gz"}
+             "darwin-aarch64" {:asset "sesh_Darwin_arm64.tar.gz"}}}
