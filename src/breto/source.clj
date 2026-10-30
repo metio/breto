@@ -9,6 +9,7 @@
             [breto.github :as github]
             [breto.npm :as npm]
             [breto.package :as package]
+            [breto.platform :as platform]
             [breto.template :as template]
             [breto.version :as version]
             [cheshire.core :as json]
@@ -191,7 +192,7 @@
               (remove #(str/includes? % "-")))
     :coursier (coursier/release-versions (get-text (coursier/metadata-url (:coursier source)) {}))
     :ghcup (ghcup/versions (document/parse ghcup/metadata-url (get-text ghcup/metadata-url {}))
-                           (:ghcup source) (ghcup/arch))
+                           (:ghcup source) (or (:platform pkg) (platform/detect)))
     nil))
 
 (defn- text-var

@@ -5,6 +5,7 @@
   (:require [babashka.fs :as fs]
             [breto.ghcup :as ghcup]
             [breto.package :as package]
+            [breto.platform :as platform]
             [breto.sealed :as sealed]
             [breto.source :as source]
             [breto.store :as store]
@@ -53,7 +54,7 @@
   "ghcup metadata listing GHC 9.12.2 and 9.14.1 for this architecture, a
   prerelease, and a version without a generic Linux download."
   [ghc-hash]
-  (let [arch (ghcup/arch)]
+  (let [arch (ghcup/platform-arch (platform/detect))]
     (str "ghcupDownloads:\n"
          "  GHC:\n"
          "    toolVersions:\n"
@@ -179,3 +180,18 @@
                 "c:\n  dlUri: " url ".sig\n")
            (ghcup/pinned-metadata text url "/w/ghc-1.tar.xz")))
     (is (nil? (ghcup/pinned-metadata text "https://example.org/other.tar.xz" "/w/x")))))
+
+(deftest macos-reads-the-darwin-download-and-names-its-triple
+  (let [doc {"ghcupDownloads"
+             {"GHC" {"toolVersions"
+                     {"9.14.1" {"viArch" {"A_ARM64" {"Darwin" {"unknown_versioning" {"dlUri" "https://example.org/ghc-aarch64-apple-darwin.tar.xz"}}}}}
+                      "9.12.2" {"viArch" {"A_ARM64" {"Linux_UnknownLinux" {"unknown_versioning" {"dlUri" "https://example.org/ghc-aarch64-linux.tar.xz"}}}}}}}}}]
+    (is (= ["9.14.1"] (ghcup/versions doc "ghc" "darwin-aarch64")))
+    (is (= ["9.12.2"] (ghcup/versions doc "ghc" "linux-aarch64")))
+    (is (= [] (ghcup/versions doc "ghc" "darwin-x86_64"))))
+  (is (= ["ghcupDownloads" "GHC" "toolVersions" "{version}" "viArch" "A_64" "Darwin" "unknown_versioning"]
+         (ghcup/download-path "ghc" "darwin-x86_64")))
+  (is (= ["ghcupDownloads" "GHC" "toolVersions" "{version}" "viArch" "A_ARM64" "Linux_UnknownLinux" "unknown_versioning"]
+         (ghcup/download-path "ghc" "linux-aarch64")))
+  (is (some #{"aarch64-apple-darwin"} (ghcup/arguments "m.yaml" "ghc" "9.14.1" "/d" "darwin-aarch64")))
+  (is (some #{"x86_64-unknown-linux"} (ghcup/arguments "m.yaml" "ghc" "9.14.1" "/d" "linux-x86_64"))))

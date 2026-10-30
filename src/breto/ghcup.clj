@@ -2,15 +2,17 @@
 ;; SPDX-License-Identifier: 0BSD
 
 (ns breto.ghcup
-  "Haskell tools installed with ghcup. breto downloads the generic Linux
-  bindist that ghcup's metadata lists for a version and checks it against the
-  hash listed beside it, like any other asset. ghcup then installs that file
-  into the version directory with --isolate, reading a copy of the metadata
-  whose entry for it points at the verified download, so it neither fetches
-  the bindist again nor picks another one for this distribution. GHC and HLS
-  bindists configure their install prefix into their wrapper scripts, which
-  is why ghcup installs into the version directory itself."
+  "Haskell tools installed with ghcup. breto downloads the generic bindist
+  that ghcup's metadata lists for a version on Linux or macOS and checks it
+  against the hash listed beside it, like any other asset. ghcup then
+  installs that file into the version directory with --isolate, reading a
+  copy of the metadata whose entry for it points at the verified download,
+  so it neither fetches the bindist again nor picks another one for this
+  distribution. GHC and HLS bindists configure their install prefix into
+  their wrapper scripts, which is why ghcup installs into the version
+  directory itself."
   (:require [babashka.fs :as fs]
+            [breto.platform :as platform]
             [breto.proc :as proc]
             [clojure.string :as str])
   (:import (java.util.regex Matcher Pattern)))
@@ -21,14 +23,6 @@
   "The ghcup name of each tool and its key in the metadata."
   {"ghc" "GHC" "cabal" "Cabal" "hls" "HLS" "stack" "Stack"})
 
-(defn arch
-  "The metadata's name of the architecture breto runs on, or nil."
-  []
-  (case (System/getProperty "os.arch")
-    ("amd64" "x86_64") "A_64"
-    "aarch64" "A_ARM64"
-    nil))
-
 (defn platform-arch
   "The metadata's name of the architecture of a breto platform such as
   linux-aarch64, or nil."
@@ -38,14 +32,23 @@
     "aarch64" "A_ARM64"
     nil))
 
-(def ^:private platforms {"A_64" "x86_64-unknown-linux" "A_ARM64" "aarch64-unknown-linux"})
+(def ^:private triples
+  "The bindist each platform installs, named as ghcup's --platform takes it."
+  {"linux-x86_64" "x86_64-unknown-linux" "linux-aarch64" "aarch64-unknown-linux"
+   "darwin-x86_64" "x86_64-apple-darwin" "darwin-aarch64" "aarch64-apple-darwin"})
+
+(defn- os-key
+  "The metadata's name of the generic download for the operating system of
+  `platform`."
+  [platform]
+  (if (= "darwin" (platform/os-of (str platform))) "Darwin" "Linux_UnknownLinux"))
 
 (defn download-path
-  "The path of the generic Linux download of `tool` for `arch` in the
+  "The path of the generic download of `tool` for `platform` in the
   metadata, with the version left as a placeholder."
-  [tool arch]
-  ["ghcupDownloads" (tools tool) "toolVersions" "{version}" "viArch" (or arch "unsupported")
-   "Linux_UnknownLinux" "unknown_versioning"])
+  [tool platform]
+  ["ghcupDownloads" (tools tool) "toolVersions" "{version}" "viArch" (or (platform-arch platform) "unsupported")
+   (os-key platform) "unknown_versioning"])
 
 (defn layout
   "Where the commands of `tool` are in an isolated install."
@@ -56,10 +59,10 @@
 
 (defn versions
   "The versions of `tool` in the parsed metadata `doc` that have a generic
-  Linux download for `arch` and are not tagged as a prerelease."
-  [doc tool arch]
+  download for `platform` and are not tagged as a prerelease."
+  [doc tool platform]
   (for [[version info] (get-in doc ["ghcupDownloads" (tools tool) "toolVersions"])
-        :when (get-in info ["viArch" arch "Linux_UnknownLinux" "unknown_versioning" "dlUri"])
+        :when (get-in info ["viArch" (platform-arch platform) (os-key platform) "unknown_versioning" "dlUri"])
         :when (not-any? #{"Prerelease" "LatestPrerelease"} (get info "viTags"))]
     (str version)))
 
@@ -72,11 +75,11 @@
       (str/replace text pattern (str "$1" (Matcher/quoteReplacement (str "file://" file)))))))
 
 (defn arguments
-  "The ghcup command line installing `version` of `tool` from the metadata
-  file `metadata` into `dir`."
-  [metadata tool version dir]
+  "The ghcup command line installing `version` of `tool` for `platform` from
+  the metadata file `metadata` into `dir`."
+  [metadata tool version dir platform]
   ["--metadata-caching" "0" "--metadata-fetching-mode" "Strict"
-   "--url-source" (str "file://" metadata) "--platform" (platforms (arch) "unsupported")
+   "--url-source" (str "file://" metadata) "--platform" (triples platform "unsupported")
    "install" tool version "--isolate" (str dir)])
 
 (defn environment
@@ -103,7 +106,7 @@
         pinned (or (pinned-metadata metadata url bindist)
                    (throw (ex-info (str "the ghcup metadata no longer lists " url)
                                    (assoc context :breto/problem :no-release :url metadata-url))))
-        args (arguments metadata-file tool (:version release) dest)
+        args (arguments metadata-file tool (:version release) dest (or (:platform pkg) (platform/detect)))
         run (or (:run-in io) proc/run-in)
         env (environment work)]
     (fs/create-dirs (fs/parent bindist))

@@ -265,12 +265,12 @@
              {:bins {(:name pkg) (str "bin/" (:name pkg))}}))))
 
 (defn- ghcup-defaults
-  "What a :ghcup source fills in: the generic Linux bindist ghcup's metadata
-  lists for the architecture of `platform`, checked against the hash listed
+  "What a :ghcup source fills in: the generic bindist ghcup's metadata
+  lists for `platform`, checked against the hash listed
   beside it, and where its commands are once ghcup has installed it."
   [pkg platform]
   (let [tool (get-in pkg [:source :ghcup])
-        download (ghcup/download-path tool (ghcup/platform-arch platform))]
+        download (ghcup/download-path tool platform)]
     (merge {:tag-prefix "" :layout :tree
             :asset (str tool "-{version}-bindist")
             :url "{bindist}"
@@ -355,13 +355,13 @@
 
 (defn supported-platforms
   "The platforms `definition` has releases for: every one for a source that
-  builds on the machine itself, the Linux ones for ghcup, else those its
+  builds on the machine itself or that ghcup installs, else those its
   :platforms names."
   [{:keys [platforms] :as definition}]
   (let [kind (source-kind definition)]
-    (cond (neutral-kinds kind) (sort platform/known)
-          (= :ghcup kind) (sort (filter #(= "linux" (platform/os-of %)) platform/known))
-          :else (sort (keys platforms)))))
+    (if (or (neutral-kinds kind) (= :ghcup kind))
+      (sort platform/known)
+      (sort (keys platforms)))))
 
 (defn normalize
   "Validates a definition for `platform` and resolves its `:history`. The top

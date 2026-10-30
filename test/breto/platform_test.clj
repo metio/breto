@@ -57,9 +57,9 @@
                                          "linux-x86_64"))))
   (testing "sources built on the machine serve every platform"
     (is (not (:unsupported (package/normalize {:name "x" :source {:npm "x"}} "darwin-x86_64")))))
-  (testing "ghcup serves Linux only"
+  (testing "ghcup serves Linux and macOS"
     (is (not (:unsupported (package/normalize {:name "ghc" :source {:ghcup "ghc"}} "linux-aarch64"))))
-    (is (:unsupported (package/normalize {:name "ghc" :source {:ghcup "ghc"}} "darwin-aarch64")))))
+    (is (not (:unsupported (package/normalize {:name "ghc" :source {:ghcup "ghc"}} "darwin-aarch64"))))))
 
 (deftest invalid-platform-entries-are-refused
   (doseq [platforms [{"windows-x86_64" {:asset "a.exe"}}
