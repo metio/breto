@@ -1,0 +1,5 @@
+;; SPDX-FileCopyrightText: The breto Authors
+;; SPDX-License-Identifier: 0BSD
+
+{:description "TUI to manage emails, built from the newest commit of its repository"
+ :source {:cargo "himalaya-tui" :git "pimalaya/himalaya-tui"}}

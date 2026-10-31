@@ -9,6 +9,7 @@
             [breto.source :as source]
             [breto.store :as store]
             [breto.support :as s :refer [path]]
+            [breto.version :as version]
             [cheshire.core :as json]
             [clojure.string :as str]
             [clojure.test :refer [deftest is testing use-fixtures]]))
@@ -125,3 +126,47 @@
     (is (= [{"vers" "0.26.1"} "cksum"] (:checksum-path artifact))))
   (is (thrown-with-msg? clojure.lang.ExceptionInfo #"names a crate on crates.io"
                         (s/normalize {:name "x" :source {:cargo "../x"}}))))
+
+(def ^:private sha "0123456789abcdef0123456789abcdef01234567")
+
+(defn- git-world []
+  (let [archive (crate! "himalaya-tui" sha "himalaya-tui")]
+    (s/define! "rustup" {:source {:github "rust-lang/rustup"} :asset "rustup-init"
+                         :bins {"rustup" "rustup-init" "cargo" "rustup-init"} :verify false})
+    (s/define! "himalaya-tui" {:source {:cargo "himalaya-tui" :git "pimalaya/himalaya-tui"}})
+    (s/fake-io {"https://github.com/rust-lang/rustup/releases/download/v1.0.0/rustup-init" (fake-rustup)
+                (str "https://github.com/pimalaya/himalaya-tui/archive/" sha ".tar.gz") archive}
+               {"https://github.com/rust-lang/rustup/releases/latest" "{\"tag_name\":\"v1.0.0\"}"
+                "https://api.github.com/repos/pimalaya/himalaya-tui/commits/HEAD"
+                (json/generate-string {:sha sha :commit {:committer {:date "2026-10-27T09:05:03Z"}}})}
+               (atom []))))
+
+(deftest a-git-crate-is-built-from-the-newest-commit
+  (let [io (git-world)
+        version (str "2026.10.27.090503+" sha)
+        {:keys [code out]} (s/breto! {} ["install" "rustup" "himalaya-tui"] {:io io})]
+    (is (= 0 code) out)
+    (is (= "#!/bin/sh\necho himalaya-tui\n" (slurp (path "bin" "himalaya-tui"))))
+    (is (str/starts-with? (first (log-lines)) "cargo install --path "))
+    (testing "the lock-worthy hash is that of the commit's archive"
+      (is (= (s/sha256 (path (str "himalaya-tui-" sha ".crate")))
+             (:sha256 (store/read-meta {:store (path "store")} "himalaya-tui" version)))))))
+
+(deftest git-crate-definitions-fill-in-the-commit-archive
+  (let [pkg (s/normalize {:name "himalaya-tui" :source {:cargo "himalaya-tui" :git "pimalaya/himalaya-tui"}})
+        artifact (package/artifact pkg {:tag (str "2026.10.27.090503+" sha) :version (str "2026.10.27.090503+" sha)})]
+    (is (= {"himalaya-tui" "bin/himalaya-tui"} (:bins pkg)))
+    (is (false? (:verify pkg)))
+    (is (= (str "himalaya-tui-" sha ".tar.gz") (:asset artifact)))
+    (is (= (str "https://github.com/pimalaya/himalaya-tui/archive/" sha ".tar.gz") (:url artifact)))
+    (is (nil? (:checksum-url artifact))))
+  (is (thrown-with-msg? clojure.lang.ExceptionInfo #"OWNER/REPO"
+                        (s/normalize {:name "x" :source {:cargo "x" :git "not a repo"}})))
+  (is (thrown-with-msg? clojure.lang.ExceptionInfo #"OWNER/REPO"
+                        (s/normalize {:name "x" :source {:pypi "x" :git "o/x"}}))))
+
+(deftest git-versions-order-by-commit-date
+  (is (= (str "2026.1.2.030405+" sha) (cargo/git-version sha "2026-01-02T03:04:05Z")))
+  (is (thrown? clojure.lang.ExceptionInfo (cargo/git-version "main" "2026-01-02T03:04:05Z")))
+  (is (version/older? (cargo/git-version sha "2026-01-02T23:59:59Z")
+                      (cargo/git-version (apply str (repeat 40 "0")) "2026-01-10T00:00:00Z"))))

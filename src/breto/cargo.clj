@@ -6,10 +6,41 @@
   downloads the crate and checks it against the checksum the crates.io index
   lists, like any other asset, and its hash is what a lock file records. cargo
   builds it with --locked, so every dependency is the one the crate's own
-  Cargo.lock pins and is checked against the index by cargo."
+  Cargo.lock pins and is checked against the index by cargo.
+
+  A crate that is only published as a GitHub repository is built from the
+  newest commit of its default branch. Its version is the commit's date
+  followed by the commit, so versions order by date and each names the exact
+  source it was built from."
   (:require [babashka.fs :as fs]
             [breto.proc :as proc]
             [clojure.string :as str]))
+
+(def commit-match
+  "The pattern that takes the commit out of the version of a git build."
+  "\\+([0-9a-f]{40})$")
+
+(defn head-url
+  "The GitHub API document of the newest commit on the default branch of
+  `repo`."
+  [repo]
+  (str "https://api.github.com/repos/" repo "/commits/HEAD"))
+
+(defn archive-url
+  "The source archive of `repo` at a commit, with `{commit}` left as a
+  placeholder."
+  [repo]
+  (str "https://github.com/" repo "/archive/{commit}.tar.gz"))
+
+(defn git-version
+  "The version of the build of commit `sha`, committed at the ISO 8601 UTC
+  time `date`, such as 2026.10.27.142816+<sha>."
+  [sha date]
+  (let [[_ y m d time] (re-matches #"(\d{4})-(\d{2})-(\d{2})T(\d{2}:\d{2}:\d{2})Z" date)]
+    (when-not (and y (re-matches #"[0-9a-f]{40}" (str sha)))
+      (throw (ex-info (str "no commit and UTC date in " (pr-str {:sha sha :date date}))
+                      {:breto/problem :no-release :sha sha :date date})))
+    (str y "." (parse-long m) "." (parse-long d) "." (str/replace time ":" "") "+" sha)))
 
 (defn index-url
   "The file of the crate `name` in the sparse crates.io index, which lists one

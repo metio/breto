@@ -161,6 +161,11 @@
          (not (and (string? (:cargo source)) (re-matches #"[A-Za-z0-9][A-Za-z0-9_-]{0,63}" (:cargo source)))))
     (conj ":source {:cargo NAME} names a crate on crates.io")
 
+    (and (contains? source :git)
+         (not (and (= :cargo (source-kind pkg)) (string? (:git source))
+                   (re-matches #"[A-Za-z0-9_.-]+/[A-Za-z0-9_.-]+" (:git source)))))
+    (conj ":source :git names the GitHub repository OWNER/REPO a :cargo crate is built from")
+
     (and (= :coursier (source-kind pkg))
          (not (and (string? (:coursier source)) (re-matches #"[A-Za-z0-9_.-]+:[A-Za-z0-9_.-]+" (:coursier source))
                    (or (nil? (:main source)) (and (string? (:main source)) (re-matches #"[A-Za-z_$][\w$.]*" (:main source))))
@@ -254,13 +259,22 @@
 
 (defn- cargo-defaults
   "What a :cargo source fills in: the crate's download, checked against the
-  checksum its index lists, and the binary named like the package."
+  checksum its index lists, and the binary named like the package. A crate
+  built from :git downloads the archive of its commit, which nothing upstream
+  lists a checksum for, so the commit in its URL is what pins the source and
+  a lock file records the archive's hash."
   [pkg]
-  (let [crate (get-in pkg [:source :cargo])]
-    (merge {:tag-prefix "" :strip 1
-            :asset (str crate "-{version}.crate")
-            :url (cargo/download-url crate)
-            :checksum {:json (cargo/index-url crate) :hash [{"vers" "{version}"} "cksum"]}}
+  (let [crate (get-in pkg [:source :cargo])
+        git (get-in pkg [:source :git])]
+    (merge (if git
+             {:tag-prefix "" :strip 1 :verify false
+              :asset (str crate "-{commit}.tar.gz")
+              :url (cargo/archive-url git)
+              :vars (merge {:commit {:match cargo/commit-match}} (:vars pkg))}
+             {:tag-prefix "" :strip 1
+              :asset (str crate "-{version}.crate")
+              :url (cargo/download-url crate)
+              :checksum {:json (cargo/index-url crate) :hash [{"vers" "{version}"} "cksum"]}})
            (when (nil? (:bins pkg))
              {:bins {(:name pkg) (str "bin/" (:name pkg))}}))))
 
