@@ -9,7 +9,10 @@
   cut-off time, --before, and the same npm gives the same file, since the
   registry never replaces a published version. Each build starts from an
   empty cache of its own, so no earlier resolution on the host can leak into
-  it."
+  it. npm records each package relative to the prefix, and against the real
+  path of node_modules, so the prefix must be a real path too: through a
+  symlink, such as /home to /var/home, the lock file would name the build
+  directory instead."
   (:require [babashka.fs :as fs]
             [breto.proc :as proc]
             [clojure.string :as str]))
@@ -54,6 +57,7 @@
     (throw (ex-info (str (:name pkg) " is installed with npm, and no npm is installed; install node first")
                     (assoc context :breto/problem :npm-missing))))
   (let [before (or exclude-newer now)
+        work (fs/real-path work)
         unpacked (fs/path work "unpacked")
         config (fs/path work "npmrc")
         spec (str (get-in pkg [:source :npm]) "@" (:version release))

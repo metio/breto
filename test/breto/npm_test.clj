@@ -71,6 +71,18 @@
     (testing "the directory of npm, which holds node, comes first on PATH"
       (is (str/ends-with? (first (log-lines)) (str "| " (fs/parent (fs/real-path (path "bin" "npm")))))))))
 
+(deftest npm-builds-under-the-real-path-of-a-symlinked-store
+  (let [io (world)]
+    (fs/create-dirs (path "real"))
+    (fs/create-sym-link (path "linked") (path "real"))
+    (let [cfg {:store (str (fs/path (path "linked") "store"))}]
+      (is (= 0 (:code (s/breto! cfg ["install" "node" "prettier"] {:io io}))))
+      (let [[line] (log-lines)
+            [_ prefix] (re-find #"--prefix (\S+)" line)]
+        (is (str/starts-with? prefix (str (fs/real-path (path "real")))))
+        (is (not (str/includes? (subs line 0 (str/index-of line " | ")) (str (path "linked"))))
+            "no argument of npm goes through the symlink")))))
+
 (deftest scoped-packages-link-their-unscoped-command
   (let [io (world)]
     (s/define! "biome" {:source {:npm "@biomejs/biome"} :bins {"biome" "node_modules/.bin/biome"}})
