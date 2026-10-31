@@ -43,11 +43,11 @@ ln -s ~/src/breto/breto ~/.local/bin/breto
 
 ## GitHub Actions
 
-The action in this repository installs breto from its signed release, installs the packages of a project and puts the project's bin directory on `PATH` for the later steps, with the project's `:env` set:
+The `breto` action of [metio/ci](https://github.com/metio/ci) installs breto from its signed release, installs the packages of a project and puts the project's bin directory on `PATH` for the later steps, with the project's `:env` set:
 
 ```yaml
 - uses: actions/checkout@v6
-- uses: metio/breto@VERSION
+- uses: metio/ci/breto@VERSION
   with:
     registries: |
       github:metio/toolchains
