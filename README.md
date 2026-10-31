@@ -119,6 +119,7 @@ Configure `:token-command`, or set `GITHUB_TOKEN` or `GH_TOKEN`, to raise GitHub
 | `breto uninstall PKG...` | Deletes a package with every link into it. |
 | `breto sync [--dry-run]` | Makes the store match `:lockfile`: installs and activates each locked version, refusing a download whose hash differs from the locked one, and uninstalls every package the lock file does not list and no project uses. `--dry-run` lists the changes. |
 | `breto lock DIR [--check]` | Writes `DIR/breto.lock` with the hash of every version the groups defined in the registry directory DIR pin; see [Registry lock files](#registry-lock-files). `--check` exits 1 when the file is out of date instead of writing it. |
+| `breto validate DIR` | Checks every definition and group in the registry directory DIR on every platform without downloading anything: each file must be valid EDN, each definition valid and its release rendered at a sample version fetched over https with its commands inside the install directory, and each group valid. Exits 1 on any problem, for the CI of a registry. |
 | `breto info PKG` | The package definition after defaults are applied. |
 | `breto report [COMMAND...] [--brief]` | The report of the last run of each command, or of the named ones. `--brief` prints only the latest of them in a few lines of at most 100 characters: when it ran, its counts, and the first three failures with their diagnosis. |
 | `breto doctor` | Checks tools, directories, configuration, store, commands that several installed packages provide, GitHub API quota and the last runs. |

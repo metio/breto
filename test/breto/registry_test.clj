@@ -4,7 +4,6 @@
 (ns breto.registry-test
   (:require [babashka.fs :as fs]
             [clojure.edn :as edn]
-            [breto.cargo :as cargo]
             [breto.support :as s]
             [breto.package :as package]
             [breto.platform :as platform]
@@ -19,20 +18,23 @@
     (is (every? :url (remove :unsupported (vals reg))) p)))
 
 (deftest every-shipped-package-renders-a-release
-  (doseq [p platform/known
-          [name pkg] (registry/load-registry nil ["packages"] p)
-          :when (not (:unsupported pkg))
-          :let [version (if (get-in pkg [:source :git])
-                          (cargo/git-version (apply str (repeat 40 "0")) "2026-01-02T03:04:05Z")
-                          "1.2.3")
-                tag (str (:tag-prefix pkg) version)
-                pkg (package/at pkg version)
-                fetched (update-vals (package/fetched-vars pkg) #(if (:json %) "https://example.org/fetched" "20260101"))
-                {:keys [url bins checksum-url]} (package/artifact pkg {:tag tag :version version :fetched fetched})]]
-    (is (str/starts-with? url "https://") [name p])
-    (is (or (nil? checksum-url) (str/starts-with? checksum-url "https://")) [name p])
-    (is (or (seq bins) (= :tree (:layout pkg))) [name p])
-    (is (every? #(not (or (str/starts-with? % "/") (str/includes? % ".."))) (vals bins)) [name p])))
+  (is (= [] (registry/validate "packages"))))
+
+(deftest validate-reports-each-problem-of-a-registry-once
+  (let [dir (fs/create-temp-dir {:prefix "breto-validate"})]
+    (spit (str (fs/path dir "broken.edn")) "{:source")
+    (spit (str (fs/path dir "bad.edn")) "{:source {:pypi \"../x\"}}")
+    (spit (str (fs/path dir "plain.edn"))
+          "{:source {:github \"a/b\"} :asset \"b\" :url \"http://example.org/{asset}\" :platforms {\"linux-x86_64\" {}}}")
+    (spit (str (fs/path dir "@empty.edn")) "{:members []}")
+    (let [problems (registry/validate (str dir))]
+      (is (= 4 (count problems)) problems)
+      (is (some #(str/includes? % "broken.edn is not valid EDN") problems))
+      (is (some #(and (str/includes? % "names a project on PyPI") (not (str/includes? % "(on "))) problems))
+      (is (some #(and (str/includes? % "plain: the download http://example.org/b is not fetched over https")
+                      (str/ends-with? % "(on linux-x86_64)"))
+                problems))
+      (is (some #(str/includes? % "invalid group @empty") problems)))))
 
 (deftest imported-definitions-follow-upstream-naming
   (let [rg (get (registry/load-registry nil ["packages"] "linux-x86_64") "ripgrep")

@@ -7,6 +7,7 @@
   breto binary carries the definitions of its release, which come before
   every directory."
   (:require [babashka.fs :as fs]
+            [breto.cargo :as cargo]
             [breto.package :as package]
             [breto.platform :as platform]
             [clojure.edn :as edn]
@@ -97,6 +98,70 @@
                        {}
                        (map read-file (entries builtin dirs (complement group-name?))))]
     (update-vals merged #(normalize platform %))))
+
+(declare load-groups expand)
+
+(defn- sample-version
+  "A version `pkg` can render a release for without asking upstream."
+  [pkg]
+  (if (get-in pkg [:source :git])
+    (cargo/git-version (apply str (repeat 40 "0")) "2026-01-02T03:04:05Z")
+    "1.2.3"))
+
+(defn- release-problems
+  "What is wrong with the release the resolved definition `pkg` renders at a
+  sample version: a download or checksum that is not fetched over https, or
+  a command path that leaves the install directory."
+  [pkg]
+  (let [version (sample-version pkg)
+        at (package/at pkg version)
+        fetched (update-vals (package/fetched-vars at) #(if (:json %) "https://example.org/fetched" "20260101"))
+        {:keys [url bins checksum-url]} (package/artifact at {:tag (str (:tag-prefix at) version) :version version
+                                                              :fetched fetched})
+        where (str (:name pkg) ": ")]
+    (cond-> []
+      (not (str/starts-with? url "https://"))
+      (conj (str where "the download " url " is not fetched over https"))
+      (and checksum-url (not (str/starts-with? checksum-url "https://")))
+      (conj (str where "the checksum " checksum-url " is not fetched over https"))
+      (not (or (seq bins) (= :tree (:layout at))))
+      (conj (str where "it links no command"))
+      (some #(or (str/starts-with? % "/") (str/includes? % "..")) (vals bins))
+      (conj (str where "a command path leaves the install directory")))))
+
+(defn validate
+  "The problems of the registry directory `dir` on its own, one line each,
+  without downloading anything: a file that is not valid EDN, a definition
+  that is invalid on one of the platforms, renders an unusable release or
+  links nothing on every platform, and a group that is invalid or contains
+  itself."
+  [dir]
+  (let [read (for [entry (entries nil [dir] (complement group-name?))]
+               (try {:pkg (read-file entry)}
+                    (catch clojure.lang.ExceptionInfo e {:problem (ex-message e)})))
+        packages (keep :pkg read)
+        per-platform (for [pkg packages
+                           p platform/known]
+                       (try (let [resolved (normalize p pkg)]
+                              {:name (:name pkg) :platform p :supported? (not (:unsupported resolved))
+                               :problems (when-not (:unsupported resolved) (release-problems resolved))})
+                            (catch clojure.lang.ExceptionInfo e
+                              {:name (:name pkg) :platform p :problems [(ex-message e)]})))
+        located (for [[problem results] (group-by first (for [r per-platform, problem (:problems r)]
+                                                          [problem (:platform r)]))
+                      :let [platforms (map second results)]]
+                  (if (= (count platforms) (count platform/known))
+                    problem
+                    (str problem " (on " (str/join ", " (sort platforms)) ")")))
+        unsupported (for [[name results] (group-by :name per-platform)
+                          :when (not-any? :supported? results)
+                          :when (every? (comp empty? :problems) results)]
+                      (str name " has a release on no platform"))
+        groups (try (let [groups (load-groups [dir])]
+                      (doseq [name (keys groups)] (expand groups [name]))
+                      [])
+                    (catch clojure.lang.ExceptionInfo e [(ex-message e)]))]
+    (vec (concat (keep :problem read) located unsupported groups))))
 
 (defn lookup [registry name]
   (or (get registry name)

@@ -736,6 +736,21 @@
                    (registry/lookup registry name)))
   0)
 
+(defn validate
+  "Checks the registry directory `dir` on its own, without downloading
+  anything, and exits 1 when any definition or group in it has a problem."
+  [_ [dir & more]]
+  (when (or (nil? dir) (seq more))
+    (throw (ex-info "validate needs one registry directory" {:breto/problem :usage})))
+  (when-not (fs/directory? dir)
+    (throw (ex-info (str dir " is no directory") {:breto/problem :usage})))
+  (let [problems (registry/validate dir)
+        files (count (fs/glob dir "*.edn"))]
+    (run! #(println (str "[FAIL] " %)) problems)
+    (if (seq problems)
+      (do (println (str "[FAIL] " dir ": " (count problems) " problems in " files " files")) 1)
+      (do (println (str "[OK] " dir ": " files " files are valid")) 0))))
+
 (defn show-report
   "The saved reports of `commands`, or of every command. With --brief, only
   the latest of them in a few short lines, as a notification shows it."

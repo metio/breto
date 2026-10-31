@@ -43,6 +43,8 @@ Commands:
                             their hashes, and uninstall the packages it does not list
   lock DIR [--check]        write DIR/breto.lock with the hash of every version a group in the
                             registry directory DIR pins; --check fails when it is out of date
+  validate DIR              check every definition and group in the registry directory DIR
+                            on every platform, without downloading anything
   install                   choose packages to install in fzf or sk, else in a numbered prompt;
                             --query TERMS starts with a search
   search [TERM...]          the definitions whose name, description or source has every term
@@ -90,7 +92,8 @@ Every failure is explained with what to do; --debug adds each request and stack 
    "env" commands/env
    "run" commands/run-command
    "sync" commands/sync-store
-   "lock" commands/lock})
+   "lock" commands/lock
+   "validate" commands/validate})
 
 (defn network
   "The network operations for `config`: HTTP, the GitHub token from the
