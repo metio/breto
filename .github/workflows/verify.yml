@@ -96,7 +96,7 @@ jobs:
         with:
           fetch-depth: 0
           persist-credentials: false
-      - uses: metio/ci/dco@21ce4ec08a0516b39fcd5985472f0d53ec11e338 # 2026.10.31095959
+      - uses: metio/ci/dco@1bcfd5d852697876af6c191fa597cf5aab22cb62 # 2026.10.31124002
   policy:
     runs-on: ubuntu-latest
     timeout-minutes: 10
@@ -104,7 +104,7 @@ jobs:
       - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7
         with:
           persist-credentials: false
-      - uses: metio/ci/policy-check@21ce4ec08a0516b39fcd5985472f0d53ec11e338 # 2026.10.31095959
+      - uses: metio/ci/policy-check@1bcfd5d852697876af6c191fa597cf5aab22cb62 # 2026.10.31124002
   verify:
     name: Verify
     needs: [test, reuse, yaml, github-actions, zizmor, markdown, typos, dco, policy]
