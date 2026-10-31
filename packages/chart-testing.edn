@@ -7,7 +7,7 @@
  :checksum "checksums.txt"
  :layout :tree
  :bins {"ct" "ct"}
- :env {"CT_CONFIG_DIR" "{home}/etc"}
+ :env {"CT_CONFIG_DIR" "{install-dir}/etc"}
  :platforms {"linux-x86_64" {:asset "chart-testing_{version}_linux_amd64.tar.gz"}
              "linux-aarch64" {:asset "chart-testing_{version}_linux_arm64.tar.gz"}
              "darwin-x86_64" {:asset "chart-testing_{version}_darwin_amd64.tar.gz"}
