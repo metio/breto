@@ -396,6 +396,30 @@
 (defn- sh-quote [s]
   (str "'" (str/replace s "'" "'\\''") "'"))
 
+(defn- declared-links
+  "Command -> target for the active version of every package :packages
+  declares, the commands the global bin directory links for them."
+  [{:keys [config registry groups]}]
+  (into {} (for [spec (registry/expand groups (:packages config))
+                 :let [[name] (batch/split-spec spec)
+                       pkg (get registry name)
+                       version (store/current-version config name)]
+                 :when (and pkg version)
+                 [command target] (install/bin-targets config pkg version)]
+             [command (str target)])))
+
+(defn- path-for
+  "The PATH `env` sets, with `bin` the project's bin directory or nil. With
+  --only project it holds the project's bin directory and the system
+  directories of PATH, so nothing the user installed elsewhere is found;
+  --only declared adds the commands of the configuration's :packages."
+  [{:keys [config opts] :as ctx} bin]
+  (let [path (System/getenv "PATH")]
+    (case (:only opts)
+      nil (if bin (env/path-value config bin path) (env/path-outside config path))
+      "project" (env/only-path config [bin] path)
+      "declared" (env/only-path config [bin (env/declared-bin! config (declared-links ctx))] path))))
+
 (defn env
   "Links the versions the nearest project files list into the project's bin
   directory, with wrappers for the project's commands, installing those that
@@ -406,11 +430,16 @@
   menu of its commands and runs its :on-enter command. Only installing
   needs the store lock, so linking installed versions never waits for
   another run. Outside a project it installs nothing and prints the code
-  that leaves the project a shell entered before."
+  that leaves the project a shell entered before. --only project and --only
+  declared narrow PATH to what breto links; see `path-for`."
   [{:keys [config opts] :as ctx} _]
+  (when-not (contains? #{nil "project" "declared"} (:only opts))
+    (throw (ex-info (str "--only is project or declared, not " (:only opts)) {:breto/problem :usage})))
+  (when (and (:only opts) (= "github" (:shell opts)))
+    (throw (ex-info "--only sets PATH, which --shell github leaves to $GITHUB_PATH" {:breto/problem :usage})))
   (if-not (project/find-dir (or (:dir opts) "."))
     (let [shell (case (:shell opts) "fish" :fish "github" :github :sh)
-          code (env/leaving shell (env/path-outside config (System/getenv "PATH")))]
+          code (env/leaving shell (path-for ctx nil))]
       (when-not (str/blank? code) (println code))
       0)
     (let [{:keys [code dir files bin vars] :as proj} (prepared-project! ctx "env")]
@@ -421,7 +450,7 @@
               on-enter (when enter? (:on-enter proj))]
           (when (and enter? (:menu proj))
             (binding [*out* *err*] (run! println (run/menu proj))))
-          (println (str (env/exports shell (env/path-value config bin (System/getenv "PATH")) dir bin files vars)
+          (println (str (env/exports shell (path-for ctx bin) dir bin files vars)
                         (when (and on-enter (not= :github shell))
                           (str "\n" "breto run --dir " (sh-quote dir) " " (sh-quote on-enter)
                                (when (= :fish shell) ";")))))

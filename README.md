@@ -109,7 +109,7 @@ Configure `:token-command`, or set `GITHUB_TOKEN` or `GH_TOKEN`, to raise GitHub
 | `breto install PKG[@VERSION]...` | Installs and activates the given version, or the latest. |
 | `breto install [--query TERMS]` | Without packages, lists every definition in fzf or sk to choose any number from, and installs them. Without a finder it asks for a search and the numbers of the matches instead. |
 | `breto search [TERM...]` | The definitions whose name, description or source contains every term, one per line: name, description, source. |
-| `breto env [--shell fish] [--dir DIR]` | Links the versions the nearest `.breto.edn` lists into a bin directory of the project and prints the shell code putting it first on `PATH`; see [Project environments](#project-environments). |
+| `breto env [--shell fish] [--only project\|declared] [--dir DIR]` | Links the versions the nearest `.breto.edn` lists into a bin directory of the project and prints the shell code putting it first on `PATH`; see [Project environments](#project-environments). |
 | `breto use PKG VERSION` | Activates a version that is already installed. |
 | `breto use PKG --previous` | Rolls back to the newest installed version older than the active one. For a configured package it prints the `:pins` entry that keeps the next `update` from switching back. |
 | `breto update [PKG...]` | Installs and activates the latest, or pinned, version. |
@@ -155,6 +155,12 @@ A `.breto.local.edn` beside it holds the settings of one machine and stays out o
 ```sh
 eval "$(breto env)"
 breto env --shell fish | source
+```
+
+`--only project` narrows `PATH` to the project's bin directory and the directories of `PATH` the user cannot write to, which hold what the system installed, so a command installed anywhere else, the global versions breto links included, is not found. `--only declared` also keeps the commands of the configuration's `:packages`, through a bin directory that holds just those. Both work outside a project as well, where only the system directories, or those and the declared commands, stay on `PATH`:
+
+```sh
+bash -c 'eval "$(breto env --only project)"; exec bash --norc'
 ```
 
 In bash, the hook `breto hook bash` prints does this on its own: evaluated in `.bashrc`, it runs `breto env` when the shell enters a directory below a `.breto.edn` or one of the files in `BRETO_ENV_FILES` changes, and takes the project's bin directory off `PATH` again, through `BRETO_ENV_BIN`, when the shell leaves the project. Between those it costs a few file tests per prompt. The hook runs `breto env --no-install`, which only links versions that are installed and never waits for another breto run, since Ctrl-C may not reach a command a prompt hook runs; it exits with code 3 when the project needs a version that is missing. The hook then starts a `breto env` in the background that installs it, waiting for a running update if necessary, and the first prompt after that finishes switches the shell to the project; a failed install prints its output once. `eval "$(breto env)"` installs in the foreground instead, and `--no-wait` makes it fail at once when installing has to wait for another run. A failing `breto env` is retried once the file changes or the shell enters the project again, not on every prompt.

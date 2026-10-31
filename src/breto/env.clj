@@ -107,6 +107,32 @@
   [config path]
   (str/join ":" (outside-projects config path)))
 
+(defn system-dirs
+  "The entries of `path` that are directories the user cannot write to, in
+  order: those the system manages, which hold what a user did not install."
+  [config path]
+  (filter #(and (fs/directory? %) (not (fs/writable? %))) (outside-projects config path)))
+
+(defn only-path
+  "PATH holding just `bins`, in order, and then the system directories of
+  `path`."
+  [config bins path]
+  (str/join ":" (distinct (concat (remove nil? bins) (system-dirs config path)))))
+
+(defn declared-dir
+  "The bin directory of the packages the configuration declares, beside the
+  directories of the projects."
+  [{:keys [env-dir]}]
+  (fs/path (fs/parent env-dir) "declared" "bin"))
+
+(defn declared-bin!
+  "Makes the declared bin directory hold exactly `links`, command -> target,
+  and returns its path."
+  [config links]
+  (let [dir (declared-dir config)]
+    (hold-exactly! dir links)
+    (str dir)))
+
 (defn- sh-quote [s]
   (str "'" (str/replace s "'" "'\\''") "'"))
 

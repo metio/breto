@@ -56,6 +56,9 @@ Commands:
                             project, with its commands, and print the
                             shell code putting them first on PATH: eval \"$(breto env)\";
                             --shell github prints lines for $GITHUB_ENV instead;
+                            --only project keeps just the project's commands and the
+                            system's on PATH, --only declared adds the :packages of
+                            the configuration;
                             --no-install fails with exit code 3 instead of installing a
                             missing version;
                             --no-wait fails instead of waiting when it must install while
@@ -237,7 +240,7 @@ Every failure is explained with what to do; --debug adds each request and stack 
 (def ^:private valued
   "The options that take a value, so that the value is not read as the
   command."
-  #{"--dir" "--config" "--platform" "--platforms" "--delay" "--keep" "--query" "--shell"})
+  #{"--dir" "--config" "--platform" "--platforms" "--delay" "--keep" "--query" "--shell" "--only"})
 
 (defn- parse
   "The command line as {:args :opts}, options read wherever they stand. breto

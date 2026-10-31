@@ -295,3 +295,43 @@
   (is (= (path "link" "app") (project/find-dir "." {"PWD" (path "link" "app")} (path "real" "app"))))
   (testing "a PWD naming another directory is ignored"
     (is (= (path "real" "app") (project/find-dir "." {"PWD" (path)} (path "real" "app"))))))
+
+(defn- user-dirs
+  "The entries of `path` after the first `n` that the user can write to."
+  [path n]
+  (filter fs/writable? (drop n (str/split path #":"))))
+
+(deftest only-project-keeps-the-project-and-the-system-on-path
+  (let [io (world)]
+    (s/breto! (assoc config :env-dir (path "envs")) ["update"] {:io io})
+    (project! "app" ["alpha@0.9.0"])
+    (let [{:keys [code out err]} (env! io "app" "--only" "project")
+          entries (str/split (exported-path out) #":")]
+      (is (= 0 code) err)
+      (is (str/starts-with? (first entries) (path "envs")))
+      (is (= [] (user-dirs (exported-path out) 1)))
+      (is (not-any? #{(path "bin")} entries)))))
+
+(deftest only-declared-adds-the-configured-packages
+  (let [io (world)]
+    (s/breto! (assoc config :env-dir (path "envs")) ["update"] {:io io})
+    (project! "app" ["beta"])
+    (let [{:keys [code out err]} (env! io "app" "--only" "declared")
+          [bin declared] (str/split (exported-path out) #":")]
+      (is (= 0 code) err)
+      (is (fs/exists? (fs/path bin "beta")))
+      (is (= "#!/bin/sh\necho alpha 1.0.0\n" (slurp (str (fs/path declared "alpha")))))
+      (is (= [] (user-dirs (exported-path out) 2))))))
+
+(deftest only-outside-a-project-keeps-the-system-on-path
+  (fs/create-dirs (path "elsewhere"))
+  (let [{:keys [code out err]} (env! (world) "elsewhere" "--only" "project")]
+    (is (= 0 code) err)
+    (is (= [] (user-dirs (exported-path out) 0)))))
+
+(deftest only-takes-project-or-declared
+  (fs/create-dirs (path "elsewhere"))
+  (is (thrown-with-msg? clojure.lang.ExceptionInfo #"project or declared"
+                        (env! (world) "elsewhere" "--only" "everything")))
+  (is (thrown-with-msg? clojure.lang.ExceptionInfo #"GITHUB_PATH"
+                        (env! (world) "elsewhere" "--only" "project" "--shell" "github"))))
