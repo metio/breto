@@ -4,6 +4,7 @@
 (ns breto.registry-test
   (:require [babashka.fs :as fs]
             [clojure.edn :as edn]
+            [breto.cargo :as cargo]
             [breto.support :as s]
             [breto.package :as package]
             [breto.platform :as platform]
@@ -21,10 +22,13 @@
   (doseq [p platform/known
           [name pkg] (registry/load-registry nil ["packages"] p)
           :when (not (:unsupported pkg))
-          :let [tag (str (:tag-prefix pkg) "1.2.3")
-                pkg (package/at pkg "1.2.3")
+          :let [version (if (get-in pkg [:source :git])
+                          (cargo/git-version (apply str (repeat 40 "0")) "2026-01-02T03:04:05Z")
+                          "1.2.3")
+                tag (str (:tag-prefix pkg) version)
+                pkg (package/at pkg version)
                 fetched (update-vals (package/fetched-vars pkg) #(if (:json %) "https://example.org/fetched" "20260101"))
-                {:keys [url bins checksum-url]} (package/artifact pkg {:tag tag :version "1.2.3" :fetched fetched})]]
+                {:keys [url bins checksum-url]} (package/artifact pkg {:tag tag :version version :fetched fetched})]]
     (is (str/starts-with? url "https://") [name p])
     (is (or (nil? checksum-url) (str/starts-with? checksum-url "https://")) [name p])
     (is (or (seq bins) (= :tree (:layout pkg))) [name p])
