@@ -1,7 +1,7 @@
 <!--
 SPDX-FileCopyrightText: The breto Authors
 SPDX-License-Identifier: 0BSD
- -->
+-->
 
 # breto
 
