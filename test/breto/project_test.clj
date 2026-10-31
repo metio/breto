@@ -119,6 +119,15 @@
     (is (= ["sh" "-c" "echo ${HOME} {nope} linux" "l" "a"]
            (run/invocation "l" {:run "echo ${HOME} {nope} {os}"} ["a"] vars)))))
 
+(deftest exec-finds-the-program-on-the-path-it-is-given
+  (let [bin (path "project-bin")]
+    (fs/create-dirs bin)
+    (spit (str (fs/path bin "only-here")) "#!/bin/sh\nexit 7\n")
+    (fs/set-posix-file-permissions (fs/path bin "only-here") "rwxr-xr-x")
+    (is (= 7 (run/exec! {:command ["only-here"]
+                         :env {"PATH" (str bin ":" (System/getenv "PATH"))}
+                         :dir (path ".")})))))
+
 (deftest env-links-wrappers-sets-variables-and-greets-on-entering
   (let [io (world)]
     (write! "app" ".breto.edn" {:packages ["alpha"] :env {"ROOT" "{project}/out"}

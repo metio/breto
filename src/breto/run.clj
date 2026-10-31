@@ -34,10 +34,22 @@
     (into ["sh" "-c" (render run vars) name] args)
     (into (mapv #(render % vars) run) args)))
 
+(defn- on-path
+  "`command` with its program found on `path`, since a new process looks a
+  bare program name up on the PATH of breto, not on the PATH it is given."
+  [[program & args :as command] path]
+  (if-let [found (when (and path (not (str/includes? program "/")))
+                   (some (fn [dir]
+                           (let [f (fs/path dir program)]
+                             (when (and (fs/regular-file? f) (fs/executable? f)) (str f))))
+                         (str/split path (re-pattern (java.util.regex.Pattern/quote java.io.File/pathSeparator)))))]
+    (into [found] args)
+    command))
+
 (defn exec!
   "Runs `command` in the terminal and returns its exit code."
   [{:keys [command env dir]}]
-  (:exit @(apply process/process {:inherit true :extra-env env :dir (str dir)} command)))
+  (:exit @(apply process/process {:inherit true :extra-env env :dir (str dir)} (on-path command (get env "PATH")))))
 
 (defn run-order!
   "Runs each [name command] of `order` that has a :run, the last one with
