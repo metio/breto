@@ -151,5 +151,5 @@ runs:
         breto env --dir "${GITHUB_WORKSPACE}/${PROJECT}" --shell github > "$out"
         cat "$out" >> "$GITHUB_ENV"
         bin=$(sed -n 's/^BRETO_ENV_BIN=//p' "$out")
-        echo "$bin" >> "$GITHUB_PATH"
+        if [ -n "$bin" ]; then echo "$bin" >> "$GITHUB_PATH"; fi
         echo "bin=${bin}" >> "$GITHUB_OUTPUT"

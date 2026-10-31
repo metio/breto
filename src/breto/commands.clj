@@ -405,21 +405,27 @@
   which the shell hook passes on entering the project, also prints the
   menu of its commands and runs its :on-enter command. Only installing
   needs the store lock, so linking installed versions never waits for
-  another run."
+  another run. Outside a project it installs nothing and prints the code
+  that leaves the project a shell entered before."
   [{:keys [config opts] :as ctx} _]
-  (let [{:keys [code dir files bin vars] :as proj} (prepared-project! ctx "env")]
-    (if (pos? code)
-      code
-      (let [shell (case (:shell opts) "fish" :fish "github" :github :sh)
-            enter? (:enter opts)
-            on-enter (when enter? (:on-enter proj))]
-        (when (and enter? (:menu proj))
-          (binding [*out* *err*] (run! println (run/menu proj))))
-        (println (str (env/exports shell (env/path-value config bin (System/getenv "PATH")) dir bin files vars)
-                      (when (and on-enter (not= :github shell))
-                        (str "\n" "breto run --dir " (sh-quote dir) " " (sh-quote on-enter)
-                             (when (= :fish shell) ";")))))
-        0))))
+  (if-not (project/find-dir (or (:dir opts) "."))
+    (let [shell (case (:shell opts) "fish" :fish "github" :github :sh)
+          code (env/leaving shell (env/path-outside config (System/getenv "PATH")))]
+      (when-not (str/blank? code) (println code))
+      0)
+    (let [{:keys [code dir files bin vars] :as proj} (prepared-project! ctx "env")]
+      (if (pos? code)
+        code
+        (let [shell (case (:shell opts) "fish" :fish "github" :github :sh)
+              enter? (:enter opts)
+              on-enter (when enter? (:on-enter proj))]
+          (when (and enter? (:menu proj))
+            (binding [*out* *err*] (run! println (run/menu proj))))
+          (println (str (env/exports shell (env/path-value config bin (System/getenv "PATH")) dir bin files vars)
+                        (when (and on-enter (not= :github shell))
+                          (str "\n" "breto run --dir " (sh-quote dir) " " (sh-quote on-enter)
+                               (when (= :fish shell) ";")))))
+          0)))))
 
 (defn- choose-command
   "The project command chosen in the fuzzy finder, else through a numbered

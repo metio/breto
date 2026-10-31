@@ -128,7 +128,23 @@
   (is (thrown-with-msg? clojure.lang.ExceptionInfo #":packages must be a vector"
                         (project/read-file (path "app" ".breto.edn"))))
   (is (thrown-with-msg? clojure.lang.ExceptionInfo #"no \.breto\.edn"
-                        (s/breto! {} ["env" "--dir" (str (fs/temp-dir))]))))
+                        (s/breto! {} ["run" "--dir" (str (fs/temp-dir)) "x"]))))
+
+(deftest env-outside-a-project-leaves-the-project-entered-before
+  (fs/create-dirs (path "elsewhere"))
+  (let [{:keys [code out err]} (env! (world) "elsewhere")]
+    (is (= 0 code) err)
+    (is (str/includes? out "unset BRETO_ENV_VARS BRETO_PROJECT BRETO_ENV_BIN BRETO_ENV_FILES"))
+    (is (not (str/includes? (exported-path out) (str (path "envs")))))
+    (is (= "" (:out (env! (world) "elsewhere" "--shell" "github"))))))
+
+(deftest leaving-restores-what-the-project-replaced
+  (is (= "/original x|/usr/bin|unset"
+         (:out (process/shell {:out :string} "bash" "--norc" "-c"
+                              (str "export JAVA_HOME='/original x'\n"
+                                   (env/exports :sh "/a:/usr/bin" "/p" "/a" [] {"JAVA_HOME" "/project"}) "\n"
+                                   (env/leaving :sh "/usr/bin") "\n"
+                                   "printf %s \"$JAVA_HOME|$PATH|${BRETO_PROJECT-unset}\""))))))
 
 (deftest env-waits-for-the-store-only-to-install
   (let [io (world)

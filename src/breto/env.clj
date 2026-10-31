@@ -86,14 +86,26 @@
      (fs/set-last-modified-time bin (java.nio.file.attribute.FileTime/from (java.time.Instant/now)))
      (str bin))))
 
+(defn- outside-projects
+  "The entries of `path` that are no bin directory of a project, without
+  blanks and repeats."
+  [{:keys [env-dir]} path]
+  (let [root (str (fs/absolutize env-dir) "/")]
+    (distinct (remove #(or (str/blank? %) (str/starts-with? % root))
+                      (str/split (or path "") #":")))))
+
 (defn path-value
   "`path` with the bin directories of every project and repeated entries
   removed and `bin` put in front, so entering another project replaces the
   previous one's entry."
-  [{:keys [env-dir]} bin path]
-  (let [root (str (fs/absolutize env-dir) "/")]
-    (str/join ":" (distinct (cons bin (remove #(or (str/blank? %) (str/starts-with? % root))
-                                              (str/split (or path "") #":")))))))
+  [config bin path]
+  (str/join ":" (distinct (cons bin (outside-projects config path)))))
+
+(defn path-outside
+  "`path` with the bin directories of every project and repeated entries
+  removed."
+  [config path]
+  (str/join ":" (outside-projects config path)))
 
 (defn- sh-quote [s]
   (str "'" (str/replace s "'" "'\\''") "'"))
@@ -165,6 +177,20 @@
             "export BRETO_PROJECT=" (sh-quote project-dir) "\n"
             "export BRETO_ENV_BIN=" (sh-quote bin) "\n"
             "export BRETO_ENV_FILES=" (sh-quote (str/join ":" files)))))))
+
+(defn leaving
+  "The shell code that leaves any project: the variables a project replaced
+  get their earlier values back, PATH becomes `path` and the variables naming
+  the project are unset. :github needs none, since a job enters one project."
+  [shell path]
+  (case shell
+    :github ""
+    :fish (str restore-fish
+               "set --global --export PATH " (str/join " " (map sh-quote (str/split path #":"))) ";\n"
+               "set --erase BRETO_ENV_VARS BRETO_PROJECT BRETO_ENV_BIN BRETO_ENV_FILES;")
+    (str restore-sh
+         "export PATH=" (sh-quote path) "\n"
+         "unset BRETO_ENV_VARS BRETO_PROJECT BRETO_ENV_BIN BRETO_ENV_FILES")))
 
 (defn environments
   "Every project bin directory: {:dir :project :bin}, :project nil when its
