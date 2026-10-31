@@ -15,7 +15,7 @@ jobs:
       - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7
         with:
           persist-credentials: false
-      - uses: metio/breto@3d35cbfa61e9b8e98fe3d92113390a6db219b66c # 2026.10.30182439
+      - uses: metio/breto@7bcd096b907a92d210885216dc2bcb9918612078 # 2026.10.31161821
         with:
           registries: github:metio/toolchains
       - run: bb test
@@ -26,7 +26,7 @@ jobs:
       - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7
         with:
           persist-credentials: false
-      - uses: metio/breto@3d35cbfa61e9b8e98fe3d92113390a6db219b66c # 2026.10.30182439
+      - uses: metio/breto@7bcd096b907a92d210885216dc2bcb9918612078 # 2026.10.31161821
         with:
           registries: github:metio/toolchains
       - run: reuse lint
@@ -37,7 +37,7 @@ jobs:
       - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7
         with:
           persist-credentials: false
-      - uses: metio/breto@3d35cbfa61e9b8e98fe3d92113390a6db219b66c # 2026.10.30182439
+      - uses: metio/breto@7bcd096b907a92d210885216dc2bcb9918612078 # 2026.10.31161821
         with:
           registries: github:metio/toolchains
       - run: yamllint .
@@ -48,7 +48,7 @@ jobs:
       - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7
         with:
           persist-credentials: false
-      - uses: metio/breto@3d35cbfa61e9b8e98fe3d92113390a6db219b66c # 2026.10.30182439
+      - uses: metio/breto@7bcd096b907a92d210885216dc2bcb9918612078 # 2026.10.31161821
         with:
           registries: github:metio/toolchains
       - run: actionlint
@@ -59,7 +59,7 @@ jobs:
       - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7
         with:
           persist-credentials: false
-      - uses: metio/breto@3d35cbfa61e9b8e98fe3d92113390a6db219b66c # 2026.10.30182439
+      - uses: metio/breto@7bcd096b907a92d210885216dc2bcb9918612078 # 2026.10.31161821
         with:
           registries: github:metio/toolchains
       - env:
@@ -72,7 +72,7 @@ jobs:
       - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7
         with:
           persist-credentials: false
-      - uses: metio/breto@3d35cbfa61e9b8e98fe3d92113390a6db219b66c # 2026.10.30182439
+      - uses: metio/breto@7bcd096b907a92d210885216dc2bcb9918612078 # 2026.10.31161821
         with:
           registries: github:metio/toolchains
       - run: markdownlint-cli2 "**/*.md"
@@ -83,7 +83,7 @@ jobs:
       - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7
         with:
           persist-credentials: false
-      - uses: metio/breto@3d35cbfa61e9b8e98fe3d92113390a6db219b66c # 2026.10.30182439
+      - uses: metio/breto@7bcd096b907a92d210885216dc2bcb9918612078 # 2026.10.31161821
         with:
           registries: github:metio/toolchains
       - run: typos
