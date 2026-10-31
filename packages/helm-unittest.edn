@@ -5,7 +5,7 @@
  :source {:github "helm-unittest/helm-unittest"}
  :layout :tree
  :bins {}
- :env {"HELM_PLUGINS" "{homes}"}
+ :env {"HELM_PLUGINS" "{install-dirs}"}
  :platforms {"darwin-aarch64" {:asset "helm-unittest-macos-arm64-{version}.tgz"}
              "darwin-x86_64" {:asset "helm-unittest-macos-amd64-{version}.tgz"}
              "linux-aarch64" {:asset "helm-unittest-linux-arm64-{version}.tgz"}

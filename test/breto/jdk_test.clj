@@ -35,7 +35,7 @@
    :strip 1
    :layout :tree
    :bin-dir "bin"
-   :env {"JAVA_HOME" "{home}"}
+   :env {"JAVA_HOME" "{install-dir}"}
    :verify false})
 
 (defn- world []
@@ -59,7 +59,7 @@
                    {:vars {:feature {:match "("}}}
                    {:bin-dir "bin" :layout :binary :bins {"java" "bin/java"}}
                    {:bin-dir "../bin"}
-                   {:env {"PATH" "{home}/bin"}}
+                   {:env {"PATH" "{install-dir}/bin"}}
                    {:env {"BRETO_PROJECT" "x"}}]]
         (is (thrown? Exception (s/normalize (merge (assoc definition :name "jdk") bad))) (pr-str bad))))))
 
@@ -174,14 +174,14 @@
                                       (apply d (str/replace url "acme/jdk-again" "acme/jdk") dest more))))]
       (fs/create-dirs (path "app"))
       (spit (path "app" ".breto.edn") (pr-str {:packages ["jdk@25.0.1+8" "jdk-again@25.0.1+8"]
-                                               :env {"JAVA_HOME" "{homes}/jdk-again"}}))
+                                               :env {"JAVA_HOME" "{install-dirs}/jdk-again"}}))
       (let [{:keys [code out err]} (env! io "app")]
         (is (= 0 code) err)
         (is (re-find #"export JAVA_HOME='[^']*/homes/jdk-again'" out))))))
 
 (deftest packages-agreeing-on-a-value-share-the-directory-of-homes
   (let [io (world)
-        plugin (assoc definition :env {"PLUGINS" "{homes}"})]
+        plugin (assoc definition :env {"PLUGINS" "{install-dirs}"})]
     (s/define! "jdk" plugin)
     (s/define! "jdk-again" plugin)
     (let [io (assoc io :download! (let [d (:download! io)]
@@ -194,6 +194,18 @@
         (is (str/ends-with? homes "/homes"))
         (is (= #{"jdk" "jdk-again"} (set (map (comp str fs/file-name) (fs/list-dir homes)))))
         (is (= "jdk27" (slurp (str (fs/path homes "jdk-again" "release")))))))))
+
+(deftest the-deprecated-home-placeholders-render-like-the-install-dir-ones
+  (let [io (world)]
+    (s/define! "jdk" (assoc definition :env {"JAVA_HOME" "{home}" "PLUGINS" "{homes}"}))
+    (fs/create-dirs (path "app"))
+    (spit (path "app" ".breto.edn") (pr-str {:packages ["jdk@25.0.1+8"]
+                                             :env {"OLD" "{homes}" "NEW" "{install-dirs}"}}))
+    (let [{:keys [code out err]} (env! io "app")
+          value #(second (re-find (re-pattern (str "export " % "='([^']*)'")) out))]
+      (is (= 0 code) err)
+      (is (str/ends-with? (value "JAVA_HOME") "/homes/jdk"))
+      (is (= (str (fs/parent (value "JAVA_HOME"))) (value "PLUGINS") (value "OLD") (value "NEW"))))))
 
 (deftest doctor-reports-commands-several-packages-provide
   (let [io (world)]

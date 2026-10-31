@@ -11,7 +11,7 @@
  :strip 1
  :layout :tree
  :bin-dir "bin"
- :env {"JAVA_HOME" "{home}"}
+ :env {"JAVA_HOME" "{install-dir}"}
  :platforms {"linux-x86_64" {:asset "OpenJDK{feature}U-jdk_x64_linux_hotspot_{file-version}.tar.gz"}
              "linux-aarch64" {:asset "OpenJDK{feature}U-jdk_aarch64_linux_hotspot_{file-version}.tar.gz"}
-             "darwin-aarch64" {:asset "OpenJDK{feature}U-jdk_aarch64_mac_hotspot_{file-version}.tar.gz" :bin-dir "Contents/Home/bin" :env {"JAVA_HOME" "{home}/Contents/Home"}}}}
+             "darwin-aarch64" {:asset "OpenJDK{feature}U-jdk_aarch64_mac_hotspot_{file-version}.tar.gz" :bin-dir "Contents/Home/bin" :env {"JAVA_HOME" "{install-dir}/Contents/Home"}}}}

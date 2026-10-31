@@ -6,7 +6,7 @@
  :tag-prefix "envtest-v"
  :layout :tree
  :bins {}
- :env {"KUBEBUILDER_ASSETS" "{home}/controller-tools/envtest"}
+ :env {"KUBEBUILDER_ASSETS" "{install-dir}/controller-tools/envtest"}
  :platforms {"linux-x86_64" {:asset "envtest-v{version}-linux-amd64.tar.gz"}
              "linux-aarch64" {:asset "envtest-v{version}-linux-arm64.tar.gz"}
              "darwin-x86_64" {:asset "envtest-v{version}-darwin-amd64.tar.gz"}

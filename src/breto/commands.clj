@@ -301,8 +301,9 @@
 (defn- project-environment
   "{:homes :vars} of `project`: the version directory of each package whose
   definition has :env, and the variables those definitions set, rendered
-  with {home} as the project's stable link to that directory and {homes} as
-  the directory of all those links. Two packages setting one variable to
+  with {install-dir} as the project's stable link to that directory and
+  {install-dirs} as the directory of all those links; {home} and {homes} are
+  the deprecated names of the two. Two packages setting one variable to
   different values is an error, since only one value can win, unless the
   project's own :env sets it."
   [config registry {:keys [dir specs] :as project}]
@@ -315,8 +316,9 @@
                       :when version
                       :let [pkg (package/at pkg version)
                             vars (assoc (package/template-vars pkg {:tag (package/tag-of-version pkg version) :version version})
-                                        :home (str (env/home config dir name))
-                                        :homes (str (fs/parent (env/home config dir name))))]]
+                                        :install-dir (str (env/home config dir name))
+                                        :install-dirs (str (fs/parent (env/home config dir name))))
+                            vars (assoc vars :home (:install-dir vars) :homes (:install-dirs vars))]]
                   {:name name
                    :home (str (store/version-dir config name version))
                    :vars (update-vals (:env pkg) #(template/render % vars))})]

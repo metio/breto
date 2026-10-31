@@ -93,7 +93,7 @@
                    false))
                completions)))
 
-(def ^:private reserved-vars #{:name :tag :version :repo :asset :home :homes})
+(def ^:private reserved-vars #{:name :tag :version :repo :asset :install-dir :install-dirs :home :homes})
 
 (defn- vars-valid? [vars]
   (and (map? vars)
@@ -213,7 +213,7 @@
     (conj ":bin-dir needs the :tree layout and is a relative path inside the release, without ..")
 
     (not (vars-valid? (:vars pkg {})))
-    (conj ":vars maps placeholder keywords other than :name, :tag, :version, :repo, :asset, :home and :homes to {:match REGEX} or {:replace [FROM TO]}, applied to the version, or {:text URL :match REGEX}, matched in a document, or {:json URL :path [path]}, the value at a path in a JSON or YAML document")
+    (conj ":vars maps placeholder keywords other than :name, :tag, :version, :repo, :asset, :install-dir, :install-dirs, :home and :homes to {:match REGEX} or {:replace [FROM TO]}, applied to the version, or {:text URL :match REGEX}, matched in a document, or {:json URL :path [path]}, the value at a path in a JSON or YAML document")
 
     (not (env-valid? (:env pkg {})))
     (conj ":env maps environment variable names other than PATH and BRETO_* to template strings")

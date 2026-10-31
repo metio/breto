@@ -10,8 +10,8 @@
  :strip 1
  :layout :tree
  :bin-dir "bin"
- :env {"JAVA_HOME" "{home}" "GRAALVM_HOME" "{home}"}
+ :env {"JAVA_HOME" "{install-dir}" "GRAALVM_HOME" "{install-dir}"}
  :platforms {"linux-x86_64" {:asset "graalvm-jdk-{version}_linux-x64_bin.tar.gz"}
              "linux-aarch64" {:asset "graalvm-jdk-{version}_linux-aarch64_bin.tar.gz"}
              "darwin-aarch64" {:asset "graalvm-jdk-{version}_macos-aarch64_bin.tar.gz"
-                               :bin-dir "Contents/Home/bin" :env {"JAVA_HOME" "{home}/Contents/Home" "GRAALVM_HOME" "{home}/Contents/Home"}}}}
+                               :bin-dir "Contents/Home/bin" :env {"JAVA_HOME" "{install-dir}/Contents/Home" "GRAALVM_HOME" "{install-dir}/Contents/Home"}}}}

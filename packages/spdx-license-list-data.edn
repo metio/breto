@@ -9,5 +9,5 @@
  :strip 1
  :layout :tree
  :bins {}
- :env {"SPDX_LICENSE_LIST_DATA" "{home}"}
+ :env {"SPDX_LICENSE_LIST_DATA" "{install-dir}"}
  :platforms {"linux-x86_64" {} "linux-aarch64" {} "darwin-x86_64" {} "darwin-aarch64" {}}}

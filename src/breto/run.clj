@@ -5,8 +5,9 @@
   "The commands of a project, run with the project's bin directory first on
   PATH and its variables set. A vector :run starts the program directly; a
   string runs through sh -c. Both are templates of {project}, {bin},
-  {homes}, {platform}, {os} and {arch}; any other braces, such as a shell's
-  ${var}, are left alone."
+  {install-dirs}, {platform}, {os} and {arch}, with {homes} as the deprecated
+  name of {install-dirs}; any other braces, such as a shell's ${var}, are
+  left alone."
   (:require [babashka.fs :as fs]
             [babashka.process :as process]
             [breto.platform :as platform]
@@ -15,13 +16,13 @@
 (defn template-vars
   "The values commands and project variables can refer to."
   [project-dir bin homes platform]
-  {"project" (str project-dir) "bin" (str bin) "homes" (str homes)
+  {"project" (str project-dir) "bin" (str bin) "install-dirs" (str homes) "homes" (str homes)
    "platform" platform "os" (platform/os-of platform) "arch" (platform/arch-of platform)})
 
 (defn render
   "`s` with each {name} of `vars` replaced by its value."
   [s vars]
-  (str/replace s #"\{([a-z]+)\}" (fn [[whole k]] (get vars k whole))))
+  (str/replace s #"\{([a-z-]+)\}" (fn [[whole k]] (get vars k whole))))
 
 (defn render-env [env vars]
   (update-vals env #(render % vars)))
