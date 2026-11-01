@@ -379,7 +379,7 @@
 (defmethod explain :all-skipped [{:keys [package latest skip source]} _]
   {:summary (str "The latest release of " package ", " latest ", is listed in :skip, and no older release is left to install.")
    :facts [(str ":skip " (pr-str skip)) (str "Source: " (pr-str source))]
-   :advice [(if (or (:github source) (:gitlab source))
+   :advice [(if (or (:github source) (:gitlab source) (:forgejo source) (:gitea source))
               "Remove a version from :skip, or pin a version under :pins in the config."
               "This source lists no older releases; pin a version under :pins in the config.")]})
 

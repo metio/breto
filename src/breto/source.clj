@@ -62,6 +62,13 @@
 (defn- gitlab-latest-url [project]
   (gitlab-api project "/releases/permalink/latest"))
 
+(defn- forgejo-api
+  "The Forgejo or Gitea API URL of the repository HOST/OWNER/REPO with
+  `suffix`; Gitea's API is the one Forgejo keeps."
+  [repository suffix]
+  (let [[host path] (str/split repository #"/" 2)]
+    (str "https://" host "/api/v1/repos/" path suffix)))
+
 (defn json-version
   "The value at the :version path of a :json source in the parsed document
   `doc`. A missing value names the deepest part of the path that exists."
@@ -123,6 +130,9 @@
     :gitlab (let [url (gitlab-latest-url (:gitlab source))]
               (listed-latest pkg io (or (get (json/parse-string (get-text url {})) "tag_name")
                                         (throw (ex-info (str "no tag_name in " url) {:breto/problem :no-release :url url})))))
+    (:forgejo :gitea) (let [url (forgejo-api (get source (package/source-kind pkg)) "/releases/latest")]
+                        (listed-latest pkg io (or (get (json/parse-string (get-text url {"Accept" "application/json"})) "tag_name")
+                                                  (throw (ex-info (str "no tag_name in " url) {:breto/problem :no-release :url url})))))
     :text (if (:newest source)
             (or (newest-listed pkg io #{})
                 (throw (ex-info (str "nothing in " (:text source) " matches " (:match source))
@@ -175,6 +185,11 @@
     :gitlab (->> (json/parse-string (get-text (gitlab-api (:gitlab source) "/releases?per_page=100") {}) true)
                  (remove :upcoming_release)
                  (map :tag_name))
+    (:forgejo :gitea) (->> (json/parse-string (get-text (forgejo-api (get source (package/source-kind pkg)) "/releases?limit=50")
+                                                         {"Accept" "application/json"})
+                                               true)
+                           (remove #(or (:draft %) (:prerelease %)))
+                           (map :tag_name))
     :go (->> (str/split-lines (get-text (go-proxy-url source "/@v/list") {}))
              (remove str/blank?)
              (remove #(re-find #"^v\d+\.\d+\.\d+-" %)))

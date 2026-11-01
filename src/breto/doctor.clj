@@ -60,13 +60,16 @@
    [(if (fs/exists? config-path)
       (check :ok "The configuration file exists" config-path)
       (check :warn "There is no configuration file" config-path
-             "Without one, breto has no registries and no package list; see the README for its keys."))]
+             "Without one, breto reads its default registry and has no package list; see the README for its keys."))]
    (for [dir registries]
      (cond
+       (and (remote/remote? dir) (false? (:signature dir)) (remote/dir config dir))
+       (check :warn "A published registry is not signed" (remote/label dir)
+              "Its downloads are checked against its checksum file alone; :signature names the signer of a signed one.")
        (remote/remote? dir)
        (if-let [installed (remote/dir config dir)]
-         (check :ok "A published registry is installed" (str (:github dir) " in " installed))
-         (check :fail "A published registry is not installed" (:github dir)
+         (check :ok "A published registry is installed" (str (remote/label dir) " in " installed))
+         (check :fail "A published registry is not installed" (remote/label dir)
                 "Run breto update, which installs it first."))
        (fs/directory? dir)
        (check :ok "A registry directory exists" dir)

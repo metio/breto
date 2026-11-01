@@ -163,3 +163,96 @@
     (is (= 0 code) out)
     (is (= "2026.1.1" (store/current-version {:store (s/path "store")} "registry-acme-toolchains")))
     (is (= "1.2.3" (store/current-version {:store (s/path "store")} "tool")))))
+
+(deftest each-location-names-its-package-and-assets
+  (is (= "registry-gitlab.example.com-tools-sub-registry" (remote/package-name {:gitlab "gitlab.example.com/tools/sub/registry"})))
+  (is (= "registry-codeberg.org-acme-defs" (remote/package-name {:forgejo "codeberg.org/acme/defs"})))
+  (is (= "registry-git.example.com-8443-acme-defs" (remote/package-name {:gitea "git.example.com:8443/acme/defs"})))
+  (is (= "registry-r2.example.org-breto-defs" (remote/package-name {:url "https://r2.example.org/breto/defs/"})))
+  (let [d (remote/definition {:gitlab "gitlab.example.com/tools/registry" :signature {:identity "me" :issuer "https://gitlab.example.com"}})]
+    (is (= {:gitlab "gitlab.example.com/tools/registry"} (:source d)))
+    (is (= "https://gitlab.example.com/api/v4/projects/tools%2Fregistry/packages/generic/registry/{version}/{asset}" (:url d)))
+    (is (= "registry-{version}.tar.gz" (:asset d)))
+    (is (= {:bundle "registry_{version}_SHA256SUMS.bundle" :of :checksum :identity "me" :issuer "https://gitlab.example.com"}
+           (:signature d))))
+  (let [d (remote/definition {:forgejo "codeberg.org/acme/defs" :signature false})]
+    (is (= {:forgejo "codeberg.org/acme/defs"} (:source d)))
+    (is (nil? (:url d)) "the forgejo source supplies the release download URL")
+    (is (nil? (:signature d)))
+    (is (= "defs_{version}_SHA256SUMS" (:checksum d))))
+  (let [d (remote/definition {:url "https://r2.example.org/defs/" :signature {:identity-regexp "^https://ci.example.org/" :issuer "https://ci.example.org"}})]
+    (is (= {:text "https://r2.example.org/defs/latest"} (:source d)))
+    (is (= "https://r2.example.org/defs/{version}/{asset}" (:url d)))
+    (is (= "^https://ci.example.org/" (get-in d [:signature :identity-regexp])))))
+
+(deftest gitlab-dot-com-projects-are-signed-by-their-ci-by-default
+  (is (empty? (remote/problems {:gitlab "gitlab.com/acme/registry"})))
+  (is (= {:identity "https://gitlab.com/acme/registry//.gitlab-ci.yml@refs/heads/main" :issuer "https://gitlab.com"}
+         (select-keys (:signature (remote/definition {:gitlab "gitlab.com/acme/registry"})) [:identity :issuer]))))
+
+(deftest locations-without-a-known-signer-name-one-or-opt-out
+  (is (seq (remote/problems {:forgejo "codeberg.org/acme/defs"})))
+  (is (seq (remote/problems {:gitlab "gitlab.example.com/acme/defs"})))
+  (is (seq (remote/problems {:url "https://example.org/defs/"})))
+  (is (seq (remote/problems {:url "https://example.org/defs/" :signature {:identity "me"}})) "an issuer is needed too")
+  (is (empty? (remote/problems {:forgejo "codeberg.org/acme/defs" :signature false})))
+  (is (empty? (remote/problems {:url "https://example.org/defs/" :signature {:identity "me" :issuer "https://issuer"}}))))
+
+(deftest malformed-locations-are-refused
+  (is (seq (remote/problems {:github "acme/defs" :url "https://example.org/defs/"})) "one location only")
+  (is (seq (remote/problems {:url "http://example.org/defs/" :signature false})) "https only")
+  (is (seq (remote/problems {:url "https://example.org/defs" :signature false})) "a directory ends in /")
+  (is (seq (remote/problems {:forgejo "codeberg.org/defs" :signature false})))
+  (is (seq (remote/problems {:gitlab "gitlab.com/defs"})))
+  (is (seq (remote/problems {:forgejo "codeberg.org/acme/defs" :signature {:identity "a" :identity-regexp "b" :issuer "c"}}))))
+
+(defn- published-world
+  "The registry release 2026.1.1 of NAME whose assets live under `base`, with
+  the group @lint of acme/tool, as `files` and `texts` for fake-io."
+  [name base]
+  (let [tree (s/path (str "published-" name))
+        _ (fs/create-dirs tree)
+        _ (spit (str (fs/path tree "@lint.edn")) (pr-str {:members ["tool"]}))
+        _ (spit (str (fs/path tree "tool.edn"))
+                (pr-str (s/everywhere {:source {:github "acme/tool"} :asset "tool" :bins {"tool" "tool"}})))
+        archive (s/path "files" (str name "-2026.1.1.tar.gz"))
+        _ (fs/create-dirs (s/path "files"))
+        _ (process/shell {:dir tree :extra-env {"GZIP" "-n"}} "tar" "--create" "--gzip" "--mtime=@0" "--owner=0" "--group=0"
+                         "--numeric-owner" "--file" archive "@lint.edn" "tool.edn")
+        sums (s/file! (str name "-sums") (str (s/sha256 archive) "  " name "-2026.1.1.tar.gz\n"))
+        binary (s/file! "tool" "#!/bin/sh\necho tool\n")]
+    {:files {(str base name "-2026.1.1.tar.gz") archive
+             (str base name "_2026.1.1_SHA256SUMS") sums
+             (str base name "_2026.1.1_SHA256SUMS.bundle") (s/file! (str name "-bundle") "{}")
+             (str tool-base "tool") binary}
+     :texts {(str base name "_2026.1.1_SHA256SUMS") (slurp sums)
+             "https://github.com/acme/tool/releases/latest" "{\"tag_name\":\"v1.2.3\"}"
+             "https://api.github.com/repos/acme/tool/releases/tags/v1.2.3"
+             (json/generate-string {:tag_name "v1.2.3" :assets [{:name "tool" :digest (str "sha256:" (s/sha256 binary))}]})}}))
+
+(deftest update-installs-a-registry-from-a-plain-directory
+  (let [entry {:url "https://r2.example.org/defs/" :signature false}
+        {:keys [files texts]} (published-world "defs" "https://r2.example.org/defs/2026.1.1/")
+        calls (atom [])
+        {:keys [code out]} (s/breto! {:registries [entry] :packages ["@lint"]} ["update"]
+                                     {:io (assoc (s/fake-io files (assoc texts "https://r2.example.org/defs/latest" "2026.1.1\n") (atom []))
+                                                 :run (fn [command] (swap! calls conj (vec command)) {:exit 0 :out "" :err ""})
+                                                 :which (constantly nil))})]
+    (is (= 0 code) out)
+    (is (= "2026.1.1" (store/current-version {:store (s/path "store")} "registry-r2.example.org-defs")))
+    (is (= "1.2.3" (store/current-version {:store (s/path "store")} "tool")))
+    (is (not-any? #(= "verify-blob" (second %)) @calls) "an unsigned registry runs no cosign")))
+
+(deftest update-installs-a-signed-registry-from-forgejo
+  (let [entry {:forgejo "codeberg.org/acme/defs" :signature {:identity "https://ci.example.org/defs" :issuer "https://ci.example.org"}}
+        {:keys [files texts]} (published-world "defs" "https://codeberg.org/acme/defs/releases/download/2026.1.1/")
+        calls (atom [])
+        {:keys [code out]} (s/breto! {:registries [entry] :packages ["@lint"]} ["update"]
+                                     {:io (assoc (s/fake-io files (assoc texts "https://codeberg.org/api/v1/repos/acme/defs/releases/latest"
+                                                                         "{\"tag_name\":\"2026.1.1\"}")
+                                                            (atom []))
+                                                 :run (fn [command] (swap! calls conj (vec command)) {:exit 0 :out "" :err "Verified OK"})
+                                                 :which {"cosign" "/usr/bin/cosign"})})]
+    (is (= 0 code) out)
+    (is (= "2026.1.1" (store/current-version {:store (s/path "store")} "registry-codeberg.org-acme-defs")))
+    (is (some #(and (= "verify-blob" (second %)) (some #{"https://ci.example.org/defs"} %)) @calls))))

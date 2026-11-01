@@ -248,16 +248,27 @@ A group file can also hold the commands every project of its kind runs, so they 
 
 ### Published registries
 
-A registry can be published as releases of a GitHub repository, so every machine and CI job reads the same signed definitions and groups without a clone:
+A registry can be published as releases, so every machine and CI job reads the same signed definitions and groups without a clone:
 
 ```clojure
 {:extra-registries [{:github "metio/toolchains"}]
  :packages ["breto"]}
 ```
 
-breto installs the release like a package named `registry-OWNER-REPO`, which comes first in `:packages`, and reads the registry from its active version. `breto update` and `breto sync` install it before everything else and then load the registry again, so a group that a new release changes reaches the projects in the same run; the lock file records the registry's version like any other package's. `install`, `env` and `run` install a registry that is missing before the packages they need, `env` and `run` with their report on stderr and not under `--no-install`. Other commands read the installed release offline, and warn when none is installed yet.
+The releases can live in several places:
 
-A release named `VERSION` carries three assets: `REPO-VERSION.tar.gz` with the registry's `.edn` files and `breto.lock` at its root, `REPO_VERSION_SHA256SUMS`, and its cosign bundle `REPO_VERSION_SHA256SUMS.bundle`. The checksum file must be signed by the repository's `.github/workflows/release.yml` on `main`, as GitHub's OIDC issuer certifies it. `:signature {:identity … :issuer …}` names another identity, and `:tag-prefix` the text before the version in a tag, empty by default.
+| Entry | Newest release | Assets |
+| --- | --- | --- |
+| `{:github "OWNER/REPO"}` | The release GitHub marks as latest | Attached to the release |
+| `{:gitlab "HOST/GROUP/PROJECT"}` | GitLab's latest release; subgroups are part of the path | The project's generic package `NAME` at `VERSION` |
+| `{:forgejo "HOST/OWNER/REPO"}`, `{:gitea …}` | The latest release of the Forgejo or Gitea API, such as on Codeberg | Attached to the release |
+| `{:url "https://…/"}` | The file `latest` in that directory, holding the version | The directory `VERSION/` beside it, from any static host or bucket |
+
+`NAME` is the last segment of the location: the repository, project or directory.
+
+breto installs the release like a package named `registry-OWNER-REPO` for GitHub and `registry-HOST-PATH` for the others, which comes first in `:packages`, and reads the registry from its active version. `breto update` and `breto sync` install it before everything else and then load the registry again, so a group that a new release changes reaches the projects in the same run; the lock file records the registry's version like any other package's. `install`, `env` and `run` install a registry that is missing before the packages they need, `env` and `run` with their report on stderr and not under `--no-install`. Other commands read the installed release offline, and warn when none is installed yet.
+
+A release named `VERSION` carries three assets side by side: `NAME-VERSION.tar.gz` with the registry's `.edn` files and `breto.lock` at its root, `NAME_VERSION_SHA256SUMS`, and its cosign bundle `NAME_VERSION_SHA256SUMS.bundle`. On GitHub the checksum file must be signed by the repository's `.github/workflows/release.yml` on `main`, as GitHub's OIDC issuer certifies it, and on gitlab.com by the project's `.gitlab-ci.yml` on `main`. Elsewhere breto knows no signer, so the entry names one: `:signature {:identity … :issuer …}`, or `:identity-regexp` in place of `:identity`, which also overrides the default signer. `:signature false` checks the downloads against the checksum file alone, for a host whose CI cannot reach Sigstore; `breto doctor` warns about such a registry. `:tag-prefix` is the text before the version in a tag, empty by default.
 
 ## Lock files
 
@@ -392,6 +403,7 @@ A tool that ships support files next to its binary uses the tree layout, and `:l
 | `{:github "owner/repo"}` | The release GitHub marks as latest. |
 | `{:github "owner/repo" :tag "nightly"}` | A rolling release: every build is an asset under one fixed tag, and `:asset` must contain `{version}`. The newest matching asset by upload time is the latest version. |
 | `{:gitlab "gitlab.com/group/project"}` | GitLab's latest release. `:url` is required, because GitLab release links have no fixed shape. |
+| `{:forgejo "codeberg.org/owner/repo"}`, `{:gitea "host/owner/repo"}` | The latest release of a Forgejo or Gitea repository. `:url` defaults to the release download URL, `https://HOST/OWNER/REPO/releases/download/{tag}/{asset}`. |
 | `{:text "https://…"}` | A URL whose body is the latest tag, such as Kubernetes' `stable.txt`. `:url` is required. |
 | `{:text "https://…" :match "(?m)^version = '([^']+)'"}` | The first group of a regular expression in the body, or the whole match without one, is the latest tag. |
 | `{:text "https://…" :match "milestones/([0-9.]+)" :newest true}` | Every match in the body is a release, and the newest of them is the latest, for listings such as a download directory that are not in version order. |

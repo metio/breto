@@ -184,7 +184,7 @@ Every failure is explained with what to do; --debug adds each request and stack 
                  (when-not (needs-registries? command)
                    (binding [*out* *err*]
                      (doseq [entry missing]
-                       (println (str "[WARN] the registry " (:github entry) " is not installed, so its packages and groups are missing; breto update installs it")))))
+                       (println (str "[WARN] the registry " (remote/label entry) " is not installed, so its packages and groups are missing; breto update installs it")))))
                  (-> ctx
                      (assoc :registry (registry/load-registry builtin dirs (platform/current config)) :groups groups
                             :locks (registry/load-locks dirs lockfile/read-lock)

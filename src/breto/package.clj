@@ -34,7 +34,7 @@
     (subs file-name 0 (- (count file-name) (count suffix)))
     file-name))
 
-(def source-kinds #{:github :gitlab :text :json :go :pypi :npm :cargo :ghcup :coursier})
+(def source-kinds #{:github :gitlab :forgejo :gitea :text :json :go :pypi :npm :cargo :ghcup :coursier})
 
 (defn source-kind [{:keys [source]}]
   (let [kinds (filter source-kinds (keys source))]
@@ -48,7 +48,7 @@
   (some? (:tag source)))
 
 (defn repo [{:keys [source]}]
-  (or (:github source) (:gitlab source) (:go source)))
+  (or (:github source) (:gitlab source) (:forgejo source) (:gitea source) (:go source)))
 
 (defn file-name [path]
   (subs path (inc (or (str/last-index-of path "/") -1))))
@@ -188,8 +188,8 @@
     (not (string? asset))
     (conj ":asset must be a template string")
 
-    (and (not= :github (source-kind pkg)) (not (string? url)))
-    (conj ":url is required unless the source is :github")
+    (and (not (#{:github :forgejo :gitea} (source-kind pkg))) (not (string? url)))
+    (conj ":url is required unless the source is :github, :forgejo or :gitea")
 
     (not (#{:binary :tree} layout))
     (conj ":layout must be :binary or :tree")
@@ -338,6 +338,10 @@
 
               (and (nil? (:url pkg)) (= :github (source-kind pkg)))
               (assoc :url (str "https://github.com/" (get-in pkg [:source :github])
+                               "/releases/download/{tag}/{asset}"))
+
+              (and (nil? (:url pkg)) (#{:forgejo :gitea} (source-kind pkg)))
+              (assoc :url (str "https://" (get-in pkg [:source (source-kind pkg)])
                                "/releases/download/{tag}/{asset}"))
 
               (and (nil? (:bins pkg)) (:bin-dir pkg))
