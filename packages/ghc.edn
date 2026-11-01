@@ -1,5 +1,0 @@
-;; SPDX-FileCopyrightText: The breto Authors
-;; SPDX-License-Identifier: 0BSD
-
-{:description "The Glasgow Haskell Compiler, installed with ghcup; it needs gcc, g++, make, perl, pkg-config and the gmp and ncurses libraries"
- :source {:ghcup "ghc"}}

@@ -1,8 +1,0 @@
-;; SPDX-FileCopyrightText: 2021 Shunsuke Suzuki
-;; SPDX-FileCopyrightText: The breto Authors
-;; SPDX-License-Identifier: MIT
-
-{:description "Never worry about losing your code. Written in Go",
- :source {:github "nikochiko/autosaved"}
- :platforms {"linux-x86_64" {:asset "autosaved_linux_amd64"}
-             "darwin-x86_64" {:asset "autosaved_darwin_amd64"}}}

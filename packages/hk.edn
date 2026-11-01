@@ -1,9 +1,0 @@
-;; SPDX-FileCopyrightText: 2021 Shunsuke Suzuki
-;; SPDX-FileCopyrightText: The breto Authors
-;; SPDX-License-Identifier: MIT
-
-{:description "git hook and pre-commit lint manager",
- :source {:github "jdx/hk"}
- :platforms {"linux-x86_64" {:asset "hk-x86_64-unknown-linux-gnu.tar.gz"}
-             "linux-aarch64" {:asset "hk-aarch64-unknown-linux-gnu.tar.gz"}
-             "darwin-aarch64" {:asset "hk-aarch64-apple-darwin.tar.gz"}}}

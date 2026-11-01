@@ -1,9 +1,0 @@
-;; SPDX-FileCopyrightText: 2021 Shunsuke Suzuki
-;; SPDX-FileCopyrightText: The breto Authors
-;; SPDX-License-Identifier: MIT
-
-{:description "Terminal and Web console for Kubernetes",
- :source {:github "astefanutti/kubebox"}
- :platforms {"linux-x86_64" {:asset "kubebox-linux"}
-             "darwin-x86_64" {:asset "kubebox-macos"}
-             "darwin-aarch64" {:asset "kubebox-macos"}}}

@@ -1,9 +1,0 @@
-;; SPDX-FileCopyrightText: 2021 Shunsuke Suzuki
-;; SPDX-FileCopyrightText: The breto Authors
-;; SPDX-License-Identifier: MIT
-
-{:description "An anti-bikeshedding Kotlin linter with built-in formatter",
- :source {:github "ktlint/ktlint"}
- :tag-prefix ""
- :bins {"ktlint" "ktlint-{tag}/bin/ktlint"}
- :platforms {"linux-x86_64" {:asset "ktlint-{tag}.zip"}}}

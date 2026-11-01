@@ -1,9 +1,0 @@
-;; SPDX-FileCopyrightText: 2021 Shunsuke Suzuki
-;; SPDX-FileCopyrightText: The breto Authors
-;; SPDX-License-Identifier: MIT
-
-{:description "The parallel, concurrent, and functional programming language for scalable software development",
- :source {:github "pen-lang/pen"}
- :bins {"pen" "target/release/pen"}
- :platforms {"linux-x86_64" {:asset "pen-{version}-x86_64-unknown-linux-gnu.tar.xz"}
-             "darwin-aarch64" {:asset "pen-{version}-aarch64-apple-darwin.tar.xz"}}}

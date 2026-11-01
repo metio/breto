@@ -1,9 +1,0 @@
-;; SPDX-FileCopyrightText: 2021 Shunsuke Suzuki
-;; SPDX-FileCopyrightText: The breto Authors
-;; SPDX-License-Identifier: MIT
-
-{:description "Unix `test` command for Version comparison",
- :source {:github "babarot/vtest"}
- :checksum "vtest_{version}_checksums.txt"
- :platforms {"linux-x86_64" {:asset "vtest_linux_x86_64.tar.gz"}
-             "darwin-x86_64" {:asset "vtest_darwin_x86_64.tar.gz"}}}

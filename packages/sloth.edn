@@ -1,9 +1,0 @@
-;; SPDX-FileCopyrightText: The breto Authors
-;; SPDX-License-Identifier: 0BSD
-
-{:description "Easy and simple Prometheus SLO (service level objectives) generator",
- :source {:github "slok/sloth"}
- :platforms {"linux-x86_64" {:asset "sloth-linux-amd64"}
-             "linux-aarch64" {:asset "sloth-linux-arm64"}
-             "darwin-x86_64" {:asset "sloth-darwin-amd64"}
-             "darwin-aarch64" {:asset "sloth-darwin-arm64"}}}

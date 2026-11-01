@@ -1,9 +1,0 @@
-;; SPDX-FileCopyrightText: 2021 Shunsuke Suzuki
-;; SPDX-FileCopyrightText: The breto Authors
-;; SPDX-License-Identifier: MIT
-
-{:description "Sync data between persistence engines, like ETL only not stodgy",
- :source {:github "compose/transporter"}
- :platforms {"linux-x86_64" {:asset "transporter-{version}-linux-amd64"}
-             "darwin-x86_64" {:asset "transporter-{version}-darwin-amd64"}
-             "darwin-aarch64" {:asset "transporter-{version}-darwin-arm64"}}}

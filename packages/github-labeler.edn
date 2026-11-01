@@ -1,9 +1,0 @@
-;; SPDX-FileCopyrightText: 2021 Shunsuke Suzuki
-;; SPDX-FileCopyrightText: The breto Authors
-;; SPDX-License-Identifier: MIT
-
-{:description "Declarative way to configure GitHub labels",
- :source {:github "babarot/github-labeler"}
- :checksum "github-labeler_{version}_checksums.txt"
- :platforms {"linux-x86_64" {:asset "github-labeler_linux_x86_64.tar.gz"}
-             "darwin-x86_64" {:asset "github-labeler_darwin_x86_64.tar.gz"}}}

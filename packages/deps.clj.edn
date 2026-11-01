@@ -1,9 +1,0 @@
-;; SPDX-FileCopyrightText: The breto Authors
-;; SPDX-License-Identifier: 0BSD
-
-{:description "A native port of the Clojure CLI that also answers to clojure, which runs Clojure on the java found through JAVA_HOME or PATH"
- :source {:github "borkdude/deps.clj"}
- :checksum "{asset}.sha256"
- :bins {"deps" "deps" "clojure" "deps"}
- :platforms {"linux-x86_64" {:asset "deps.clj-{version}-linux-amd64.zip"}
-             "darwin-x86_64" {:asset "deps.clj-{version}-macos-amd64.zip"}}}

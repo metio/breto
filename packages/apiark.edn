@@ -1,9 +1,0 @@
-;; SPDX-FileCopyrightText: 2021 Shunsuke Suzuki
-;; SPDX-FileCopyrightText: The breto Authors
-;; SPDX-License-Identifier: MIT
-
-{:description "Privacy-first API platform built with Tauri v2. No login, no cloud, ~60 MB RAM. A lightweight Postman alternative",
- :source {:github "berbicanes/apiark"}
- :platforms {"linux-x86_64" {:asset "apiark-cli-linux-x86_64"}
-             "darwin-x86_64" {:asset "apiark-cli-macos-x86_64"}
-             "darwin-aarch64" {:asset "apiark-cli-macos-arm64"}}}

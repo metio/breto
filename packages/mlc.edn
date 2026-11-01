@@ -1,9 +1,0 @@
-;; SPDX-FileCopyrightText: 2021 Shunsuke Suzuki
-;; SPDX-FileCopyrightText: The breto Authors
-;; SPDX-License-Identifier: MIT
-
-{:description "Check for broken links in markup files",
- :source {:github "becheran/mlc"}
- :platforms {"linux-x86_64" {:asset "mlc-x86_64-linux"}
-             "linux-aarch64" {:asset "mlc-aarch64-linux"}
-             "darwin-aarch64" {:asset "mlc-aarch64-apple-darwin"}}}

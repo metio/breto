@@ -1,8 +1,0 @@
-;; SPDX-FileCopyrightText: 2021 Shunsuke Suzuki
-;; SPDX-FileCopyrightText: The breto Authors
-;; SPDX-License-Identifier: MIT
-
-{:description "FastSSH is a TUI that allows you to quickly connect to your services by navigating through your SSH config",
- :source {:github "Julien-R44/fast-ssh"}
- :platforms {"linux-x86_64" {:asset "fast-ssh-{tag}-x86_64-unknown-linux-gnu.tar.gz"}
-             "darwin-x86_64" {:asset "fast-ssh-{tag}-x86_64-apple-darwin.tar.gz"}}}

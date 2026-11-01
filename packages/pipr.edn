@@ -1,7 +1,0 @@
-;; SPDX-FileCopyrightText: 2021 Shunsuke Suzuki
-;; SPDX-FileCopyrightText: The breto Authors
-;; SPDX-License-Identifier: MIT
-
-{:description "A tool to interactively write shell pipelines",
- :source {:github "elkowar/pipr"}
- :platforms {"linux-x86_64" {:asset "pipr"}}}

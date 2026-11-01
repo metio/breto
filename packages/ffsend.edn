@@ -1,7 +1,0 @@
-;; SPDX-FileCopyrightText: 2021 Shunsuke Suzuki
-;; SPDX-FileCopyrightText: The breto Authors
-;; SPDX-License-Identifier: MIT
-
-{:description "Easily and securely share files from the command line. A fully featured Firefox Send client",
- :source {:github "timvisee/ffsend"}
- :platforms {"linux-x86_64" {:asset "ffsend-{tag}-linux-x64-static"}}}

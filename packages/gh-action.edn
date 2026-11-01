@@ -1,9 +1,0 @@
-;; SPDX-FileCopyrightText: 2021 Shunsuke Suzuki
-;; SPDX-FileCopyrightText: The breto Authors
-;; SPDX-License-Identifier: MIT
-
-{:description "Binary for GitHub Actions of DeNA/unity-meta-check",
- :source {:github "DeNA/unity-meta-check"}
- :checksum "checksums.txt"
- :platforms {"linux-x86_64" {:asset "gh-action-linux-amd64"}
-             "linux-aarch64" {:asset "gh-action-linux-arm64"}}}

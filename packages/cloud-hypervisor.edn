@@ -1,8 +1,0 @@
-;; SPDX-FileCopyrightText: 2021 Shunsuke Suzuki
-;; SPDX-FileCopyrightText: The breto Authors
-;; SPDX-License-Identifier: MIT
-
-{:description "Cloud Hypervisor is an open source Virtual Machine Monitor (VMM) that runs on top of KVM hypervisor and Microsoft Hypervisor (MSHV)",
- :source {:github "cloud-hypervisor/cloud-hypervisor"}
- :platforms {"linux-x86_64" {:asset "cloud-hypervisor-static"}
-             "linux-aarch64" {:asset "cloud-hypervisor-static-aarch64"}}}

@@ -1,8 +1,0 @@
-;; SPDX-FileCopyrightText: 2021 Shunsuke Suzuki
-;; SPDX-FileCopyrightText: The breto Authors
-;; SPDX-License-Identifier: MIT
-
-{:description "A dynamic real-time view of running eBPF programs",
- :source {:github "jfernandez/bpftop"}
- :platforms {"linux-x86_64" {:asset "bpftop-x86_64-unknown-linux-gnu"}
-             "linux-aarch64" {:asset "bpftop-aarch64-unknown-linux-gnu"}}}

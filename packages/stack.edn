@@ -1,5 +1,0 @@
-;; SPDX-FileCopyrightText: The breto Authors
-;; SPDX-License-Identifier: 0BSD
-
-{:description "The Haskell build tool that manages GHC versions per project, installed with ghcup"
- :source {:ghcup "stack"}}

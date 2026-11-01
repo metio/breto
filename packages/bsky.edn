@@ -1,9 +1,0 @@
-;; SPDX-FileCopyrightText: 2021 Shunsuke Suzuki
-;; SPDX-FileCopyrightText: The breto Authors
-;; SPDX-License-Identifier: MIT
-
-{:description "A cli application for bluesky social",
- :source {:github "mattn/bsky"}
- :platforms {"linux-x86_64" {:asset "bsky-linux-{version}.zip"}
-             "darwin-x86_64" {:asset "bsky-darwin-{version}.zip"}
-             "darwin-aarch64" {:asset "bsky-darwin-{version}.zip"}}}

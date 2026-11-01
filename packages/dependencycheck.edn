@@ -1,8 +1,0 @@
-;; SPDX-FileCopyrightText: 2021 Shunsuke Suzuki
-;; SPDX-FileCopyrightText: The breto Authors
-;; SPDX-License-Identifier: MIT
-
-{:description "OWASP dependency-check is a software composition analysis utility that detects publicly disclosed vulnerabilities in application dependencies",
- :source {:github "dependency-check/DependencyCheck"}
- :bins {"dependency-check" "dependency-check/bin/dependency-check.sh"}
- :platforms {"linux-x86_64" {:asset "dependency-check-{version}-release.zip"}}}

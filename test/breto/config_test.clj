@@ -21,5 +21,14 @@
         (is (= ["/a" {:github "o/r"} "/b"] (:registries config)))
         (is (not (contains? config :extra-registries))))
       (spit file (pr-str {:extra-registries ["~/defs"]}))
-      (is (= [(str (System/getProperty "user.home") "/defs")] (:registries (config/load-config file))))
+      (is (= [{:github "metio/packages"} (str (System/getProperty "user.home") "/defs")] (:registries (config/load-config file))))
+      (finally (fs/delete file)))))
+
+(deftest metio-packages-is-the-default-registry-and-registries-replaces-it
+  (let [file (str (fs/create-temp-file {:suffix ".edn"}))]
+    (try
+      (spit file "{}")
+      (is (= [{:github "metio/packages"}] (:registries (config/load-config file))))
+      (spit file (pr-str {:registries ["/internal"]}))
+      (is (= ["/internal"] (:registries (config/load-config file))))
       (finally (fs/delete file)))))

@@ -1,5 +1,0 @@
-;; SPDX-FileCopyrightText: The breto Authors
-;; SPDX-License-Identifier: 0BSD
-
-{:description "A linter for YAML files"
- :source {:pypi "yamllint"}}

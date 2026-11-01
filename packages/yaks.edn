@@ -1,9 +1,0 @@
-;; SPDX-FileCopyrightText: 2021 Shunsuke Suzuki
-;; SPDX-FileCopyrightText: The breto Authors
-;; SPDX-License-Identifier: MIT
-
-{:description "YAKS is a platform to enable Cloud Native BDD testing on Kubernetes",
- :source {:github "citrusframework/yaks"}
- :platforms {"linux-x86_64" {:asset "yaks-{version}-linux-64bit.tar.gz"}
-             "darwin-x86_64" {:asset "yaks-{version}-mac-64bit.tar.gz"}
-             "darwin-aarch64" {:asset "yaks-{version}-mac-arm64bit.tar.gz"}}}

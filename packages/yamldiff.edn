@@ -1,9 +1,0 @@
-;; SPDX-FileCopyrightText: 2021 Shunsuke Suzuki
-;; SPDX-FileCopyrightText: The breto Authors
-;; SPDX-License-Identifier: MIT
-
-{:description "A CLI tool to diff two YAML files",
- :source {:github "sahilm/yamldiff"}
- :tag-prefix ""
- :platforms {"linux-x86_64" {:asset "yamldiff-v{tag}-linux-amd64"}
-             "darwin-x86_64" {:asset "yamldiff-v{tag}-darwin-amd64"}}}

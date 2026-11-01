@@ -1,9 +1,0 @@
-;; SPDX-FileCopyrightText: 2021 Shunsuke Suzuki
-;; SPDX-FileCopyrightText: The breto Authors
-;; SPDX-License-Identifier: MIT
-
-{:description "CLI tool to check file paths are matched to the condition",
- :source {:github "suzuki-shunsuke/matchfile"}
- :checksum "matchfile_{version}_checksums.txt"
- :platforms {"linux-x86_64" {:asset "matchfile_{version}_linux_amd64.tar.gz"}
-             "darwin-x86_64" {:asset "matchfile_{version}_darwin_amd64.tar.gz"}}}

@@ -1,8 +1,0 @@
-;; SPDX-FileCopyrightText: 2021 Shunsuke Suzuki
-;; SPDX-FileCopyrightText: The breto Authors
-;; SPDX-License-Identifier: MIT
-
-{:description "Creates CycloneDX Bill of Materials (BOM) from source code and container images",
- :source {:github "cdxgen/cdxgen"}
- :checksum "{asset}.sha256"
- :platforms {"linux-x86_64" {:asset "cdxgen-linux-amd64-musl"}}}

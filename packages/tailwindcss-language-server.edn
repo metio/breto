@@ -1,6 +1,0 @@
-;; SPDX-FileCopyrightText: The breto Authors
-;; SPDX-License-Identifier: 0BSD
-
-{:description "Language server for Tailwind CSS"
- :source {:npm "@tailwindcss/language-server"}
- :bins {"tailwindcss-language-server" "node_modules/.bin/tailwindcss-language-server"}}

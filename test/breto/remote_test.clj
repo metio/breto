@@ -112,3 +112,26 @@
   (is (str/includes? (:out (breto! {} ["doctor"] (atom []))) "A published registry is not installed"))
   (breto! {} ["update"] (atom []))
   (is (str/includes? (:out (breto! {} ["doctor"] (atom []))) "A published registry is installed")))
+
+(deftest update-installs-cosign-before-a-registry-when-none-is-found
+  (let [defs (s/path "defs")
+        cosign-base "https://github.com/acme/cosign/releases/download/v3.0.0/"
+        binary (s/file! "cosign" "#!/bin/sh\n")
+        {:keys [files texts]} (world)
+        calls (atom [])
+        _ (fs/create-dirs defs)
+        _ (spit (str (fs/path defs "cosign.edn"))
+                (pr-str (s/everywhere {:source {:github "acme/cosign"} :asset "cosign" :bins {"cosign" "cosign"}})))
+        {:keys [code out]} (s/breto! {:registries [(str defs) entry] :packages ["@lint"]} ["update"]
+                                     {:io (assoc (s/fake-io (assoc files (str cosign-base "cosign") binary)
+                                                            (assoc texts
+                                                                   "https://github.com/acme/cosign/releases/latest" "{\"tag_name\":\"v3.0.0\"}"
+                                                                   "https://api.github.com/repos/acme/cosign/releases/tags/v3.0.0"
+                                                                   (json/generate-string {:tag_name "v3.0.0" :assets [{:name "cosign" :digest (str "sha256:" (s/sha256 binary))}]}))
+                                                            (atom []))
+                                                 :run (fn [command] (swap! calls conj (vec command)) {:exit 0 :out "" :err "Verified OK"})
+                                                 :which (constantly nil))})]
+    (is (= 0 code) out)
+    (is (= "3.0.0" (store/current-version {:store (s/path "store")} "cosign")))
+    (is (= "2026.1.1" (store/current-version {:store (s/path "store")} "registry-acme-toolchains")))
+    (is (some #(and (= "verify-blob" (second %)) (str/ends-with? (first %) "/cosign")) @calls))))

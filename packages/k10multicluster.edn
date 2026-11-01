@@ -1,9 +1,0 @@
-;; SPDX-FileCopyrightText: 2021 Shunsuke Suzuki
-;; SPDX-FileCopyrightText: The breto Authors
-;; SPDX-License-Identifier: MIT
-
-{:description "Used to distribute external tools",
- :source {:github "kastenhq/external-tools"}
- :tag-prefix ""
- :checksum "checksums.txt"
- :platforms {"linux-x86_64" {:asset "k10multicluster_{tag}_linux_amd64.tar.gz"}}}

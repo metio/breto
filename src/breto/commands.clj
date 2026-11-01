@@ -534,12 +534,14 @@
 
 (defn install-registries
   "Installs the releases of the published registries `names`, under sync the
-  version the lock file lists, else the pinned or latest one. Returns the
-  install results."
-  [{:keys [config opts registry] :as ctx} command names]
+  version the lock file lists, else the pinned or latest one. Their checksums
+  are signed, so on a host without cosign the built-in cosign comes first.
+  Returns the install results."
+  [{:keys [config opts registry io] :as ctx} command names]
   (let [path (:lockfile config)
-        entries (when (and (= "sync" command) path (fs/exists? path)) (:entries (lockfile/read-lock path)))]
-    (install-results ctx command names
+        entries (when (and (= "sync" command) path (fs/exists? path)) (:entries (lockfile/read-lock path)))
+        cosign? (and (seq names) (get registry "cosign") (nil? (signature/locate config (which io))))]
+    (install-results ctx command (cond->> (vec names) cosign? (into ["cosign"]))
                      (fn [name _]
                        (if-let [entry (get entries name)]
                          (let [{:keys [sha256 sum]} (lockfile/hashes entry (get registry name))]

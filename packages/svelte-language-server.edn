@@ -1,6 +1,0 @@
-;; SPDX-FileCopyrightText: The breto Authors
-;; SPDX-License-Identifier: 0BSD
-
-{:description "Language server for Svelte"
- :source {:npm "svelte-language-server"}
- :bins {"svelteserver" "node_modules/.bin/svelteserver"}}

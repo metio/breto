@@ -1,9 +1,0 @@
-;; SPDX-FileCopyrightText: 2021 Shunsuke Suzuki
-;; SPDX-FileCopyrightText: The breto Authors
-;; SPDX-License-Identifier: MIT
-
-{:description "Trino, the distributed SQL query engine for big data - Command Line Interface",
- :source {:github "trinodb/trino"}
- :tag-prefix ""
- :bins {"trino" "{asset}"}
- :platforms {"linux-x86_64" {:asset "trino-cli-{tag}"}}}

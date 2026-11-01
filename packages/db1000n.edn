@@ -1,7 +1,0 @@
-;; SPDX-FileCopyrightText: 2021 Shunsuke Suzuki
-;; SPDX-FileCopyrightText: The breto Authors
-;; SPDX-License-Identifier: MIT
-
-{:source {:github "Arriven/db1000n"}
- :tag-prefix ""
- :platforms {"linux-x86_64" {:asset "db1000n-{tag}-linux-amd64.tar.gz"}}}

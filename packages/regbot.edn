@@ -1,7 +1,0 @@
-;; SPDX-FileCopyrightText: 2021 Shunsuke Suzuki
-;; SPDX-FileCopyrightText: The breto Authors
-;; SPDX-License-Identifier: MIT
-
-{:description "A scripting tool on top of the regclient (Docker and OCI Registry Client) API",
- :source {:github "regclient/regclient"}
- :platforms {"linux-x86_64" {:asset "regbot-linux-amd64"}}}

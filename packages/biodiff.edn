@@ -1,9 +1,0 @@
-;; SPDX-FileCopyrightText: 2021 Shunsuke Suzuki
-;; SPDX-FileCopyrightText: The breto Authors
-;; SPDX-License-Identifier: MIT
-
-{:description "Hex diff viewer using alignment algorithms from biology",
- :source {:github "8051Enthusiast/biodiff"}
- :platforms {"linux-x86_64" {:asset "biodiff-linux-{version}.zip"}
-             "darwin-x86_64" {:asset "biodiff-macos-{version}.zip"}
-             "darwin-aarch64" {:asset "biodiff-macos-{version}.zip"}}}

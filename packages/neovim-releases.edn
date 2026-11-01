@@ -1,8 +1,0 @@
-;; SPDX-FileCopyrightText: 2021 Shunsuke Suzuki
-;; SPDX-FileCopyrightText: The breto Authors
-;; SPDX-License-Identifier: MIT
-
-{:description "Unsupported Nvim releases",
- :source {:github "neovim/neovim-releases"}
- :platforms {"linux-x86_64" {:asset "nvim-linux-x86_64.tar.gz" :bins {"nvim" "nvim-linux-x86_64/bin/nvim"}}
-             "linux-aarch64" {:asset "nvim-linux-arm64.tar.gz" :bins {"nvim" "nvim-linux-arm64/bin/nvim"}}}}

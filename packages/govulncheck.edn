@@ -1,5 +1,0 @@
-;; SPDX-FileCopyrightText: The breto Authors
-;; SPDX-License-Identifier: 0BSD
-
-{:description "Reports the known vulnerabilities that affect Go code"
- :source {:go "golang.org/x/vuln" :package "golang.org/x/vuln/cmd/govulncheck"}}

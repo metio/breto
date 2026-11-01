@@ -1,5 +1,0 @@
-;; SPDX-FileCopyrightText: The breto Authors
-;; SPDX-License-Identifier: 0BSD
-
-{:description "Language server for Vue single-file components"
- :source {:npm "@vue/language-server"}}

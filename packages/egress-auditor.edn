@@ -1,9 +1,0 @@
-;; SPDX-FileCopyrightText: 2021 Shunsuke Suzuki
-;; SPDX-FileCopyrightText: The breto Authors
-;; SPDX-License-Identifier: MIT
-
-{:description "Audit your egress connections and finally populate this OUTPUT chain",
- :source {:github "devops-works/egress-auditor"}
- :checksum "checksums.txt"
- :platforms {"linux-x86_64" {:asset "egress-auditor_linux_amd64"}
-             "linux-aarch64" {:asset "egress-auditor_linux_arm64"}}}

@@ -1,9 +1,0 @@
-;; SPDX-FileCopyrightText: 2021 Shunsuke Suzuki
-;; SPDX-FileCopyrightText: The breto Authors
-;; SPDX-License-Identifier: MIT
-
-{:description "jless is a command-line JSON viewer designed for reading, exploring, and searching through JSON data",
- :source {:github "PaulJuliusMartinez/jless"}
- :platforms {"linux-x86_64" {:asset "jless-{tag}-x86_64-unknown-linux-gnu.zip"}
-             "darwin-x86_64" {:asset "jless-{tag}-x86_64-apple-darwin.zip"}
-             "darwin-aarch64" {:asset "jless-{tag}-aarch64-apple-darwin.zip"}}}

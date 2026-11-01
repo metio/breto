@@ -26,7 +26,7 @@ jobs:
       - id: gate
         uses: metio/ci/needs-release@1bcfd5d852697876af6c191fa597cf5aab22cb62 # 2026.10.31124002
         with:
-          paths: src packages shell bb.edn breto action.yml .breto.edn README.md
+          paths: src builtin shell bb.edn breto action.yml .breto.edn README.md
       - uses: metio/ci/breto@f821815a1c92cfcba086d6bec4ede7a87deec697 # 2026.10.31191131
         if: steps.gate.outputs.needed == 'true'
         with:

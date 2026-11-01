@@ -1,9 +1,0 @@
-;; SPDX-FileCopyrightText: 2021 Shunsuke Suzuki
-;; SPDX-FileCopyrightText: The breto Authors
-;; SPDX-License-Identifier: MIT
-
-{:description "SQL language server written in Go",
- :source {:github "sqls-server/sqls"}
- :platforms {"linux-x86_64" {:asset "sqls-linux-{version}.zip"}
-             "darwin-x86_64" {:asset "sqls-darwin-{version}.zip"}
-             "darwin-aarch64" {:asset "sqls-darwin-{version}.zip"}}}

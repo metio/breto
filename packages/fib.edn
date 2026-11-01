@@ -1,7 +1,0 @@
-;; SPDX-FileCopyrightText: 2021 Shunsuke Suzuki
-;; SPDX-FileCopyrightText: The breto Authors
-;; SPDX-License-Identifier: MIT
-
-{:description "A Fibonacci CLI",
- :source {:github "so-dang-cool/fib"}
- :platforms {"linux-x86_64" {:asset "fib-x86_64-linux.tgz"}}}

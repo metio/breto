@@ -1,8 +1,0 @@
-;; SPDX-FileCopyrightText: 2021 Shunsuke Suzuki
-;; SPDX-FileCopyrightText: The breto Authors
-;; SPDX-License-Identifier: MIT
-
-{:description "Command line license text generator",
- :source {:github "nishanths/license"}
- :checksum "SHA256SUMS.txt"
- :platforms {"linux-x86_64" {:asset "license-{tag}-linux-amd64"}}}

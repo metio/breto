@@ -1,9 +1,0 @@
-;; SPDX-FileCopyrightText: 2021 Shunsuke Suzuki
-;; SPDX-FileCopyrightText: The breto Authors
-;; SPDX-License-Identifier: MIT
-
-{:description "Automated upstream mirror for bpftool stand-alone build",
- :source {:github "libbpf/bpftool"}
- :checksum "{asset}.sha256sum"
- :platforms {"linux-x86_64" {:asset "bpftool-{tag}-amd64.tar.gz"}
-             "linux-aarch64" {:asset "bpftool-{tag}-arm64.tar.gz"}}}

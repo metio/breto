@@ -1,8 +1,0 @@
-;; SPDX-FileCopyrightText: 2021 Shunsuke Suzuki
-;; SPDX-FileCopyrightText: The breto Authors
-;; SPDX-License-Identifier: MIT
-
-{:description "SMTP Performance and Load Test Tool",
- :source {:github "c1982/bomberman"}
- :platforms {"linux-x86_64" {:asset "bomberman_linux_amd64"}
-             "darwin-x86_64" {:asset "bomberman_darwin_amd64"}}}

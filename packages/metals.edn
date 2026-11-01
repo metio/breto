@@ -1,5 +1,0 @@
-;; SPDX-FileCopyrightText: The breto Authors
-;; SPDX-License-Identifier: 0BSD
-
-{:description "The Scala language server, built into a standalone launcher with coursier; it runs on the java of JAVA_HOME, else the one on PATH"
- :source {:coursier "org.scalameta:metals_2.13"}}

@@ -6,14 +6,14 @@
  {breto {:doc "Runs the breto command line"
          :requires ([breto.main :as main])
          :task (apply main/-main *command-line-args*)}
-  build {:doc "Builds target/breto.jar, an uberjar of breto with the package definitions and the shell hook built in"
+  build {:doc "Builds target/breto.jar, an uberjar of breto with the definitions of cosign and breto and the shell hook built in"
          :requires ([babashka.fs :as fs] [babashka.process :as process])
          :task (let [registry (fs/path "target" "resources" "breto" "registry")
-                     files (sort (map (comp str fs/file-name) (fs/glob "packages" "*.edn")))]
+                     files (sort (map (comp str fs/file-name) (fs/glob "builtin" "*.edn")))]
                  (fs/delete-tree "target")
                  (fs/create-dirs registry)
                  (doseq [file files]
-                   (fs/copy (fs/path "packages" file) (fs/path registry file)))
+                   (fs/copy (fs/path "builtin" file) (fs/path registry file)))
                  (spit (str (fs/path registry "index.edn")) (pr-str (vec files)))
                  (process/shell "bb" "--classpath" "src:shell:target/resources" "uberjar" "target/breto.jar" "-m" "breto.cli"))}
   test {:doc "Runs all unit tests"

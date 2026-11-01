@@ -1,8 +1,0 @@
-;; SPDX-FileCopyrightText: The breto Authors
-;; SPDX-License-Identifier: 0BSD
-
-{:description "A new way to see and navigate directory trees"
- :source {:github "Canop/broot"}
- :man ["broot.1"]
- :completions {:bash "completion/broot.bash"}
- :platforms {"linux-x86_64" {:asset "broot_{version}.zip" :bins {"broot" "x86_64-unknown-linux-musl/broot"}}}}

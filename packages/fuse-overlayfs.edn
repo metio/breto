@@ -1,9 +1,0 @@
-;; SPDX-FileCopyrightText: 2021 Shunsuke Suzuki
-;; SPDX-FileCopyrightText: The breto Authors
-;; SPDX-License-Identifier: MIT
-
-{:description "FUSE implementation for overlayfs",
- :source {:github "containers/fuse-overlayfs"}
- :checksum "SHA256SUMS"
- :platforms {"linux-x86_64" {:asset "fuse-overlayfs-x86_64"}
-             "linux-aarch64" {:asset "fuse-overlayfs-aarch64"}}}

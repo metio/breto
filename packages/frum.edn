@@ -1,8 +1,0 @@
-;; SPDX-FileCopyrightText: 2021 Shunsuke Suzuki
-;; SPDX-FileCopyrightText: The breto Authors
-;; SPDX-License-Identifier: MIT
-
-{:description "A little bit fast and modern Ruby version manager written in Rust",
- :source {:github "TaKO8Ki/frum"}
- :platforms {"linux-x86_64" {:asset "frum-{tag}-x86_64-unknown-linux-musl.tar.gz" :bins {"frum" "frum-{tag}-x86_64-unknown-linux-musl/frum"}}
-             "darwin-x86_64" {:asset "frum-{tag}-x86_64-apple-darwin.tar.gz" :bins {"frum" "frum-{tag}-x86_64-apple-darwin/frum"}}}}

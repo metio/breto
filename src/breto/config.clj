@@ -32,7 +32,7 @@
 (defn defaults []
   {:store (str (fs/path (env-dir "XDG_DATA_HOME" ".local/share") "breto" "installations"))
    :bin-dir (default-bin-dir (System/getProperty "user.home") (System/getenv "PATH"))
-   :registries []
+   :registries [{:github "metio/packages"}]
    :extra-registries []
    :packages []
    :pins {}

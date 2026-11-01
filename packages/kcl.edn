@@ -1,8 +1,0 @@
-;; SPDX-FileCopyrightText: 2021 Shunsuke Suzuki
-;; SPDX-FileCopyrightText: The breto Authors
-;; SPDX-License-Identifier: MIT
-
-{:description "KCL Programming Language (CNCF Sandbox Project). https://kcl-lang.io",
- :source {:github "kcl-lang/kcl"}
- :bins {"kcl-language-server" "kclvm/bin/kcl-language-server", "kclvm_cli" "kclvm/bin/kclvm_cli"}
- :platforms {"linux-x86_64" {:asset "kclvm-{tag}-linux-amd64.tar.gz"}}}

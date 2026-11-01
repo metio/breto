@@ -1,9 +1,0 @@
-;; SPDX-FileCopyrightText: 2021 Shunsuke Suzuki
-;; SPDX-FileCopyrightText: The breto Authors
-;; SPDX-License-Identifier: MIT
-
-{:description "CLI client for Terraform enterprise",
- :source {:github "rgreinho/tfe-cli"}
- :tag-prefix ""
- :platforms {"linux-x86_64" {:asset "tfe-cli-{tag}-linux-amd64"}
-             "darwin-x86_64" {:asset "tfe-cli-{tag}-darwin-amd64"}}}

@@ -1,8 +1,0 @@
-;; SPDX-FileCopyrightText: 2021 Shunsuke Suzuki
-;; SPDX-FileCopyrightText: The breto Authors
-;; SPDX-License-Identifier: MIT
-
-{:description "mold: A Modern Linker",
- :source {:github "rui314/mold"}
- :platforms {"linux-x86_64" {:asset "mold-{version}-x86_64-linux.tar.gz" :bins {"ld.mold" "mold-{version}-x86_64-linux/bin/mold", "ld64.mold" "mold-{version}-x86_64-linux/bin/mold", "mold" "mold-{version}-x86_64-linux/bin/mold"}}
-             "linux-aarch64" {:asset "mold-{version}-aarch64-linux.tar.gz" :bins {"ld.mold" "mold-{version}-aarch64-linux/bin/mold" "ld64.mold" "mold-{version}-aarch64-linux/bin/mold" "mold" "mold-{version}-aarch64-linux/bin/mold"}}}}

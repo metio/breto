@@ -1,9 +1,0 @@
-;; SPDX-FileCopyrightText: 2021 Shunsuke Suzuki
-;; SPDX-FileCopyrightText: The breto Authors
-;; SPDX-License-Identifier: MIT
-
-{:description "umoci modifies Open Container images",
- :source {:github "opencontainers/umoci"}
- :checksum "umoci.sha256sum"
- :platforms {"linux-x86_64" {:asset "umoci.linux.amd64"}
-             "linux-aarch64" {:asset "umoci.linux.arm64"}}}

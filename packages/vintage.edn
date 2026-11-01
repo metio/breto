@@ -1,9 +1,0 @@
-;; SPDX-FileCopyrightText: 2021 Shunsuke Suzuki
-;; SPDX-FileCopyrightText: The breto Authors
-;; SPDX-License-Identifier: MIT
-
-{:description "VCL Transpiler for Edge Runtime",
- :source {:github "ysugimoto/vintage"}
- :platforms {"linux-x86_64" {:asset "vintage-linux-amd64.tar.gz"}
-             "darwin-x86_64" {:asset "vintage-darwin-amd64.tar.gz"}
-             "darwin-aarch64" {:asset "vintage-darwin-arm64.tar.gz"}}}

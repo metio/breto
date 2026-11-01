@@ -1,9 +1,0 @@
-;; SPDX-FileCopyrightText: 2021 Shunsuke Suzuki
-;; SPDX-FileCopyrightText: The breto Authors
-;; SPDX-License-Identifier: MIT
-
-{:description "dfg - Generates dockerfiles based on various input channels",
- :source {:github "ozankasikci/dockerfile-generator"}
- :bins {"dfg" "{asset}"}
- :platforms {"linux-x86_64" {:asset "dfg_{tag}_linux_amd64"}
-             "darwin-x86_64" {:asset "dfg_{tag}_darwin_amd64"}}}

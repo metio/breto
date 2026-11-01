@@ -1,9 +1,0 @@
-;; SPDX-FileCopyrightText: 2021 Shunsuke Suzuki
-;; SPDX-FileCopyrightText: The breto Authors
-;; SPDX-License-Identifier: MIT
-
-{:description "Reformats Java source code to comply with Google Java Style",
- :source {:github "google/google-java-format"}
- :platforms {"linux-x86_64" {:asset "google-java-format_linux-x86-64"}
-             "linux-aarch64" {:asset "google-java-format_linux-arm64"}
-             "darwin-aarch64" {:asset "google-java-format_darwin-arm64"}}}

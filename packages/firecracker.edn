@@ -1,9 +1,0 @@
-;; SPDX-FileCopyrightText: 2021 Shunsuke Suzuki
-;; SPDX-FileCopyrightText: The breto Authors
-;; SPDX-License-Identifier: MIT
-
-{:description "Secure and fast microVMs for serverless computing",
- :source {:github "firecracker-microvm/firecracker"}
- :checksum "{asset}.sha256.txt"
- :platforms {"linux-x86_64" {:asset "firecracker-{tag}-x86_64.tgz" :bins {"firecracker" "release-{tag}-x86_64/firecracker-{tag}-x86_64", "jailer" "release-{tag}-x86_64/jailer-{tag}-x86_64", "rebase-snap" "release-{tag}-x86_64/rebase-snap-{tag}-x86_64", "seccompiler-bin" "release-{tag}-x86_64/seccompiler-bin-{tag}-x86_64"}}
-             "linux-aarch64" {:asset "firecracker-{tag}-aarch64.tgz" :bins {"firecracker" "release-{tag}-aarch64/firecracker-{tag}-aarch64" "jailer" "release-{tag}-aarch64/jailer-{tag}-aarch64" "rebase-snap" "release-{tag}-aarch64/rebase-snap-{tag}-aarch64" "seccompiler-bin" "release-{tag}-aarch64/seccompiler-bin-{tag}-aarch64"}}}}

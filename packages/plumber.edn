@@ -1,9 +1,0 @@
-;; SPDX-FileCopyrightText: 2021 Shunsuke Suzuki
-;; SPDX-FileCopyrightText: The breto Authors
-;; SPDX-License-Identifier: MIT
-
-{:description "A swiss army knife CLI tool for interacting with Kafka, RabbitMQ and other messaging systems",
- :source {:github "streamdal/plumber"}
- :platforms {"linux-x86_64" {:asset "plumber-linux"}
-             "darwin-x86_64" {:asset "plumber-darwin"}
-             "darwin-aarch64" {:asset "plumber-darwin-arm64"}}}

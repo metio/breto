@@ -1,9 +1,0 @@
-;; SPDX-FileCopyrightText: 2021 Shunsuke Suzuki
-;; SPDX-FileCopyrightText: The breto Authors
-;; SPDX-License-Identifier: MIT
-
-{:description "contaiNERD CTL - Docker-compatible CLI for containerd, with support for Compose, Rootless, eStargz, OCIcrypt, IPFS,",
- :source {:github "containerd/nerdctl"}
- :checksum "SHA256SUMS"
- :platforms {"linux-x86_64" {:asset "nerdctl-{version}-linux-amd64.tar.gz"}
-             "linux-aarch64" {:asset "nerdctl-{version}-linux-arm64.tar.gz"}}}

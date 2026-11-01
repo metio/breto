@@ -1,8 +1,0 @@
-;; SPDX-FileCopyrightText: 2021 Shunsuke Suzuki
-;; SPDX-FileCopyrightText: The breto Authors
-;; SPDX-License-Identifier: MIT
-
-{:description "Wrote a silly program to select a random winner from my team",
- :source {:github "jamietsao/random-winner"}
- :platforms {"linux-x86_64" {:asset "random-winner-{tag}-linux-amd64.zip"}
-             "darwin-x86_64" {:asset "random-winner-{tag}-darwin-amd64.zip"}}}

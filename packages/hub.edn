@@ -1,9 +1,0 @@
-;; SPDX-FileCopyrightText: 2021 Shunsuke Suzuki
-;; SPDX-FileCopyrightText: The breto Authors
-;; SPDX-License-Identifier: MIT
-
-{:description "A command-line tool that makes git easier to use with GitHub",
- :source {:github "mislav/hub"}
- :platforms {"linux-x86_64" {:asset "hub-linux-amd64-{version}.tgz" :bins {"hub" "hub-linux-amd64-{version}/bin/hub"}}
-             "linux-aarch64" {:asset "hub-linux-arm64-{version}.tgz" :bins {"hub" "hub-linux-arm64-{version}/bin/hub"}}
-             "darwin-x86_64" {:asset "hub-darwin-amd64-{version}.tgz" :bins {"hub" "hub-darwin-amd64-{version}/bin/hub"}}}}

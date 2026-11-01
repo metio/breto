@@ -1,5 +1,0 @@
-;; SPDX-FileCopyrightText: The breto Authors
-;; SPDX-License-Identifier: 0BSD
-
-{:description "A command line interface for markdownlint, configured by .markdownlint-cli2 files or the .markdownlint files it shares with markdownlint-cli"
- :source {:npm "markdownlint-cli2"}}

@@ -1,8 +1,0 @@
-;; SPDX-FileCopyrightText: 2021 Shunsuke Suzuki
-;; SPDX-FileCopyrightText: The breto Authors
-;; SPDX-License-Identifier: MIT
-
-{:description "KTX (Khronos Texture) Library and Tools",
- :source {:github "KhronosGroup/KTX-Software"}
- :platforms {"linux-x86_64" {:asset "KTX-Software-{version}-Linux-x86_64.tar.bz2" :bins {"ktx" "KTX-Software-{version}-Linux-x86_64/bin/ktx", "ktx2check" "KTX-Software-{version}-Linux-x86_64/bin/ktx2check", "ktx2ktx2" "KTX-Software-{version}-Linux-x86_64/bin/ktx2ktx2", "ktxinfo" "KTX-Software-{version}-Linux-x86_64/bin/ktxinfo", "ktxsc" "KTX-Software-{version}-Linux-x86_64/bin/ktxsc", "toktx" "KTX-Software-{version}-Linux-x86_64/bin/toktx"}}
-             "linux-aarch64" {:asset "KTX-Software-{version}-Linux-arm64.tar.bz2" :bins {"ktx" "KTX-Software-{version}-Linux-arm64/bin/ktx" "ktx2check" "KTX-Software-{version}-Linux-arm64/bin/ktx2check" "ktx2ktx2" "KTX-Software-{version}-Linux-arm64/bin/ktx2ktx2" "ktxinfo" "KTX-Software-{version}-Linux-arm64/bin/ktxinfo" "ktxsc" "KTX-Software-{version}-Linux-arm64/bin/ktxsc" "toktx" "KTX-Software-{version}-Linux-arm64/bin/toktx"}}}}

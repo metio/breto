@@ -1,7 +1,0 @@
-;; SPDX-FileCopyrightText: 2021 Shunsuke Suzuki
-;; SPDX-FileCopyrightText: The breto Authors
-;; SPDX-License-Identifier: MIT
-
-{:description "Standalone, daemon-less, unprivileged Dockerfile and OCI compatible container image builder",
- :source {:github "genuinetools/img"}
- :platforms {"linux-x86_64" {:asset "img-linux-amd64"}}}

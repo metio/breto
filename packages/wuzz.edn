@@ -1,8 +1,0 @@
-;; SPDX-FileCopyrightText: 2021 Shunsuke Suzuki
-;; SPDX-FileCopyrightText: The breto Authors
-;; SPDX-License-Identifier: MIT
-
-{:description "Interactive cli tool for HTTP inspection",
- :source {:github "asciimoo/wuzz"}
- :platforms {"linux-x86_64" {:asset "wuzz_linux_amd64"}
-             "darwin-x86_64" {:asset "wuzz_darwin_amd64"}}}

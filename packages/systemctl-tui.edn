@@ -1,8 +1,0 @@
-;; SPDX-FileCopyrightText: 2021 Shunsuke Suzuki
-;; SPDX-FileCopyrightText: The breto Authors
-;; SPDX-License-Identifier: MIT
-
-{:description "A fast, simple TUI for interacting with systemd services and their logs",
- :source {:github "rgwood/systemctl-tui"}
- :platforms {"linux-x86_64" {:asset "systemctl-tui-x86_64-unknown-linux-musl.tar.gz"}
-             "linux-aarch64" {:asset "systemctl-tui-aarch64-unknown-linux-musl.tar.gz"}}}

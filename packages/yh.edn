@@ -1,8 +1,0 @@
-;; SPDX-FileCopyrightText: 2021 Shunsuke Suzuki
-;; SPDX-FileCopyrightText: The breto Authors
-;; SPDX-License-Identifier: MIT
-
-{:description "YAML syntax highlighter to bring colours to kubectl output",
- :source {:github "andreazorzetto/yh"}
- :platforms {"linux-x86_64" {:asset "yh-linux-amd64.zip"}
-             "darwin-x86_64" {:asset "yh-osx-amd64.zip"}}}

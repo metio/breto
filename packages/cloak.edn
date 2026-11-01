@@ -1,9 +1,0 @@
-;; SPDX-FileCopyrightText: 2021 Shunsuke Suzuki
-;; SPDX-FileCopyrightText: The breto Authors
-;; SPDX-License-Identifier: MIT
-
-{:description "Secrets automation for developers",
- :source {:github "purton-tech/cloak"}
- :platforms {"linux-x86_64" {:asset "cloak-linux"}
-             "darwin-x86_64" {:asset "cloak-macos"}
-             "darwin-aarch64" {:asset "cloak-macos"}}}

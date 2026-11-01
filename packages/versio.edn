@@ -1,8 +1,0 @@
-;; SPDX-FileCopyrightText: 2021 Shunsuke Suzuki
-;; SPDX-FileCopyrightText: The breto Authors
-;; SPDX-License-Identifier: MIT
-
-{:description "A version number manager",
- :source {:github "chaaz/versio"}
- :platforms {"linux-x86_64" {:asset "versio__x86_64-unknown-linux-gnu"}
-             "darwin-x86_64" {:asset "versio__x86_64-apple-darwin"}}}

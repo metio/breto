@@ -1,9 +1,0 @@
-;; SPDX-FileCopyrightText: 2021 Shunsuke Suzuki
-;; SPDX-FileCopyrightText: The breto Authors
-;; SPDX-License-Identifier: MIT
-
-{:description "kubefedctl controls a Kubernetes Cluster Federation",
- :source {:github "kubernetes-retired/kubefed"}
- :bins {"kubefedctl" "kubefedctl"}
- :platforms {"linux-x86_64" {:asset "kubefedctl-{version}-linux-amd64.tgz"}
-             "darwin-x86_64" {:asset "kubefedctl-{version}-darwin-amd64.tgz"}}}

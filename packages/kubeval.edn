@@ -1,9 +1,0 @@
-;; SPDX-FileCopyrightText: 2021 Shunsuke Suzuki
-;; SPDX-FileCopyrightText: The breto Authors
-;; SPDX-License-Identifier: MIT
-
-{:description "Validate your Kubernetes configuration files, supports multiple Kubernetes versions",
- :source {:github "instrumenta/kubeval"}
- :checksum "checksums.txt"
- :platforms {"linux-x86_64" {:asset "kubeval-linux-amd64.tar.gz"}
-             "darwin-x86_64" {:asset "kubeval-darwin-amd64.tar.gz"}}}

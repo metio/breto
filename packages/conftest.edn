@@ -1,9 +1,0 @@
-;; SPDX-FileCopyrightText: The breto Authors
-;; SPDX-License-Identifier: 0BSD
-
-{:description "Write tests against structured configuration data using the Open Policy Agent Rego query language",
- :source {:github "open-policy-agent/conftest"},
- :platforms {"linux-x86_64" {:asset "conftest_{version}_Linux_x86_64.tar.gz"}
-             "linux-aarch64" {:asset "conftest_{version}_Linux_arm64.tar.gz"}
-             "darwin-x86_64" {:asset "conftest_{version}_Darwin_x86_64.tar.gz"}
-             "darwin-aarch64" {:asset "conftest_{version}_Darwin_arm64.tar.gz"}}}

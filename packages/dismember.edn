@@ -1,9 +1,0 @@
-;; SPDX-FileCopyrightText: 2021 Shunsuke Suzuki
-;; SPDX-FileCopyrightText: The breto Authors
-;; SPDX-License-Identifier: MIT
-
-{:description "Scan memory for secrets and more. Maybe eventually a full /proc toolkit",
- :source {:github "liamg/dismember"}
- :checksum "dismember_{version}_checksums.txt"
- :platforms {"linux-x86_64" {:asset "dismember-linux-amd64"}
-             "linux-aarch64" {:asset "dismember-linux-arm64"}}}

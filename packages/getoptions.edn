@@ -1,7 +1,0 @@
-;; SPDX-FileCopyrightText: 2021 Shunsuke Suzuki
-;; SPDX-FileCopyrightText: The breto Authors
-;; SPDX-License-Identifier: MIT
-
-{:description "An elegant option/argument parser for shell scripts (full support for bash and all POSIX shells)",
- :source {:github "ko1nksm/getoptions"}
- :platforms {"linux-x86_64" {:asset "getoptions"}}}

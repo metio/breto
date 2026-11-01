@@ -1,5 +1,0 @@
-;; SPDX-FileCopyrightText: The breto Authors
-;; SPDX-License-Identifier: 0BSD
-
-{:description "Suggests newer Go idioms for existing code"
- :source {:go "golang.org/x/tools" :package "golang.org/x/tools/go/analysis/passes/modernize/cmd/modernize"}}

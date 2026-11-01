@@ -1,9 +1,0 @@
-;; SPDX-FileCopyrightText: 2021 Shunsuke Suzuki
-;; SPDX-FileCopyrightText: The breto Authors
-;; SPDX-License-Identifier: MIT
-
-{:description "A tool to enforce Swift style and conventions",
- :source {:github "realm/SwiftLint"}
- :tag-prefix ""
- :platforms {"linux-x86_64" {:asset "swiftlint_linux_amd64.zip"}
-             "linux-aarch64" {:asset "swiftlint_linux_arm64.zip"}}}

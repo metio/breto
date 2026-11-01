@@ -1,9 +1,0 @@
-;; SPDX-FileCopyrightText: 2021 Shunsuke Suzuki
-;; SPDX-FileCopyrightText: The breto Authors
-;; SPDX-License-Identifier: MIT
-
-{:description "Jump helps you navigate faster by learning your habits",
- :source {:github "gsamokovarov/jump"}
- :platforms {"linux-x86_64" {:asset "jump_linux_amd64_binary"}
-             "darwin-x86_64" {:asset "jump_osx"}
-             "darwin-aarch64" {:asset "jump_osx_arm64"}}}

@@ -1,5 +1,0 @@
-;; SPDX-FileCopyrightText: The breto Authors
-;; SPDX-License-Identifier: 0BSD
-
-{:description "Checks and adds copyright and licensing information following the REUSE specification"
- :source {:pypi "reuse"}}

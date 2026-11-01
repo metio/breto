@@ -1,6 +1,0 @@
-;; SPDX-FileCopyrightText: The breto Authors
-;; SPDX-License-Identifier: 0BSD
-
-{:description "Language server for Dockerfiles"
- :source {:npm "dockerfile-language-server-nodejs"}
- :bins {"docker-langserver" "node_modules/.bin/docker-langserver"}}

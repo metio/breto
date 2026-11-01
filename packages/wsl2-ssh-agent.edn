@@ -1,9 +1,0 @@
-;; SPDX-FileCopyrightText: 2021 Shunsuke Suzuki
-;; SPDX-FileCopyrightText: The breto Authors
-;; SPDX-License-Identifier: MIT
-
-{:description "A bridge from WSL2 ssh client to Windows ssh-agent.exe service",
- :source {:github "mame/wsl2-ssh-agent"}
- :checksum "checksums.txt"
- :platforms {"linux-x86_64" {:asset "wsl2-ssh-agent"}
-             "linux-aarch64" {:asset "wsl2-ssh-agent-arm64"}}}

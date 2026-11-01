@@ -1,9 +1,0 @@
-;; SPDX-FileCopyrightText: The breto Authors
-;; SPDX-License-Identifier: 0BSD
-
-{:description "IRC application written in Rust.",
- :source {:github "squidowl/halloy"},
- :tag-prefix "",
- :strip 1,
- :bins {"halloy" "bin/halloy"}
- :platforms {"linux-x86_64" {:asset "halloy-{version}-x86_64-linux.tar.gz"}}}

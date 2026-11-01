@@ -1,9 +1,0 @@
-;; SPDX-FileCopyrightText: 2021 Shunsuke Suzuki
-;; SPDX-FileCopyrightText: The breto Authors
-;; SPDX-License-Identifier: MIT
-
-{:description "[DEPRECATED] Use https://github.com/lycheeverse/lychee",
- :source {:github "suzuki-shunsuke/durl"}
- :checksum "durl_{version}_checksums.txt"
- :platforms {"linux-x86_64" {:asset "durl_{version}_linux_amd64.tar.gz"}
-             "darwin-x86_64" {:asset "durl_{version}_darwin_amd64.tar.gz"}}}

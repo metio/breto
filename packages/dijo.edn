@@ -1,8 +1,0 @@
-;; SPDX-FileCopyrightText: 2021 Shunsuke Suzuki
-;; SPDX-FileCopyrightText: The breto Authors
-;; SPDX-License-Identifier: MIT
-
-{:description "scriptable, curses-based, digital habit tracker",
- :source {:github "oppiliappan/dijo"}
- :platforms {"linux-x86_64" {:asset "dijo-x86_64-linux"}
-             "darwin-x86_64" {:asset "dijo-x86_64-apple"}}}

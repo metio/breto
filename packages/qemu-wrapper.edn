@@ -1,7 +1,0 @@
-;; SPDX-FileCopyrightText: 2021 Shunsuke Suzuki
-;; SPDX-FileCopyrightText: The breto Authors
-;; SPDX-License-Identifier: MIT
-
-{:description "A new network stack based on gVisor",
- :source {:github "containers/gvisor-tap-vsock"}
- :platforms {"linux-x86_64" {:asset "qemu-wrapper"}}}

@@ -1,8 +1,0 @@
-;; SPDX-FileCopyrightText: 2021 Shunsuke Suzuki
-;; SPDX-FileCopyrightText: The breto Authors
-;; SPDX-License-Identifier: MIT
-
-{:description "A cli system trash manager, alternative to rm and trash-cli",
- :source {:github "oberblastmeister/trashy"}
- :bins {"trash" "trash"}
- :platforms {"linux-x86_64" {:asset "trash-x86_64-unknown-linux-gnu.tar.gz"}}}

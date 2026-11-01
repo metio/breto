@@ -1,5 +1,0 @@
-;; SPDX-FileCopyrightText: The breto Authors
-;; SPDX-License-Identifier: 0BSD
-
-{:description "Finds and removes duplicate files, built from its crate"
- :source {:cargo "fclones"}}

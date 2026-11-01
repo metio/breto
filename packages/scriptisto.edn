@@ -1,8 +1,0 @@
-;; SPDX-FileCopyrightText: 2021 Shunsuke Suzuki
-;; SPDX-FileCopyrightText: The breto Authors
-;; SPDX-License-Identifier: MIT
-
-{:description "A language-agnostic \"shebang interpreter\" that enables you to write scripts in compiled languages",
- :source {:github "igor-petruk/scriptisto"}
- :platforms {"linux-x86_64" {:asset "scriptisto-x86_64-unknown-linux-musl.tar.bz2"}
-             "darwin-x86_64" {:asset "scriptisto-x86_64-apple-darwin.tar.bz2"}}}

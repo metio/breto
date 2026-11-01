@@ -11,4 +11,4 @@ juxt = "juxt"
 [default.extend-identifiers]
 
 [files]
-extend-exclude = ["LICENSES/", "packages/"]
+extend-exclude = ["LICENSES/"]

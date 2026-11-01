@@ -1,8 +1,0 @@
-;; SPDX-FileCopyrightText: 2021 Shunsuke Suzuki
-;; SPDX-FileCopyrightText: The breto Authors
-;; SPDX-License-Identifier: MIT
-
-{:description "firectl is a command-line tool to run Firecracker microVMs",
- :source {:github "firecracker-microvm/firectl"}
- :checksum "{asset}.sha256"
- :platforms {"linux-x86_64" {:asset "firectl-{tag}"}}}

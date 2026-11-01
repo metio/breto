@@ -1,7 +1,0 @@
-;; SPDX-FileCopyrightText: 2021 Shunsuke Suzuki
-;; SPDX-FileCopyrightText: The breto Authors
-;; SPDX-License-Identifier: MIT
-
-{:description "dotenv for shells with support for POSIX-compliant and multiple .env file syntax",
- :source {:github "ko1nksm/shdotenv"}
- :platforms {"linux-x86_64" {:asset "shdotenv"}}}

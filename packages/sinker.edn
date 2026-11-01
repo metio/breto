@@ -1,8 +1,0 @@
-;; SPDX-FileCopyrightText: 2021 Shunsuke Suzuki
-;; SPDX-FileCopyrightText: The breto Authors
-;; SPDX-License-Identifier: MIT
-
-{:description "A tool to sync images from one container registry to another",
- :source {:github "plexsystems/sinker"}
- :platforms {"linux-x86_64" {:asset "sinker-linux-amd64"}
-             "darwin-x86_64" {:asset "sinker-darwin-amd64"}}}

@@ -1,9 +1,0 @@
-;; SPDX-FileCopyrightText: 2021 Shunsuke Suzuki
-;; SPDX-FileCopyrightText: The breto Authors
-;; SPDX-License-Identifier: MIT
-
-{:description "Download your Spotify playlists and songs along with album art and metadata (from YouTube if a match is found)",
- :source {:github "spotDL/spotify-downloader"}
- :platforms {"linux-x86_64" {:asset "spotdl-{version}-linux"}
-             "darwin-x86_64" {:asset "spotdl-{version}-darwin"}
-             "darwin-aarch64" {:asset "spotdl-{version}-darwin"}}}

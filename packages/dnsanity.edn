@@ -1,9 +1,0 @@
-;; SPDX-FileCopyrightText: 2021 Shunsuke Suzuki
-;; SPDX-FileCopyrightText: The breto Authors
-;; SPDX-License-Identifier: MIT
-
-{:description "High-performance DNS validator using template-based verification",
- :source {:github "nil0x42/dnsanity"}
- :platforms {"linux-x86_64" {:asset "dnsanity-linux-x64-{tag}"}
-             "darwin-x86_64" {:asset "dnsanity-mac-x64-{tag}"}
-             "darwin-aarch64" {:asset "dnsanity-mac-arm64-{tag}"}}}

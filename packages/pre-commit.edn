@@ -1,7 +1,0 @@
-;; SPDX-FileCopyrightText: 2021 Shunsuke Suzuki
-;; SPDX-FileCopyrightText: The breto Authors
-;; SPDX-License-Identifier: MIT
-
-{:description "A framework for managing and maintaining multi-language pre-commit hooks",
- :source {:github "pre-commit/pre-commit"}
- :platforms {"linux-x86_64" {:asset "pre-commit-{version}.pyz"}}}

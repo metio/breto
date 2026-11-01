@@ -1,9 +1,0 @@
-;; SPDX-FileCopyrightText: 2021 Shunsuke Suzuki
-;; SPDX-FileCopyrightText: The breto Authors
-;; SPDX-License-Identifier: MIT
-
-{:description "Arbitrary-precision unit-aware calculator",
- :source {:github "printfn/fend"}
- :platforms {"linux-x86_64" {:asset "fend-{version}-linux-x86_64-gnu.zip"}
-             "linux-aarch64" {:asset "fend-{version}-linux-aarch64-gnu.zip"}
-             "darwin-aarch64" {:asset "fend-{version}-macos-aarch64.zip"}}}

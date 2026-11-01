@@ -1,8 +1,0 @@
-;; SPDX-FileCopyrightText: 2021 Shunsuke Suzuki
-;; SPDX-FileCopyrightText: The breto Authors
-;; SPDX-License-Identifier: MIT
-
-{:description "Leak git repositories from misconfigured websites",
- :source {:github "liamg/gitjacker"}
- :platforms {"linux-x86_64" {:asset "gitjacker-linux-amd64"}
-             "darwin-x86_64" {:asset "gitjacker-darwin-amd64"}}}

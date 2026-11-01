@@ -1,8 +1,0 @@
-;; SPDX-FileCopyrightText: 2021 Shunsuke Suzuki
-;; SPDX-FileCopyrightText: The breto Authors
-;; SPDX-License-Identifier: MIT
-
-{:description "A blazing fast, Rust-based workspace manager for your temporary experiments",
- :source {:github "tassiovirginio/try-rs"}
- :checksum "{asset}.sha256"
- :platforms {"linux-x86_64" {:asset "try-rs-{tag}-linux-x86_64.tar.gz"}}}

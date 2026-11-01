@@ -1,9 +1,0 @@
-;; SPDX-FileCopyrightText: 2021 Shunsuke Suzuki
-;; SPDX-FileCopyrightText: The breto Authors
-;; SPDX-License-Identifier: MIT
-
-{:description "Notification library for gophers and their furry friends",
- :source {:github "containrrr/shoutrrr"}
- :checksum "shoutrrr_{version}_checksums.txt"
- :platforms {"linux-x86_64" {:asset "shoutrrr_linux_amd64.tar.gz"}
-             "linux-aarch64" {:asset "shoutrrr_linux_arm64.tar.gz"}}}

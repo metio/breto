@@ -1,8 +1,0 @@
-;; SPDX-FileCopyrightText: 2021 Shunsuke Suzuki
-;; SPDX-FileCopyrightText: The breto Authors
-;; SPDX-License-Identifier: MIT
-
-{:description "Verify proper golang import directives, beyond the capability of gofmt and goimports",
- :source {:github "pavius/impi"}
- :platforms {"linux-x86_64" {:asset "impi-{tag}-linux-amd64"}
-             "darwin-x86_64" {:asset "impi-{tag}-darwin-amd64"}}}

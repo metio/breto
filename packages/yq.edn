@@ -1,9 +1,0 @@
-;; SPDX-FileCopyrightText: The breto Authors
-;; SPDX-License-Identifier: 0BSD
-
-{:description "yq is a portable command-line YAML processor",
- :source {:github "mikefarah/yq"},
- :platforms {"linux-x86_64" {:asset "yq_linux_amd64.tar.gz" :bins {"yq" "yq_linux_amd64"}}
-             "linux-aarch64" {:asset "yq_linux_arm64.tar.gz" :bins {"yq" "yq_linux_arm64"}}
-             "darwin-x86_64" {:asset "yq_darwin_amd64.tar.gz" :bins {"yq" "yq_darwin_amd64"}}
-             "darwin-aarch64" {:asset "yq_darwin_arm64.tar.gz" :bins {"yq" "yq_darwin_arm64"}}}}

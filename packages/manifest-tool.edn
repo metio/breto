@@ -1,8 +1,0 @@
-;; SPDX-FileCopyrightText: 2021 Shunsuke Suzuki
-;; SPDX-FileCopyrightText: The breto Authors
-;; SPDX-License-Identifier: MIT
-
-{:description "Command line tool to create and query container image manifest list/indexes",
- :source {:github "estesp/manifest-tool"}
- :checksum "binaries-manifest-tool-{version}.tar.gz.sha256sum"
- :platforms {"linux-x86_64" {:asset "binaries-manifest-tool-{version}.tar.gz" :bins {"manifest-tool" "manifest-tool-linux-amd64"}}}}

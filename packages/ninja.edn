@@ -1,9 +1,0 @@
-;; SPDX-FileCopyrightText: The breto Authors
-;; SPDX-License-Identifier: 0BSD
-
-{:description "A small build system focused on speed"
- :source {:github "ninja-build/ninja"}
- :platforms {"linux-x86_64" {:asset "ninja-linux.zip"}
-             "linux-aarch64" {:asset "ninja-linux-aarch64.zip"}
-             "darwin-x86_64" {:asset "ninja-mac.zip"}
-             "darwin-aarch64" {:asset "ninja-mac.zip"}}}

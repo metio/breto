@@ -1,8 +1,0 @@
-;; SPDX-FileCopyrightText: 2021 Shunsuke Suzuki
-;; SPDX-FileCopyrightText: The breto Authors
-;; SPDX-License-Identifier: MIT
-
-{:description "The \"Command Line Interactive Controller for Kubernetes\"",
- :source {:github "databricks/click"}
- :platforms {"linux-x86_64" {:asset "click-{tag}-x86_64-unknown-linux-musl.tar.gz" :bins {"click" "click-{tag}-x86_64-unknown-linux-musl/click"}}
-             "darwin-x86_64" {:asset "click-{tag}-x86_64-apple-darwin.tar.gz" :bins {"click" "click-{tag}-x86_64-apple-darwin/click"}}}}

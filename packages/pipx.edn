@@ -1,8 +1,0 @@
-;; SPDX-FileCopyrightText: 2021 Shunsuke Suzuki
-;; SPDX-FileCopyrightText: The breto Authors
-;; SPDX-License-Identifier: MIT
-
-{:description "Install and Run Python Applications in Isolated Environments",
- :source {:github "pypa/pipx"}
- :tag-prefix ""
- :platforms {"linux-x86_64" {:asset "pipx.pyz"}}}

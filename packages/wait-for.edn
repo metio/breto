@@ -1,7 +1,0 @@
-;; SPDX-FileCopyrightText: 2021 Shunsuke Suzuki
-;; SPDX-FileCopyrightText: The breto Authors
-;; SPDX-License-Identifier: MIT
-
-{:description "./wait-for is a script to wait for another service to become available",
- :source {:github "eficode/wait-for"}
- :platforms {"linux-x86_64" {:asset "wait-for"}}}

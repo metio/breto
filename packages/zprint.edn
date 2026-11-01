@@ -1,8 +1,0 @@
-;; SPDX-FileCopyrightText: 2021 Shunsuke Suzuki
-;; SPDX-FileCopyrightText: The breto Authors
-;; SPDX-License-Identifier: MIT
-
-{:description "Beautifully format Clojure and Clojurescript source code and s-expressions",
- :source {:github "kkinnear/zprint"}
- :tag-prefix ""
- :platforms {"linux-x86_64" {:asset "zprintl-{tag}"}}}

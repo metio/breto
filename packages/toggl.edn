@@ -1,9 +1,0 @@
-;; SPDX-FileCopyrightText: 2021 Shunsuke Suzuki
-;; SPDX-FileCopyrightText: The breto Authors
-;; SPDX-License-Identifier: MIT
-
-{:description "Toggl CLI Client",
- :source {:github "sachaos/toggl"}
- :checksum "checksums.txt"
- :platforms {"linux-x86_64" {:asset "toggl_{version}_Linux_x86_64.tar.gz"}
-             "darwin-x86_64" {:asset "toggl_{version}_Darwin_x86_64.tar.gz"}}}

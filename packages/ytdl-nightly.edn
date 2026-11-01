@@ -1,9 +1,0 @@
-;; SPDX-FileCopyrightText: 2021 Shunsuke Suzuki
-;; SPDX-FileCopyrightText: The breto Authors
-;; SPDX-License-Identifier: MIT
-
-{:description "Nightly builds for youtube-dl",
- :source {:github "ytdl-org/ytdl-nightly"}
- :tag-prefix ""
- :bins {"youtube-dl" "youtube-dl/youtube-dl"}
- :platforms {"linux-x86_64" {:asset "youtube-dl-{tag}.tar.gz"}}}

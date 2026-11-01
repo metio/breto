@@ -1,9 +1,0 @@
-;; SPDX-FileCopyrightText: 2021 Shunsuke Suzuki
-;; SPDX-FileCopyrightText: The breto Authors
-;; SPDX-License-Identifier: MIT
-
-{:description "Compute various size metrics for a Git repository, flagging those that might cause problems",
- :source {:github "github/git-sizer"}
- :platforms {"linux-x86_64" {:asset "git-sizer-{version}-linux-amd64.zip"}
-             "darwin-x86_64" {:asset "git-sizer-{version}-darwin-amd64.zip"}
-             "darwin-aarch64" {:asset "git-sizer-{version}-darwin-arm64.zip"}}}

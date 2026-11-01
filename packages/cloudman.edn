@@ -1,9 +1,0 @@
-;; SPDX-FileCopyrightText: 2021 Shunsuke Suzuki
-;; SPDX-FileCopyrightText: The breto Authors
-;; SPDX-License-Identifier: MIT
-
-{:description "Textual user interface to manage ec2 instances",
- :source {:github "dutchcoders/cloudman"}
- :tag-prefix ""
- :platforms {"linux-x86_64" {:asset "cloudman-{tag}-x86_64-unknown-linux-gnu.tar.gz" :bins {"cloudman" "cloudman-{tag}-x86_64-unknown-linux-gnu/cloudman"}}
-             "darwin-x86_64" {:asset "cloudman-{tag}-x86_64-apple-darwin.tar.gz" :bins {"cloudman" "cloudman-{tag}-x86_64-apple-darwin/cloudman"}}}}

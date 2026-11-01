@@ -9,11 +9,11 @@ breto installs prebuilt binaries from their upstream releases, keeps several ver
 
 ## Requirements
 
-breto runs on [babashka](https://babashka.org/), which the release executables carry inside them. It unpacks zip archives, plain or gzip-compressed tar archives and gzip-compressed single files itself; `.tar.xz`, `.tar.bz2` and `.tar.zst` need `tar` with `xz`, `bzip2` or `zstd`, and a bzip2- or zstd-compressed single file needs `bzip2` or `zstd`. Packages that require a signature need cosign, which breto installs itself when `cosign` is listed in `:packages`.
+breto runs on [babashka](https://babashka.org/), which the release executables carry inside them. It unpacks zip archives, plain or gzip-compressed tar archives and gzip-compressed single files itself; `.tar.xz`, `.tar.bz2` and `.tar.zst` need `tar` with `xz`, `bzip2` or `zstd`, and a bzip2- or zstd-compressed single file needs `bzip2` or `zstd`. Packages that require a signature, and every [published registry](#published-registries), need cosign. breto installs it itself when `cosign` is listed in `:packages`, and before a published registry when it finds none.
 
 ## Installation
 
-Every release carries breto as one executable for `linux-amd64`, `linux-aarch64`, `darwin-amd64` and `darwin-aarch64`: babashka with breto and the package definitions of that release inside it, so it needs neither babashka nor a checkout. Download it from the [latest release](https://github.com/metio/breto/releases/latest) and let it install itself:
+Every release carries breto as one executable for `linux-amd64`, `linux-aarch64`, `darwin-amd64` and `darwin-aarch64`: babashka with breto and the definitions of cosign and breto inside it, so it needs neither babashka nor a checkout. Download it from the [latest release](https://github.com/metio/breto/releases/latest) and let it install itself:
 
 ```shell
 chmod +x breto-linux-amd64
@@ -30,9 +30,9 @@ cosign verify-blob breto_VERSION_SHA256SUMS --bundle breto_VERSION_SHA256SUMS.bu
 sha256sum --check --ignore-missing breto_VERSION_SHA256SUMS
 ```
 
-The definitions built into breto come before every directory in `:registries`, which can add packages or override keys of the built-in ones.
+Every other definition comes from [metio/packages](https://github.com/metio/packages), the published registry breto reads by default; `breto update` installs it before the packages it defines. The two built-in definitions let a fresh machine verify that registry and keep breto up to date. They come before every registry, which can add packages or override keys of the built-in ones.
 
-To work on breto itself, clone the repository and link the launcher onto your `PATH`. It runs `bb` against the `bb.edn` next to it, so the clone can live anywhere, and it has no built-in definitions, so `:registries` names the clone's `packages` directory:
+To work on breto itself, clone the repository and link the launcher onto your `PATH`. It runs `bb` against the `bb.edn` next to it, so the clone can live anywhere. It has no built-in definitions, so it reads cosign and breto from the default registry as well and needs cosign on `PATH` to verify that registry:
 
 ```shell
 git clone https://github.com/metio/breto.git ~/src/breto
@@ -54,14 +54,14 @@ The `breto` action of [metio/ci](https://github.com/metio/ci) installs breto fro
 - run: breto run check
 ```
 
-`project` names the project directory, `.` by default. `registries` lists the registries read after the built-in definitions, one per line: `github:OWNER/REPO` installs the latest release of a [published registry](#published-registries), and any other line is a directory of definitions and groups relative to the workspace. `version` picks a breto release, `latest` by default. The action verifies the release's `SHA256SUMS` with cosign against the release workflow's identity before running the binary, and keeps the installed packages in the Actions cache, keyed on the project files and the registries' definitions and lock files; `cache: false` turns that off. It runs on Linux and macOS runners, x86_64 and arm64.
+`project` names the project directory, `.` by default. `registries` lists the registries read after the default registry, one per line: `github:OWNER/REPO` installs the latest release of a [published registry](#published-registries), and any other line is a directory of definitions and groups relative to the workspace. `version` picks a breto release, `latest` by default. The action verifies the release's `SHA256SUMS` with cosign against the release workflow's identity before running the binary, and keeps the installed packages in the Actions cache, keyed on the project files and the registries' definitions and lock files; `cache: false` turns that off. It runs on Linux and macOS runners, x86_64 and arm64.
 
 ## Configuration
 
 breto reads the file given with `--config`, else the one `BRETO_CONFIG` names, else `$XDG_CONFIG_HOME/breto/config.edn` (`~/.config/breto/config.edn` by default). Every key is optional:
 
 ```clojure
-{:registries ["~/src/breto/packages" "~/.config/breto/packages"]
+{:extra-registries ["~/.config/breto/packages"]
  :packages ["helm" "kind" "kubectl"]
  :pins {"helm" "3.19.0"}
  :keep 3
@@ -73,7 +73,7 @@ breto reads the file given with `--config`, else the one `BRETO_CONFIG` names, e
 
 | Key | Meaning | Default |
 | --- | --- | --- |
-| `:registries` | Directories of package definitions, or maps such as `{:github "metio/toolchains"}` naming a [published registry](#published-registries). A later registry overrides an earlier one key by key, so an overlay can change a single key of a package; see [Overlays](#overlays). | none |
+| `:registries` | Directories of package definitions, or maps such as `{:github "metio/toolchains"}` naming a [published registry](#published-registries). A later registry overrides an earlier one key by key, so an overlay can change a single key of a package; see [Overlays](#overlays). Setting it replaces the default, so a list without metio/packages reads only the registries it names. | `[{:github "metio/packages"}]` |
 | `:extra-registries` | Registries read after `:registries`, in the same forms. `:registries` replaces the default registries, while `:extra-registries` adds to them. | none |
 | `:packages` | What `update` and `outdated` act on when no package is named: package names and [groups](#groups) such as `"@pimalaya"`. | none |
 | `:pins` | Versions `update` installs instead of the latest. | none |
@@ -230,7 +230,7 @@ A group can pin versions, so projects of one kind can share a toolchain instead 
 {:packages ["@go"]}
 ```
 
-List the directory holding the group files under `:registries`. When a new version lands in a group file, for example through a Renovate pull request and a `git pull`, the next `breto update` or `breto sync` installs it and moves every project using the group to it, and the hook relinks a shell that is open in such a project. A `breto.lock` next to the group files fixes the hash of each pinned version; see [Registry lock files](#registry-lock-files).
+List the directory holding the group files under `:extra-registries`. When a new version lands in a group file, for example through a Renovate pull request and a `git pull`, the next `breto update` or `breto sync` installs it and moves every project using the group to it, and the hook relinks a shell that is open in such a project. A `breto.lock` next to the group files fixes the hash of each pinned version; see [Registry lock files](#registry-lock-files).
 
 A group file can also hold the commands every project of its kind runs, so they are defined once:
 
@@ -248,7 +248,7 @@ A group file can also hold the commands every project of its kind runs, so they 
 A registry can be published as releases of a GitHub repository, so every machine and CI job reads the same signed definitions and groups without a clone:
 
 ```clojure
-{:registries [{:github "metio/toolchains"}]
+{:extra-registries [{:github "metio/toolchains"}]
  :packages ["breto"]}
 ```
 
@@ -602,13 +602,9 @@ Version 0.0.11 installs `iamb-x86_64-unknown-linux-musl.tgz` with one leading co
 
 Versions compare by their runs of digits and letters, with numbers compared numerically, so `0.0.13` follows `0.0.12` and `2026.9` follows `2025.12`.
 
-## Definition checks
-
-A scheduled workflow runs `breto check --all` every week against the latest release of every definition and lists the failures in its summary. It makes about one GitHub API request per definition, so a run spends a couple of hours waiting out the rate limit of the workflow's token.
-
 ## Development
 
-The `.breto.edn` names the `metio/toolchains` groups that pin babashka and every lint tool CI runs. With that registry under `:registries`, `breto env` links them into the project:
+The `.breto.edn` names the `metio/toolchains` groups that pin babashka and every lint tool CI runs. With that registry under `:extra-registries`, `breto env` links them into the project:
 
 ```shell
 eval "$(breto env)"
@@ -617,6 +613,8 @@ bb test
 
 `bb convert SCRIPT-DIR OUT-DIR` turns shell wrappers around the `install-binary-from-github` helper scripts into package definitions. It runs each wrapper with stub helpers that record their arguments, so no download happens.
 
+`bb descriptions AQUA-REGISTRY-DIR PACKAGES-DIR` fills in the missing descriptions of a definitions directory, such as a clone of metio/packages, from the aqua registry or the description of the project's repository.
+
 ## License
 
-0BSD, REUSE-compliant. The definitions in `packages/` whose header names Shunsuke Suzuki were converted from the [aqua registry](https://github.com/aquaproj/aqua-registry) and are MIT-licensed. The descriptions of the definitions come from the aqua registry or from the description of the project's repository; `bb descriptions AQUA-REGISTRY-DIR packages` fills in the ones that are missing.
+0BSD, REUSE-compliant.

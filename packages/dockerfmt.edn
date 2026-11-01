@@ -1,9 +1,0 @@
-;; SPDX-FileCopyrightText: 2021 Shunsuke Suzuki
-;; SPDX-FileCopyrightText: The breto Authors
-;; SPDX-License-Identifier: MIT
-
-{:description "Dockerfile format and parser. a modern dockfmt",
- :source {:github "reteps/dockerfmt"}
- :platforms {"linux-x86_64" {:asset "dockerfmt-{tag}-linux-amd64.tar.gz"}
-             "linux-aarch64" {:asset "dockerfmt-{tag}-linux-arm64.tar.gz"}
-             "darwin-aarch64" {:asset "dockerfmt-{tag}-darwin-arm64.tar.gz"}}}

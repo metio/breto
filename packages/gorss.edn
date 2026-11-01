@@ -1,9 +1,0 @@
-;; SPDX-FileCopyrightText: 2021 Shunsuke Suzuki
-;; SPDX-FileCopyrightText: The breto Authors
-;; SPDX-License-Identifier: MIT
-
-{:description "Go Terminal Feed Reader",
- :source {:github "Lallassu/gorss"}
- :platforms {"linux-x86_64" {:asset "gorss_linux.tar.gz" :bins {"gorss" "dist/gorss_linux"}}
-             "darwin-x86_64" {:asset "gorss_osx.tar.gz" :bins {"gorss" "dist/gorss_osx"}}
-             "darwin-aarch64" {:asset "gorss_osx.tar.gz" :bins {"gorss" "dist/gorss_osx"}}}}

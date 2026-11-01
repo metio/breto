@@ -1,8 +1,0 @@
-;; SPDX-FileCopyrightText: 2021 Shunsuke Suzuki
-;; SPDX-FileCopyrightText: The breto Authors
-;; SPDX-License-Identifier: MIT
-
-{:description "The 1.x line is frozen - features and bugfixes now happen on https://github.com/yarnpkg/berry",
- :source {:github "yarnpkg/yarn"}
- :bins {"yarn" "yarn-{tag}/bin/yarn"}
- :platforms {"linux-x86_64" {:asset "yarn-{tag}.tar.gz"}}}

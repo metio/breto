@@ -1,9 +1,0 @@
-;; SPDX-FileCopyrightText: 2021 Shunsuke Suzuki
-;; SPDX-FileCopyrightText: The breto Authors
-;; SPDX-License-Identifier: MIT
-
-{:description "Key remapper for X11 and Wayland (for X11)",
- :source {:github "xremap/xremap"}
- :bins {"xremap" "xremap"}
- :platforms {"linux-x86_64" {:asset "xremap-linux-x86_64-x11.zip"}
-             "linux-aarch64" {:asset "xremap-linux-aarch64-x11.zip"}}}

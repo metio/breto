@@ -1,8 +1,0 @@
-;; SPDX-FileCopyrightText: 2021 Shunsuke Suzuki
-;; SPDX-FileCopyrightText: The breto Authors
-;; SPDX-License-Identifier: MIT
-
-{:description "A cross-platform TUI database management tool written in Rust",
- :source {:github "TaKO8Ki/gobang"}
- :platforms {"linux-x86_64" {:asset "gobang-{version}-x86_64-unknown-linux-musl.tar.gz" :bins {"gobang" "gobang-{version}-x86_64-unknown-linux-musl/gobang"}}
-             "darwin-x86_64" {:asset "gobang-{version}-x86_64-apple-darwin.tar.gz" :bins {"gobang" "gobang-{version}-x86_64-apple-darwin/gobang"}}}}

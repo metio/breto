@@ -1,9 +1,0 @@
-;; SPDX-FileCopyrightText: 2021 Shunsuke Suzuki
-;; SPDX-FileCopyrightText: The breto Authors
-;; SPDX-License-Identifier: MIT
-
-{:description "The terminal for Kubernetes",
- :source {:github "grampelberg/kty"}
- :platforms {"linux-x86_64" {:asset "kty-{version}-linux-amd64.tar.gz"}
-             "linux-aarch64" {:asset "kty-{version}-linux-arm64.tar.gz"}
-             "darwin-aarch64" {:asset "kty-{version}-darwin-arm64.tar.gz"}}}

@@ -1,8 +1,0 @@
-;; SPDX-FileCopyrightText: 2021 Shunsuke Suzuki
-;; SPDX-FileCopyrightText: The breto Authors
-;; SPDX-License-Identifier: MIT
-
-{:description "Print the output of a running process",
- :source {:github "yujqiao/catproc"}
- :bins {"catp" "catp"}
- :platforms {"linux-x86_64" {:asset "catp-x86_64-unknown-linux-musl.zip"}}}

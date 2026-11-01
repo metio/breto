@@ -1,7 +1,0 @@
-;; SPDX-FileCopyrightText: 2021 Shunsuke Suzuki
-;; SPDX-FileCopyrightText: The breto Authors
-;; SPDX-License-Identifier: MIT
-
-{:description "A better xdg-utils",
- :source {:github "chmln/handlr"}
- :platforms {"linux-x86_64" {:asset "handlr"}}}

@@ -1,8 +1,0 @@
-;; SPDX-FileCopyrightText: 2021 Shunsuke Suzuki
-;; SPDX-FileCopyrightText: The breto Authors
-;; SPDX-License-Identifier: MIT
-
-{:description "Slack client for your terminal",
- :source {:github "jpbruinsslot/slack-term"}
- :platforms {"linux-x86_64" {:asset "slack-term-linux-amd64"}
-             "darwin-x86_64" {:asset "slack-term-darwin-amd64"}}}

@@ -1,9 +1,0 @@
-;; SPDX-FileCopyrightText: 2021 Shunsuke Suzuki
-;; SPDX-FileCopyrightText: The breto Authors
-;; SPDX-License-Identifier: MIT
-
-{:description "Pretty and fast csv viewer for cli with cjk/emoji support",
- :source {:github "wfxr/csview"}
- :platforms {"linux-x86_64" {:asset "csview-{tag}-x86_64-unknown-linux-musl.tar.gz" :bins {"csview" "csview-{tag}-x86_64-unknown-linux-musl/csview"}}
-             "linux-aarch64" {:asset "csview-{tag}-aarch64-unknown-linux-musl.tar.gz" :bins {"csview" "csview-{tag}-aarch64-unknown-linux-musl/csview"}}
-             "darwin-aarch64" {:asset "csview-{tag}-aarch64-apple-darwin.tar.gz" :bins {"csview" "csview-{tag}-aarch64-apple-darwin/csview"}}}}

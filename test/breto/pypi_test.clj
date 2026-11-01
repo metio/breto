@@ -125,8 +125,16 @@
     (is (thrown-with-msg? clojure.lang.ExceptionInfo #"is a regular expression for a :text source"
                           (s/normalize {:name "x" :source {:github "a/b" :match "x"} :asset "x"})))))
 
-(deftest the-rustup-definition-links-every-proxy-to-one-binary
-  (let [pkg (s/normalize (assoc (read-string (slurp "packages/rustup.edn")) :name "rustup"))
+(deftest a-definition-links-every-proxy-to-one-binary
+  (let [pkg (s/normalize {:name "rustup"
+                          :source {:text "https://static.rust-lang.org/rustup/release-stable.toml"
+                                   :match "(?m)^version = '([^']+)'"}
+                          :tag-prefix ""
+                          :checksum "{asset}.sha256"
+                          :bins (zipmap ["rustup" "rustc" "rustdoc" "cargo" "cargo-clippy" "clippy-driver" "rust-analyzer" "rustfmt" "cargo-fmt"]
+                                        (repeat "rustup-init"))
+                          :asset "rustup-init"
+                          :url "https://static.rust-lang.org/rustup/archive/{version}/x86_64-unknown-linux-gnu/{asset}"})
         paths (package/bin-paths pkg (package/artifact pkg {:tag "1.29.2" :version "1.29.2"}))]
     (is (= #{"rustup" "rustc" "cargo" "rustfmt" "rust-analyzer" "cargo-clippy" "clippy-driver"}
            (set (filter #{"rustup" "rustc" "cargo" "rustfmt" "rust-analyzer" "cargo-clippy" "clippy-driver"} (keys paths)))))

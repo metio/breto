@@ -1,8 +1,0 @@
-;; SPDX-FileCopyrightText: 2021 Shunsuke Suzuki
-;; SPDX-FileCopyrightText: The breto Authors
-;; SPDX-License-Identifier: MIT
-
-{:description "tncl is a tiny \"nc -l\" implementation",
- :source {:github "fujiwara/tncl"}
- :platforms {"linux-x86_64" {:asset "tncl-x86_64-linux-musl"}
-             "linux-aarch64" {:asset "tncl-aarch64-linux-musl"}}}

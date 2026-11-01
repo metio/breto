@@ -1,7 +1,0 @@
-;; SPDX-FileCopyrightText: 2021 Shunsuke Suzuki
-;; SPDX-FileCopyrightText: The breto Authors
-;; SPDX-License-Identifier: MIT
-
-{:description "Container introspection tool. Find out what container runtime is being used as well as features available",
- :source {:github "genuinetools/amicontained"}
- :platforms {"linux-x86_64" {:asset "amicontained-linux-amd64"}}}

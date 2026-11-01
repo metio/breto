@@ -1,9 +1,0 @@
-;; SPDX-FileCopyrightText: 2021 Shunsuke Suzuki
-;; SPDX-FileCopyrightText: The breto Authors
-;; SPDX-License-Identifier: MIT
-
-{:description "Kuzco reviews your Terraform resources, compares them to the provider schema to detect unused parameters, and uses AI to suggest improvements",
- :source {:github "RoseSecurity/Kuzco"}
- :checksum "Kuzco_{version}_checksums.txt"
- :bins {"kuzco" "Kuzco"}
- :platforms {"linux-x86_64" {:asset "Kuzco_Linux_x86_64.tar.gz"}}}

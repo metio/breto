@@ -1,8 +1,0 @@
-;; SPDX-FileCopyrightText: 2021 Shunsuke Suzuki
-;; SPDX-FileCopyrightText: The breto Authors
-;; SPDX-License-Identifier: MIT
-
-{:description "Terminal file explorer",
- :source {:github "mgunyho/tere"}
- :platforms {"linux-x86_64" {:asset "tere-{version}-x86_64-unknown-linux-musl.zip"}
-             "linux-aarch64" {:asset "tere-{version}-aarch64-unknown-linux-gnu.zip"}}}

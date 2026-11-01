@@ -1,8 +1,0 @@
-;; SPDX-FileCopyrightText: 2021 Shunsuke Suzuki
-;; SPDX-FileCopyrightText: The breto Authors
-;; SPDX-License-Identifier: MIT
-
-{:description "Fast, concurrent, streaming access to Amazon S3, including gof3r, a CLI",
- :source {:github "rlmcpherson/s3gof3r"}
- :platforms {"linux-x86_64" {:asset "gof3r_{version}_linux_amd64.tar.gz" :bins {"gof3r" "gof3r_{version}_linux_amd64/gof3r"}}
-             "darwin-x86_64" {:asset "gof3r_{version}_darwin_amd64.zip" :bins {"gof3r" "gof3r_{version}_darwin_amd64/gof3r"}}}}

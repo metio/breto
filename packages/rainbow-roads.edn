@@ -1,8 +1,0 @@
-;; SPDX-FileCopyrightText: 2021 Shunsuke Suzuki
-;; SPDX-FileCopyrightText: The breto Authors
-;; SPDX-License-Identifier: MIT
-
-{:description "Animate your exercise maps",
- :source {:github "NathanBaulch/rainbow-roads"}
- :platforms {"linux-x86_64" {:asset "rainbow-roads-{tag}-linux-amd64.tar.gz"}
-             "darwin-x86_64" {:asset "rainbow-roads-{tag}-darwin-amd64.tar.gz"}}}

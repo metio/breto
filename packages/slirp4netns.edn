@@ -1,9 +1,0 @@
-;; SPDX-FileCopyrightText: 2021 Shunsuke Suzuki
-;; SPDX-FileCopyrightText: The breto Authors
-;; SPDX-License-Identifier: MIT
-
-{:description "User-mode networking for unprivileged network namespaces",
- :source {:github "rootless-containers/slirp4netns"}
- :checksum "SHA256SUMS"
- :platforms {"linux-x86_64" {:asset "slirp4netns-x86_64"}
-             "linux-aarch64" {:asset "slirp4netns-aarch64"}}}

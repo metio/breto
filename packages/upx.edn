@@ -1,8 +1,0 @@
-;; SPDX-FileCopyrightText: 2021 Shunsuke Suzuki
-;; SPDX-FileCopyrightText: The breto Authors
-;; SPDX-License-Identifier: MIT
-
-{:description "UPX - the Ultimate Packer for eXecutables",
- :source {:github "upx/upx"}
- :platforms {"linux-x86_64" {:asset "upx-{version}-amd64_linux.tar.xz" :bins {"upx" "upx-{version}-amd64_linux/upx"}}
-             "linux-aarch64" {:asset "upx-{version}-arm64_linux.tar.xz" :bins {"upx" "upx-{version}-arm64_linux/upx"}}}}

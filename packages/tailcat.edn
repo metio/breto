@@ -1,9 +1,0 @@
-;; SPDX-FileCopyrightText: 2021 Shunsuke Suzuki
-;; SPDX-FileCopyrightText: The breto Authors
-;; SPDX-License-Identifier: MIT
-
-{:description "like netcat, but over Tailscale's data plane, without Tailscale's control plane",
- :source {:github "tailscale/tailcat"}
- :checksum "checksums.txt"
- :platforms {"linux-x86_64" {:asset "tailcat_{version}_linux_amd64.tar.gz"}
-             "linux-aarch64" {:asset "tailcat_{version}_linux_arm64.tar.gz"}}}

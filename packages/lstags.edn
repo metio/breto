@@ -1,9 +1,0 @@
-;; SPDX-FileCopyrightText: 2021 Shunsuke Suzuki
-;; SPDX-FileCopyrightText: The breto Authors
-;; SPDX-License-Identifier: MIT
-
-{:description "Explore Docker registries and manipulate Docker images",
- :source {:github "ivanilves/lstags"}
- :platforms {"linux-x86_64" {:asset "lstags-linux-{tag}.tar.gz"}
-             "darwin-x86_64" {:asset "lstags-darwin-{tag}.tar.gz"}
-             "darwin-aarch64" {:asset "lstags-darwin-{tag}.tar.gz"}}}
