@@ -97,7 +97,7 @@
       (is (= 0 code) out)
       (is (str/includes? out "[OK] gamma 1.0.0 installed"))
       (is (not (str/includes? out "gamma would be removed")))
-      (is (= "#!/bin/sh\necho gamma 1.0.0\n" (slurp (str (fs/path bin "gamma"))))))))
+      (is (= "#!/bin/sh\necho gamma 1.0.0\n" (slurp (str (fs/path bin ".." "targets" "gamma"))))))))
 
 (deftest a-failed-sync-leaves-the-lock-file-alone
   (let [{:keys [io]} (world)]

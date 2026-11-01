@@ -11,6 +11,7 @@
   (:require [babashka.fs :as fs]
             [babashka.process :as process]
             [breto.platform :as platform]
+            [breto.shell :as shell]
             [clojure.string :as str]))
 
 (defn template-vars
@@ -75,8 +76,24 @@
   through breto, so the command works like any other in the project's
   shell."
   [project-dir name]
-  (str "#!/bin/sh\nexec breto run --dir '" (str/replace (str project-dir) "'" "'\\''") "' '"
-       (str/replace name "'" "'\\''") "' \"$@\"\n"))
+  (str "#!/bin/sh\nexec breto run --dir " (shell/quote-arg project-dir) " "
+       (shell/quote-arg name) " \"$@\"\n"))
+
+(defn tool-wrapper
+  "The script in a project's bin directory that runs the command `name` of one
+  of its packages: `target` directly while `stale-test` is false, else through
+  breto exec, which brings the project up to date and runs this script again
+  with BRETO_LINKED set, so that the second run cannot loop. The variable is
+  unset before the tool starts, so the tools it runs check for themselves. A
+  project pinning breto itself links it without this script, whose call to
+  breto would find the script again."
+  [project-dir name target stale-test]
+  (str "#!/bin/sh\n"
+       "if [ -z \"${BRETO_LINKED-}\" ] && { " stale-test "; }; then\n"
+       "  exec breto exec --dir " (shell/quote-arg project-dir) " " (shell/quote-arg name) " \"$@\"\n"
+       "fi\n"
+       "unset BRETO_LINKED\n"
+       "exec " (shell/quote-arg target) " \"$@\"\n"))
 
 (defn menu
   "The lines naming the commands of `project`, with their descriptions."

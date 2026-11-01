@@ -9,6 +9,7 @@
   while working on it."
   (:require [babashka.fs :as fs]
             [breto.project :as project]
+            [breto.shell :as shell]
             [clojure.string :as str])
   (:import (java.security MessageDigest)))
 
@@ -51,12 +52,26 @@
   [config project-dir]
   (fs/path (env-dir config project-dir) "homes"))
 
-(defn write-commands!
-  "Makes the commands directory of `project-dir` hold exactly `scripts`,
-  name -> script text, each executable, and returns name -> path for
-  linking them into the bin directory."
-  [config project-dir scripts]
-  (let [dir (fs/path (env-dir config project-dir) "commands")]
+(defn targets-dir
+  "The directory of the project's links to the commands of its packages, which
+  its tool scripts run and which keep those versions from being collected."
+  [config project-dir]
+  (fs/path (env-dir config project-dir) "targets"))
+
+(defn link-targets!
+  "Makes the targets directory of `project-dir` hold exactly `targets`, command
+  -> file in the store, and returns command -> link."
+  [config project-dir targets]
+  (let [dir (targets-dir config project-dir)]
+    (hold-exactly! dir targets)
+    (into {} (for [name (keys targets)] [name (str (fs/path dir name))]))))
+
+(defn- write-scripts!
+  "Makes the directory `subdir` of the project at `project-dir` hold exactly
+  `scripts`, name -> script text, each executable and replaced atomically, and
+  returns name -> path for linking them into the bin directory."
+  [config project-dir subdir scripts]
+  (let [dir (fs/path (env-dir config project-dir) subdir)]
     (fs/create-dirs dir)
     (doseq [existing (fs/list-dir dir)
             :when (not (contains? scripts (str (fs/file-name existing))))]
@@ -68,6 +83,17 @@
                    (fs/set-posix-file-permissions staged "rwxr-xr-x")
                    (fs/move staged path {:replace-existing true :atomic-move true})
                    [name (str path)])))))
+
+(defn write-commands!
+  "The scripts running the project's own commands; see write-scripts!."
+  [config project-dir scripts]
+  (write-scripts! config project-dir "commands" scripts))
+
+(defn write-tools!
+  "The scripts running the commands of the project's packages; see
+  write-scripts!."
+  [config project-dir scripts]
+  (write-scripts! config project-dir "tools" scripts))
 
 (defn link!
   "Makes the bin directory of `project-dir` hold exactly `links`, link name ->
@@ -133,9 +159,6 @@
     (hold-exactly! dir links)
     (str dir)))
 
-(defn- sh-quote [s]
-  (str "'" (str/replace s "'" "'\\''") "'"))
-
 (def ^:private restore-sh
   "Gives each variable the previous breto env set its value from before that
   run back, or unsets it."
@@ -188,21 +211,21 @@
        :fish (str restore-fish
                   (apply str (for [[k v] (sort vars)]
                                (str "set --query " k "; and set --global --export __breto_saved_" k " $" k ";\n"
-                                    "set --global --export " k " " (sh-quote v) ";\n")))
-                  "set --global --export BRETO_ENV_VARS " (sh-quote names) ";\n"
-                  "set --global --export PATH " (str/join " " (map sh-quote (str/split path #":"))) ";\n"
-                  "set --global --export BRETO_PROJECT " (sh-quote project-dir) ";\n"
-                  "set --global --export BRETO_ENV_BIN " (sh-quote bin) ";\n"
-                  "set --global --export BRETO_ENV_FILES " (sh-quote (str/join ":" files)) ";")
+                                    "set --global --export " k " " (shell/quote-arg v) ";\n")))
+                  "set --global --export BRETO_ENV_VARS " (shell/quote-arg names) ";\n"
+                  "set --global --export PATH " (str/join " " (map shell/quote-arg (str/split path #":"))) ";\n"
+                  "set --global --export BRETO_PROJECT " (shell/quote-arg project-dir) ";\n"
+                  "set --global --export BRETO_ENV_BIN " (shell/quote-arg bin) ";\n"
+                  "set --global --export BRETO_ENV_FILES " (shell/quote-arg (str/join ":" files)) ";")
        (str restore-sh
             (apply str (for [[k v] (sort vars)]
                          (str "if [ -n \"${" k "+x}\" ]; then export __breto_saved_" k "=\"$" k "\"; fi\n"
-                              "export " k "=" (sh-quote v) "\n")))
-            "export BRETO_ENV_VARS=" (sh-quote names) "\n"
-            "export PATH=" (sh-quote path) "\n"
-            "export BRETO_PROJECT=" (sh-quote project-dir) "\n"
-            "export BRETO_ENV_BIN=" (sh-quote bin) "\n"
-            "export BRETO_ENV_FILES=" (sh-quote (str/join ":" files)))))))
+                              "export " k "=" (shell/quote-arg v) "\n")))
+            "export BRETO_ENV_VARS=" (shell/quote-arg names) "\n"
+            "export PATH=" (shell/quote-arg path) "\n"
+            "export BRETO_PROJECT=" (shell/quote-arg project-dir) "\n"
+            "export BRETO_ENV_BIN=" (shell/quote-arg bin) "\n"
+            "export BRETO_ENV_FILES=" (shell/quote-arg (str/join ":" files)))))))
 
 (defn leaving
   "The shell code that leaves any project: the variables a project replaced
@@ -212,10 +235,10 @@
   (case shell
     :github ""
     :fish (str restore-fish
-               "set --global --export PATH " (str/join " " (map sh-quote (str/split path #":"))) ";\n"
+               "set --global --export PATH " (str/join " " (map shell/quote-arg (str/split path #":"))) ";\n"
                "set --erase BRETO_ENV_VARS BRETO_PROJECT BRETO_ENV_BIN BRETO_ENV_FILES;")
     (str restore-sh
-         "export PATH=" (sh-quote path) "\n"
+         "export PATH=" (shell/quote-arg path) "\n"
          "unset BRETO_ENV_VARS BRETO_PROJECT BRETO_ENV_BIN BRETO_ENV_FILES")))
 
 (defn environments
@@ -249,7 +272,7 @@
                   acc)))
             {}
             (for [env (remove stale? (environments config))
-                  dir [(:bin env) (str (fs/path (:dir env) "homes"))]
+                  dir [(:bin env) (str (fs/path (:dir env) "homes")) (str (fs/path (:dir env) "targets"))]
                   :when (fs/directory? dir)
                   link (fs/list-dir dir)
                   :when (fs/sym-link? link)]

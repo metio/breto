@@ -52,6 +52,9 @@ Commands:
                             eval \"$(breto hook bash)\" in .bashrc
   run [COMMAND [ARG...]]    run a command of the project's :commands with its tools on PATH,
                             after those it :depends on; without one, choose it in fzf or sk
+  exec COMMAND [ARG...]     run a command of the project's packages after bringing the project
+                            up to date; what the project's bin directory runs when a file
+                            deciding its versions changed
   env [--shell fish|github] link the versions .breto.edn and .breto.local.edn list for this
                             project, with its commands, and print the
                             shell code putting them first on PATH: eval \"$(breto env)\";
@@ -94,6 +97,7 @@ Every failure is explained with what to do; --debug adds each request and stack 
    "search" commands/search
    "env" commands/env
    "run" commands/run-command
+   "exec" commands/exec-tool
    "sync" commands/sync-store
    "lock" commands/lock
    "validate" commands/validate})
@@ -151,7 +155,7 @@ Every failure is explained with what to do; --debug adds each request and stack 
 (def ^:private fetches-registries
   "Commands that install the published registries not installed yet before
   the packages they need."
-  #{"install" "env" "run"})
+  #{"install" "env" "run" "exec"})
 
 (defn- needs-registries? [command]
   (or (installs-registries command) (fetches-registries command)))
@@ -206,7 +210,7 @@ Every failure is explained with what to do; --debug adds each request and stack 
         names (cond (installs-registries command) (if (seq args) missing published)
                     (and (fetches-registries command) (not (false? (:install opts)))) missing)]
     (if (and (seq names) (not (:dry-run opts)))
-      (let [results (binding [*out* (if (#{"env" "run"} command) *err* *out*)]
+      (let [results (binding [*out* (if (#{"env" "run" "exec"} command) *err* *out*)]
                       (commands/install-registries ctx command (vec names)))]
         (assoc ((:reload ctx)) :registry-results results))
       ctx)))
@@ -258,7 +262,7 @@ Every failure is explained with what to do; --debug adds each request and stack 
 
 (defn- parse
   "The command line as {:args :opts}, options read wherever they stand. breto
-  run stops reading options at the name of the command it runs, so that
+  run and exec stop reading options at the name of the command they run, so that
   command gets the rest as given."
   [args]
   (let [options (fn [tokens]
@@ -268,9 +272,9 @@ Every failure is explained with what to do; --debug adds each request and stack 
                           (str/starts-with? a "-") (recur (conj own a) more)
                           :else [own remaining])))
         [before [command & after]] (options args)]
-    (if (= "run" command)
+    (if (#{"run" "exec"} command)
       (let [[own rest-args] (options after)]
-        {:args (into ["run"] rest-args) :opts (:opts (cli/parse-args (into before own) parse-spec))})
+        {:args (into [command] rest-args) :opts (:opts (cli/parse-args (into before own) parse-spec))})
       (let [[own positional] (loop [own [] positional [] [a & more :as tokens] args]
                                (cond (empty? tokens) [own positional]
                                      (valued a) (recur (conj own a (first more)) positional (rest more))

@@ -19,10 +19,21 @@
 
 (def local-file-name ".breto.local.edn")
 
+(def file-names
+  "The names of the project files, shared before local, the order the local
+  file is read over the shared one in."
+  [file-name local-file-name])
+
+(defn candidates
+  "The absolute paths both project files of `dir` would have, existing or
+  not, shared before local."
+  [dir]
+  (mapv #(str (fs/absolutize (fs/path dir %))) file-names))
+
 (def ^:private keys-allowed #{:packages :env :commands :menu :on-enter})
 
 (defn- has-file? [dir]
-  (or (fs/regular-file? (fs/path dir file-name)) (fs/regular-file? (fs/path dir local-file-name))))
+  (some fs/regular-file? (candidates dir)))
 
 (defn find-dir
   "The nearest directory at `dir` or above it holding a project file, or nil.
@@ -42,10 +53,7 @@
 (defn files
   "The project files of `dir` that exist, shared before local."
   [dir]
-  (vec (for [n [file-name local-file-name]
-             :let [f (fs/path dir n)]
-             :when (fs/regular-file? f)]
-         (str (fs/absolutize f)))))
+  (filterv fs/regular-file? (candidates dir)))
 
 (defn- env-problems [env]
   (when-not (and (map? env)

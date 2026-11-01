@@ -50,8 +50,8 @@
       (is (str/includes? err "2 installed"))
       (let [bin (first (str/split (exported-path out) #":"))]
         (is (str/starts-with? bin (path "envs")))
-        (is (= "#!/bin/sh\necho alpha 0.9.0\n" (slurp (str (fs/path bin "alpha")))))
-        (is (= "#!/bin/sh\necho beta 1.0.0\n" (slurp (str (fs/path bin "beta")))))
+        (is (= "#!/bin/sh\necho alpha 0.9.0\n" (slurp (str (fs/path bin ".." "targets" "alpha")))))
+        (is (= "#!/bin/sh\necho beta 1.0.0\n" (slurp (str (fs/path bin ".." "targets" "beta")))))
         (is (str/includes? out (str "export BRETO_PROJECT='" (path "app") "'")))))
     (testing "the global versions stay as they were"
       (is (= "#!/bin/sh\necho alpha 1.0.0\n" (slurp (path "bin" "alpha"))))
@@ -67,7 +67,7 @@
     (project! "app" ["alpha"])
     (let [{:keys [out]} (env! io "app")
           bin (first (str/split (exported-path out) #":"))]
-      (is (= "#!/bin/sh\necho alpha 0.9.0\n" (slurp (str (fs/path bin "alpha"))))))))
+      (is (= "#!/bin/sh\necho alpha 0.9.0\n" (slurp (str (fs/path bin ".." "targets" "alpha"))))))))
 
 (deftest the-bin-dir-holds-only-what-the-project-lists
   (let [io (world)]
@@ -217,12 +217,12 @@
           bin #(first (str/split (exported-path (:out %)) #":"))
           first-run (env!)]
       (is (= 0 (:code first-run)) (:err first-run))
-      (is (= "#!/bin/sh\necho alpha 0.9.0\n" (slurp (str (fs/path (bin first-run) "alpha")))))
+      (is (= "#!/bin/sh\necho alpha 0.9.0\n" (slurp (str (fs/path (bin first-run) ".." "targets" "alpha")))))
       (testing "a new version in the shared group reaches the project on its next env"
         (spit (str (fs/path shared "@toolchain.edn")) (pr-str {:members ["alpha@1.0.0" "beta@1.0.0"]}))
         (let [second-run (env!)]
           (is (= 0 (:code second-run)) (:err second-run))
-          (is (= "#!/bin/sh\necho alpha 1.0.0\n" (slurp (str (fs/path (bin second-run) "alpha"))))))))))
+          (is (= "#!/bin/sh\necho alpha 1.0.0\n" (slurp (str (fs/path (bin second-run) ".." "targets" "alpha"))))))))))
 
 (defn- shared-world
   "world with a registry directory `shared` holding @toolchain, pinning
@@ -242,7 +242,7 @@
 
 (defn- linked-alpha []
   (let [bin (:bin (first (filter #(= (path "app") (:project %)) (env/environments {:env-dir (path "envs")}))))]
-    (slurp (str (fs/path bin "alpha")))))
+    (slurp (str (fs/path bin ".." "targets" "alpha")))))
 
 (deftest env-exports-the-files-its-packages-come-from
   (let [io (shared-world "0.9.0")

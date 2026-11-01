@@ -13,6 +13,7 @@
             [breto.doctor :as doctor]
             [breto.env :as env]
             [breto.hooks :as hooks]
+            [breto.inputs :as inputs]
             [breto.install :as install]
             [breto.lockfile :as lockfile]
             [breto.package :as package]
@@ -23,6 +24,7 @@
             [breto.run :as run]
             [breto.sealed :as sealed]
             [breto.search :as search]
+            [breto.shell :as shell]
             [breto.signature :as signature]
             [breto.source :as source]
             [breto.store :as store]
@@ -352,8 +354,12 @@
                                :problems [(str ":on-enter names the unknown command " on-enter)]}))))
         template (run/template-vars dir (env/bin-dir config dir) (env/homes-dir config dir) (platform/current config))
         commands (env/write-commands! config dir (into {} (for [name (keys (:commands proj))]
-                                                           [name (run/wrapper dir name)])))]
-    {:links (merge package-links commands)
+                                                           [name (run/wrapper dir name)])))
+        stale (inputs/stale-test (inputs/of-project proj) (inputs/stamp-path config dir))
+        targets (env/link-targets! config dir package-links)
+        tools (env/write-tools! config dir (into {} (for [[name target] (dissoc targets "breto")]
+                                                      [name (run/tool-wrapper dir name target stale)])))]
+    {:links (merge (select-keys targets ["breto"]) tools commands)
      :homes homes
      :vars (merge vars (run/render-env (:env proj) template))}))
 
@@ -390,11 +396,10 @@
                0)]
     (if (pos? code)
       (assoc proj :code code)
-      (let [{:keys [links homes vars]} (project-setup config registry proj)]
-        (assoc proj :code 0 :vars vars :bin (env/link! config dir links homes))))))
-
-(defn- sh-quote [s]
-  (str "'" (str/replace s "'" "'\\''") "'"))
+      (let [{:keys [links homes vars]} (project-setup config registry proj)
+            bin (env/link! config dir links homes)]
+        (inputs/stamp! config dir (inputs/of-project proj))
+        (assoc proj :code 0 :vars vars :bin bin)))))
 
 (defn- declared-links
   "Command -> target for the active version of every package :packages
@@ -452,7 +457,7 @@
             (binding [*out* *err*] (run! println (run/menu proj))))
           (println (str (env/exports shell (path-for ctx bin) dir bin files vars)
                         (when (and on-enter (not= :github shell))
-                          (str "\n" "breto run --dir " (sh-quote dir) " " (sh-quote on-enter)
+                          (str "\n" "breto run --dir " (shell/quote-arg dir) " " (shell/quote-arg on-enter)
                                (when (= :fish shell) ";")))))
           0)))))
 
@@ -499,6 +504,36 @@
                           (or (:exec io) run/exec!)))
         0))))
 
+(defn exec-tool
+  "Runs the command `name` of the project's packages with `args` in the current
+  directory, for the script linked into the project's bin directory when a file
+  deciding the project's versions looks changed. Content that did not change
+  only renews the stamp; anything else installs what is missing and links the
+  project again. Returns the exit code of the command."
+  [{:keys [config registry groups opts io] :as ctx} [name & args]]
+  (let [start (or (:dir opts) ".")
+        dir (project/find-dir start)
+        current (when dir (inputs/of-project (project groups registry dir)))
+        code (cond
+               (nil? dir) 0
+               (inputs/fresh? config dir current) (do (inputs/touch! config dir) 0)
+               :else (:code (prepared-project! ctx "exec")))]
+    (cond
+      (nil? dir)
+      (throw (ex-info (str "no " project/file-name " or " project/local-file-name " in "
+                           (fs/absolutize start) " or above it")
+                      {:breto/problem :no-project :dir (str (fs/absolutize start))}))
+      (pos? code) code
+      :else
+      (let [entry (fs/path (env/bin-dir config dir) name)]
+        (when-not (fs/exists? entry)
+          (throw (ex-info (str "the project " dir " no longer links the command " name)
+                          {:breto/problem :unknown-command :command name
+                           :known (sort (map (comp str fs/file-name) (fs/list-dir (env/bin-dir config dir))))})))
+        ((or (:exec io) run/exec!) {:command (into [(str entry)] args)
+                                    :env {"BRETO_LINKED" "1"}
+                                    :dir (fs/cwd)})))))
+
 (defn- refresh-projects
   "Installs the versions the projects with an environment need and links
   each project's bin directory again, so a version a shared group moved to
@@ -525,7 +560,8 @@
           (let [targets (project-targets config registry p)]
             (if (every? second targets)
               (let [{:keys [links homes]} (project-setup config registry p)]
-                (env/link! config (:dir p) links homes))
+                (env/link! config (:dir p) links homes)
+                (inputs/stamp! config (:dir p) (inputs/of-project p)))
               (println (str "[WARN] project " (:dir p) " keeps its links: "
                             (str/join ", " (map first (remove second targets))) " not installed"))))
           (catch Exception e

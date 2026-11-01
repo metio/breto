@@ -208,4 +208,150 @@
     (let [{:keys [code err]} (breto! io ["run" "--dir" (path "app") "v"] runs)
           path-dir (first (str/split (get-in (last @runs) [:env "PATH"]) #":"))]
       (is (= 0 code) err)
-      (is (str/includes? (str (fs/read-link (fs/path path-dir "alpha"))) "2.0.0")))))
+      (is (str/includes? (str (fs/read-link (fs/path path-dir ".." "targets" "alpha"))) "2.0.0")))))
+
+(defn- two-versions
+  "The package alpha with releases 1.0.0 and 2.0.0."
+  []
+  (s/define! "alpha" {:source {:github "acme/alpha"} :asset "alpha" :verify false})
+  (s/fake-io (into {} (for [version ["1.0.0" "2.0.0"]]
+                        [(str "https://github.com/acme/alpha/releases/download/v" version "/alpha")
+                         (s/file! (str "alpha-" version) (str "#!/bin/sh\necho alpha " version "\n"))]))
+             {"https://github.com/acme/alpha/releases/latest" "{\"tag_name\":\"v2.0.0\"}"}
+             (atom [])))
+
+(defn- bin-dir-of []
+  (str (first (fs/glob (path "envs") "*/bin"))))
+
+(defn- linked-version []
+  (second (re-find #"echo alpha (\S+)" (slurp (str (fs/path (bin-dir-of) ".." "targets" "alpha"))))))
+
+(defn- exec!
+  "breto exec alpha in the project, recording the invocation."
+  [io runs & args]
+  (breto! io (into ["exec" "--dir" (path "app") "alpha"] args) runs))
+
+(deftest exec-only-renews-the-stamp-when-the-content-did-not-change
+  (let [io (two-versions)
+        runs (atom [])]
+    (write! "app" ".breto.edn" {:packages ["alpha@1.0.0"]})
+    (is (= 0 (:code (breto! io ["env" "--dir" (path "app")]))))
+    (write! "app" ".breto.edn" {:packages ["alpha@1.0.0"]})
+    (let [{:keys [code err]} (exec! io runs "--version")
+          {:keys [command env dir]} (last @runs)]
+      (is (= 0 code) err)
+      (is (not (str/includes? err "installed")))
+      (is (= [(str (fs/path (bin-dir-of) "alpha")) "--version"] command))
+      (is (= "1" (get env "BRETO_LINKED")))
+      (is (= (str (fs/cwd)) (str dir))))))
+
+(deftest exec-follows-every-change-to-the-project-files
+  (let [io (two-versions)
+        runs (atom [])
+        step (fn [expected]
+               (let [{:keys [code err]} (exec! io runs)]
+                 (is (= 0 code) err)
+                 (is (= expected (linked-version)))))]
+    (write! "app" ".breto.edn" {:packages ["alpha@1.0.0"]})
+    (is (= 0 (:code (breto! io ["env" "--dir" (path "app")]))))
+    (is (= "1.0.0" (linked-version)))
+    (testing "the shared file names another version"
+      (write! "app" ".breto.edn" {:packages ["alpha@2.0.0"]})
+      (step "2.0.0"))
+    (testing "and back"
+      (write! "app" ".breto.edn" {:packages ["alpha@1.0.0"]})
+      (step "1.0.0"))
+    (testing "a local file appears over it"
+      (write! "app" ".breto.local.edn" {:packages ["alpha@2.0.0"]})
+      (step "2.0.0"))
+    (testing "the local file changes"
+      (write! "app" ".breto.local.edn" {:packages ["alpha@1.0.0"]})
+      (step "1.0.0")
+      (write! "app" ".breto.local.edn" {:packages ["alpha@2.0.0"]})
+      (step "2.0.0"))
+    (testing "the local file goes"
+      (fs/delete (path "app" ".breto.local.edn"))
+      (step "1.0.0"))
+    (testing "only a local file is left"
+      (write! "app" ".breto.local.edn" {:packages ["alpha@2.0.0"]})
+      (fs/delete (path "app" ".breto.edn"))
+      (step "2.0.0"))))
+
+(deftest exec-follows-a-group-the-project-names
+  (let [io (two-versions)
+        runs (atom [])]
+    (group! "@tools" {:members ["alpha@1.0.0"]})
+    (write! "app" ".breto.edn" {:packages ["@tools"]})
+    (is (= 0 (:code (breto! io ["env" "--dir" (path "app")]))))
+    (is (= "1.0.0" (linked-version)))
+    (group! "@tools" {:members ["alpha@2.0.0"]})
+    (is (= 0 (:code (exec! io runs))))
+    (is (= "2.0.0" (linked-version)))))
+
+(deftest exec-passes-the-arguments-of-the-tool-on-as-given
+  (let [io (two-versions)
+        runs (atom [])]
+    (write! "app" ".breto.edn" {:packages ["alpha@1.0.0"]})
+    (is (= 0 (:code (exec! io runs "--dir" "elsewhere" "--config" "x" "two words"))))
+    (is (= ["--dir" "elsewhere" "--config" "x" "two words"] (rest (:command (last @runs)))))))
+
+(deftest exec-returns-the-code-of-the-tool
+  (let [io (two-versions)]
+    (write! "app" ".breto.edn" {:packages ["alpha@1.0.0"]})
+    (is (= 3 (:code (breto! io ["exec" "--dir" (path "app") "alpha"] (atom []) 3))))))
+
+(deftest exec-refuses-a-command-the-project-no-longer-links
+  (let [io (two-versions)]
+    (write! "app" ".breto.edn" {:packages ["alpha@1.0.0"]})
+    (is (= 0 (:code (breto! io ["env" "--dir" (path "app")]))))
+    (write! "app" ".breto.edn" {:packages []})
+    (is (thrown-with-msg? clojure.lang.ExceptionInfo #"no longer links the command alpha"
+                          (exec! io (atom []))))))
+
+(deftest exec-needs-a-project
+  (fs/create-dirs (path "nowhere"))
+  (is (thrown-with-msg? clojure.lang.ExceptionInfo #"no \.breto\.edn"
+                        (breto! (two-versions) ["exec" "--dir" (str (fs/temp-dir)) "alpha"]))))
+
+(deftest exec-with-no-install-names-what-is-missing
+  (let [io (two-versions)]
+    (write! "app" ".breto.edn" {:packages ["alpha@2.0.0"]})
+    (is (thrown-with-msg? clojure.lang.ExceptionInfo #"needs alpha@2.0.0"
+                          (breto! io ["exec" "--no-install" "--dir" (path "app") "alpha"])))))
+
+(deftest the-bin-directory-runs-tools-through-scripts-and-keeps-them-fresh
+  (let [io (two-versions)]
+    (write! "app" ".breto.edn" {:packages ["alpha@1.0.0"]})
+    (is (= 0 (:code (breto! io ["env" "--dir" (path "app")]))))
+    (let [script (slurp (str (fs/path (bin-dir-of) "alpha")))]
+      (testing "the script checks both project files"
+        (is (str/includes? script (path "app" ".breto.edn")))
+        (is (str/includes? script (path "app" ".breto.local.edn"))))
+      (testing "and starts no breto while nothing changed"
+        (let [{:keys [out exit]} @(process/process {:out :string :err :string
+                                                    :extra-env {"PATH" "/usr/bin:/bin"}}
+                                                   (str (fs/path (bin-dir-of) "alpha")))]
+          (is (= 0 exit))
+          (is (= "alpha 1.0.0\n" out)))))))
+
+(deftest a-project-pinning-breto-links-it-without-a-script
+  (s/define! "breto" {:source {:github "acme/breto"} :asset "breto" :verify false})
+  (let [io (s/fake-io {"https://github.com/acme/breto/releases/download/v1.0.0/breto"
+                       (s/file! "breto-1.0.0" "#!/bin/sh\necho breto\n")}
+                      {} (atom []))]
+    (write! "app" ".breto.edn" {:packages ["breto@1.0.0"]})
+    (is (= 0 (:code (breto! io ["env" "--dir" (path "app")]))))
+    (is (= "#!/bin/sh\necho breto\n" (slurp (str (fs/path (bin-dir-of) "breto")))))))
+
+(deftest gc-keeps-the-versions-only-a-project-script-runs
+  (let [io (two-versions)
+        cfg {:registries [(path "packages") (path "shared")] :env-dir (path "envs")
+             :packages ["alpha"] :prune true :keep 1}]
+    (fs/create-dirs (path "shared"))
+    (write! "app" ".breto.edn" {:packages ["alpha@1.0.0"]})
+    (binding [*err* (java.io.StringWriter.)]
+      (is (= 0 (:code (s/breto! cfg ["env" "--dir" (path "app")] {:io io}))))
+      (is (= 0 (:code (s/breto! cfg ["update"] {:io io}))))
+      (is (= 0 (:code (s/breto! cfg ["gc"] {:io io})))))
+    (is (fs/exists? (str (fs/path (bin-dir-of) ".." "targets" "alpha"))))
+    (is (= "1.0.0" (linked-version)))))
