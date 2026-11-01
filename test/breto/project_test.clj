@@ -193,3 +193,19 @@
       (let [{:keys [code out]} (breto! io ["install" "beta" "--platform" "linux-aarch64"])]
         (is (= 1 code))
         (is (str/includes? out "beta has no release for linux-aarch64"))))))
+
+(deftest run-installs-the-version-a-changed-project-file-names
+  (s/define! "alpha" {:source {:github "acme/alpha"} :asset "alpha" :verify false})
+  (let [io (s/fake-io {"https://github.com/acme/alpha/releases/download/v1.0.0/alpha"
+                       (s/file! "alpha-1.0.0" "#!/bin/sh\necho alpha 1.0.0\n")
+                       "https://github.com/acme/alpha/releases/download/v2.0.0/alpha"
+                       (s/file! "alpha-2.0.0" "#!/bin/sh\necho alpha 2.0.0\n")}
+                      {} (atom []))
+        runs (atom [])]
+    (write! "app" ".breto.edn" {:packages ["alpha@1.0.0"] :commands {"v" {:run ["alpha"]}}})
+    (is (= 0 (:code (breto! io ["run" "--dir" (path "app") "v"] runs))))
+    (write! "app" ".breto.edn" {:packages ["alpha@2.0.0"] :commands {"v" {:run ["alpha"]}}})
+    (let [{:keys [code err]} (breto! io ["run" "--dir" (path "app") "v"] runs)
+          path-dir (first (str/split (get-in (last @runs) [:env "PATH"]) #":"))]
+      (is (= 0 code) err)
+      (is (str/includes? (str (fs/read-link (fs/path path-dir "alpha"))) "2.0.0")))))
