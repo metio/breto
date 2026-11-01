@@ -257,8 +257,8 @@
 (deftest commands-of-a-package-have-the-shape-of-project-commands
   (let [base {:name "tools" :source {:github "acme/tools"} :asset "tools.jar"}]
     (is (= {"check" {:run ["check"]}}
-           (:commands (package/normalize (assoc base :commands {"check" {:run ["check"]}})))))
+           (:commands (s/normalize (assoc base :commands {"check" {:run ["check"]}})))))
     (is (thrown-with-msg? clojure.lang.ExceptionInfo #":commands maps names to commands"
-                          (package/normalize (assoc base :commands ["check"]))))
+                          (s/normalize (assoc base :commands ["check"]))))
     (is (thrown-with-msg? clojure.lang.ExceptionInfo #"command check needs :run"
-                          (package/normalize (assoc base :commands {"check" {}}))))))
+                          (s/normalize (assoc base :commands {"check" {}}))))))
