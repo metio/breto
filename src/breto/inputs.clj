@@ -12,6 +12,7 @@
             [breto.env :as env]
             [breto.project :as project]
             [breto.shell :as shell]
+            [breto.store :as store]
             [clojure.string :as str])
   (:import (java.security MessageDigest)))
 
@@ -49,7 +50,7 @@
   one or the other. It is written last, once the links are in place."
   [config dir inputs]
   (let [stamp (stamp-path config dir)
-        staged (fs/path (fs/parent stamp) ".stamp.breto")]
+        staged (store/staged-path (fs/parent stamp) "stamp")]
     (fs/create-dirs (fs/parent stamp))
     (spit (str staged) (digest inputs))
     (fs/move staged stamp {:replace-existing true :atomic-move true})

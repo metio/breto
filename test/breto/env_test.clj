@@ -335,3 +335,12 @@
                         (env! (world) "elsewhere" "--only" "everything")))
   (is (thrown-with-msg? clojure.lang.ExceptionInfo #"GITHUB_PATH"
                         (env! (world) "elsewhere" "--only" "project" "--shell" "github"))))
+
+(deftest concurrent-runs-prepare-their-commands-without-colliding
+  (let [config {:store (path "store") :env-dir (path "envs")}
+        project (path "project")
+        scripts {"a" "#!/bin/sh\n" "b" "#!/bin/sh\n"}
+        runs (doall (repeatedly 8 #(future (dotimes [_ 50] (env/write-commands! config project scripts)))))]
+    (run! deref runs)
+    (is (= #{"a" "b"}
+           (set (map (comp str fs/file-name) (fs/list-dir (fs/parent (get (env/write-commands! config project scripts) "a")))))))))

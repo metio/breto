@@ -71,13 +71,24 @@
 (defn expand-home [s]
   (str/replace-first (str s) #"^~(?=/|$)" (System/getProperty "user.home")))
 
+(defn staged-path
+  "A name in `dir` to prepare `file-name` under before renaming it into place,
+  unique so that concurrent breto processes never share one."
+  [dir file-name]
+  (fs/path dir (str "." file-name "." (random-uuid) ".breto")))
+
+(defn staged?
+  "Whether `path` is a file another breto process is still preparing."
+  [path]
+  (let [file-name (str (fs/file-name path))]
+    (and (str/starts-with? file-name ".") (str/ends-with? file-name ".breto"))))
+
 (defn link!
   "Points `link` at `target`, swapping the old link out in one rename."
   [link target]
   (let [link (fs/path link)
-        staged (fs/path (fs/parent link) (str "." (fs/file-name link) ".breto"))]
+        staged (staged-path (fs/parent link) (fs/file-name link))]
     (fs/create-dirs (fs/parent link))
-    (fs/delete-if-exists staged)
     (fs/create-sym-link staged target)
     (fs/move staged link {:replace-existing true :atomic-move true})))
 

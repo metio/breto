@@ -10,6 +10,7 @@
   (:require [babashka.fs :as fs]
             [breto.project :as project]
             [breto.shell :as shell]
+            [breto.store :as store]
             [clojure.string :as str])
   (:import (java.security MessageDigest)))
 
@@ -38,12 +39,11 @@
   [dir links]
   (fs/create-dirs dir)
   (doseq [existing (fs/list-dir dir)
-          :when (not (contains? links (str (fs/file-name existing))))]
-    (fs/delete existing))
+          :when (not (or (contains? links (str (fs/file-name existing))) (store/staged? existing)))]
+    (fs/delete-if-exists existing))
   (doseq [[link target] links
           :let [path (fs/path dir link)
-                staged (fs/path dir (str "." link ".breto"))]]
-    (fs/delete-if-exists staged)
+                staged (store/staged-path dir link)]]
     (fs/create-sym-link staged (str target))
     (fs/move staged path {:replace-existing true :atomic-move true})))
 
@@ -74,11 +74,11 @@
   (let [dir (fs/path (env-dir config project-dir) subdir)]
     (fs/create-dirs dir)
     (doseq [existing (fs/list-dir dir)
-            :when (not (contains? scripts (str (fs/file-name existing))))]
-      (fs/delete existing))
+            :when (not (or (contains? scripts (str (fs/file-name existing))) (store/staged? existing)))]
+      (fs/delete-if-exists existing))
     (into {} (for [[name text] scripts
                    :let [path (fs/path dir name)
-                         staged (fs/path dir (str "." name ".breto"))]]
+                         staged (store/staged-path dir name)]]
                (do (spit (str staged) text)
                    (fs/set-posix-file-permissions staged "rwxr-xr-x")
                    (fs/move staged path {:replace-existing true :atomic-move true})
