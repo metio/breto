@@ -135,3 +135,31 @@
     (is (= "3.0.0" (store/current-version {:store (s/path "store")} "cosign")))
     (is (= "2026.1.1" (store/current-version {:store (s/path "store")} "registry-acme-toolchains")))
     (is (some #(and (= "verify-blob" (second %)) (str/ends-with? (first %) "/cosign")) @calls))))
+
+(deftest env-installs-a-missing-registry-before-the-project-packages
+  (let [project (s/path "project")
+        _ (fs/create-dirs project)
+        _ (spit (str (fs/path project ".breto.edn")) (pr-str {:packages ["@lint"]}))
+        err (java.io.StringWriter.)
+        {:keys [code out]} (binding [*err* err] (breto! {} ["env" "--dir" project] (atom [])))]
+    (is (= 0 code) (str out err))
+    (is (= "2026.1.1" (store/current-version {:store (s/path "store")} "registry-acme-toolchains")))
+    (is (fs/directory? (store/version-dir {:store (s/path "store")} "tool" "1.2.3")))
+    (is (str/includes? out "export PATH="))
+    (is (not (str/includes? out "[OK]")) "stdout holds only the shell code")
+    (is (not (str/includes? (str err) "is not installed")))))
+
+(deftest env-without-installing-leaves-a-missing-registry-alone
+  (let [project (s/path "project")
+        _ (fs/create-dirs project)
+        _ (spit (str (fs/path project ".breto.edn")) (pr-str {:packages ["tool"]}))]
+    (binding [*err* (java.io.StringWriter.)]
+      (try (breto! {} ["env" "--no-install" "--dir" project] (atom []))
+           (catch clojure.lang.ExceptionInfo _)))
+    (is (nil? (store/current-version {:store (s/path "store")} "registry-acme-toolchains")))))
+
+(deftest install-installs-a-missing-registry-before-the-packages-it-defines
+  (let [{:keys [code out]} (breto! {} ["install" "tool"] (atom []))]
+    (is (= 0 code) out)
+    (is (= "2026.1.1" (store/current-version {:store (s/path "store")} "registry-acme-toolchains")))
+    (is (= "1.2.3" (store/current-version {:store (s/path "store")} "tool")))))

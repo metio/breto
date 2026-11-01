@@ -252,7 +252,7 @@ A registry can be published as releases of a GitHub repository, so every machine
  :packages ["breto"]}
 ```
 
-breto installs the release like a package named `registry-OWNER-REPO`, which comes first in `:packages`, and reads the registry from its active version. `breto update` and `breto sync` install it before everything else and then load the registry again, so a group that a new release changes reaches the projects in the same run; the lock file records the registry's version like any other package's. Other commands read the installed release offline, and warn when none is installed yet.
+breto installs the release like a package named `registry-OWNER-REPO`, which comes first in `:packages`, and reads the registry from its active version. `breto update` and `breto sync` install it before everything else and then load the registry again, so a group that a new release changes reaches the projects in the same run; the lock file records the registry's version like any other package's. `install`, `env` and `run` install a registry that is missing before the packages they need, `env` and `run` with their report on stderr and not under `--no-install`. Other commands read the installed release offline, and warn when none is installed yet.
 
 A release named `VERSION` carries three assets: `REPO-VERSION.tar.gz` with the registry's `.edn` files and `breto.lock` at its root, `REPO_VERSION_SHA256SUMS`, and its cosign bundle `REPO_VERSION_SHA256SUMS.bundle`. The checksum file must be signed by the repository's `.github/workflows/release.yml` on `main`, as GitHub's OIDC issuer certifies it. `:signature {:identity … :issuer …}` names another identity, and `:tag-prefix` the text before the version in a tag, empty by default.
 

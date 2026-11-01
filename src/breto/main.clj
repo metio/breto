@@ -148,13 +148,21 @@ Every failure is explained with what to do; --debug adds each request and stack 
   "Commands that install the published registries before the rest."
   #{"update" "sync"})
 
+(def ^:private fetches-registries
+  "Commands that install the published registries not installed yet before
+  the packages they need."
+  #{"install" "env" "run"})
+
+(defn- needs-registries? [command]
+  (or (installs-registries command) (fetches-registries command)))
+
 (defn- with-registry
   "`ctx` with the registry and groups loaded and the groups in :packages
   expanded into their members, and :reload to load them again. A published
   registry is read from its active release, and its package comes first in
   :packages. One not installed yet is left out with a warning, except under
-  update and sync, which install it first; until then their :packages holds
-  only what loads. doctor runs without a registry when it fails to load,
+  the commands that install it first; until then their :packages holds only
+  what loads. doctor runs without a registry when it fails to load,
   since diagnosing that is its job, and report needs none, so a broken
   definition still leaves the last run readable."
   [ctx command]
@@ -169,7 +177,7 @@ Every failure is explained with what to do; --debug adds each request and stack 
                      groups (registry/load-groups builtin dirs)
                      names (map remote/package-name remotes)
                      expand #(cond-> % (seq remotes) (update :packages (fn [packages] (into (vec names) packages))))]
-                 (when-not (installs-registries command)
+                 (when-not (needs-registries? command)
                    (binding [*out* *err*]
                      (doseq [entry missing]
                        (println (str "[WARN] the registry " (:github entry) " is not installed, so its packages and groups are missing; breto update installs it")))))
@@ -179,7 +187,7 @@ Every failure is explained with what to do; --debug adds each request and stack 
                             :published (vec names) :reload #(load ctx))
                      (update :config #(try (configured (expand %) groups)
                                            (catch clojure.lang.ExceptionInfo e
-                                             (if (and (seq missing) (installs-registries command))
+                                             (if (and (seq missing) (needs-registries? command))
                                                (configured (assoc % :packages (vec names)) groups)
                                                (throw e))))))))]
     (case command
@@ -188,15 +196,18 @@ Every failure is explained with what to do; --debug adds each request and stack 
       (load ctx))))
 
 (defn- registries-first
-  "`ctx` loaded again after update or sync installed the published registries
-  first: all of them when no packages are named, else those not installed
-  yet. Their results are under :registry-results."
-  [{:keys [config published] :as ctx} command args]
-  (let [names (if (seq args)
-                (remove #(store/current-version config %) published)
-                published)]
-    (if (and (installs-registries command) (seq names) (not (get-in ctx [:opts :dry-run])))
-      (let [results (commands/install-registries ctx command (vec names))]
+  "`ctx` loaded again after the command installed the published registries
+  first: under update and sync all of them when no packages are named, else
+  those not installed yet. env and run report on stderr, since their stdout
+  may be shell code, and skip it with --install false. Their results are
+  under :registry-results."
+  [{:keys [config published opts] :as ctx} command args]
+  (let [missing (remove #(store/current-version config %) published)
+        names (cond (installs-registries command) (if (seq args) missing published)
+                    (and (fetches-registries command) (not (false? (:install opts)))) missing)]
+    (if (and (seq names) (not (:dry-run opts)))
+      (let [results (binding [*out* (if (#{"env" "run"} command) *err* *out*)]
+                      (commands/install-registries ctx command (vec names)))]
         (assoc ((:reload ctx)) :registry-results results))
       ctx)))
 
@@ -231,7 +242,10 @@ Every failure is explained with what to do; --debug adds each request and stack 
              code (f ctx)]
          (record-lock! ctx command)
          code))
-    (f ctx)))
+    (f (if (and (fetches-registries command)
+                (some #(nil? (store/current-version (:config ctx) %)) (:published ctx)))
+         (store/with-store-lock (:config ctx) (constantly nil) #(registries-first ctx command args))
+         ctx))))
 
 (def parse-spec
   {:coerce {:keep :long :delay :long :debug :boolean :verify :boolean :force :boolean :dry-run :boolean :all :boolean :previous :boolean :locked :boolean :brief :boolean :wait :boolean :install :boolean :check :boolean :enter :boolean}
