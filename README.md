@@ -90,7 +90,7 @@ breto reads the file given with `--config`, else the one `BRETO_CONFIG` names, e
 | `:hook-timeout` | Seconds a hook may run before it is stopped. | `30` |
 | `:prune` | Whether `gc` without arguments also uninstalls every package `:packages` does not list. | `false` |
 | `:store` | Where versions are unpacked, as `<store>/<package>/<version>`. | `$XDG_DATA_HOME/breto/installations` |
-| `:bin-dir` | Where binaries are linked. | `~/.local/bin` |
+| `:bin-dir` | Where binaries are linked. | `~/.local/bin`, or `~/bin` when `PATH` lists it before `~/.local/bin` or alone |
 | `:finder` | The fuzzy finder `breto install` without packages chooses with: `:auto` for fzf or sk from `:bin-dir` or `PATH`, or a command that reads tab-separated lines on stdin and prints the chosen ones. | `:auto` |
 | `:env-dir` | Where `breto env` keeps the bin directory of each project. | `$XDG_DATA_HOME/breto/envs` |
 | `:platform` | The platform definitions are resolved for, one of `linux-x86_64`, `linux-aarch64`, `darwin-x86_64` and `darwin-aarch64`; see [Platforms](#platforms). `--platform` overrides it for one run. | the platform breto runs on |

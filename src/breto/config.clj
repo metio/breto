@@ -20,9 +20,18 @@
       (str (fs/path (env-dir "XDG_CONFIG_HOME" ".config") "breto" "config.edn"))
       explicit)))
 
+(defn default-bin-dir
+  "Of ~/.local/bin and ~/bin, the one `path` lists first, else ~/.local/bin:
+  a directory the user owns, which no other tool fills."
+  [home path]
+  (let [candidates (map #(str (fs/path home %)) [".local/bin" "bin"])
+        entries (map #(str/replace % #"/+$" "") (str/split (or path "") #":"))]
+    (or (first (filter (set candidates) entries))
+        (first candidates))))
+
 (defn defaults []
   {:store (str (fs/path (env-dir "XDG_DATA_HOME" ".local/share") "breto" "installations"))
-   :bin-dir (str (fs/path (System/getProperty "user.home") ".local" "bin"))
+   :bin-dir (default-bin-dir (System/getProperty "user.home") (System/getenv "PATH"))
    :registries []
    :packages []
    :pins {}
