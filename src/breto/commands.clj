@@ -357,9 +357,10 @@
                                                            [name (run/wrapper dir name)])))
         stale (inputs/stale-test (inputs/of-project proj) (inputs/stamp-path config dir))
         targets (env/link-targets! config dir package-links)
-        tools (env/write-tools! config dir (into {} (for [[name target] (dissoc targets "breto")]
+        wrapped (into {} (filter (fn [[name target]] (and (not= name "breto") (run/program? target)))) targets)
+        tools (env/write-tools! config dir (into {} (for [[name target] wrapped]
                                                       [name (run/tool-wrapper dir name target stale)])))]
-    {:links (merge (select-keys targets ["breto"]) tools commands)
+    {:links (merge (apply dissoc targets (keys wrapped)) tools commands)
      :homes homes
      :vars (merge vars (run/render-env (:env proj) template))}))
 

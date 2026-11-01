@@ -355,3 +355,20 @@
       (is (= 0 (:code (s/breto! cfg ["gc"] {:io io})))))
     (is (fs/exists? (str (fs/path (bin-dir-of) ".." "targets" "alpha"))))
     (is (= "1.0.0" (linked-version)))))
+
+(deftest env-links-data-of-a-package-as-itself-and-wraps-its-programs
+  (s/define! "alpha" {:source {:github "acme/alpha"} :asset "alpha" :verify false})
+  (s/define! "tools" {:source {:github "acme/tools"} :asset "tools.jar" :verify false
+                      :bins {"tools.jar" "tools.jar"}})
+  (let [jar "PK\u0003\u0004 classes"
+        io (s/fake-io {"https://github.com/acme/alpha/releases/download/v1.0.0/alpha"
+                       (s/file! "alpha-1.0.0" "#!/bin/sh\necho alpha 1.0.0\n")
+                       "https://github.com/acme/tools/releases/download/v1.0.0/tools.jar"
+                       (s/file! "tools-1.0.0" jar)}
+                      {"https://github.com/acme/alpha/releases/latest" "{\"tag_name\":\"v1.0.0\"}"
+                       "https://github.com/acme/tools/releases/latest" "{\"tag_name\":\"v1.0.0\"}"}
+                      (atom []))]
+    (write! "app" ".breto.edn" {:packages ["alpha" "tools"]})
+    (is (= 0 (:code (breto! io ["env" "--dir" (path "app")]))))
+    (is (= jar (slurp (str (fs/path (bin-dir-of) "tools.jar")))))
+    (is (str/includes? (slurp (str (fs/path (bin-dir-of) "alpha"))) "breto exec"))))

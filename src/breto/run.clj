@@ -79,6 +79,22 @@
   (str "#!/bin/sh\nexec breto run --dir " (shell/quote-arg project-dir) " "
        (shell/quote-arg name) " \"$@\"\n"))
 
+(defn program?
+  "Whether `file` starts like something the system runs: a script or an ELF or
+  Mach-O binary. Packages also link data, such as a jar a command names on a
+  classpath, which has to stay readable as itself at its path in the bin
+  directory."
+  [file]
+  (with-open [in (java.io.FileInputStream. (str file))]
+    (let [head (byte-array 4)
+          magic (vec (map #(bit-and % 0xff) (take (.read in head) head)))]
+      (or (= [0x23 0x21] (take 2 magic))
+          (contains? #{[0x7f 0x45 0x4c 0x46]
+                       [0xfe 0xed 0xfa 0xce] [0xfe 0xed 0xfa 0xcf]
+                       [0xce 0xfa 0xed 0xfe] [0xcf 0xfa 0xed 0xfe]
+                       [0xca 0xfe 0xba 0xbe]}
+                     magic)))))
+
 (defn tool-wrapper
   "The script in a project's bin directory that runs the command `name` of one
   of its packages: `target` directly while `stale-test` is false, else through
