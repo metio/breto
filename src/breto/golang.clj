@@ -27,6 +27,12 @@
                       (assoc context :breto/problem :go-failed :command (vec (cons "go" args)) :output (str/trim (str err out))))))
     out))
 
+(defn- install-args [pkg release]
+  (let [tags (get-in pkg [:source :tags])]
+    (concat ["install" "-trimpath"]
+            (when tags [(str "-tags=" (str/join "," tags))])
+            [(str (package/go-package pkg) "@" (:tag release))])))
+
 (defn build!
   "Builds the release of `pkg` with `go`, the path of a go command, into
   `work`, returning {:file :sum} with the binary named as the asset and the
@@ -44,7 +50,7 @@
     (when (and expect-sum (not= expect-sum sum))
       (throw (ex-info (str (:name pkg) " " (:version release) ": the module hash " sum " differs from " expect-sum " in the lock file")
                       (assoc context :breto/problem :checksum-mismatch :expected expect-sum :actual sum :against :lockfile))))
-    (run! io go work env ["install" "-trimpath" (str (package/go-package pkg) "@" (:tag release))] context)
+    (run! io go work env (install-args pkg release) context)
     (let [built (fs/path gobin (package/go-binary (package/go-package pkg)))
           file (fs/path work (:asset artifact))]
       (when-not (fs/regular-file? built)

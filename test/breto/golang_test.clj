@@ -22,7 +22,7 @@
                      "echo \"GOTOOLCHAIN=$GOTOOLCHAIN CGO_ENABLED=$CGO_ENABLED GOFLAGS=$GOFLAGS\" >> " (path "go.log") "\n"
                      "case \"$1\" in\n"
                      "  mod) target=$4; printf '{\"Path\":\"%s\",\"Version\":\"%s\",\"Sum\":\"h1:%s\"}' \"${target%@*}\" \"${target#*@}\" \"${target#*@}\" ;;\n"
-                     "  install) target=$3; pkg=${target%@*}; mkdir -p \"$GOBIN\"; name=${pkg##*/}; case \"$name\" in v[0-9]*) rest=${pkg%/*}; name=${rest##*/} ;; esac; printf '#!/bin/sh\\necho %s %s\\n' \"$pkg\" \"${target#*@}\" > \"$GOBIN/$name\" ;;\n"
+                     "  install) echo \"$*\" >> " (path "install.log") "; for target; do :; done; pkg=${target%@*}; mkdir -p \"$GOBIN\"; name=${pkg##*/}; case \"$name\" in v[0-9]*) rest=${pkg%/*}; name=${rest##*/} ;; esac; printf '#!/bin/sh\\necho %s %s\\n' \"$pkg\" \"${target#*@}\" > \"$GOBIN/$name\" ;;\n"
                      "esac\n")))
 
 (defn- world []
@@ -42,6 +42,26 @@
     (is (= "#!/bin/sh\necho golang.org/x/vuln/cmd/govulncheck v1.9.0\n" (slurp (path "bin" "govulncheck"))))
     (is (= "h1:v1.9.0" (:sum (store/read-meta {:store (path "store")} "govulncheck" "1.9.0"))))
     (is (every? #(= "GOTOOLCHAIN=local CGO_ENABLED=0 GOFLAGS=" %) (str/split-lines (slurp (path "go.log")))))))
+
+(deftest build-tags-reach-go-install
+  (let [io (world)]
+    (s/define! "skopeo" {:source {:go "go.podman.io/skopeo" :package "go.podman.io/skopeo/cmd/skopeo"
+                                  :tags ["containers_image_openpgp" "other"]}})
+    (let [io (update io :get-text (fn [get-text]
+                                    (fn [url headers]
+                                      (if (= url "https://proxy.golang.org/go.podman.io/skopeo/@latest")
+                                        "{\"Version\":\"v1.24.1\"}"
+                                        (get-text url headers)))))
+          {:keys [code out]} (s/breto! {} ["install" "go" "skopeo"] {:io io})]
+      (is (= 0 code) out))
+    (is (= "install -trimpath -tags=containers_image_openpgp,other go.podman.io/skopeo/cmd/skopeo@v1.24.1\n"
+           (slurp (path "install.log"))))))
+
+(deftest build-tags-are-validated
+  (doseq [tags [[] "a" ["a,b"] ["-x"] [:a]]]
+    (is (thrown-with-msg? clojure.lang.ExceptionInfo #"lists build tags"
+                          (s/normalize {:name "x" :source {:go "example.com/x" :tags tags}}))
+        (pr-str tags))))
 
 (deftest a-go-package-needs-go
   (let [io (world)

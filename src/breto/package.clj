@@ -149,6 +149,13 @@
                                 (str/starts-with? (:package source) (str (:go source) "/"))))))))
     (conj ":source {:go MODULE} names a module path, and its :package, when given, a package inside that module")
 
+    (and (= :go (source-kind pkg))
+         (contains? source :tags)
+         (not (and (vector? (:tags source))
+                   (seq (:tags source))
+                   (every? #(and (string? %) (re-matches #"[A-Za-z0-9_.]+" %)) (:tags source)))))
+    (conj ":source {:go MODULE :tags [...]} lists build tags, as letters, digits, dots and underscores")
+
     (and (= :pypi (source-kind pkg))
          (not (and (string? (:pypi source)) (re-matches #"[A-Za-z0-9][A-Za-z0-9._-]*" (:pypi source)))))
     (conj ":source {:pypi NAME} names a project on PyPI")
