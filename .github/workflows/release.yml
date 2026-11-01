@@ -27,9 +27,10 @@ jobs:
         uses: metio/ci/needs-release@1bcfd5d852697876af6c191fa597cf5aab22cb62 # 2026.10.31124002
         with:
           paths: src builtin shell bb.edn breto action.yml .breto.edn README.md
-      - uses: metio/ci/breto@f821815a1c92cfcba086d6bec4ede7a87deec697 # 2026.10.31191131
+      - uses: metio/ci/breto@8445885c5f9e9b7d47d4fb0736a7b28d8789c2f4 # main
         if: steps.gate.outputs.needed == 'true'
         with:
+          version: 2026.11.1013931
           registries: github:metio/toolchains
       - name: Run the test suite before releasing
         if: steps.gate.outputs.needed == 'true'
