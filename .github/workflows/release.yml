@@ -24,10 +24,10 @@ jobs:
           fetch-depth: 0
           persist-credentials: false
       - id: gate
-        uses: metio/ci/needs-release@d4a165ac035d1fa1a7aee5b27192d0aed9c7a0b0 # 2026.11.1111906
+        uses: metio/ci/needs-release@bfcb1a4d37c4fd4d5d9c27181191dcad0d04f90c # 2026.11.1211658
         with:
           paths: src builtin shell bb.edn breto action.yml .breto.edn README.md
-      - uses: metio/ci/breto@d4a165ac035d1fa1a7aee5b27192d0aed9c7a0b0 # 2026.11.1111906
+      - uses: metio/ci/breto@bfcb1a4d37c4fd4d5d9c27181191dcad0d04f90c # 2026.11.1211658
         if: steps.gate.outputs.needed == 'true'
         with:
           registries: github:metio/toolchains
@@ -36,41 +36,29 @@ jobs:
         run: bb test
       - id: version
         if: steps.gate.outputs.needed == 'true'
-        uses: metio/ci/calver@d4a165ac035d1fa1a7aee5b27192d0aed9c7a0b0 # 2026.11.1111906
+        uses: metio/ci/calver@bfcb1a4d37c4fd4d5d9c27181191dcad0d04f90c # 2026.11.1211658
       - id: notes
         name: Generate release notes
         if: steps.gate.outputs.needed == 'true'
-        uses: metio/ci/release-notes@d4a165ac035d1fa1a7aee5b27192d0aed9c7a0b0 # 2026.11.1111906
+        uses: metio/ci/release-notes@bfcb1a4d37c4fd4d5d9c27181191dcad0d04f90c # 2026.11.1211658
         with:
           version: ${{ steps.version.outputs.version }}
           previous: ${{ steps.gate.outputs.last }}
-      - name: Build the self-contained binaries
+      - name: Build the uberjar
         if: steps.gate.outputs.needed == 'true'
-        env:
-          GH_TOKEN: ${{ github.token }}
-          VERSION: ${{ steps.version.outputs.version }}
-        run: |
-          set -euo pipefail
-          bb build
-          bb_version=$(bb --version | sed 's/^babashka v//')
-          mkdir dist bb
-          for target in linux-amd64:linux-amd64-static linux-aarch64:linux-aarch64-static \
-                        darwin-amd64:macos-amd64 darwin-aarch64:macos-aarch64; do
-            tarball="babashka-${bb_version}-${target#*:}.tar.gz"
-            gh release download "v${bb_version}" --repo babashka/babashka --dir bb \
-              --pattern "${tarball}" --pattern "${tarball}.sha256"
-            echo "$(cat "bb/${tarball}.sha256")  bb/${tarball}" | sha256sum --check
-            tar --extract --gzip --file "bb/${tarball}" --directory bb bb
-            cat bb/bb target/breto.jar > "dist/breto-${target%%:*}"
-            rm bb/bb
-          done
-          chmod +x dist/breto-*
-          (cd dist && sha256sum breto-* > "breto_${VERSION}_SHA256SUMS")
+        run: bb build
+      - id: executable
+        if: steps.gate.outputs.needed == 'true'
+        uses: metio/ci/babashka-executable@bfcb1a4d37c4fd4d5d9c27181191dcad0d04f90c # 2026.11.1211658
+        with:
+          name: breto
+          jar: target/breto.jar
+          version: ${{ steps.version.outputs.version }}
       - name: Sign the checksums
         if: steps.gate.outputs.needed == 'true'
-        uses: metio/ci/cosign-sign-blob@d4a165ac035d1fa1a7aee5b27192d0aed9c7a0b0 # 2026.11.1111906
+        uses: metio/ci/cosign-sign-blob@bfcb1a4d37c4fd4d5d9c27181191dcad0d04f90c # 2026.11.1211658
         with:
-          file: dist/breto_${{ steps.version.outputs.version }}_SHA256SUMS
+          file: ${{ steps.executable.outputs.checksums }}
       - name: Tag and publish the GitHub release
         if: steps.gate.outputs.needed == 'true'
         env:
