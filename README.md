@@ -74,6 +74,7 @@ breto reads the file given with `--config`, else the one `BRETO_CONFIG` names, e
 | Key | Meaning | Default |
 | --- | --- | --- |
 | `:registries` | Directories of package definitions, or maps such as `{:github "metio/toolchains"}` naming a [published registry](#published-registries). A later registry overrides an earlier one key by key, so an overlay can change a single key of a package; see [Overlays](#overlays). | none |
+| `:extra-registries` | Registries read after `:registries`, in the same forms. `:registries` replaces the default registries, while `:extra-registries` adds to them. | none |
 | `:packages` | What `update` and `outdated` act on when no package is named: package names and [groups](#groups) such as `"@pimalaya"`. | none |
 | `:pins` | Versions `update` installs instead of the latest. | none |
 | `:keep` | Versions per package that `gc` keeps. | `3` |

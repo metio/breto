@@ -33,6 +33,7 @@
   {:store (str (fs/path (env-dir "XDG_DATA_HOME" ".local/share") "breto" "installations"))
    :bin-dir (default-bin-dir (System/getProperty "user.home") (System/getenv "PATH"))
    :registries []
+   :extra-registries []
    :packages []
    :pins {}
    :keep 3
@@ -59,10 +60,15 @@
 
 (defn load-config
   "Reads the EDN config at `path` over the defaults. A missing file means all
-  defaults."
+  defaults. :extra-registries are read after :registries, so a config adds
+  to the default registries with them and replaces the defaults with
+  :registries."
   [path]
   (let [user (when (fs/exists? path) (edn/read-string (slurp (str path))))]
     (-> (merge (defaults) user)
+        (as-> config (-> config
+                         (update :registries #(vec (concat % (:extra-registries config))))
+                         (dissoc :extra-registries)))
         (update :store expand-home)
         (update :bin-dir expand-home)
         (update :lockfile #(some-> % expand-home))
