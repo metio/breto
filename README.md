@@ -348,6 +348,7 @@ A package is a file `<name>.edn` in a registry directory, and its file name is t
 | `:vars` | Further placeholders derived from the version, as `{:match REGEX}`, the first group or else the whole match, or `{:replace [FROM TO]}`; see [Java](#java). `{:text URL :match REGEX}` reads one from a document instead, such as a build stamp the version does not contain, and `{:json URL :path [path]}` takes the value at a path in a JSON or YAML document, read like the path of a `:checksum`; the URL can use the other placeholders. | none |
 | `:python` | For a `:pypi` source, the Python version of its environment, overriding the config's `:python`. | none |
 | `:env` | Variables `breto env` sets in a project using the package, as templates; `{install-dir}` is a link to the version the project uses, `{install-dirs}` the directory of those links. | none |
+| `:commands` | Commands of the projects using the package, in the shape of a project's `:commands`; a command of the project or of one of its groups with the same name wins. A jar a command runs from `{bin}` belongs here, so that `breto run` brings the project up to date before the command reads it. |
 | `:links` | Further symlinks: target path to path inside the installed version. | none |
 | `:history` | Definitions for older versions; see below. | none |
 | `:verify` | `false` installs without verification, for releases whose upstream publishes neither GitHub digests nor checksums. Usually set in a `:history` entry, so newer releases are still verified. | `true` |

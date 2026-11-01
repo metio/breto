@@ -372,3 +372,38 @@
     (is (= 0 (:code (breto! io ["env" "--dir" (path "app")]))))
     (is (= jar (slurp (str (fs/path (bin-dir-of) "tools.jar")))))
     (is (str/includes? (slurp (str (fs/path (bin-dir-of) "alpha"))) "breto exec"))))
+
+(defn- jar-world
+  "The package tools, linking a jar and defining the command check on it."
+  []
+  (s/define! "tools" {:source {:github "acme/tools"} :asset "tools.jar" :verify false
+                      :bins {"tools.jar" "tools.jar"}
+                      :commands {"check" {:run "echo {bin}/tools.jar \"$@\"" :description "Checks"}}})
+  (s/fake-io {"https://github.com/acme/tools/releases/download/v1.0.0/tools.jar"
+              (s/file! "tools-1.0.0" "PK")}
+             {"https://github.com/acme/tools/releases/latest" "{\"tag_name\":\"v1.0.0\"}"}
+             (atom [])))
+
+(deftest a-package-defines-commands-of-the-projects-using-it
+  (let [io (jar-world)
+        runs (atom [])]
+    (write! "app" ".breto.edn" {:packages ["tools"]})
+    (is (= 0 (:code (breto! io ["env" "--dir" (path "app")]))))
+    (is (str/includes? (slurp (str (fs/path (bin-dir-of) "check"))) "breto run"))
+    (let [{:keys [code err]} (breto! io ["run" "--dir" (path "app") "check" "x"] runs)]
+      (is (= 0 code) err)
+      (is (str/includes? (str/join " " (:command (last @runs))) (str (fs/path (bin-dir-of) "tools.jar")))))))
+
+(deftest a-project-command-wins-over-the-command-of-a-package
+  (let [io (jar-world)
+        runs (atom [])]
+    (write! "app" ".breto.edn" {:packages ["tools"] :commands {"check" {:run ["own-check"]}}})
+    (let [{:keys [code err]} (breto! io ["run" "--dir" (path "app") "check"] runs)]
+      (is (= 0 code) err)
+      (is (= ["own-check"] (:command (last @runs)))))))
+
+(deftest a-project-without-the-package-has-none-of-its-commands
+  (let [io (jar-world)]
+    (write! "app" ".breto.edn" {:commands {"other" {:run ["other"]}}})
+    (is (thrown-with-msg? clojure.lang.ExceptionInfo #"no command check"
+                          (breto! io ["run" "--dir" (path "app") "check"])))))

@@ -253,3 +253,12 @@
       (is (= "jdtls-1.63.0-{build}.tar.gz" (:asset (package/artifact pkg {:tag "1.63.0" :version "1.63.0"})))))
     (is (thrown-with-msg? clojure.lang.ExceptionInfo #"matched in a document"
                           (s/normalize (assoc-in pkg [:vars :build] {:text "u"}))))))
+
+(deftest commands-of-a-package-have-the-shape-of-project-commands
+  (let [base {:name "tools" :source {:github "acme/tools"} :asset "tools.jar"}]
+    (is (= {"check" {:run ["check"]}}
+           (:commands (package/normalize (assoc base :commands {"check" {:run ["check"]}})))))
+    (is (thrown-with-msg? clojure.lang.ExceptionInfo #":commands maps names to commands"
+                          (package/normalize (assoc base :commands ["check"]))))
+    (is (thrown-with-msg? clojure.lang.ExceptionInfo #"command check needs :run"
+                          (package/normalize (assoc base :commands {"check" {}}))))))

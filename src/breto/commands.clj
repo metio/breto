@@ -276,16 +276,24 @@
           (println (str "waiting for another breto run (process " pid ") to finish with the store")))))
     f))
 
+(defn- package-commands
+  "The :commands of the packages `specs` name."
+  [registry specs]
+  (into {} (mapcat #(:commands (registry/lookup registry (first (batch/split-spec %))))) specs))
+
 (defn- project
   "The project of `dir`: its packages with groups expanded, its variables and
-  commands, and the files they come from; see breto.project. A package
+  commands, and the files they come from; see breto.project. The project's
+  own commands and those of its groups win over those of its packages. A package
   without a release for this platform is left out with a warning, so the
   project's other tools still work there."
   [groups registry dir]
   (let [proj (project/load-project groups dir)
-        skipped (keep #(unsupported registry %) (:specs proj))]
+        skipped (keep #(unsupported registry %) (:specs proj))
+        specs (vec (remove (partial unsupported registry) (:specs proj)))]
     (-> proj
-        (clojure.core/update :specs #(vec (remove (partial unsupported registry) %)))
+        (assoc :specs specs)
+        (clojure.core/update :commands #(merge (package-commands registry specs) %))
         (clojure.core/update :warnings into (map skip-message skipped)))))
 
 (defn- project-targets

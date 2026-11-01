@@ -3,6 +3,7 @@
 
 (ns breto.package
   (:require [breto.cargo :as cargo]
+            [breto.command :as command]
             [breto.coursier :as coursier]
             [breto.document :as document]
             [breto.ghcup :as ghcup]
@@ -222,6 +223,12 @@
 
     (not (env-valid? (:env pkg {})))
     (conj ":env maps environment variable names other than PATH and BRETO_* to template strings")
+
+    (not (map? (:commands pkg {})))
+    (conj ":commands maps names to commands")
+
+    (map? (:commands pkg {}))
+    (into (mapcat (fn [[name definition]] (command/problems name definition)) (:commands pkg)))
 
     (not (string? (:description pkg "")))
     (conj ":description must be a string")
