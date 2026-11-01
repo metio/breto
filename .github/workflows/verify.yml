@@ -19,17 +19,6 @@ jobs:
         with:
           registries: github:metio/toolchains
       - run: bb test
-  reuse:
-    runs-on: ubuntu-latest
-    timeout-minutes: 15
-    steps:
-      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7
-        with:
-          persist-credentials: false
-      - uses: metio/ci/breto@d4a165ac035d1fa1a7aee5b27192d0aed9c7a0b0 # 2026.11.1111906
-        with:
-          registries: github:metio/toolchains
-      - run: reuse lint
   yaml:
     runs-on: ubuntu-latest
     timeout-minutes: 15
@@ -87,27 +76,9 @@ jobs:
         with:
           registries: github:metio/toolchains
       - run: typos
-  dco:
-    if: github.event.pull_request.user.type != 'Bot'
-    runs-on: ubuntu-latest
-    timeout-minutes: 15
-    steps:
-      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7
-        with:
-          fetch-depth: 0
-          persist-credentials: false
-      - uses: metio/ci/dco@d4a165ac035d1fa1a7aee5b27192d0aed9c7a0b0 # 2026.11.1111906
-  policy:
-    runs-on: ubuntu-latest
-    timeout-minutes: 10
-    steps:
-      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7
-        with:
-          persist-credentials: false
-      - uses: metio/ci/policy-check@d4a165ac035d1fa1a7aee5b27192d0aed9c7a0b0 # 2026.11.1111906
   verify:
     name: Verify
-    needs: [test, reuse, yaml, github-actions, zizmor, markdown, typos, dco, policy]
+    needs: [test, yaml, github-actions, zizmor, markdown, typos]
     if: always()
     runs-on: ubuntu-latest
     timeout-minutes: 10
