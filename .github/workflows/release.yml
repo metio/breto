@@ -30,7 +30,6 @@ jobs:
       - uses: metio/ci/breto@d4a165ac035d1fa1a7aee5b27192d0aed9c7a0b0 # 2026.11.1111906
         if: steps.gate.outputs.needed == 'true'
         with:
-          version: 2026.11.1013931
           registries: github:metio/toolchains
       - name: Run the test suite before releasing
         if: steps.gate.outputs.needed == 'true'
