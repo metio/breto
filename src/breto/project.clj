@@ -4,10 +4,10 @@
 (ns breto.project
   "The project files of a directory: .breto.edn, shared with everyone working
   on the project, and .breto.local.edn, kept out of version control for the
-  settings of one machine. Both may list :packages, set :env and define
-  :commands; the local file is read over the shared one. The groups a
-  project names contribute their own :env and :commands beneath the
-  project's."
+  settings of one machine. Both may list :packages, set :env, define
+  :commands and adjust the :limits of commands; the local file is read over
+  the shared one. The groups a project names contribute their own :env and
+  :commands beneath the project's."
   (:require [babashka.fs :as fs]
             [babashka.process :as process]
             [breto.command :as command]
@@ -30,7 +30,7 @@
   [dir]
   (mapv #(str (fs/absolutize (fs/path dir %))) file-names))
 
-(def ^:private keys-allowed #{:packages :env :commands :menu :on-enter})
+(def ^:private keys-allowed #{:packages :env :commands :limits :menu :on-enter})
 
 (defn- has-file? [dir]
   (some fs/regular-file? (candidates dir)))
@@ -58,17 +58,22 @@
 (defn problems
   "What is wrong with the project or group data `data`, read from `label`."
   [data]
-  (let [{:keys [packages env commands menu on-enter]} data]
+  (let [{:keys [packages env commands limits menu on-enter]} data]
     (cond-> []
       (not (map? data)) (conj "a project file holds a map")
       (and (map? data) (seq (remove keys-allowed (keys data))))
       (conj (str "unknown keys " (str/join ", " (map pr-str (sort (remove keys-allowed (keys data)))))
-                 "; a project file has :packages, :env, :commands, :menu and :on-enter"))
+                 "; a project file has :packages, :env, :commands, :limits, :menu and :on-enter"))
       (and (some? packages) (not (and (vector? packages) (every? #(and (string? %) (not (str/blank? %))) packages))))
       (conj ":packages must be a vector of PKG, PKG@VERSION or @GROUP")
       (some? env) (into (command/env-problems env))
       (and (some? commands) (not (map? commands))) (conj ":commands maps names to commands")
       (map? commands) (into (mapcat (fn [[k v]] (command/problems k v)) commands))
+      (and (some? limits) (not (and (map? limits) (every? string? (keys limits)))))
+      (conj ":limits maps command names to limits or false")
+      (map? limits) (into (mapcat (fn [[k v]] (when-not (false? v)
+                                                (map #(str "limits of " k ": " %) (command/limits-problems v))))
+                                  limits))
       (and (some? menu) (not (boolean? menu))) (conj ":menu is true or false")
       (and (some? on-enter) (not (string? on-enter))) (conj ":on-enter names a command"))))
 
@@ -126,6 +131,12 @@
      :commands (update-vals (gather :commands "command") second)
      :files (registry/group-files groups names)}))
 
+(defn- merge-limits
+  "The :limits of `shared` with those of `local` over them, per command and
+  per resource; false drops the limits of a command."
+  [shared local]
+  (merge-with (fn [a b] (if (and (map? a) (map? b)) (merge a b) b)) shared local))
+
 (defn ignored-by-git?
   "Whether git ignores `file`: true or false inside a work tree, nil outside
   one or without git."
@@ -141,7 +152,8 @@
   "The project of `dir`: {:dir :files :packages :specs :env :commands :menu
   :on-enter :warnings}, the specs with groups expanded, :files the project
   files and the group files the project draws on, and :env and :commands the
-  groups' with the project's own over them. `ignored?` tells whether git
+  groups' with the project's own over them, and :limits the project files'
+  adjustments of the commands' limits. `ignored?` tells whether git
   ignores a file, as ignored-by-git? does; a local file inside a work tree
   that git does not ignore is warned about."
   ([groups dir] (load-project groups dir ignored-by-git?))
@@ -155,26 +167,37 @@
              (throw (ex-info (str "no " file-name " or " local-file-name " in " dir)
                              {:breto/problem :no-project :dir dir})))
          names (merge-packages (:packages shared []) (:packages local []))
-         from-groups (merge-groups groups names)]
+         from-groups (merge-groups groups names)
+         commands (merge (:commands from-groups) (:commands shared) (:commands local))
+         limits (merge-limits (:limits shared) (:limits local))]
      {:dir dir
       :files (vec (concat (files dir) (:files from-groups)))
       :packages names
       :specs (registry/expand groups names)
       :env (merge (:env from-groups) (:env shared) (:env local))
-      :commands (merge (:commands from-groups) (:commands shared) (:commands local))
+      :commands commands
+      :limits limits
       :menu (get local :menu (get shared :menu true))
       :on-enter (get local :on-enter (:on-enter shared))
-      :warnings (cond-> []
+      :warnings (cond-> (vec (for [name (sort (keys limits)) :when (not (contains? commands name))]
+                               (str "the :limits of " name " name no command of the project")))
                   (and local (false? (ignored? local-file)))
                   (conj (str local-file " is not ignored by git, so its host-local settings may be committed;"
                              " add " local-file-name " to .gitignore")))})))
 
 (defn command-for
   "The command `name` of `project` resolved for `platform`: its :platforms
-  entry over it, or nil when the project has no such command."
+  entry over it, and the project's :limits for it over both, resource by
+  resource, where false drops the limits. Nil when the project has no such
+  command."
   [project name platform]
   (when-let [command (get-in project [:commands name])]
-    (merge (dissoc command :platforms) (get-in command [:platforms platform]))))
+    (let [entry (get-in command [:platforms platform])
+          override (get-in project [:limits name])
+          limits (when-not (false? override)
+                   (merge (:limits command) (:limits entry) override))]
+      (cond-> (merge (dissoc command :platforms :limits) (dissoc entry :limits))
+        (seq limits) (assoc :limits limits)))))
 
 (defn run-order
   "The commands to run for `name`, its :depends first, each once, depth

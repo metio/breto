@@ -495,8 +495,9 @@
   "Runs the project command named first in `args` with the rest of them,
   after the commands it depends on, in the project directory with the
   project's bin directory first on PATH and its variables set. Without a
-  name, the command is chosen interactively. Returns the exit code of the
-  first command that fails, else 0."
+  name, the command is chosen interactively. Commands with :limits run capped
+  unless CI is set; without a user systemd manager they run uncapped with a
+  warning. Returns the exit code of the first command that fails, else 0."
   [{:keys [config io] :as ctx} [name & args]]
   (let [{:keys [code dir bin vars commands] :as proj} (prepared-project! ctx "run")]
     (cond
@@ -505,9 +506,20 @@
                                         {:breto/problem :unknown-command :command name :known []}))
       :else
       (if-let [name (or name (choose-command ctx proj))]
-        (let [platform (platform/current config)]
-          (run/run-order! (project/run-order proj name platform)
-                          {:dir dir :env vars :args (vec args)
+        (let [platform (platform/current config)
+              order (project/run-order proj name platform)
+              limited (filter (comp :limits second) order)
+              mode (when (seq limited)
+                     (run/limits-mode (or (:getenv io) #(System/getenv %)) (which io)
+                                      (or (:systemd-version io) run/systemd-version)))]
+          (when (= :unavailable mode)
+            (binding [*out* *err*]
+              (println (str "[WARN] " (str/join ", " (map first limited))
+                            " declare :limits, which need a user systemd manager and systemd-run "
+                            run/scope-version " or newer;"
+                            " running without them"))))
+          (run/run-order! order
+                          {:dir dir :env vars :args (vec args) :limits? (= :on mode)
                            :path (env/path-value config bin (System/getenv "PATH"))
                            :vars (run/template-vars dir bin (env/homes-dir config dir) platform)}
                           (or (:exec io) run/exec!)))

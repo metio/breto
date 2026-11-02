@@ -7,7 +7,8 @@
   string runs through sh -c. Both are templates of {project}, {bin},
   {install-dirs}, {platform}, {os} and {arch}, with {homes} as the deprecated
   name of {install-dirs}; any other braces, such as a shell's ${var}, are
-  left alone."
+  left alone. A command with :limits runs in a systemd scope of its own that
+  caps its CPU, memory and IO."
   (:require [babashka.fs :as fs]
             [babashka.process :as process]
             [breto.platform :as platform]
@@ -48,25 +49,109 @@
     (into [found] args)
     command))
 
+(def scope-version
+  "The first systemd release whose systemd-run can leave the arguments of a
+  scope alone; earlier ones would expand a shell's ${var} themselves."
+  254)
+
+(defn systemd-version
+  "The release of the systemd-run on PATH, or nil."
+  []
+  (try (some->> (:out (process/shell {:out :string :err :string :continue true} "systemd-run" "--version"))
+                (re-find #"^systemd (\d+)") second parse-long)
+       (catch Exception _ nil)))
+
+(defn limits-mode
+  "How commands with :limits run: :ci skips the limits when CI is set, since a
+  CI runner sizes its own machine; :unavailable when no user systemd manager
+  of at least scope-version can start a scope; else :on. `getenv` reads a
+  variable, `which` finds a program and `version` gives systemd's release."
+  ([getenv which] (limits-mode getenv which systemd-version))
+  ([getenv which version]
+   (let [runtime (getenv "XDG_RUNTIME_DIR")]
+     (cond (not (str/blank? (getenv "CI"))) :ci
+           (not (and (which "systemd-run") (which "systemctl") (not (str/blank? runtime))
+                     (or (fs/exists? (fs/path runtime "systemd" "private"))
+                         (fs/exists? (fs/path runtime "bus")))
+                     (<= scope-version (or (version) 0))))
+           :unavailable
+           :else :on))))
+
+(defn scope-properties
+  "The systemd properties capping a scope at `limits`. Swap is closed off
+  with a memory cap, so that a command that needs more is stopped instead of
+  paging the machine to a halt."
+  [{:keys [cpus memory io-weight]}]
+  (cond-> []
+    cpus (conj (str "CPUQuota=" (long (Math/ceil (* 100 cpus))) "%"))
+    memory (conj (str "MemoryMax=" memory) "MemorySwapMax=0")
+    io-weight (conj (str "IOWeight=" io-weight))))
+
+(defn limited
+  "`command` started by systemd-run in the scope `unit`, capped at `limits`."
+  [command unit limits]
+  (-> ["systemd-run" "--user" "--scope" "--quiet" "--expand-environment=no" (str "--unit=" unit)]
+      (into (mapcat #(vector "--property" %)) (scope-properties limits))
+      (conj "--")
+      (into command)))
+
+(defn scope-name
+  "A unit name for a scope running the command `name`, unique to this run."
+  [name]
+  (str "breto-" (str/replace name #"[^A-Za-z0-9_.-]" "_") "-"
+       (subs (str (java.util.UUID/randomUUID)) 0 8)))
+
+(defn- scope-result
+  "The Result of the scope `unit` after it ended, such as \"oom-kill\", and
+  clears a failed one so that it does not linger in the user manager."
+  [unit]
+  (let [scope (str unit ".scope")
+        result (try (str/trim (:out (process/shell {:out :string :err :string :continue true}
+                                                   "systemctl" "--user" "show" "--property=Result" "--value" scope)))
+                    (catch Exception _ nil))]
+    (when (and result (not= "success" result))
+      (try (process/shell {:out :string :err :string :continue true} "systemctl" "--user" "reset-failed" scope)
+           (catch Exception _ nil)))
+    result))
+
+(defn oom-message
+  "What to say when the kernel stopped a process of the command `name` for
+  using more memory than its `limits` allow."
+  [name {:keys [memory]}]
+  (str "[ERROR] the command " name " ran out of memory"
+       (when memory (str " under its :limits of " memory))
+       "; raise :memory in its :limits, or in the :limits of .breto.local.edn for this machine"))
+
 (defn exec!
-  "Runs `command` in the terminal and returns its exit code."
-  [{:keys [command env dir]}]
-  (:exit @(apply process/process {:inherit true :extra-env env :dir (str dir)} (on-path command (get env "PATH")))))
+  "Runs `command` in the terminal and returns its exit code; with `limits`, in
+  a capped systemd scope, reporting a process the kernel stopped for running
+  out of memory."
+  [{:keys [command env dir name limits]}]
+  (let [command (on-path command (get env "PATH"))
+        unit (when limits (scope-name name))
+        code (:exit @(apply process/process {:inherit true :extra-env env :dir (str dir)}
+                            (if limits (limited command unit limits) command)))]
+    (when (and limits (= "oom-kill" (scope-result unit)))
+      (binding [*out* *err*] (println (oom-message name limits))))
+    code))
 
 (defn run-order!
   "Runs each [name command] of `order` that has a :run, the last one with
   `args`, in the project directory or the command's :dir below it, and stops
   at the first that fails. Returns the exit code. `exec` runs one
-  invocation, {:command :env :dir}, and returns its exit code."
+  invocation, {:command :env :dir :name}, and returns its exit code; the
+  invocation carries the command's :limits as well when `limits?`."
   ([order opts] (run-order! order opts exec!))
-  ([order {:keys [dir env path args vars]} exec]
+  ([order {:keys [dir env path args vars limits?]} exec]
    (let [last-name (first (last order))]
      (reduce (fn [_ [name {:keys [run] :as command}]]
                (if-not run
                  0
-                 (let [code (exec {:command (invocation name command (if (= name last-name) args []) vars)
-                                   :env (merge env (render-env (:env command {}) vars) {"PATH" path})
-                                   :dir (fs/normalize (fs/path dir (:dir command ".")))})]
+                 (let [code (exec (cond-> {:command (invocation name command (if (= name last-name) args []) vars)
+                                           :env (merge env (render-env (:env command {}) vars) {"PATH" path})
+                                           :dir (fs/normalize (fs/path dir (:dir command ".")))
+                                           :name name}
+                                    (and limits? (:limits command)) (assoc :limits (:limits command))))]
                    (if (zero? code) code (reduced code)))))
              0
              order))))

@@ -4,6 +4,7 @@
 (ns breto.project-test
   (:require [babashka.fs :as fs]
             [babashka.process :as process]
+            [breto.command :as command]
             [breto.project :as project]
             [breto.run :as run]
             [breto.support :as s :refer [path]]
@@ -172,6 +173,72 @@
     (testing "an unknown command names the project's commands"
       (is (thrown-with-msg? clojure.lang.ExceptionInfo #"no command nope"
                             (breto! io ["run" "--dir" (path "app") "nope"]))))))
+
+(deftest limits-are-validated
+  (doseq [limits [{:cpus 6} {:cpus 1.5 :memory "14G" :io-weight 50} {:memory 1073741824} {:memory "512M"}]]
+    (is (empty? (command/problems "x" {:run ["x"] :limits limits})) (pr-str limits)))
+  (doseq [limits [{} {:cpu 6} {:cpus 0} {:cpus "6"} {:memory "14 G"} {:memory "14GB"} {:memory 0}
+                  {:io-weight 0} {:io-weight 10001} {:io-weight 1.5} "6"]]
+    (is (seq (command/problems "x" {:run ["x"] :limits limits})) (pr-str limits)))
+  (is (seq (command/problems "x" {:run ["x"] :platforms {"linux-x86_64" {:limits {:cpus -1}}}})))
+  (doseq [data [{:limits {"x" {:cpus 0}}} {:limits {:x {:cpus 1}}} {:limits ["x"]} {:limits {"x" true}}]]
+    (is (seq (project/problems data)) (pr-str data)))
+  (is (empty? (project/problems {:limits {"x" false "y" {:memory "1G"}}}))))
+
+(deftest the-project-files-adjust-the-limits-of-commands-resource-by-resource
+  (group! "@tools" {:members ["alpha"] :commands {"stories" {:run ["s"] :limits {:cpus 6 :memory "8G"}}}})
+  (write! "app" ".breto.edn" {:packages ["@tools"]
+                              :commands {"test" {:run ["t"] :limits {:cpus 2 :io-weight 50}
+                                                 :platforms {"darwin-aarch64" {:run ["gt"] :limits {:cpus 4}}}}
+                                         "lint" {:run ["l"] :limits {:cpus 1}}}
+                              :limits {"stories" {:memory "12G"}}})
+  (write! "app" ".breto.local.edn" {:limits {"stories" {:cpus 3} "lint" false "gone" {:cpus 1}}})
+  (let [p (project/load-project {"@tools" {:members ["alpha"]
+                                           :commands {"stories" {:run ["s"] :limits {:cpus 6 :memory "8G"}}}}}
+                                (path "app") (constantly true))]
+    (is (= {:cpus 3 :memory "12G"} (:limits (project/command-for p "stories" "linux-x86_64"))))
+    (is (= {:cpus 2 :io-weight 50} (:limits (project/command-for p "test" "linux-x86_64"))))
+    (is (= {:run ["gt"] :limits {:cpus 4 :io-weight 50}} (project/command-for p "test" "darwin-aarch64")))
+    (is (= {:run ["l"]} (project/command-for p "lint" "linux-x86_64")))
+    (is (= ["the :limits of gone name no command of the project"] (:warnings p)))))
+
+(deftest run-passes-the-limits-on-only-where-a-scope-can-hold-them
+  (let [io (world)
+        runtime (path "runtime")]
+    (fs/create-dirs (fs/path runtime "systemd"))
+    (spit (str (fs/path runtime "systemd" "private")) "")
+    (write! "app" ".breto.edn" {:packages ["alpha"]
+                                :commands {"fmt" {:run ["alpha" "fmt"]}
+                                           "stories" {:run ["alpha" "stories"] :depends ["fmt"] :limits {:memory "8G"}}}})
+    (let [with (fn [vars which]
+                 (assoc io :getenv #(get vars %) :which #(when (contains? which %) (str "/usr/bin/" %))
+                        :systemd-version (constantly 259)))
+          capped (with {"XDG_RUNTIME_DIR" runtime} #{"systemd-run" "systemctl"})]
+      (testing "with a user systemd manager"
+        (let [runs (atom [])
+              {:keys [code err]} (breto! capped ["run" "--dir" (path "app") "stories"] runs)
+              [fmt stories] @runs]
+          (is (= 0 code) err)
+          (is (nil? (:limits fmt)))
+          (is (= {:memory "8G"} (:limits stories)))
+          (is (= "stories" (:name stories)))
+          (is (not (str/includes? err "[WARN]")))))
+      (testing "on CI"
+        (let [runs (atom [])
+              {:keys [err]} (breto! (with {"XDG_RUNTIME_DIR" runtime "CI" "true"} #{"systemd-run" "systemctl"})
+                                    ["run" "--dir" (path "app") "stories"] runs)]
+          (is (nil? (:limits (second @runs))))
+          (is (not (str/includes? err "[WARN]")))))
+      (testing "without systemd"
+        (let [runs (atom [])
+              {:keys [code err]} (breto! (with {"XDG_RUNTIME_DIR" runtime} #{})
+                                         ["run" "--dir" (path "app") "stories"] runs)]
+          (is (= 0 code))
+          (is (nil? (:limits (second @runs))))
+          (is (str/includes? err "[WARN] stories declare :limits, which need a user systemd manager and systemd-run 254"))))
+      (testing "a command without limits needs no systemd"
+        (let [{:keys [err]} (breto! (with {} #{}) ["run" "--dir" (path "app") "fmt"])]
+          (is (not (str/includes? err "[WARN]"))))))))
 
 (deftest packages-without-a-release-for-the-platform-are-left-out-with-a-warning
   (let [io (world)]

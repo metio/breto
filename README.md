@@ -195,6 +195,22 @@ Switching to a branch that names other versions needs no extra step. The command
 
 A vector `:run` starts the program with its arguments; a string runs through `sh -c`, where the arguments of the call are `"$@"`. `:depends` names commands that run first, each once, depth first and in the order given; the first one failing stops the run with its exit code. A command runs in the project directory, or in its `:dir` below it, with its own `:env` on top of the project's. `:platforms` overrides `:run` and `:env` for a platform, such as `{"darwin-aarch64" {:run ["gmake" "dev"]}}`. In `:run`, `:env` and the project's `:env`, `{project}` is the project directory, `{bin}` its bin directory, `{install-dirs}` the directory of its links to version directories (`{homes}` is a deprecated name for it), and `{platform}`, `{os}` and `{arch}` the platform; other braces, such as a shell's `${var}`, stay as written.
 
+`:limits` caps what a command may use, so that a heavy test run cannot take the machine down with it. Set each cap to what the command needs to succeed:
+
+```clojure
+{:commands {"ci-stories" {:run "npm run test:stories"
+                          :limits {:cpus 6 :memory "8G" :io-weight 50}}}}
+```
+
+`:cpus` is a number of CPUs, fractions allowed; `:memory` a number of bytes or a string with `K`, `M`, `G` or `T`, such as `"8G"`; `:io-weight` a weight from 1 to 10000 against the default of 100. `breto run` starts each command with limits in a systemd scope of its own through `systemd-run --user --scope`, with `CPUQuota`, `MemoryMax` and `IOWeight` set from them and swap closed off with `MemorySwapMax=0` whenever `:memory` is set. A command that needs more memory is stopped by the kernel, and breto names the command and its limit. The commands it depends on run in scopes of their own with their own limits. `:limits` in `:platforms` adds to the command's limits for that platform.
+
+The limits need a user systemd manager and systemd-run 254 or newer; without them, as on macOS, the command runs uncapped with a warning. With `CI` set, the limits are skipped, since the runner is sized for the job. The project files can adjust the limits of any command, a group's included, resource by resource; `false` drops them. A `.breto.local.edn` gives one machine its own:
+
+```clojure
+{:limits {"ci-stories" {:memory "12G"}
+          "ci-lint" false}}
+```
+
 `breto run lint --fix` runs the command `lint` with `--fix`; options after the command name are its own. `breto run` without a name chooses the command in fzf or sk, else in a numbered prompt. Every command is also linked into the project's bin directory as a script calling `breto run`, so `lint --fix` works in the project's shell as well. A command may not take the name of a command one of the project's packages links.
 
 On entering a project, the hook runs `breto env --enter`, which lists the project's commands with their descriptions and then runs the command `:on-enter` names, in the shell that entered. `:menu false` keeps the list quiet. A group can carry `:env` and `:commands` too; the project's files override them, and two groups defining one variable or command differently is an error. Variables of the project's `:env` win over those of its packages and groups.
