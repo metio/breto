@@ -77,3 +77,12 @@
     (s/define! "alpha" {:source {:github "acme/alpha"} :asset "alpha" :tests tests})
     (is (some #(str/includes? % ":tests is a vector of tests") (registry/validate (str (path "packages"))))
         (pr-str tests))))
+
+(deftest packages-without-a-release-for-the-platform-are-skipped
+  (let [io (world [["alpha"]] (fn [_] {:exit 0 :out "" :err ""}))
+        _ (s/define! "beta" {:source {:github "acme/beta"} :platforms {"linux-x86_64" {:asset "beta"}}})
+        {:keys [code out]} (binding [*err* (java.io.StringWriter.)]
+                             (s/breto! {:platform "darwin-aarch64"} ["test" "alpha" "beta"] {:io io}))]
+    (is (= 0 code))
+    (is (str/includes? out "[OK] alpha 1.0.0 passed its test"))
+    (is (not (str/includes? out "beta")))))

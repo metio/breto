@@ -268,10 +268,12 @@
 
 (defn test-packages
   "Installs the named packages, or the configured ones, like install and
-  runs the :tests of each installed version. A package that failed to
-  install keeps its failure; one whose test fails reports that test."
+  runs the :tests of each installed version. A package without a release
+  for this platform is skipped with a warning, so one list of packages
+  serves a runner of every platform. A package that failed to install keeps
+  its failure; one whose test fails reports that test."
   [{:keys [config registry opts io] :as ctx} args]
-  (let [installed (install-results ctx "test" (targets ctx args)
+  (let [installed (install-results ctx "test" (vec (supported-only registry (targets ctx args)))
                                    (fn [name version] {:version version :verify? (:verify opts true)}))
         run (or (:run-hook io) proc/run-bounded)
         results (mapv (fn [{:keys [package version status] :as result}]

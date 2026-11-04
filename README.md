@@ -577,7 +577,7 @@ The `:revoked` maps of an overlay, a platform entry and a `:history` entry add t
         {:args ["kind" "version"] :expect "v{version}"}]
 ```
 
-The arguments, `:env` values and `:expect` are templates with the placeholders of the definition, so `{version}` checks that the release reports the version it was installed as. A `:platforms` entry with `:tests` of its own replaces them on that platform, for a command that needs something one platform lacks. A package without tests passes once it installs. The tests run the package's commands, so run `breto test` where a broken or hostile release can do no harm, such as a CI runner.
+The arguments, `:env` values and `:expect` are templates with the placeholders of the definition, so `{version}` checks that the release reports the version it was installed as. A `:platforms` entry with `:tests` of its own replaces them on that platform, for a command that needs something one platform lacks. A package without tests passes once it installs, and one without a release for the platform is skipped with a warning, so a CI job can pass the same list of packages on a runner of every platform. The tests run the package's commands, so run `breto test` where a broken or hostile release can do no harm, such as a CI runner.
 
 ### Groups
 
