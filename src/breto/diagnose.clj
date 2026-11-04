@@ -376,12 +376,20 @@
                  " and takes the links over; the next breto gc then removes " package ".")
             "If that update fails, its own diagnosis says why."]})
 
-(defmethod explain :all-skipped [{:keys [package latest skip source]} _]
-  {:summary (str "The latest release of " package ", " latest ", is listed in :skip, and no older release is left to install.")
-   :facts [(str ":skip " (pr-str skip)) (str "Source: " (pr-str source))]
+(defmethod explain :all-skipped [{:keys [package latest skip revoked source]} _]
+  {:summary (str "The latest release of " package ", " latest ", is listed in :skip or :revoked, and no older release is left to install.")
+   :facts (cond-> [(str ":skip " (pr-str (vec skip)))]
+            (seq revoked) (conj (str ":revoked " (pr-str (vec revoked))))
+            true (conj (str "Source: " (pr-str source))))
    :advice [(if (or (:github source) (:gitlab source) (:forgejo source) (:gitea source))
-              "Remove a version from :skip, or pin a version under :pins in the config."
-              "This source lists no older releases; pin a version under :pins in the config.")]})
+              "Remove a version from :skip, or pin a version under :pins in the config that is not revoked."
+              "This source lists no older releases; pin a version under :pins in the config that is not revoked.")]})
+
+(defmethod explain :revoked [{:keys [package version reason]} _]
+  {:summary (str package " " version " is revoked, so breto installs and activates it on no path.")
+   :facts [(str "Reason: " reason)]
+   :advice [(str "Choose another version of " package "; breto install " package " installs the newest one that is not revoked.")
+            (str "Remove " package "@" version " from :pins in the config, from the group or project that pins it, and from the lock file.")]})
 
 (defmethod explain :token-command [{:keys [command exit stderr error empty timed-out]} _]
   {:summary "The :token-command that provides the GitHub token failed, so no GitHub API request was made."

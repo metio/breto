@@ -27,14 +27,14 @@
 
 (def ^:private status-label
   {:installed "installed" :current "up to date" :outdated "outdated"
-   :removed "removed" :would-remove "to remove" :checked "checked" :failed "failed"})
+   :removed "removed" :would-remove "to remove" :checked "checked" :deactivated "deactivated" :failed "failed"})
 
 (defn summary-line [command results]
   (let [counts (frequencies (map :status results))]
     (str "breto " command ": "
          (if (empty? results)
            "nothing to do"
-           (str/join ", " (for [status [:current :installed :checked :outdated :removed :would-remove :failed]
+           (str/join ", " (for [status [:current :installed :checked :outdated :removed :would-remove :deactivated :failed]
                                 :let [n (get counts status 0)]
                                 :when (pos? n)]
                             (str n " " (status-label status))))))))
@@ -59,8 +59,18 @@
    :coursier "verifiable by the checksums Maven Central publishes"
    :none "installs unverified, as its definition says"})
 
-(defn- line [{:keys [package status version from links unverified signed signature-bootstrap hash-recorded verified-by]}]
+(defn deactivated-line
+  "The line for the revoked active `version` of `package` that breto
+  deactivated, naming the version it activated instead, if any."
+  [{:keys [package version reason activated]}]
+  (str "[OK] " package " " version " deactivated, since it is revoked: " reason "; "
+       (if activated
+         (str activated " is active instead")
+         "no other version is installed, so its commands are unlinked")))
+
+(defn- line [{:keys [package status version from links unverified signed signature-bootstrap hash-recorded verified-by] :as result}]
   (case status
+    :deactivated (deactivated-line result)
     :checked (str "[OK] " package " " version " " (verification verified-by)
                   (when signed ", signature bundle present"))
     :installed (str "[OK] " package " " version " installed"

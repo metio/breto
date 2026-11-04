@@ -20,6 +20,7 @@
             [breto.signature :as signature]
             [breto.source :as source]
             [breto.store :as store]
+            [breto.version :as version]
             [clojure.string :as str]))
 
 (defn- kept-resolution
@@ -35,11 +36,15 @@
 
 (defn resolve-release
   "The tag and version to install: the requested `version`, or the newest one
-  `:skip` does not name."
+  neither `:skip` nor `:revoked` names. Every install and every lock file
+  hash resolves its release here, so a revoked version fails before anything
+  of it is downloaded."
   [pkg io version]
+  (package/revoked! pkg version)
   (let [release (if version
                   {:tag (package/tag-of-version (package/at pkg version) version) :version version}
                   (source/newest pkg io))]
+    (package/revoked! pkg (:version release))
     (source/fetch-vars (package/at pkg (:version release)) io release)))
 
 (defn github-asset?
@@ -447,8 +452,9 @@
       (update-vals (installed-bin-paths config pkg artifact version) #(str (fs/path dir %))))))
 
 (defn use!
-  "Activates an already installed version."
+  "Activates an already installed version that is not revoked."
   [config pkg version]
+  (package/revoked! pkg version)
   (let [pkg (package/at pkg version)
         artifact (package/artifact pkg {:tag (package/tag-of-version pkg version) :version version})
         bin-paths (installed-bin-paths config pkg artifact version)]
@@ -457,3 +463,24 @@
                       {:breto/problem :not-installed :package (:name pkg) :version version
                        :installed (mapv :version (store/versions config (:name pkg)))})))
     (store/activate! config pkg bin-paths version)))
+
+(defn retire!
+  "Deactivates the active version of `pkg` when it is revoked: activates the
+  newest installed version that is not, else removes the `current` link and
+  every link into the package, so none of its commands runs. Returns
+  {:version :reason :activated}, :activated nil without a replacement, or nil
+  when the active version is not revoked."
+  [config pkg]
+  (let [name (:name pkg)
+        active (store/current-version config name)]
+    (when-let [reason (package/revocation pkg active)]
+      (let [replacement (->> (store/versions config name)
+                             (map :version)
+                             (remove #(package/revocation pkg %))
+                             (filter #(bin-targets config pkg %))
+                             (sort version/compare-versions)
+                             last)]
+        (if replacement
+          (use! config pkg replacement)
+          (store/deactivate! config name (store/links-into config name (keys (:links pkg)))))
+        {:version active :reason reason :activated replacement}))))

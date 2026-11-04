@@ -68,7 +68,8 @@
   "`pkg` merged over the definition `earlier` of the same name. A definition
   with :replace true stands alone. One whose :source names another project
   is a different tool under the same name, and merging the two would mix
-  their keys, so it is refused."
+  their keys, so it is refused. The :revoked maps of both are merged, so an
+  overlay cannot drop a revocation without :replace true."
   [earlier pkg]
   (cond
     (nil? earlier) (dissoc pkg :replace)
@@ -84,7 +85,9 @@
                                        " to replace the earlier definition instead of merging over it")]})))
     :else (cond-> (-> (merge earlier pkg) (assoc ::files (into (vec (::files earlier)) (::files pkg))))
             (and (map? (:platforms earlier)) (map? (:platforms pkg)))
-            (assoc :platforms (merge-with merge (:platforms earlier) (:platforms pkg))))))
+            (assoc :platforms (merge-with merge (:platforms earlier) (:platforms pkg)))
+            (and (map? (:revoked earlier)) (map? (:revoked pkg)))
+            (assoc :revoked (merge (:revoked earlier) (:revoked pkg))))))
 
 (defn load-registry
   "Package definitions from `builtin`, the files built into breto, and `dirs`,
@@ -99,7 +102,7 @@
                        (map read-file (entries builtin dirs (complement group-name?))))]
     (update-vals merged #(normalize platform %))))
 
-(declare load-groups expand)
+(declare load-groups expand package-of)
 
 (defn- sample-version
   "A version `pkg` can render a release for without asking upstream."
@@ -133,8 +136,8 @@
   "The problems of the registry directory `dir` on its own, one line each,
   without downloading anything: a file that is not valid EDN, a definition
   that is invalid on one of the platforms, renders an unusable release or
-  links nothing on every platform, and a group that is invalid or contains
-  itself."
+  links nothing on every platform, a group that is invalid or contains
+  itself, and a group that pins a version a definition in `dir` revokes."
   [dir]
   (let [read (for [entry (entries nil [dir] (complement group-name?))]
                (try {:pkg (read-file entry)}
@@ -160,8 +163,20 @@
         groups (try (let [groups (load-groups [dir])]
                       (doseq [name (keys groups)] (expand groups [name]))
                       [])
-                    (catch clojure.lang.ExceptionInfo e [(ex-message e)]))]
-    (vec (concat (keep :problem read) located unsupported groups))))
+                    (catch clojure.lang.ExceptionInfo e [(ex-message e)]))
+        defined (into {} (map (juxt :name identity)) packages)
+        revoked (for [[group-name {:keys [members]}] (sort (try (load-groups [dir]) (catch clojure.lang.ExceptionInfo _ {})))
+                      spec members
+                      :let [name (package-of spec)
+                            version (when (not= name spec) (subs spec (inc (count name))))
+                            pkg (get defined name)]
+                      :when (and version pkg)
+                      :let [reason (some #(try (package/revocation (normalize % pkg) version)
+                                               (catch clojure.lang.ExceptionInfo _ nil))
+                                         (sort platform/known))]
+                      :when reason]
+                  (str "the group " group-name " pins " spec ", which is revoked: " reason))]
+    (vec (concat (keep :problem read) located unsupported groups revoked))))
 
 (defn lookup [registry name]
   (or (get registry name)

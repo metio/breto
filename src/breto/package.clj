@@ -218,6 +218,11 @@
     (not (and (sequential? (:skip pkg [])) (every? string? (:skip pkg []))))
     (conj ":skip must be a vector of version strings")
 
+    (not (and (map? (:revoked pkg {}))
+              (every? (fn [[version reason]] (and (string? version) (string? reason) (not (str/blank? reason))))
+                      (:revoked pkg {}))))
+    (conj ":revoked must map version strings to the reason each one is revoked")
+
     (not (boolean? (:verify pkg true)))
     (conj ":verify must be true or false")
 
@@ -385,6 +390,15 @@
     (when-let [[p _] (first (filter (fn [[_ entry]] (some #{:source :name :platforms} (keys entry))) platforms))]
       (invalid! definition (str ":platforms " (pr-str p) " cannot change :source, :name or :platforms")))))
 
+(defn- over-shared
+  "The keys of the platform entry `over` merged over the shared definition
+  `shared`, with the :revoked maps of both merged, so a platform entry adds
+  revocations without dropping the shared ones."
+  [shared over]
+  (cond-> (merge shared over)
+    (and (map? (:revoked shared)) (map? (:revoked over)))
+    (assoc :revoked (merge (:revoked shared) (:revoked over)))))
+
 (defn supported-platforms
   "The platforms `definition` has releases for: every one for a source that
   builds on the machine itself or that ghcup installs, else those its
@@ -420,8 +434,8 @@
             steps (rest (reductions (fn [[b p] [layer e]]
                                       (if (= :base layer) [(merge b (dissoc e :before)) p] [b (merge p (dissoc e :before))]))
                                     [base over] entries))]
-        (assoc (complete (merge base over) platform)
-               :history (mapv (fn [[_ e] [b p]] {:before (:before e) :package (complete (merge b p) platform)})
+        (assoc (complete (over-shared base over) platform)
+               :history (mapv (fn [[_ e] [b p]] {:before (:before e) :package (complete (over-shared b p) platform)})
                               entries steps)
                :platform platform
                :supported (vec supported)
@@ -441,6 +455,28 @@
              last
              :package))
       pkg))
+
+(defn revocation
+  "The reason `version` of `pkg` is revoked, or nil when it is not. A
+  revocation in a :history entry counts for the versions that entry covers."
+  [pkg version]
+  (when version
+    (or (get (:revoked pkg) version)
+        (get (:revoked (at pkg version)) version))))
+
+(defn revoked!
+  "Throws :revoked when `version` of `pkg` is revoked, before anything of it
+  is downloaded or activated."
+  [pkg version]
+  (when-let [reason (revocation pkg version)]
+    (throw (ex-info (str (:name pkg) " " version " is revoked: " reason)
+                    {:breto/problem :revoked :package (:name pkg) :version version :reason reason}))))
+
+(defn excluded
+  "The versions of `pkg` never chosen as its latest: those :skip and
+  :revoked name."
+  [pkg]
+  (into (set (:skip pkg)) (keys (:revoked pkg))))
 
 (defn version-of-tag [{:keys [tag-prefix name]} tag]
   (if (str/starts-with? tag tag-prefix)

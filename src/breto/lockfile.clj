@@ -99,8 +99,8 @@
   "The entries for the configured `names` given the store: the active version
   of each with the hash, or module sum, recorded when it was installed,
   placed for the platform `registry` resolves its package for. A package not
-  active here keeps its old entry, and so does the hash of a version
-  installed before hashes were recorded. Another platform's hashes stay
+  active here keeps its old entry unless that version is revoked, and the
+  hash of a version installed before hashes were recorded stays. Another platform's hashes stay
   while the version does."
   ([config names old] (snapshot config nil names old))
   ([config registry names old]
@@ -119,7 +119,8 @@
                                  (or sum (:sum kept)) (assoc :sum (or sum (:sum kept)))
                                  (or asset (:asset kept)) (assoc :asset (or asset (:asset kept)))
                                  (or exclude-newer (:exclude-newer kept)) (assoc :exclude-newer (or exclude-newer (:exclude-newer kept)))))])
-                     (when previous [name previous])))))
+                     (when (and previous (not (package/revocation pkg (:version previous))))
+                       [name previous])))))
          names)))
 
 (defn write!

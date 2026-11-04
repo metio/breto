@@ -208,6 +208,13 @@
          distinct
          sort)))
 
+(defn deactivate!
+  "Deletes `links` and the `current` link of `name`, leaving its installed
+  versions in place with none of them active."
+  [config name links]
+  (run! fs/delete links)
+  (fs/delete-if-exists (fs/path (package-dir config name) current-link)))
+
 (defn uninstall!
   "Deletes `links`, then the store directory of `name`. Links go first so none
   is left pointing at a deleted file."

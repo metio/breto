@@ -124,18 +124,28 @@
                      (or (#{"go" "uv" "node" "rustup" "ghcup" "coursier"} name) (some-> (get registry name) signature/provides-cosign?)))]
     (concat (filter provides? specs) (remove provides? specs))))
 
+(defn- installed-version
+  "The installed version of `pkg` to run when nothing pins one: the active
+  version, else the most recently installed one. A revoked version counts as
+  not installed."
+  [config pkg]
+  (let [usable #(when-not (package/revocation pkg %) %)]
+    (or (usable (store/current-version config (:name pkg)))
+        (some usable (map :version (store/versions config (:name pkg)))))))
+
 (defn tool-command
   "The command `command` of the package `name`, by default the command of the
   same name, which builds the packages of a :go, :pypi, :npm, :cargo, :ghcup or :coursier source: that of
-  the version `pins` names for it when that is installed, else of its active
-  version, else of its newest installed one."
+  the version `pins` names for it when that is installed and not revoked,
+  else of `installed-version`."
   ([config registry pins name] (tool-command config registry pins name name))
   ([config registry pins name command]
    (when-let [pkg (get registry name)]
      (when-let [version (or (let [pinned (get pins name)]
-                              (when (and pinned (fs/directory? (store/version-dir config name pinned))) pinned))
-                            (store/current-version config name)
-                            (:version (first (store/versions config name))))]
+                              (when (and pinned (not (package/revocation pkg pinned))
+                                         (fs/directory? (store/version-dir config name pinned)))
+                                pinned))
+                            (installed-version config pkg))]
        (get (install/bin-targets config pkg version) command)))))
 
 (defn- tool-pins
@@ -296,16 +306,23 @@
         (clojure.core/update :commands #(merge (package-commands registry specs) %))
         (clojure.core/update :warnings into (map skip-message skipped)))))
 
+(defn- project-version
+  "The version of `pkg` a project spec runs: the one it pins, else
+  `installed-version`. A pinned version that is revoked gives nil, so the
+  project installs it and that install refuses it."
+  [config pkg pinned]
+  (if pinned
+    (when-not (package/revocation pkg pinned) pinned)
+    (installed-version config pkg)))
+
 (defn- project-targets
   "[spec bin-targets] for each spec of `project`, bin-targets nil for a
-  version that is not installed. A spec without version uses the active
-  version, else the newest installed one."
+  version that is not installed or is revoked."
   [config registry {:keys [specs]}]
   (for [spec specs
         :let [[name version] (batch/split-spec spec)
               pkg (registry/lookup registry name)
-              version (or version (store/current-version config name)
-                          (:version (first (store/versions config name))))]]
+              version (project-version config pkg version)]]
     [spec (when version (install/bin-targets config pkg version))]))
 
 (defn- project-environment
@@ -321,8 +338,7 @@
                       :let [[name version] (batch/split-spec spec)
                             pkg (registry/lookup registry name)]
                       :when (seq (:env pkg))
-                      :let [version (or version (store/current-version config name)
-                                        (:version (first (store/versions config name))))]
+                      :let [version (project-version config pkg version)]
                       :when version
                       :let [pkg (package/at pkg version)
                             vars (assoc (package/template-vars pkg {:tag (package/tag-of-version pkg version) :version version})
@@ -529,15 +545,20 @@
   "Runs the command `name` of the project's packages with `args` in the current
   directory, for the script linked into the project's bin directory when a file
   deciding the project's versions looks changed. Content that did not change
-  only renews the stamp; anything else installs what is missing and links the
-  project again. Returns the exit code of the command."
+  only renews the stamp, unless the project pins a revoked version; anything
+  else installs what is missing and links the project again. Returns the exit
+  code of the command."
   [{:keys [config registry groups opts io] :as ctx} [name & args]]
   (let [start (or (:dir opts) ".")
         dir (project/find-dir start)
-        current (when dir (inputs/of-project (project groups registry dir)))
+        proj (when dir (project groups registry dir))
+        current (when dir (inputs/of-project proj))
+        revoked? (some #(let [[package version] (batch/split-spec %)]
+                          (package/revocation (get registry package) version))
+                       (:specs proj))
         code (cond
                (nil? dir) 0
-               (inputs/fresh? config dir current) (do (inputs/touch! config dir) 0)
+               (and (not revoked?) (inputs/fresh? config dir current)) (do (inputs/touch! config dir) 0)
                :else (:code (prepared-project! ctx "exec")))]
     (cond
       (nil? dir)
@@ -605,6 +626,23 @@
                            {:version (:version entry) :verify? (:verify opts true) :expect-sha256 sha256 :expect-sum sum})
                          (merge {:version (get-in config [:pins name]) :verify? (:verify opts true)} (locked ctx name)))))))
 
+(defn- active-revoked
+  "The installed packages whose active version is revoked."
+  [{:keys [config registry]}]
+  (filter #(when-let [pkg (get registry %)]
+             (and (not (:unsupported pkg)) (package/revocation pkg (store/current-version config %))))
+          (store/installed-packages config)))
+
+(defn- retire-revoked
+  "Deactivates every active version that is revoked, see install/retire!,
+  returning a :deactivated result for each."
+  [{:keys [config registry io] :as ctx}]
+  (batch/run-batch io (vec (active-revoked ctx))
+                   (fn [name]
+                     (let [{:keys [version reason activated]} (install/retire! config (get registry name))]
+                       {:package name :version version :status :deactivated :reason reason :activated activated}))
+                   (fn [_])))
+
 (defn- done
   "The packages of `results`, which a command installed before the rest."
   [results]
@@ -612,13 +650,15 @@
 
 (defn update
   "Updates the named packages, else the configured ones and then the projects
-  with an environment. The published registries installed first come with
-  their results under :registry-results."
+  with an environment, and deactivates every active version that is revoked.
+  The published registries installed first come with their results under
+  :registry-results."
   [{:keys [config opts registry-results] :as ctx} args]
   (let [results (install-results ctx "update" (vec (remove (comp (done registry-results) first batch/split-spec) (targets ctx args)))
                                  (fn [name version]
                                    (merge {:version (or version (get-in config [:pins name])) :verify? (:verify opts true)} (locked ctx name))))]
-    (batch/finish! "update" (-> (vec registry-results) (into results) (into (when (empty? args) (refresh-projects ctx "update")))))))
+    (batch/finish! "update" (-> (vec registry-results) (into results) (into (when (empty? args) (refresh-projects ctx "update")))
+                                (into (retire-revoked ctx))))))
 
 (defn outdated
   "The packages whose latest release differs from the active version, or from
@@ -678,12 +718,19 @@
                              platforms))]
     (batch/finish! "check" results)))
 
-(defn list-installed [{:keys [config]} _]
+(defn list-installed
+  "Every installed package with its versions, the active one marked with *,
+  and a line for each revoked version with the reason."
+  [{:keys [config registry]} _]
   (doseq [name (store/installed-packages config)]
     (let [active (store/current-version config name)
-          versions (map (fn [{:keys [version]}] (str version (when (= version active) "*")))
-                        (store/versions config name))]
-      (println (str name "\t" (str/join " " versions)))))
+          installed (map :version (store/versions config name))
+          versions (map #(str % (when (= % active) "*")) installed)]
+      (println (str name "\t" (str/join " " versions)))
+      (doseq [version installed
+              :let [reason (package/revocation (get registry name) version)]
+              :when reason]
+        (println (str "\trevoked " version ": " reason)))))
   0)
 
 (defn- previous! [config name]
@@ -746,7 +793,12 @@
       (store/uninstall! config name links))
     {:package name :status (if dry-run? :would-remove :removed) :links (vec links)}))
 
-(defn gc [{:keys [config opts io] :as ctx} args]
+(defn gc
+  "Deletes leftovers and all but the --keep most recent versions of each
+  package, never the active one nor one a project uses, and every revoked
+  version, after deactivating it when it is active. With :prune, packages the
+  config no longer lists go too."
+  [{:keys [config registry opts io] :as ctx} args]
   (let [keep (or (:keep opts) (:keep config))
         dry-run? (:dry-run opts)
         used (env/used-versions config)
@@ -760,13 +812,23 @@
                             ", which has no " project/file-name " or " project/local-file-name " any more"))))
         pruned (batch/run-batch io prune #(uninstall-one ctx % dry-run?) (fn [_]))
         failures (for [name (if (seq args) (targets ctx args) (remove (set prune) (store/installed-packages config)))
-                       :let [r (try
+                       :let [pkg (get registry name)
+                             active (store/current-version config name)
+                             retiring? (and pkg (not (:unsupported pkg)) (package/revocation pkg active))
+                             r (try
                                  (doseq [leftover (store/leftovers config name)]
                                    (when-not dry-run? (sealed/delete-tree! leftover))
                                    (println (str (if dry-run? "would remove " "[OK] removed ") leftover)))
-                                 (doseq [version (remove (get used name #{})
-                                                         (store/gc-candidates (store/versions config name)
-                                                                              (store/current-version config name) keep))]
+                                 (when retiring?
+                                   (println (if dry-run?
+                                              (str "would deactivate " name " " active ", which is revoked")
+                                              (report/deactivated-line (assoc (install/retire! config pkg) :package name)))))
+                                 (doseq [version (distinct
+                                                  (concat (filter #(and (package/revocation pkg %) (or retiring? (not= active %)))
+                                                                  (map :version (store/versions config name)))
+                                                          (remove (get used name #{})
+                                                                  (store/gc-candidates (store/versions config name)
+                                                                                       (store/current-version config name) keep))))]
                                    (when-not dry-run? (store/remove-version! config name version))
                                    (println (str (if dry-run? "would remove " "[OK] removed ") name " " version)))
                                  nil
@@ -778,8 +840,9 @@
 
 (defn sync-store
   "Makes the store match the lock file: installs and activates each locked
-  version, checked against its locked hash, and uninstalls every package the
-  lock file does not list and no project uses. --dry-run lists the changes."
+  version, checked against its locked hash, uninstalls every package the
+  lock file does not list and no project uses, and deactivates every active
+  version that is revoked. --dry-run lists the changes."
   [{:keys [config opts io registry registry-results] :as ctx} _]
   (let [path (or (:lockfile config)
                  (throw (ex-info "sync needs :lockfile in the config" {:breto/problem :no-lockfile :path nil})))
@@ -794,6 +857,8 @@
             (println (str name " would change from " (or (store/current-version config name) "nothing") " to " version)))
           (doseq [name extra]
             (println (str name " would be removed")))
+          (doseq [name (active-revoked ctx)]
+            (println (str name " would be deactivated, since " (store/current-version config name) " is revoked")))
           0)
       (let [installed (install-results ctx "sync" (vec (for [[name {:keys [version]}] entries
                                                             :when (not ((done registry-results) name))]
@@ -803,7 +868,8 @@
                                            {:version version :verify? (:verify opts true)
                                             :expect-sha256 sha256 :expect-sum sum :exclude-newer exclude-newer})))
             removed (batch/run-batch io extra #(uninstall-one ctx % false) (fn [_]))]
-        (batch/finish! "sync" (-> (vec registry-results) (into installed) (into removed) (into (refresh-projects ctx "sync"))))))))
+        (batch/finish! "sync" (-> (vec registry-results) (into installed) (into removed) (into (refresh-projects ctx "sync"))
+                                  (into (retire-revoked ctx))))))))
 
 (defn uninstall [{:keys [config opts io] :as ctx} args]
   (when (empty? args)

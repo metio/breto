@@ -8,6 +8,7 @@
             [breto.github :as github]
             [breto.hooks :as hooks]
             [breto.install :as install]
+            [breto.package :as package]
             [breto.remote :as remote]
             [breto.report :as report]
             [breto.search :as search]
@@ -109,6 +110,24 @@
        (check :warn "The store holds packages no registry defines" (str/join ", " orphans)
               "These are usually renamed or dropped packages. Delete their directories once nothing links into them.")
        (check :ok "Every package in the store has a definition" store))]))
+
+(defn revoked-check
+  "A failure for each installed version that its definition revokes, with
+  the reason, else one passing check."
+  [config registry]
+  (let [revoked (for [name (store/installed-packages config)
+                      :let [pkg (get registry name)
+                            active (store/current-version config name)]
+                      {:keys [version]} (store/versions config name)
+                      :let [reason (package/revocation pkg version)]
+                      :when reason]
+                  (check :fail (str name " " version " is installed and revoked" (when (= version active) ", and it is active"))
+                         reason
+                         "breto update or breto sync activates another installed version, or unlinks its commands when there is none."
+                         (str "breto gc deletes it; remove " name "@" version " from :pins, groups, projects and the lock file.")))]
+    (if (seq revoked)
+      revoked
+      [(check :ok "No installed version is revoked" (:store config))])))
 
 (defn unverified-check
   "Configured packages whose definition installs some versions without
@@ -304,6 +323,7 @@
           (dirs-check config)
           (config-check config-path config registry)
           (store-check config registry)
+          (revoked-check config registry)
           [(superseded-check config registry)
            (unconfigured-check config)
            (shared-commands-check config registry)

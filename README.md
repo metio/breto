@@ -380,7 +380,8 @@ A package is a file `<name>.edn` in a registry directory, and its file name is t
 | `:history` | Definitions for older versions; see below. | none |
 | `:verify` | `false` installs without verification, for releases whose upstream publishes neither GitHub digests nor checksums. Usually set in a `:history` entry, so newer releases are still verified. | `true` |
 | `:signature` | A sigstore bundle signing the asset or its checksum file; see below. | none |
-| `:skip` | Versions never installed as the latest, e.g. a broken release. When the latest release is listed, the newest unlisted one is installed instead, which costs one request listing the releases. An explicitly requested or pinned version is installed regardless. | none |
+| `:skip` | Versions never installed as the latest, e.g. a broken release. When the latest release is listed, the newest unlisted one is installed instead, which costs one request listing the releases. An explicitly requested or pinned version is installed regardless; `:revoked` refuses a version on every path. | none |
+| `:revoked` | Version to the reason it must never run, e.g. a release whose binaries were replaced by an attacker. breto refuses to install or activate it by any path and retires it where it is installed; see [Revoked versions](#revoked-versions). | none |
 
 Templates can use `{name}`, `{tag}`, `{version}`, `{repo}` and, except in `:asset` itself, `{asset}`. Files ending in `.tar.gz`, `.tgz`, `.tar.xz`, `.txz`, `.tar.bz2`, `.tbz2`, `.tar.zst`, `.tzst`, `.tar` or `.zip` are unpacked. Any other file ending in `.gz`, `.bz2` or `.zst` is a single compressed file, decompressed under its name without that suffix, so `taplo-linux-x86_64.gz` becomes `taplo-linux-x86_64`. Anything else is the binary itself. An entry that would land outside the unpack directory, or a tar entry that would write through a symlink the archive created, fails the install.
 
@@ -550,6 +551,20 @@ Some projects sign the binary inside the archive instead of the archive itself. 
 ```
 
 The signer's identity is in the certificate inside the bundle. Projects usually document it next to their verification instructions. Signed packages need cosign: list `cosign` in `:packages`. `install` and `update` handle cosign before every other package, so on a fresh host the first run installs it, checked by its GitHub digest or checksum file only, since no cosign exists yet to check its signature, and then checks the other signatures with it. The report marks that install. Later updates of cosign are checked by the version already installed. `breto check` confirms the bundle is in the release, and `breto doctor` that cosign can run.
+
+### Revoked versions
+
+A version listed under `:revoked` is refused on every path that installs or activates it. Use `:skip` for a release that is merely broken, and `:revoked` for one that must never run, such as a release whose binaries an attacker published:
+
+```clojure
+:revoked {"0.69.4" "Release binaries published by an attacker; they steal credentials."}
+```
+
+The latest release is chosen as with `:skip`, so `install PKG` and `update` take the newest release neither key names. `install PKG@VERSION`, a version under `:pins`, a group member, a project file, `sync` from the lock file, `use` and `breto lock DIR` fail with the reason before anything is downloaded. `breto validate DIR` reports a group in that directory that pins a revoked version of a package defined there. The lock file drops an entry for a revoked version when it is rewritten.
+
+A machine that installed the version before it was revoked retires it. `breto list` shows the reason beside it, and `breto doctor` fails for each installed revoked version. `update` and `sync` activate the newest installed version that is not revoked, or, when there is none, remove the package's `current` link and every link into it, so none of its commands runs. `gc` does the same and then deletes every revoked version, active or not. A project that pins the version fails in `env`, `run` and the commands linked into its bin directory until the project file pins another version.
+
+The `:revoked` maps of an overlay, a platform entry and a `:history` entry add to those of the definition they apply over, so a later layer cannot drop a revocation; only `:replace true` replaces the whole definition.
 
 ### Groups
 

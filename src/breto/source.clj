@@ -33,9 +33,10 @@
         (sort-by (comp - count) (distinct (cons (:tag-prefix pkg) (map (comp :tag-prefix :package) (:history pkg)))))))
 
 (defn- latest-rolling
-  "The newest build in a rolling release, by upload time, that :skip does
-  not name. The other releases of the repository are unrelated to the builds,
-  so a skipped build falls back to an older one of the same release."
+  "The newest build in a rolling release, by upload time, that neither :skip
+  nor :revoked names. The other releases of the repository are unrelated to
+  the builds, so a skipped build falls back to an older one of the same
+  release."
   [{:keys [source asset name] :as pkg} io]
   (let [tag (:tag source)
         pattern (template/matcher asset (package/template-vars pkg {:tag tag}))
@@ -47,12 +48,12 @@
     (when (empty? builds)
       (throw (ex-info (str name ": no asset in release " tag " matches " asset)
                       {:breto/problem :rolling-no-match :package name :repo (:github source) :tag tag :asset asset})))
-    (let [skip (set (:skip pkg))
-          newest (last (remove (comp skip :version) (sort-by :created builds)))]
+    (let [excluded (package/excluded pkg)
+          newest (last (remove (comp excluded :version) (sort-by :created builds)))]
       (when-not newest
-        (throw (ex-info (str name ": every build in release " tag " is listed in :skip")
+        (throw (ex-info (str name ": every build in release " tag " is listed in :skip or :revoked")
                         {:breto/problem :all-skipped :package name :latest (:version (last (sort-by :created builds)))
-                         :skip (vec (:skip pkg)) :source source})))
+                         :skip (vec (:skip pkg)) :revoked (vec (sort (keys (:revoked pkg)))) :source source})))
       {:tag tag :version (:version newest)})))
 
 (defn- gitlab-api [project suffix]
@@ -100,12 +101,12 @@
 (declare release-tags)
 
 (defn- newest-listed
-  "The newest release of `pkg` among its listed releases that `skip` does not
-  name, or nil."
-  [pkg io skip]
+  "The newest release of `pkg` among its listed releases that `excluded` does
+  not name, or nil."
+  [pkg io excluded]
   (->> (release-tags pkg io)
        (keep #(release-of pkg %))
-       (remove (comp skip :version))
+       (remove (comp excluded :version))
        (sort #(version/compare-versions (:version %2) (:version %1)))
        first))
 
@@ -257,14 +258,15 @@
     release))
 
 (defn newest
-  "The tag and version of the newest release of `pkg` that its `:skip` list
-  does not name. The releases are only listed when the latest one is skipped."
+  "The tag and version of the newest release of `pkg` that neither its
+  `:skip` list nor its `:revoked` map names. The releases are only listed
+  when the latest one is excluded."
   [pkg io]
   (let [found (latest pkg io)
-        skip (set (:skip pkg))]
-    (if-not (skip (:version found))
+        excluded (package/excluded pkg)]
+    (if-not (excluded (:version found))
       found
-      (or (newest-listed pkg io skip)
-          (throw (ex-info (str (:name pkg) ": every release found is listed in :skip")
+      (or (newest-listed pkg io excluded)
+          (throw (ex-info (str (:name pkg) ": every release found is listed in :skip or :revoked")
                           {:breto/problem :all-skipped :package (:name pkg) :latest (:version found)
-                           :skip (vec (:skip pkg)) :source (:source pkg)}))))))
+                           :skip (vec (:skip pkg)) :revoked (vec (sort (keys (:revoked pkg)))) :source (:source pkg)}))))))
