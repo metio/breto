@@ -94,6 +94,21 @@
                    false))
                completions)))
 
+(defn- tests-valid?
+  "Whether `tests` is a vector of tests, each a non-empty vector of argument
+  strings or a map of those :args with an optional :timeout in seconds, :env
+  and :expect text."
+  [tests]
+  (and (vector? tests)
+       (every? (fn [test]
+                 (let [{:keys [args timeout env expect] :as t} (if (map? test) test {:args test})]
+                   (and (every? #{:args :timeout :env :expect} (keys t))
+                        (vector? args) (seq args) (every? string? args) (not (str/blank? (first args)))
+                        (or (nil? timeout) (pos-int? timeout))
+                        (or (nil? env) (and (map? env) (every? string? (mapcat identity env))))
+                        (or (nil? expect) (and (string? expect) (not (str/blank? expect)))))))
+               tests)))
+
 (def ^:private reserved-vars #{:name :tag :version :repo :asset :install-dir :install-dirs :home :homes})
 
 (defn- vars-valid? [vars]
@@ -250,6 +265,9 @@
 
     (not (and (sequential? (:man pkg [])) (every? relative-path? (:man pkg []))))
     (conj ":man must be a vector of relative paths or globs inside the release, without ..")
+
+    (not (tests-valid? (:tests pkg [])))
+    (conj ":tests is a vector of tests, each a vector of a command and its arguments or {:args [...] :timeout SECONDS :env {...} :expect TEXT}")
 
     (not (completions-valid? (:completions pkg {})))
     (conj ":completions maps :bash, :zsh or :fish to a relative path inside the release or to {:args [...] :env {...}}, and :command to a command name")

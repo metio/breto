@@ -18,6 +18,7 @@
             [breto.lockfile :as lockfile]
             [breto.package :as package]
             [breto.platform :as platform]
+            [breto.proc :as proc]
             [breto.project :as project]
             [breto.registry :as registry]
             [breto.report :as report]
@@ -26,6 +27,7 @@
             [breto.search :as search]
             [breto.shell :as shell]
             [breto.signature :as signature]
+            [breto.smoke :as smoke]
             [breto.source :as source]
             [breto.store :as store]
             [breto.template :as template]
@@ -263,6 +265,23 @@
                            (merge {:version version :verify? (:verify opts true)} (locked ctx name))))]
     (when chosen? (unconfigured-hint ctx args))
     code))
+
+(defn test-packages
+  "Installs the named packages, or the configured ones, like install and
+  runs the :tests of each installed version. A package that failed to
+  install keeps its failure; one whose test fails reports that test."
+  [{:keys [config registry opts io] :as ctx} args]
+  (let [installed (install-results ctx "test" (targets ctx args)
+                                   (fn [name version] {:version version :verify? (:verify opts true)}))
+        run (or (:run-hook io) proc/run-bounded)
+        results (mapv (fn [{:keys [package version status] :as result}]
+                        (if (#{:installed :current} status)
+                          (try {:package package :version version :status :tested
+                                :tests (smoke/run-tests config (registry/lookup registry package) version run)}
+                               (catch Exception e (batch/failure io package version e)))
+                          result))
+                      installed)]
+    (batch/finish! "test" results)))
 
 (defn search
   "The definitions whose name, description or source contains every term."

@@ -27,14 +27,14 @@
 
 (def ^:private status-label
   {:installed "installed" :current "up to date" :outdated "outdated"
-   :removed "removed" :would-remove "to remove" :checked "checked" :deactivated "deactivated" :failed "failed"})
+   :removed "removed" :would-remove "to remove" :checked "checked" :tested "tested" :deactivated "deactivated" :failed "failed"})
 
 (defn summary-line [command results]
   (let [counts (frequencies (map :status results))]
     (str "breto " command ": "
          (if (empty? results)
            "nothing to do"
-           (str/join ", " (for [status [:current :installed :checked :outdated :removed :would-remove :deactivated :failed]
+           (str/join ", " (for [status [:current :installed :checked :tested :outdated :removed :would-remove :deactivated :failed]
                                 :let [n (get counts status 0)]
                                 :when (pos? n)]
                             (str n " " (status-label status))))))))
@@ -68,8 +68,13 @@
          (str activated " is active instead")
          "no other version is installed, so its commands are unlinked")))
 
-(defn- line [{:keys [package status version from links unverified signed signature-bootstrap hash-recorded verified-by] :as result}]
+(defn- line [{:keys [package status version from links unverified signed signature-bootstrap hash-recorded verified-by tests] :as result}]
   (case status
+    :tested (str "[OK] " package " " version
+                 (case tests
+                   0 " installed; its definition has no tests"
+                   1 " passed its test"
+                   (str " passed its " tests " tests")))
     :deactivated (deactivated-line result)
     :checked (str "[OK] " package " " version " " (verification verified-by)
                   (when signed ", signature bundle present"))

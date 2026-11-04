@@ -35,6 +35,8 @@ Commands:
   check [PKG...] [--all]    whether the latest release of each configured package (or every
                             package with --all) exists and can be verified, without downloading;
                             --platforms all|PLATFORM,... checks those platforms' assets
+  test [PKG[@VERSION]...]   install each package like install and run the :tests of its
+                            definition, commands that must exit 0
   gc [PKG...] [--keep N]    delete all but the N most recent versions, never the active one,
                             and what killed installs left behind;
                             with :prune true and no PKG, also uninstall unconfigured packages
@@ -100,7 +102,8 @@ Every failure is explained with what to do; --debug adds each request and stack 
    "exec" commands/exec-tool
    "sync" commands/sync-store
    "lock" commands/lock
-   "validate" commands/validate})
+   "validate" commands/validate
+   "test" commands/test-packages})
 
 (defn network
   "The network operations for `config`: HTTP, the GitHub token from the
@@ -155,7 +158,7 @@ Every failure is explained with what to do; --debug adds each request and stack 
 (def ^:private fetches-registries
   "Commands that install the published registries not installed yet before
   the packages they need."
-  #{"install" "env" "run" "exec"})
+  #{"install" "test" "env" "run" "exec"})
 
 (defn- needs-registries? [command]
   (or (installs-registries command) (fetches-registries command)))
@@ -216,7 +219,7 @@ Every failure is explained with what to do; --debug adds each request and stack 
       ctx)))
 
 (def ^:private changes-store
-  #{"install" "use" "update" "gc" "uninstall" "sync" "lock"})
+  #{"install" "test" "use" "update" "gc" "uninstall" "sync" "lock"})
 
 (defn- record-lock!
   "Rewrites the lock file, when one is configured, after a command changed the
@@ -284,7 +287,7 @@ Every failure is explained with what to do; --debug adds each request and stack 
 
 (def ^:private reported
   "Commands whose last run breto report shows."
-  #{"install" "update" "outdated" "check" "gc" "uninstall" "sync"})
+  #{"install" "update" "outdated" "check" "test" "gc" "uninstall" "sync"})
 
 (defn- recording-aborts
   "Runs `f`, saving its error as the report of `command` when it stops before

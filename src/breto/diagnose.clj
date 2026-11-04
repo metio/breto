@@ -522,6 +522,17 @@
    :advice [(str "breto install " package "@VERSION installs an older release, which then becomes active.")
             "breto gc keeps only :keep versions; raise :keep to keep more to roll back to."]})
 
+(defmethod explain :test-failed [{:keys [package version args command exit timed-out expect output]} _]
+  {:summary (str "A test in the definition of " package " failed against version " version ".")
+   :facts (cond-> [(str "It ran " (str/join " " command)
+                        (cond timed-out ", which was stopped at its timeout"
+                              (and exit (not= 0 exit)) (str ", which exited with " exit)
+                              expect (str ", which did not print " (pr-str expect))
+                              :else ""))]
+            (not (str/blank? output)) (conj (str "Its output ends with: " (let [o (str/trim output)] (subs o (max 0 (- (count o) 400)))))))
+   :advice [(str "Run " (str/join " " args) " with version " version " installed to see the whole output.")
+            "If the release is broken, list the version under :skip; if the test asks for something this platform lacks, give the platform entry :tests of its own."]})
+
 (defmethod explain :default [_ _]
   {:summary "breto failed in a way it has no explanation for."
    :facts []

@@ -117,6 +117,7 @@ Configure `:token-command`, or set `GITHUB_TOKEN` or `GH_TOKEN`, to raise GitHub
 | `breto update [PKG...]` | Installs and activates the latest, or pinned, version. |
 | `breto outdated [PKG...]` | Packages whose latest release is not the active version, or not the version a group member or `PKG@VERSION` pins. |
 | `breto check [PKG...] [--all]` | Checks each configured package, or every package of the registries with `--all`, against its latest release without downloading it: the asset must exist and a GitHub digest, a checksum file or `:verify false` must cover it. Run it after editing definitions, or before a scheduled update. |
+| `breto test [PKG[@VERSION]...]` | Installs each package like `install` and runs the `:tests` of its definition, commands that must exit 0; see [Tests](#tests). A registry's CI runs it for the definitions a change touches. |
 | `breto gc [PKG...] [--keep N]` | Deletes all but the N most recently installed versions. The active version is always kept. Also removes what killed installs left behind. With `:prune true` and no package named, also uninstalls unconfigured packages. |
 | `breto uninstall PKG...` | Deletes a package with every link into it. |
 | `breto sync [--dry-run]` | Makes the store match `:lockfile`: installs and activates each locked version, refusing a download whose hash differs from the locked one, and uninstalls every package the lock file does not list and no project uses. `--dry-run` lists the changes. |
@@ -381,6 +382,7 @@ A package is a file `<name>.edn` in a registry directory, and its file name is t
 | `:verify` | `false` installs without verification, for releases whose upstream publishes neither GitHub digests nor checksums. Usually set in a `:history` entry, so newer releases are still verified. | `true` |
 | `:signature` | A sigstore bundle signing the asset or its checksum file; see below. | none |
 | `:skip` | Versions never installed as the latest, e.g. a broken release. When the latest release is listed, the newest unlisted one is installed instead, which costs one request listing the releases. An explicitly requested or pinned version is installed regardless; `:revoked` refuses a version on every path. | none |
+| `:tests` | Commands `breto test` runs against an installed version to show that the release works on the platform; see [Tests](#tests). | none |
 | `:revoked` | Version to the reason it must never run, e.g. a release whose binaries were replaced by an attacker. breto refuses to install or activate it by any path and retires it where it is installed; see [Revoked versions](#revoked-versions). | none |
 
 Templates can use `{name}`, `{tag}`, `{version}`, `{repo}` and, except in `:asset` itself, `{asset}`. Files ending in `.tar.gz`, `.tgz`, `.tar.xz`, `.txz`, `.tar.bz2`, `.tbz2`, `.tar.zst`, `.tzst`, `.tar` or `.zip` are unpacked. Any other file ending in `.gz`, `.bz2` or `.zst` is a single compressed file, decompressed under its name without that suffix, so `taplo-linux-x86_64.gz` becomes `taplo-linux-x86_64`. Anything else is the binary itself. An entry that would land outside the unpack directory, or a tar entry that would write through a symlink the archive created, fails the install.
@@ -565,6 +567,17 @@ The latest release is chosen as with `:skip`, so `install PKG` and `update` take
 A machine that installed the version before it was revoked retires it. `breto list` shows the reason beside it, and `breto doctor` fails for each installed revoked version. `update` and `sync` activate the newest installed version that is not revoked, or, when there is none, remove the package's `current` link and every link into it, so none of its commands runs. `gc` does the same and then deletes every revoked version, active or not. A project that pins the version fails in `env`, `run` and the commands linked into its bin directory until the project file pins another version.
 
 The `:revoked` maps of an overlay, a platform entry and a `:history` entry add to those of the definition they apply over, so a later layer cannot drop a revocation; only `:replace true` replaces the whole definition.
+
+### Tests
+
+`:tests` lists commands that must exit 0 once a version is installed. `breto test` installs the package as `install` does and runs each of them in a fresh temporary directory, with `:bin-dir` first on `PATH`, for at most 60 seconds each. A first argument that names a command of the package runs the file of the installed version, so a test never picks up another copy on `PATH`. A test is a vector of the command and its arguments, or a map that adds a `:timeout` in seconds, an `:env` and an `:expect` text the output must contain:
+
+```clojure
+:tests [["kind" "version"]
+        {:args ["kind" "version"] :expect "v{version}"}]
+```
+
+The arguments, `:env` values and `:expect` are templates with the placeholders of the definition, so `{version}` checks that the release reports the version it was installed as. A `:platforms` entry with `:tests` of its own replaces them on that platform, for a command that needs something one platform lacks. A package without tests passes once it installs. The tests run the package's commands, so run `breto test` where a broken or hostile release can do no harm, such as a CI runner.
 
 ### Groups
 
