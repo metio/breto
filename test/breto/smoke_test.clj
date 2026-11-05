@@ -49,6 +49,10 @@
     (is (= 1 code))
     (is (str/includes? out "did not print \"alpha 2.0.0\""))))
 
+(deftest a-failed-expectation-is-explained-with-its-placeholders-filled
+  (let [{:keys [out]} (breto-test [{:args ["alpha"] :expect "beta {version}"}] proc/run-bounded)]
+    (is (str/includes? out "which did not print \"beta 1.0.0\""))))
+
 (deftest a-test-running-past-its-timeout-fails
   (let [{:keys [code out]} (breto-test [{:args ["alpha"] :timeout 5}]
                                        (fn [_] {:exit nil :out "" :err "" :timed-out true}))]

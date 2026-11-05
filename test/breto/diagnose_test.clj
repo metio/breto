@@ -169,3 +169,10 @@
     (is (some #(str/includes? % ":packages must be") (:facts invalid)))
     (is (str/includes? (:summary missing) "/p"))
     (is (not-any? #(str/includes? % "Please report") (concat (:advice invalid) (:advice missing))))))
+
+(deftest missing-toolchains-name-the-package-that-provides-them
+  (doseq [[problem provider] {:uv-missing "uv" :go-missing "go" :cargo-missing "rustup"
+                              :npm-missing "node" :ghcup-missing "ghcup" :coursier-missing "coursier"}]
+    (let [{:keys [summary advice]} (diagnose/diagnose (ex-info "x" {:breto/problem problem :package "alpha"}) {})]
+      (is (str/includes? summary "alpha"))
+      (is (some #(str/includes? % (str "breto install " provider)) advice)))))

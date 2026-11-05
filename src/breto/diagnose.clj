@@ -533,6 +533,17 @@
    :advice [(str "Run " (str/join " " args) " with version " version " installed to see the whole output.")
             "If the release is broken, list the version under :skip; if the test asks for something this platform lacks, give the platform entry :tests of its own."]})
 
+(def ^:private toolchains
+  "The package that provides the program a source installs with."
+  {:uv-missing ["uv" "uv"] :go-missing ["go" "go"] :cargo-missing ["rustup" "rustup"]
+   :npm-missing ["npm" "node"] :ghcup-missing ["ghcup" "ghcup"] :coursier-missing ["coursier" "coursier"]})
+
+(doseq [[problem [program provider]] toolchains]
+  (defmethod explain problem [{:keys [package]} _]
+    {:summary (str package " is built from its source with " program ", which is not installed.")
+     :facts []
+     :advice [(str "breto install " provider " installs it; add " provider " to :packages to keep it.")]}))
+
 (defmethod explain :default [_ _]
   {:summary "breto failed in a way it has no explanation for."
    :facts []

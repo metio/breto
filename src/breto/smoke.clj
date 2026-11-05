@@ -48,7 +48,7 @@
         path (str (:bin-dir config) java.io.File/pathSeparator (System/getenv "PATH"))
         dir (fs/create-temp-dir {:prefix "breto-test-"})]
     (try
-      (doseq [test tests]
+      (doseq [test (map #(cond-> % (:expect %) (update :expect template/render values)) tests)]
         (let [argv (command-line targets values test)
               result (try (run {:command argv
                                 :env (merge (update-vals (:env test {}) #(template/render % values)) {"PATH" path})
@@ -57,7 +57,7 @@
                           (catch java.io.IOException e
                             (failed! pkg version test argv {} (str "could not start: " (ex-message e)))))
               output (str (:out result) (:err result))
-              expect (some-> (:expect test) (template/render values))]
+              expect (:expect test)]
           (cond
             (:timed-out result) (failed! pkg version test argv result (str "ran longer than " (:timeout test default-timeout) " seconds"))
             (not= 0 (:exit result)) (failed! pkg version test argv result (str "exited with " (:exit result)))
