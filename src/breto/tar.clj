@@ -3,12 +3,12 @@
 
 (ns breto.tar
   "A reader for tar archives, plain or gzip-compressed, so the common release
-  formats unpack without external tools. It understands ustar, GNU long names
-  and pax headers, and refuses entries that would land outside the target
+  formats unpack without external tools. It understands ustar, GNU long names,
+  GNU sparse files and pax headers, and refuses entries that would land outside the target
   directory or write through a symlink."
   (:require [babashka.fs :as fs]
             [clojure.string :as str])
-  (:import (java.io BufferedInputStream EOFException FileInputStream FileOutputStream InputStream)
+  (:import (java.io BufferedInputStream EOFException FileInputStream FileOutputStream InputStream RandomAccessFile)
            (java.nio.charset StandardCharsets)
            (java.util.zip GZIPInputStream)))
 
@@ -159,6 +159,42 @@
   (skip-fully! in (mod (- block (mod size block)) block) file)
   (fs/set-posix-file-permissions target (permissions mode false)))
 
+(defn- sparse-map
+  "The [offset length] chunks of a GNU sparse entry whose header is in `buf`,
+  reading the extension blocks that follow it, and its real size."
+  [^InputStream in ^bytes buf file]
+  (let [chunks (fn [^bytes b start n]
+                 (for [i (range n)
+                       :let [at (+ start (* 24 i))]
+                       :when (not (zero? (aget b at)))]
+                   [(number b at 12) (number b (+ at 12) 12)]))
+        real-size (number buf 483 12)]
+    (loop [found (vec (chunks buf 386 4)) extended? (not (zero? (aget buf 482)))]
+      (if extended?
+        (let [ext (byte-array block)]
+          (when-not (read-fully! in ext file)
+            (throw (problem file "the archive ends in the middle of an entry")))
+          (recur (into found (chunks ext 0 21)) (not (zero? (aget ext 504)))))
+        [found real-size]))))
+
+(defn- write-sparse-file!
+  "Writes the stored chunks of a GNU sparse entry at their offsets, leaving
+  the holes between them empty."
+  [^InputStream in target size mode chunks real-size file]
+  (with-open [out (RandomAccessFile. (str target) "rw")]
+    (let [buf (byte-array 65536)]
+      (doseq [[offset length] chunks]
+        (.seek out (long offset))
+        (loop [left length]
+          (when (pos? left)
+            (let [n (.read in buf 0 (int (min left (alength buf))))]
+              (when (neg? n) (throw (problem file "the archive ends in the middle of an entry")))
+              (.write out buf 0 n)
+              (recur (- left n)))))))
+    (.setLength out (long real-size)))
+  (skip-fully! in (mod (- block (mod size block)) block) file)
+  (fs/set-posix-file-permissions target (permissions mode false)))
+
 (defn- open [file]
   (let [in (BufferedInputStream. (FileInputStream. (str file)) 65536)]
     (.mark in 2)
@@ -203,7 +239,8 @@
                 \g (do (read-data in size file) (recur overrides))
                 \L (recur (assoc overrides "path" (str/replace (read-data in size file) #"\u0000+$" "")))
                 \K (recur (assoc overrides "linkpath" (str/replace (read-data in size file) #"\u0000+$" "")))
-                (let [rel (relative-path name strip)
+                (let [[chunks real-size] (when (= \S type) (sparse-map in buf file))
+                      rel (relative-path name strip)
                       target (when (string? rel) (fs/path root rel))]
                   (when (= :escapes rel)
                     (throw (problem file (str "the entry " name " would unpack outside of the archive") :escaping [name])))
@@ -214,6 +251,11 @@
                       (do (ensure-parents! root target file name)
                           (replace-existing! target)
                           (write-file! in target size mode file))
+
+                      \S
+                      (do (ensure-parents! root target file name)
+                          (replace-existing! target)
+                          (write-sparse-file! in target size mode chunks real-size file))
 
                       \5
                       (do (ensure-parents! root target file name)

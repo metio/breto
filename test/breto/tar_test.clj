@@ -78,6 +78,22 @@
         (doseq [strip [0 1]]
           (is (= (snapshot (gnu-unpack file strip)) (snapshot (ours file strip)))))))))
 
+(deftest unpacks-gnu-sparse-files-like-gnu-tar
+  (let [src (path "sparse-src")
+        sparse (fs/path src "release" "holes")]
+    (fs/create-dirs (fs/parent sparse))
+    (with-open [out (java.io.RandomAccessFile. (str sparse) "rw")]
+      (doseq [at (range 0 (* 12 65536) 65536)]
+        (.seek out (long at))
+        (.write out (.getBytes (str "chunk at " at))))
+      (.setLength out (* 13 65536)))
+    (let [file (gnu-tar! (path "sparse.tar.gz") "--gzip" "--format=gnu" "--sparse" "--directory" (str src) "release/holes")]
+      (is (= "S" (str (char (aget ^bytes (with-open [in (java.util.zip.GZIPInputStream. (java.io.FileInputStream. (str file)))]
+                                            (.readNBytes in 512))
+                                          156)))))
+      (doseq [strip [0 1]]
+        (is (= (snapshot (gnu-unpack file strip)) (snapshot (ours file strip))))))))
+
 (deftest keeps-executables-executable
   (let [src (tree!)
         file (gnu-tar! (path "t.tar.gz") "--gzip" "--directory" (str src) "release")
