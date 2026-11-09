@@ -24,10 +24,10 @@ jobs:
           fetch-depth: 0
           persist-credentials: false
       - id: gate
-        uses: metio/ci/needs-release@bfcb1a4d37c4fd4d5d9c27181191dcad0d04f90c # 2026.11.1211658
+        uses: metio/ci/needs-release@00adafd0fe1924f57325d9dd264d5d731fb099ad # 2026.11.4082509
         with:
           paths: .github/workflows/release.yml src builtin shell bb.edn breto action.yml .breto.edn README.md
-      - uses: metio/ci/breto@bfcb1a4d37c4fd4d5d9c27181191dcad0d04f90c # 2026.11.1211658
+      - uses: metio/ci/breto@00adafd0fe1924f57325d9dd264d5d731fb099ad # 2026.11.4082509
         if: steps.gate.outputs.needed == 'true'
         with:
           registries: github:metio/toolchains
@@ -36,11 +36,11 @@ jobs:
         run: bb test
       - id: version
         if: steps.gate.outputs.needed == 'true'
-        uses: metio/ci/calver@bfcb1a4d37c4fd4d5d9c27181191dcad0d04f90c # 2026.11.1211658
+        uses: metio/ci/calver@00adafd0fe1924f57325d9dd264d5d731fb099ad # 2026.11.4082509
       - id: notes
         name: Generate release notes
         if: steps.gate.outputs.needed == 'true'
-        uses: metio/ci/release-notes@bfcb1a4d37c4fd4d5d9c27181191dcad0d04f90c # 2026.11.1211658
+        uses: metio/ci/release-notes@00adafd0fe1924f57325d9dd264d5d731fb099ad # 2026.11.4082509
         with:
           version: ${{ steps.version.outputs.version }}
           previous: ${{ steps.gate.outputs.last }}
@@ -49,14 +49,14 @@ jobs:
         run: bb build
       - id: executable
         if: steps.gate.outputs.needed == 'true'
-        uses: metio/ci/babashka-executable@bfcb1a4d37c4fd4d5d9c27181191dcad0d04f90c # 2026.11.1211658
+        uses: metio/ci/babashka-executable@00adafd0fe1924f57325d9dd264d5d731fb099ad # 2026.11.4082509
         with:
           name: breto
           jar: target/breto.jar
           version: ${{ steps.version.outputs.version }}
       - name: Sign the checksums
         if: steps.gate.outputs.needed == 'true'
-        uses: metio/ci/cosign-sign-blob@bfcb1a4d37c4fd4d5d9c27181191dcad0d04f90c # 2026.11.1211658
+        uses: metio/ci/cosign-sign-blob@00adafd0fe1924f57325d9dd264d5d731fb099ad # 2026.11.4082509
         with:
           file: ${{ steps.executable.outputs.checksums }}
       - name: Tag and publish the GitHub release
