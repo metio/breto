@@ -5,12 +5,13 @@
   "The project files of a directory: .breto.edn, shared with everyone working
   on the project, and .breto.local.edn, kept out of version control for the
   settings of one machine. Both may list :packages, set :env, define
-  :commands and adjust the :limits of commands; the local file is read over
-  the shared one. The groups a project names contribute their own :env and
+  :commands and :profiles and adjust the :limits of commands; the local file
+  is read over the shared one. The groups a project names contribute their own :env and
   :commands beneath the project's."
   (:require [babashka.fs :as fs]
             [babashka.process :as process]
             [breto.command :as command]
+            [breto.profile :as profile]
             [breto.registry :as registry]
             [clojure.edn :as edn]
             [clojure.string :as str]))
@@ -30,7 +31,7 @@
   [dir]
   (mapv #(str (fs/absolutize (fs/path dir %))) file-names))
 
-(def ^:private keys-allowed #{:packages :env :commands :limits :menu :on-enter})
+(def ^:private keys-allowed #{:packages :env :commands :profiles :limits :menu :on-enter})
 
 (defn- has-file? [dir]
   (some fs/regular-file? (candidates dir)))
@@ -58,17 +59,18 @@
 (defn problems
   "What is wrong with the project or group data `data`, read from `label`."
   [data]
-  (let [{:keys [packages env commands limits menu on-enter]} data]
+  (let [{:keys [packages env commands profiles limits menu on-enter]} data]
     (cond-> []
       (not (map? data)) (conj "a project file holds a map")
       (and (map? data) (seq (remove keys-allowed (keys data))))
       (conj (str "unknown keys " (str/join ", " (map pr-str (sort (remove keys-allowed (keys data)))))
-                 "; a project file has :packages, :env, :commands, :limits, :menu and :on-enter"))
+                 "; a project file has :packages, :env, :commands, :profiles, :limits, :menu and :on-enter"))
       (and (some? packages) (not (and (vector? packages) (every? #(and (string? %) (not (str/blank? %))) packages))))
       (conj ":packages must be a vector of PKG, PKG@VERSION or @GROUP")
       (some? env) (into (command/env-problems env))
       (and (some? commands) (not (map? commands))) (conj ":commands maps names to commands")
       (map? commands) (into (mapcat (fn [[k v]] (command/problems k v)) commands))
+      (some? profiles) (into (profile/problems profiles))
       (and (some? limits) (not (and (map? limits) (every? string? (keys limits)))))
       (conj ":limits maps command names to limits or false")
       (map? limits) (into (mapcat (fn [[k v]] (when-not (false? v)
@@ -150,10 +152,11 @@
 
 (defn load-project
   "The project of `dir`: {:dir :files :packages :specs :env :commands :menu
-  :on-enter :warnings}, the specs with groups expanded, :files the project
-  files and the group files the project draws on, and :env and :commands the
-  groups' with the project's own over them, and :limits the project files'
-  adjustments of the commands' limits. `ignored?` tells whether git
+  :on-enter :profiles :warnings}, the specs with groups expanded, :files the
+  project files and the group files the project draws on, :env and
+  :commands the groups' with the project's own over them, :limits the
+  project files' adjustments of the commands' limits, and :profiles those of
+  the local file over those of the shared one. `ignored?` tells whether git
   ignores a file, as ignored-by-git? does; a local file inside a work tree
   that git does not ignore is warned about."
   ([groups dir] (load-project groups dir ignored-by-git?))
@@ -177,6 +180,7 @@
       :env (merge (:env from-groups) (:env shared) (:env local))
       :commands commands
       :limits limits
+      :profiles (profile/merge-profiles (:profiles shared) (:profiles local))
       :menu (get local :menu (get shared :menu true))
       :on-enter (get local :on-enter (:on-enter shared))
       :warnings (cond-> (vec (for [name (sort (keys limits)) :when (not (contains? commands name))]

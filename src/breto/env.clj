@@ -26,6 +26,12 @@
 (defn bin-dir [config project-dir]
   (fs/path (env-dir config project-dir) "bin"))
 
+(defn selection-path
+  "The file holding which option of each profile the project at
+  `project-dir` uses, beside its links and so out of version control."
+  [config project-dir]
+  (fs/path (env-dir config project-dir) "profiles.edn"))
+
 (defn home
   "The link to the version directory of `package` that the project at
   `project-dir` uses. Its path stays the same when the version changes, so an

@@ -92,6 +92,7 @@ breto reads the file given with `--config`, else the one `BRETO_CONFIG` names, e
 | `:prune` | Whether `gc` without arguments also uninstalls every package `:packages` does not list. | `false` |
 | `:store` | Where versions are unpacked, as `<store>/<package>/<version>`. | `$XDG_DATA_HOME/breto/installations` |
 | `:bin-dir` | Where binaries are linked. | `~/.local/bin`, or `~/bin` when `PATH` lists it before `~/.local/bin` or alone |
+| `:profiles` | Profiles every project can select options of, such as clusters or clouds; see [Profiles](#profiles). | none |
 | `:finder` | The fuzzy finder `breto install` without packages chooses with: `:auto` for fzf or sk from `:bin-dir` or `PATH`, or a command that reads tab-separated lines on stdin and prints the chosen ones. | `:auto` |
 | `:env-dir` | Where `breto env` keeps the bin directory of each project. | `$XDG_DATA_HOME/breto/envs` |
 | `:platform` | The platform definitions are resolved for, one of `linux-x86_64`, `linux-aarch64`, `darwin-x86_64` and `darwin-aarch64`; see [Platforms](#platforms). `--platform` overrides it for one run. | the platform breto runs on |
@@ -112,6 +113,7 @@ Configure `:token-command`, or set `GITHUB_TOKEN` or `GH_TOKEN`, to raise GitHub
 | `breto search [TERM...]` | The definitions whose name, description or source contains every term, one per line: name, description, source. |
 | `breto exec COMMAND [ARG...] [--dir DIR]` | Brings the project up to date and runs a command of its packages, which the scripts in its bin directory do when a file deciding its versions changed; see [Project environments](#project-environments). |
 | `breto env [--shell fish] [--only project\|declared] [--dir DIR]` | Links the versions the nearest `.breto.edn` lists into a bin directory of the project and prints the shell code putting it first on `PATH`; see [Project environments](#project-environments). |
+| `breto profile [PROFILE [OPTION]] [--clear] [--yes] [--dir DIR]` | Selects which option of each of the project's profiles `breto env` and `breto run` set the variables of; without an option, chooses it in fzf or sk; see [Profiles](#profiles). |
 | `breto use PKG VERSION` | Activates a version that is already installed. |
 | `breto use PKG --previous` | Rolls back to the newest installed version older than the active one. For a configured package it prints the `:pins` entry that keeps the next `update` from switching back. |
 | `breto update [PKG...]` | Installs and activates the latest, or pinned, version. |
@@ -153,7 +155,7 @@ A `.breto.edn` file in a project lists the packages it needs, with versions wher
 
 A `.breto.local.edn` beside it holds the settings of one machine and stays out of version control. It has the same keys and is read over `.breto.edn`: a package or group it names takes the place of the shared file's spec for it, such as `"helm@3.20.0"` for `"helm@3.19.0"`, other packages are added, and its variables and commands replace those of the same name. Either file alone also makes a project. breto warns when `.breto.local.edn` is in a git work tree that does not ignore it; add it to `.gitignore`.
 
-`breto env`, run anywhere below that directory, links the commands of those versions into a bin directory of the project's own and prints the shell code that puts it first on `PATH` and sets `BRETO_PROJECT`, `BRETO_ENV_BIN`, and `BRETO_ENV_FILES`, the project file and the group files its packages come from:
+`breto env`, run anywhere below that directory, links the commands of those versions into a bin directory of the project's own and prints the shell code that puts it first on `PATH` and sets `BRETO_PROJECT`, `BRETO_ENV_BIN`, and `BRETO_ENV_FILES`, the project file, the group files its packages come from and the file holding its [profile](#profiles) selection:
 
 ```sh
 eval "$(breto env)"
@@ -217,6 +219,25 @@ The limits need a user systemd manager and systemd-run 254 or newer; without the
 On entering a project, the hook runs `breto env --enter`, which lists the project's commands with their descriptions and then runs the command `:on-enter` names, in the shell that entered. `:menu false` keeps the list quiet. A group can carry `:env` and `:commands` too; the project's files override them, and two groups defining one variable or command differently is an error. Variables of the project's `:env` win over those of its packages and groups.
 
 `breto update` without package names and `breto sync` finish by bringing every project with a bin directory up to date: they install the versions its `.breto.edn` names, again without activating them, and link its bin directory anew. A shell already working in the project runs the new versions from its next command on. A project whose file no longer loads keeps its links and is reported with `[WARN]`.
+
+### Profiles
+
+Profiles switch a project between sets of variables, such as the Kubernetes cluster or the cloud its commands talk to. `:profiles` maps each profile to its options, and at most one option of each profile is selected at a time, so a shell never holds the configuration of two clusters at once while the cluster and the cloud are chosen independently:
+
+```clojure
+{:profiles {"kube" {"staging" {:env {"KUBECONFIG" "/home/me/.kube/staging"}
+                               :description "kube.example.org"}
+                    "production" {:env {"KUBECONFIG" "/home/me/.kube/production"}
+                                  :confirm true}}
+            "cloud" {"dev" {:env {"ONE_XMLRPC" "https://one-dev.example.org/RPC2"}}
+                     "prod" {:env {"ONE_XMLRPC" "https://one.example.org/RPC2"}}}}}
+```
+
+The configuration file defines the profiles every project can select from, and `.breto.edn` and `.breto.local.edn` add their own. A profile gains the options of each of these files, and an option a project file defines replaces the configuration's option of the same name as a whole. Groups carry no profiles. An option holds `:env`, rendered like the project's `:env`, and optionally a `:description` and `:confirm`.
+
+`breto profile` chooses an option for every profile in turn, in fzf or sk, else in a numbered prompt; the entry `-` selects nothing, and leaving the finder keeps the selection. `breto profile kube` chooses for one profile, and `breto profile kube staging` selects without asking. `--clear` selects nothing for the profile it names, or for every profile. Selecting an option with `:confirm true` asks first; outside a terminal it needs `--yes`. A selection in which two options set one variable to different values is refused.
+
+The selection belongs to one project and is kept beside its bin directory, out of version control; a new project starts with nothing selected. `breto env` and `breto run` set the variables of the selected options over the project's own `:env`, and `BRETO_PROFILES` names the selection as `profile=option` pairs, such as `cloud=dev kube=staging`, for a prompt to show. The selection file is among `BRETO_ENV_FILES`, so the shell hook applies a new selection at the next prompt; without the hook, `eval "$(breto env)"` does. An option that a selection names but no file defines any more is skipped with a warning.
 
 ### Java
 

@@ -244,10 +244,11 @@
   (let [bin (:bin (first (filter #(= (path "app") (:project %)) (env/environments {:env-dir (path "envs")}))))]
     (slurp (str (fs/path bin ".." "targets" "alpha")))))
 
-(deftest env-exports-the-files-its-packages-come-from
+(deftest env-exports-the-files-its-packages-and-profiles-come-from
   (let [io (shared-world "0.9.0")
         {:keys [out]} (binding [*err* (java.io.StringWriter.)] (shared! io "env" "--dir" (path "app")))]
-    (is (str/includes? out (str "export BRETO_ENV_FILES='" (path "app" ".breto.edn") ":" (path "shared" "@toolchain.edn") "'")))))
+    (is (str/includes? out (str "export BRETO_ENV_FILES='" (path "app" ".breto.edn") ":" (path "shared" "@toolchain.edn")
+                                ":" (env/selection-path {:env-dir (path "envs")} (path "app")) "'")))))
 
 (deftest update-moves-projects-to-the-versions-their-groups-name
   (let [io (shared-world "0.9.0")]

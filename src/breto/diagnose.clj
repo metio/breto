@@ -442,7 +442,7 @@
 (defmethod explain :invalid-project [{:keys [file problems]} _]
   {:summary (str "The project file " file " is not valid.")
    :facts (vec problems)
-   :advice ["Fix the file: it holds a map with :packages [\"PKG\" \"PKG@VERSION\" \"@GROUP\"], :env {\"NAME\" \"value\"}, :commands {\"name\" {:run [...] :depends [...]}}, :menu and :on-enter."]})
+   :advice ["Fix the file: it holds a map with :packages [\"PKG\" \"PKG@VERSION\" \"@GROUP\"], :env {\"NAME\" \"value\"}, :commands {\"name\" {:run [...] :depends [...]}}, :profiles, :menu and :on-enter."]})
 
 (defmethod explain :no-project [{:keys [dir]} _]
   {:summary (str "There is no .breto.edn or .breto.local.edn in " dir " or any directory above it.")
@@ -466,6 +466,28 @@
   {:summary (str (str/join " and " packages) " all set " variable ", and a shell holds only one value of it.")
    :facts []
    :advice [(str "Keep one of " (str/join ", " packages) " in the project, or set " variable " in its :env, which wins over packages and groups.")]})
+
+(defmethod explain :profile-conflict [{:keys [variable selected]} _]
+  {:summary (str (str/join " and " selected) " all set " variable ", and a shell holds only one value of it.")
+   :facts []
+   :advice [(str "Select only one of them with breto profile, or move " variable " into a profile of its own.")]})
+
+(defmethod explain :unknown-profile [{:keys [profile option known]} _]
+  {:summary (cond option (str "The profile " profile " has no option " option ".")
+                  profile (str "There is no profile " profile ".")
+                  :else "Neither the project nor the configuration defines :profiles.")
+   :facts (cond-> [] (seq known) (conj (str (if option "Its options: " "The profiles: ") (str/join ", " known))))
+   :advice ["Define it under :profiles {\"PROFILE\" {\"OPTION\" {:env {\"NAME\" \"value\"}}}} in the configuration, .breto.edn or .breto.local.edn."]})
+
+(defmethod explain :invalid-profiles [{:keys [file problems]} _]
+  {:summary (str "The :profiles of " file " are not valid.")
+   :facts (vec problems)
+   :advice ["Fix them: :profiles maps each profile to its options, each a map with :env {\"NAME\" \"value\"} and optionally :description and :confirm."]})
+
+(defmethod explain :invalid-selection [{:keys [file]} _]
+  {:summary (str file " holds no selection of profiles.")
+   :facts []
+   :advice ["Run breto profile --clear to start over, then select the options again."]})
 
 (defmethod explain :store-busy [{:keys [pid]} _]
   {:summary (str "A version of this project has to be installed, and another breto run (process " pid ") holds the store.")

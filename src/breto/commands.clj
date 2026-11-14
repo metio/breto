@@ -19,6 +19,7 @@
             [breto.package :as package]
             [breto.platform :as platform]
             [breto.proc :as proc]
+            [breto.profile :as profile]
             [breto.project :as project]
             [breto.registry :as registry]
             [breto.report :as report]
@@ -377,13 +378,35 @@
     {:homes (into {} (map (juxt :name :home)) entries)
      :vars (into {} (mapcat :vars) entries)}))
 
+(defn- profiles
+  "The profiles of the configuration with those of the project `proj` over
+  them."
+  [{:keys [config config-path]} proj]
+  (when-let [ps (seq (profile/problems (:profiles config {})))]
+    (throw (ex-info (str config-path ": " (str/join "; " ps))
+                    {:breto/problem :invalid-profiles :file config-path :problems (vec ps)})))
+  (profile/merge-profiles (:profiles config) (:profiles proj)))
+
+(defn- selected-profiles
+  "{:vars :warnings} of `proj`: the variables of the options selected for it
+  that are still defined, rendered like the project's :env, with
+  BRETO_PROFILES naming the selection for a prompt to show, and a warning
+  for each selected option no file defines any more."
+  [{:keys [config] :as ctx} proj template]
+  (let [defined (profiles ctx proj)
+        {:keys [selected warnings]} (profile/active defined (profile/read-selection (env/selection-path config (:dir proj))))
+        vars (run/render-env (profile/variables defined selected) template)]
+    {:vars (cond-> vars (seq selected) (assoc "BRETO_PROFILES" (profile/label selected)))
+     :warnings warnings}))
+
 (defn- project-setup
-  "{:links :homes :vars} of `proj`: what its bin directory links, the
-  commands of its packages and wrappers running its own commands, the
+  "{:links :homes :vars :warnings} of `proj`: what its bin directory links,
+  the commands of its packages and wrappers running its own commands, the
   version directories its homes link to, and the variables it sets, those
-  of its packages under its own. A project command named like a command of
-  one of its packages is an error, since the wrapper would shadow it."
-  [config registry proj]
+  of its packages under its own and those of its selected profiles over
+  both. A project command named like a command of one of its packages is an
+  error, since the wrapper would shadow it."
+  [{:keys [config registry] :as ctx} proj]
   (let [dir (:dir proj)
         package-links (into {} (mapcat second (project-targets config registry proj)))
         {:keys [homes vars]} (project-environment config registry proj)
@@ -398,6 +421,7 @@
                               {:breto/problem :invalid-project :file (first (:files proj))
                                :problems [(str ":on-enter names the unknown command " on-enter)]}))))
         template (run/template-vars dir (env/bin-dir config dir) (env/homes-dir config dir) (platform/current config))
+        selection (selected-profiles ctx proj template)
         commands (env/write-commands! config dir (into {} (for [name (keys (:commands proj))]
                                                            [name (run/wrapper dir name)])))
         stale (inputs/stale-test (inputs/of-project proj) (inputs/stamp-path config dir))
@@ -407,7 +431,8 @@
                                                       [name (run/tool-wrapper dir name target stale)])))]
     {:links (merge (apply dissoc targets (keys wrapped)) tools commands)
      :homes homes
-     :vars (merge vars (run/render-env (:env proj) template))}))
+     :vars (merge vars (run/render-env (:env proj) template) (:vars selection))
+     :warnings (:warnings selection)}))
 
 (defn- project-install
   "install! options for a version a project needs: installed beside the
@@ -442,7 +467,8 @@
                0)]
     (if (pos? code)
       (assoc proj :code code)
-      (let [{:keys [links homes vars]} (project-setup config registry proj)
+      (let [{:keys [links homes vars] :as setup} (project-setup ctx proj)
+            _ (binding [*out* *err*] (run! #(println (str "[WARN] " %)) (:warnings setup)))
             bin (env/link! config dir links homes)]
         (inputs/stamp! config dir (inputs/of-project proj))
         (assoc proj :code 0 :vars vars :bin bin)))))
@@ -501,7 +527,7 @@
               on-enter (when enter? (:on-enter proj))]
           (when (and enter? (:menu proj))
             (binding [*out* *err*] (run! println (run/menu proj))))
-          (println (str (env/exports shell (path-for ctx bin) dir bin files vars)
+          (println (str (env/exports shell (path-for ctx bin) dir bin (conj files (str (env/selection-path config dir))) vars)
                         (when (and on-enter (not= :github shell))
                           (str "\n" "breto run --dir " (shell/quote-arg dir) " " (shell/quote-arg on-enter)
                                (when (= :fish shell) ";")))))
@@ -561,6 +587,121 @@
                            :vars (run/template-vars dir bin (env/homes-dir config dir) platform)}
                           (or (:exec io) run/exec!)))
         0))))
+
+(def ^:private none-row "-\tnothing: unset the variables of the profile")
+
+(defn- option-row [option-name {:keys [description]} current]
+  (str option-name "\t" (str/trim (str description (when (= option-name current) " (selected)")))))
+
+(defn- choose-option
+  "The option of the profile `profile-name` chosen in the fuzzy finder, else
+  through a numbered prompt: the name typed or chosen, ::none for nothing,
+  or nil to keep `current`."
+  [{:keys [config io]} profile-name options current]
+  (let [names (sort (keys options))]
+    (if-let [finder (search/finder config (which io))]
+      (let [command (if (vector? (:finder config))
+                      finder
+                      (into finder ["--delimiter" "\t" "--with-nth" "1,2"
+                                    "--prompt" (str "breto profile " profile-name "> ")
+                                    "--header" (str profile-name ": " (or current "nothing selected"))]))
+            rows (cons none-row (for [n names] (option-row n (get options n) current)))
+            {:keys [exit out]} ((:pick io) command (str (str/join "\n" rows) "\n"))
+            chosen (when (= 0 exit) (first (search/selected out)))]
+        (cond (nil? chosen) nil (= "-" chosen) ::none :else chosen))
+      (do (println (str "Options of " profile-name ":"))
+          (println "  0) nothing")
+          (doseq [[i n] (map-indexed vector names)]
+            (println (str (format "%3d) " (inc i)) n
+                          (when-let [d (:description (get options n))] (str " - " d))
+                          (when (= n current) " (selected)"))))
+          (let [answer (str/trim (or ((:ask io) (str "Option of " profile-name " (blank keeps " (or current "nothing") "): ")) ""))]
+            (cond (str/blank? answer) nil
+                  (= "0" answer) ::none
+                  (re-matches #"\d+" answer) (get (vec names) (dec (parse-long answer)) answer)
+                  :else answer))))))
+
+(defn- unknown-option [profile-name option-name options]
+  (ex-info (str "the profile " profile-name " has no option " option-name)
+           {:breto/problem :unknown-profile :profile profile-name :option option-name
+            :known (sort (keys options))}))
+
+(defn- confirmed?
+  "Whether the option may be selected: it does not ask for confirmation,
+  --yes is given, or the answer to the question is yes."
+  [{:keys [io opts]} profile-name option-name option]
+  (cond
+    (not (:confirm option)) true
+    (:yes opts) true
+    (:interactive? io) (contains? #{"y" "yes"} (str/lower-case (str/trim (or ((:ask io) (str "Select " option-name " of profile " profile-name "? [y/N] ")) ""))))
+    :else (throw (ex-info (str "the option " option-name " of profile " profile-name
+                               " asks for confirmation; pass --yes to select it without a terminal")
+                          {:breto/problem :usage}))))
+
+(defn- listing
+  "The profiles of `defined` with their options, the selected one marked."
+  [defined selected]
+  (str/join "; " (for [[p options] (sort-by key defined)]
+                   (str p " (" (str/join ", " (for [o (sort (keys options))] (if (= o (get selected p)) (str o "*") o))) ")"))))
+
+(defn select-profile
+  "Selects the options of the profiles of the project at or above --dir:
+  OPTION of PROFILE when both are named, else chosen in fzf or sk, or a
+  numbered prompt, for PROFILE or for every profile in turn. --clear
+  deselects PROFILE, or every profile. An option with :confirm true asks
+  first, unless --yes is given. The selection is refused when two of its
+  options set one variable differently. It prints the selection, which
+  breto env and breto run apply; the shell hook does so at the next prompt,
+  since the selection file is among BRETO_ENV_FILES."
+  [{:keys [config groups opts io] :as ctx} [profile-name option-name & more]]
+  (let [start (or (:dir opts) ".")
+        dir (or (project/find-dir start)
+                (throw (ex-info (str "no " project/file-name " or " project/local-file-name " in "
+                                     (fs/absolutize start) " or above it")
+                                {:breto/problem :no-project :dir (str (fs/absolutize start))})))
+        defined (profiles ctx (project/load-project groups dir))
+        path (env/selection-path config dir)
+        current (if (and (:clear opts) (nil? profile-name))
+                  {}
+                  (:selected (profile/active defined (profile/read-selection path))))
+        options-of (fn [p] (or (get defined p)
+                               (throw (ex-info (str "no profile " p " in the project or the configuration")
+                                               {:breto/problem :unknown-profile :profile p :known (sort (keys defined))}))))]
+    (when (empty? defined)
+      (throw (ex-info (str "neither the project " dir " nor the configuration defines :profiles")
+                      {:breto/problem :unknown-profile :known []})))
+    (when (or (seq more) (and (:clear opts) option-name))
+      (throw (ex-info "profile takes PROFILE OPTION, PROFILE or nothing, and --clear at most PROFILE"
+                      {:breto/problem :usage})))
+    (when profile-name (options-of profile-name))
+    (when (and option-name (not (get-in defined [profile-name option-name])))
+      (throw (unknown-option profile-name option-name (get defined profile-name))))
+    (when-not (or (:clear opts) option-name (:interactive? io))
+      (throw (ex-info (str "profile needs PROFILE OPTION outside a terminal; the profiles are " (listing defined current))
+                      {:breto/problem :usage})))
+    (let [select (fn [selection p o]
+                   (if (confirmed? ctx p o (get-in defined [p o])) (assoc selection p o) selection))
+          selection (cond
+                      (:clear opts) (if profile-name (dissoc current profile-name) {})
+                      option-name (select current profile-name option-name)
+                      :else (reduce (fn [selection p]
+                                      (let [options (options-of p)
+                                            choice (choose-option ctx p options (get selection p))]
+                                        (cond (nil? choice) selection
+                                              (= ::none choice) (dissoc selection p)
+                                              (get options choice) (select selection p choice)
+                                              :else (throw (unknown-option p choice options)))))
+                                    current
+                                    (if profile-name [profile-name] (sort (keys defined)))))]
+      (profile/variables defined selection)
+      (profile/write-selection! path selection)
+      (if (seq selection)
+        (run! println (for [[p o] (sort selection)] (str p "=" o)))
+        (println "No profile selected."))
+      (when (not= dir ((or (:getenv io) #(System/getenv %)) "BRETO_PROJECT"))
+        (binding [*out* *err*]
+          (println "Run eval \"$(breto env)\" to set the variables in this shell; the shell hook does so at its next prompt.")))
+      0)))
 
 (defn exec-tool
   "Runs the command `name` of the project's packages with `args` in the current
@@ -622,7 +763,7 @@
         (try
           (let [targets (project-targets config registry p)]
             (if (every? second targets)
-              (let [{:keys [links homes]} (project-setup config registry p)]
+              (let [{:keys [links homes]} (project-setup ctx p)]
                 (env/link! config (:dir p) links homes)
                 (inputs/stamp! config (:dir p) (inputs/of-project p)))
               (println (str "[WARN] project " (:dir p) " keeps its links: "

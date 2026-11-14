@@ -54,6 +54,10 @@ Commands:
                             eval \"$(breto hook bash)\" in .bashrc
   run [COMMAND [ARG...]]    run a command of the project's :commands with its tools on PATH,
                             after those it :depends on; without one, choose it in fzf or sk
+  profile [PROFILE [OPTION]] select the option of each of the project's :profiles whose
+                            variables breto env and breto run set; without an option,
+                            choose it in fzf or sk; --clear [PROFILE] selects nothing,
+                            --yes skips the question of an option with :confirm true
   exec COMMAND [ARG...]     run a command of the project's packages after bringing the project
                             up to date; what the project's bin directory runs when a file
                             deciding its versions changed
@@ -99,6 +103,7 @@ Every failure is explained with what to do; --debug adds each request and stack 
    "search" commands/search
    "env" commands/env
    "run" commands/run-command
+   "profile" commands/select-profile
    "exec" commands/exec-tool
    "sync" commands/sync-store
    "lock" commands/lock
@@ -255,7 +260,7 @@ Every failure is explained with what to do; --debug adds each request and stack 
          ctx))))
 
 (def parse-spec
-  {:coerce {:keep :long :delay :long :debug :boolean :verify :boolean :force :boolean :dry-run :boolean :all :boolean :previous :boolean :locked :boolean :brief :boolean :wait :boolean :install :boolean :check :boolean :enter :boolean}
+  {:coerce {:keep :long :delay :long :debug :boolean :verify :boolean :force :boolean :dry-run :boolean :all :boolean :previous :boolean :locked :boolean :brief :boolean :wait :boolean :install :boolean :check :boolean :enter :boolean :clear :boolean :yes :boolean}
    :alias {:d :debug}})
 
 (def ^:private valued
