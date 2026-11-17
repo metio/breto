@@ -3,6 +3,7 @@
 
 (ns breto.lock-test
   (:require [babashka.fs :as fs]
+            [breto.diagnose :as diagnose]
             [breto.lockfile :as lockfile]
             [breto.platform :as platform]
             [breto.registry :as registry]
@@ -117,3 +118,19 @@
         (is (= 0 code) out)))
     (is (= {"alpha@0.9.0" (here {:sha256 (hash "0.9.0") :asset "alpha"})}
            (:entries (lockfile/read-lock (path "shared" "breto.lock")))))))
+
+(deftest lock-refuses-a-directory-whose-groups-are-not-loaded
+  (let [{:keys [io]} (world)]
+    (fs/create-dirs (path "clone"))
+    (spit (path "clone" "@toolchain.edn") (pr-str {:members ["alpha@0.9.0"]}))
+    (spit (path "clone" "breto.lock") (pr-str {"alpha@0.9.0" (here {:sha256 "x" :asset "alpha"})}))
+    (let [before (slurp (path "clone" "breto.lock"))
+          e (try (breto! io "lock" (path "clone")) nil
+                 (catch clojure.lang.ExceptionInfo e e))]
+      (is (= :not-a-registry (:breto/problem (ex-data e))))
+      (is (str/includes? (:summary (diagnose/diagnose e {})) "does not read that directory as a registry"))
+      (is (some #(str/includes? % ":extra-registries") (:advice (diagnose/diagnose e {}))))
+      (testing "the lock file is left as it was"
+        (is (= before (slurp (path "clone" "breto.lock"))))))
+    (testing "a registry directory without groups still locks to an empty file"
+      (is (= 0 (:code (breto! io "lock" (path "shared"))))))))

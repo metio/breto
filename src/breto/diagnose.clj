@@ -538,6 +538,12 @@
    :facts []
    :advice ["breto help lists every command with its arguments."]})
 
+(defmethod explain :not-a-registry [{:keys [dir]} _]
+  {:summary (str "breto lock found groups in " dir ", and the configuration does not read that directory as a registry.")
+   :facts ["lock only locks the groups breto loaded from a directory under :registries or :extra-registries; writing the file now would drop every entry."
+           "A published registry such as {:github \"OWNER/REPO\"} is read from its installed release, not from a clone of the repository."]
+   :advice [(str "Name the directory as a registry, e.g. in a config passed with --config or BRETO_CONFIG: {:extra-registries [\"" dir "\"]}")]})
+
 (defmethod explain :no-previous [{:keys [package active installed]} _]
   {:summary (str "No installed version of " package " is older than the active " (or active "one") ".")
    :facts [(str "Installed versions: " (if (seq installed) (str/join ", " installed) "none"))]
