@@ -81,3 +81,9 @@
                                                         "gitleaks" {:superseded-by "betterleaks"}})]
     (is (= :warn level))
     (is (= "exa by eza, gitleaks by betterleaks (no definition)" detail))))
+
+(deftest an-invalid-desktop-entry-setting-fails-the-doctor
+  (is (= :ok (:level (doctor/desktop-check {:desktop-dir "/a" :desktop-entries true}))))
+  (is (= :ok (:level (doctor/desktop-check {:desktop-dir "/a" :desktop-entries {:except ["lightning"]}}))))
+  (is (= :fail (:level (doctor/desktop-check {:desktop-dir "/a" :desktop-entries "off"}))))
+  (is (= :fail (:level (doctor/desktop-check {:desktop-dir "/a" :desktop-entries {:except "lightning"}})))))

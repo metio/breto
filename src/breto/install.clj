@@ -236,11 +236,11 @@
             (.close lock)))))))
 
 (defn- keep-share-files!
-  "Copies the man pages and shipped completions of `pkg` from `unpacked` to
-  the same paths under `dest`. A completion file the definition names must
-  exist; a man page glob may match nothing."
+  "Copies the man pages, shipped completions and desktop icon of `pkg` from
+  `unpacked` to the same paths under `dest`. A completion file or icon the
+  definition names must exist; a man page glob may match nothing."
   [pkg artifact unpacked dest]
-  (doseq [path (share/shipped-completions pkg)]
+  (doseq [path (share/shipped-files pkg)]
     (when-not (fs/regular-file? (fs/path unpacked path))
       (throw (ex-info (str (:name pkg) ": " path " is not in " (:asset artifact))
                       {:breto/problem :path-missing :package (:name pkg) :path path
@@ -282,7 +282,7 @@
   [{:keys [layout] :as pkg} artifact unpacked dest]
   (if (= :tree layout)
     (do (fs/move unpacked dest)
-        (doseq [path (share/shipped-completions pkg)]
+        (doseq [path (share/shipped-files pkg)]
           (tree-file! pkg artifact dest path)))
     (do (fs/create-dirs dest)
         (doseq [[path stored] (package/stored-files pkg artifact)]
@@ -339,7 +339,7 @@
         bin-paths (package/bin-paths pkg artifact)
         in-place? (= :ghcup (package/source-kind pkg))
         fresh? (or (not (store/installed? config (:name pkg) version
-                                          (concat (vals bin-paths) (share/shipped-completions pkg))))
+                                          (concat (vals bin-paths) (share/shipped-files pkg))))
                    (and in-place? (nil? (store/read-meta config (:name pkg) version))))
         _ (when-not fresh?
             (let [meta (store/read-meta config (:name pkg) version)]

@@ -100,8 +100,8 @@
        (str/starts-with? (str (fs/read-link link)) (str dir "/"))))
 
 (defn share-links-into
-  "The man page and completion links that point into the store directory of
-  `name`."
+  "The man page, completion and desktop entry links that point into the store
+  directory of `name`."
   [config name]
   (let [dir (package-dir config name)]
     (->> (share/link-dirs config)
@@ -112,9 +112,9 @@
          sort)))
 
 (defn link-share!
-  "Links the man pages and completions of `version` of `pkg` and removes the
-  package's links whose target is gone. A file that breto did not link is
-  left alone; returns a sentence for each."
+  "Links the man pages, completions and desktop entry of `version` of `pkg`
+  and removes the package's links whose target is gone. A file that breto
+  did not link is left alone; returns a sentence for each."
   [config pkg version]
   (let [dir (package-dir config (:name pkg))
         wanted (share/links config pkg (version-dir config (:name pkg) version) (fs/path dir current-link))]
@@ -129,7 +129,7 @@
 
 (defn activate!
   "Makes `version` the one that `current`, the binaries, any extra links, the
-  man pages and the completions of the package resolve to. Links in the bin
+  man pages, the completions and the desktop entry of the package resolve to. Links in the bin
   directory to commands `version` lacks are removed. A command or link may
   replace a link into the store, so the package listed last wins, but
   nothing else. Returns warnings about the files left in the way."
@@ -142,6 +142,8 @@
                    (str link " exists and was not linked by breto, so " name " leaves it alone")
                    (do (link! link target) nil)))]
     (link! current version)
+    (share/write-desktop! config pkg (version-dir config name version) current bin-paths
+                          #(fs/path (:bin-dir config) %))
     (when (fs/directory? (:bin-dir config))
       (doseq [link (fs/list-dir (:bin-dir config))
               :when (and (points-into? dir link)

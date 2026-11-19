@@ -12,6 +12,7 @@
             [breto.remote :as remote]
             [breto.report :as report]
             [breto.search :as search]
+            [breto.share :as share]
             [breto.signature :as signature]
             [breto.store :as store]
             [cheshire.core :as json]
@@ -178,6 +179,15 @@
              "Neither fzf nor sk is in the bin directory or on PATH")
            "Run breto install fzf, or set :finder to the command of another finder.")))
 
+(defn desktop-check
+  "Whether :desktop-entries is a setting breto understands. An invalid one
+  turns every desktop entry off."
+  [config]
+  (if-let [wrong (seq (share/desktop-entries-problems config))]
+    (check :fail "The desktop entry setting is invalid, so no desktop entries are linked" (str/join "; " wrong)
+           "Set :desktop-entries to true, false or {:except [package names]}.")
+    (check :ok "Desktop entries are configured" (str (or (:desktop-dir config) "no :desktop-dir")))))
+
 (defn hooks-check
   "Whether the configured hooks can run. `os` is the os.name property and
   `which` resolves a command name to its path."
@@ -330,6 +340,7 @@
            (unverified-check config registry)
            (signature-check config registry #(some-> (fs/which %) str))
            (hooks-check config (System/getProperty "os.name") #(some-> (fs/which %) str))
+           (desktop-check config)
            (finder-check config #(some-> (fs/which %) str))
            (token-check config io)
            (github-check io)]

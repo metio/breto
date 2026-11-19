@@ -98,6 +98,8 @@ breto reads the file given with `--config`, else the one `BRETO_CONFIG` names, e
 | `:platform` | The platform definitions are resolved for, one of `linux-x86_64`, `linux-aarch64`, `darwin-x86_64` and `darwin-aarch64`; see [Platforms](#platforms). `--platform` overrides it for one run. | the platform breto runs on |
 | `:man-dir` | Where man pages are linked, as `<man-dir>/man<section>/<file>`. | `$XDG_DATA_HOME/man` |
 | `:completion-dirs` | Where shell completions are linked, per shell. Leaving a shell out skips its completions. | `{:bash "$XDG_DATA_HOME/bash-completion/completions" :zsh "$XDG_DATA_HOME/zsh/site-functions" :fish "$XDG_CONFIG_HOME/fish/completions"}` |
+| `:desktop-dir` | Where desktop entries are linked; nil links none. | `$XDG_DATA_HOME/applications` on Linux and the BSDs, none elsewhere |
+| `:desktop-entries` | Which packages get a desktop entry: `true` every one whose definition declares one, `false` none, `{:except ["lightning"]}` all but the named ones; see [Desktop entries](#desktop-entries). | `true` |
 
 breto also reads the rate-limit headers of every response. When a host has no requests left (`x-ratelimit-remaining: 0`) or sends `retry-after`, the next package waits until that host accepts requests again, or for `:delay` if that applies and is longer. A package refused by a rate limit that names a wait is retried once after it.
 
@@ -404,6 +406,7 @@ A package is a file `<name>.edn` in a registry directory, and its file name is t
 | `:signature` | A sigstore bundle signing the asset or its checksum file; see below. | none |
 | `:skip` | Versions never installed as the latest, e.g. a broken release. When the latest release is listed, the newest unlisted one is installed instead, which costs one request listing the releases. An explicitly requested or pinned version is installed regardless; `:revoked` refuses a version on every path. | none |
 | `:tests` | Commands `breto test` runs against an installed version to show that the release works on the platform; see [Tests](#tests). | none |
+| `:desktop` | The desktop entry of a graphical program; see [Desktop entries](#desktop-entries). | none |
 | `:revoked` | Version to the reason it must never run, e.g. a release whose binaries were replaced by an attacker. breto refuses to install or activate it by any path and retires it where it is installed; see [Revoked versions](#revoked-versions). | none |
 
 Templates can use `{name}`, `{tag}`, `{version}`, `{repo}` and, except in `:asset` itself, `{asset}`. Files ending in `.tar.gz`, `.tgz`, `.tar.xz`, `.txz`, `.tar.bz2`, `.tbz2`, `.tar.zst`, `.tzst`, `.tar` or `.zip` are unpacked. Any other file ending in `.gz`, `.bz2` or `.zst` is a single compressed file, decompressed under its name without that suffix, so `taplo-linux-x86_64.gz` becomes `taplo-linux-x86_64`. Anything else is the binary itself. An entry that would land outside the unpack directory, or a tar entry that would write through a symlink the archive created, fails the install.
@@ -634,6 +637,22 @@ The binary layout keeps the named files beside the binaries. A completion file t
 Links go to `:man-dir` and `:completion-dirs`, named after the command as each shell expects (`tool`, `_tool`, `tool.fish`), and resolve through the package's `current` link, so `use` and `update` switch them with the binaries and `uninstall` removes them. A file in the way that breto did not link is left alone with a warning.
 
 man finds `$XDG_DATA_HOME/man` through a `PATH` entry `~/.local/bin` once that directory exists, bash-completion 2 loads `$XDG_DATA_HOME/bash-completion/completions` on demand, and fish reads `~/.config/fish/completions`. zsh needs `$XDG_DATA_HOME/zsh/site-functions` in `fpath` before `compinit`.
+
+### Desktop entries
+
+`:desktop` gives a graphical program a desktop entry, so that application menus and launchers list it:
+
+```clojure
+{:desktop {:name "Lightning"
+           :comment "Matrix client"
+           :categories ["Network" "InstantMessaging" "Chat"]
+           :mime-types ["x-scheme-handler/matrix"]
+           :args ["%U"]}}
+```
+
+breto writes the entry into the installed version and links it as `breto-<package>.desktop` into `:desktop-dir`, through the package's `current` link, so `use` and `update` switch it with the binaries and `uninstall` removes it. `Exec` and `TryExec` name the command's link in `:bin-dir`: the package's own name when it links a command of that name, else its first command, or `:command` under `:desktop`. `:args` follow it, quoted where the Desktop Entry Specification needs it, except field codes such as `%U`. `:icon` is a path inside the release, which the binary layout keeps and which must exist, like a completion file. `:terminal true` runs the program in a terminal, and `:wm-class` becomes `StartupWMClass`, which helps a desktop match the program's windows to its entry.
+
+The entry is rewritten whenever the package is activated and its text has changed, such as after a new `:bin-dir` or a changed definition. `:desktop-entries false` in the config turns entries off, and `{:except [names]}` turns them off for the named packages; the entry of a package that is turned off is removed the next time the package is activated, by `update`, `install` or `use`. `breto doctor` fails on a `:desktop-entries` it does not understand, which turns every entry off. An entry in the way that breto did not link is left alone with a warning.
 
 ### Overlays
 

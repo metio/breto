@@ -220,3 +220,118 @@
     (is (= "man 1.0.0" (content "man" "man1" "tool.1.gz")))
     (testing "and only once"
       (is (not (:installed? (install/install! cfg io (tool shipped) {:version "1.0.0"})))))))
+
+(defn- desktop-config [& {:as extra}]
+  (merge (config) {:desktop-dir (at "applications")} extra))
+
+(def ^:private desktop
+  {:desktop {:name "Tool" :comment "Does things" :categories ["Development" "Utility"]
+             :mime-types ["x-scheme-handler/tool"] :args ["%U"] :wm-class "tool"}})
+
+(defn- entry []
+  (content "applications" "breto-tool.desktop"))
+
+(deftest a-desktop-entry-starts-the-linked-command
+  (let [cfg (desktop-config)]
+    (install/install! cfg (serve (sorted-map "1.0.0" (release "1.0.0"))) (tool desktop) {:version "1.0.0"})
+    (is (= (str "[Desktop Entry]\n"
+                "Type=Application\n"
+                "Name=Tool\n"
+                "Comment=Does things\n"
+                "TryExec=" (at "bin" "tool") "\n"
+                "Exec=" (at "bin" "tool") " %U\n"
+                "Terminal=false\n"
+                "Categories=Development;Utility;\n"
+                "MimeType=x-scheme-handler/tool;\n"
+                "StartupWMClass=tool\n"
+                "X-Breto-Package=tool\n")
+           (entry)))
+    (testing "the link resolves through current"
+      (is (str/includes? (str (fs/read-link (at "applications" "breto-tool.desktop"))) "/current/")))
+    (testing "uninstalling removes the link"
+      (store/uninstall! cfg "tool" (store/links-into cfg "tool" []))
+      (is (empty? (fs/list-dir (at "applications")))))))
+
+(deftest a-desktop-entry-shows-the-icon-of-the-release
+  (let [cfg (desktop-config)
+        files (assoc (release "1.0.0") "share/icons/tool.png" "png")]
+    (install/install! cfg (serve (sorted-map "1.0.0" files))
+                      (tool (assoc-in desktop [:desktop :icon] "share/icons/tool.png")) {:version "1.0.0"})
+    (let [icon (second (re-find #"(?m)^Icon=(.*)$" (entry)))]
+      (is (str/ends-with? icon "/tool/current/share/icons/tool.png"))
+      (is (= "png" (slurp icon))))))
+
+(deftest an-icon-missing-from-the-release-fails-the-install
+  (let [data (try (install/install! (desktop-config) (serve (sorted-map "1.0.0" (release "1.0.0")))
+                                    (tool (assoc-in desktop [:desktop :icon] "share/icons/tool.png")) {:version "1.0.0"})
+                  nil
+                  (catch clojure.lang.ExceptionInfo e (ex-data e)))]
+    (is (= :path-missing (:breto/problem data)))
+    (is (= "share/icons/tool.png" (:path data)))))
+
+(deftest a-changed-definition-rewrites-the-entry-on-the-next-activation
+  (let [cfg (desktop-config)
+        io (serve (sorted-map "1.0.0" (release "1.0.0")))]
+    (install/install! cfg io (tool desktop) {:version "1.0.0"})
+    (install/install! cfg io (tool (assoc-in desktop [:desktop :name] "Tool Pro")) {:version "1.0.0"})
+    (is (str/includes? (entry) "Name=Tool Pro\n"))
+    (is (sealed/sealed? (store/version-dir cfg "tool" "1.0.0")))))
+
+(deftest the-config-turns-desktop-entries-off
+  (let [io (serve (sorted-map "1.0.0" (release "1.0.0")))]
+    (testing "for every package"
+      (install/install! (desktop-config :desktop-entries false) io (tool desktop) {:version "1.0.0"})
+      (is (not (fs/exists? (at "applications" "breto-tool.desktop") {:nofollow-links true}))))
+    (testing "for the packages it names"
+      (install/install! (desktop-config :desktop-entries {:except ["tool"]}) io (tool desktop) {:version "1.0.0"})
+      (is (not (fs/exists? (at "applications" "breto-tool.desktop") {:nofollow-links true}))))
+    (testing "without a directory"
+      (install/install! (config) io (tool desktop) {:version "1.0.0"})
+      (is (not (fs/exists? (at "applications")))))
+    (testing "and an invalid setting counts as off"
+      (install/install! (desktop-config :desktop-entries {:except "tool"}) io (tool desktop) {:version "1.0.0"})
+      (is (not (fs/exists? (at "applications" "breto-tool.desktop") {:nofollow-links true}))))
+    (testing "for another package it leaves the entry"
+      (install/install! (desktop-config :desktop-entries {:except ["other"]}) io (tool desktop) {:version "1.0.0"})
+      (is (str/includes? (entry) "Name=Tool\n")))))
+
+(deftest turning-an-entry-off-removes-the-link-on-the-next-activation
+  (let [io (serve (sorted-map "1.0.0" (release "1.0.0")))]
+    (install/install! (desktop-config) io (tool desktop) {:version "1.0.0"})
+    (is (fs/exists? (at "applications" "breto-tool.desktop")))
+    (install/use! (desktop-config :desktop-entries false) (tool desktop) "1.0.0")
+    (is (not (fs/exists? (at "applications" "breto-tool.desktop") {:nofollow-links true})))))
+
+(deftest an-entry-breto-did-not-link-is-left-alone
+  (let [cfg (desktop-config)]
+    (fs/create-dirs (at "applications"))
+    (spit (at "applications" "breto-tool.desktop") "mine")
+    (let [{:keys [warnings]} (install/install! cfg (serve (sorted-map "1.0.0" (release "1.0.0"))) (tool desktop) {:version "1.0.0"})]
+      (is (= "mine" (entry)))
+      (is (some #(str/includes? % "was not linked by breto") warnings)))))
+
+(deftest exec-quotes-arguments-with-reserved-characters
+  (let [entry (share/desktop-entry {:name "tool" :desktop {:name "Tool" :args ["--title" "two words" "%F" "100%" "a\"b"]}}
+                                   "/home/me/my bin/tool" "/store/tool/current")]
+    (is (str/includes? entry "TryExec=/home/me/my bin/tool\n"))
+    (is (str/includes? entry (str "Exec=\"/home/me/my bin/tool\" --title \"two words\" %F 100%% \"a\\\\\"b\"\n")))))
+
+(deftest a-desktop-entry-starts-the-command-the-definition-names
+  (is (= "tool" (share/desktop-command {:name "tool"} {"tool" "x" "aux" "y"})))
+  (is (= "aux" (share/desktop-command {:name "suite"} {"tool" "x" "aux" "y"})))
+  (is (= "tool" (share/desktop-command {:name "suite" :desktop {:command "tool"}} {"aux" "y" "tool" "x"}))))
+
+(deftest invalid-desktop-entries-are-named
+  (let [problems #(try (s/normalize (merge {:name "tool" :source {:github "acme/tool"} :asset "t" :bins {"tool" "t"}} %))
+                       nil
+                       (catch clojure.lang.ExceptionInfo e (str/join "\n" (:problems (ex-data e)))))]
+    (is (nil? (problems desktop)))
+    (doseq [bad [{:desktop {}}
+                 {:desktop {:name ""}}
+                 {:desktop {:name "Tool" :categories ["Dev;Utility"]}}
+                 {:desktop {:name "Tool" :mime-types ["text"]}}
+                 {:desktop {:name "Tool" :icon "/usr/share/icons/tool.png"}}
+                 {:desktop {:name "Tool" :icon "../tool.png"}}
+                 {:desktop {:name "Tool" :terminal "yes"}}
+                 {:desktop {:name "Tool" :exec "tool"}}]]
+      (is (str/includes? (str (problems bad)) ":desktop") (pr-str bad)))))

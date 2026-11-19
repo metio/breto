@@ -4,6 +4,7 @@
 (ns breto.config-test
   (:require [babashka.fs :as fs]
             [breto.config :as config]
+            [clojure.string :as str]
             [clojure.test :refer [deftest is]]))
 
 (deftest the-bin-dir-is-the-users-directory-path-lists-first
@@ -32,3 +33,9 @@
       (spit file (pr-str {:registries ["/internal"]}))
       (is (= ["/internal"] (:registries (config/load-config file))))
       (finally (fs/delete file)))))
+
+(deftest desktop-entries-are-linked-where-the-desktop-reads-them
+  (is (str/ends-with? (config/desktop-dir "Linux") "/applications"))
+  (is (str/ends-with? (config/desktop-dir "FreeBSD") "/applications"))
+  (is (nil? (config/desktop-dir "Mac OS X")))
+  (is (nil? (config/desktop-dir "Windows 11"))))

@@ -94,6 +94,25 @@
                    false))
                completions)))
 
+(defn- desktop-valid?
+  "Whether `desktop` describes a desktop entry: a :name, and optionally a
+  :comment, :categories and :mime-types, an :icon inside the release, the
+  :command it starts with its :args, whether it runs in a :terminal, and the
+  :wm-class of its windows."
+  [desktop]
+  (let [text? #(and (string? %) (not (str/blank? %)))
+        items? (fn [pattern v] (and (vector? v) (every? #(and (string? %) (re-matches pattern %)) v)))]
+    (and (map? desktop)
+         (every? #{:name :comment :categories :mime-types :icon :command :args :terminal :wm-class} (keys desktop))
+         (text? (:name desktop))
+         (every? #(or (nil? %) (text? %)) [(:comment desktop) (:wm-class desktop)])
+         (items? #"[A-Za-z0-9-]+" (:categories desktop []))
+         (items? #"[^\s;/]+/[^\s;/]+" (:mime-types desktop []))
+         (or (nil? (:icon desktop)) (relative-path? (:icon desktop)))
+         (or (nil? (:command desktop)) (and (string? (:command desktop)) (re-matches #"[^/.][^/]*" (:command desktop))))
+         (and (vector? (:args desktop [])) (every? string? (:args desktop [])))
+         (boolean? (:terminal desktop false)))))
+
 (defn- tests-valid?
   "Whether `tests` is a vector of tests, each a non-empty vector of argument
   strings or a map of those :args with an optional :timeout in seconds, :env
@@ -268,6 +287,9 @@
 
     (not (tests-valid? (:tests pkg [])))
     (conj ":tests is a vector of tests, each a vector of a command and its arguments or {:args [...] :timeout SECONDS :env {...} :expect TEXT}")
+
+    (and (contains? pkg :desktop) (not (desktop-valid? (:desktop pkg))))
+    (conj ":desktop is {:name TEXT} with optional :comment, :categories and :mime-types vectors, an :icon path inside the release, the :command it starts and its :args, :terminal true or false, and :wm-class")
 
     (not (completions-valid? (:completions pkg {})))
     (conj ":completions maps :bash, :zsh or :fish to a relative path inside the release or to {:args [...] :env {...}}, and :command to a command name")

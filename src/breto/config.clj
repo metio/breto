@@ -29,6 +29,15 @@
     (or (first (filter (set candidates) entries))
         (first candidates))))
 
+(defn desktop-dir
+  "Where desktop entries are linked on the operating system `os`, the
+  os.name property: the applications directory below XDG_DATA_HOME on Linux
+  and the BSDs, and none elsewhere, since macOS and Windows read no desktop
+  entries."
+  [os]
+  (when (re-find #"(?i)linux|bsd" (str os))
+    (str (fs/path (env-dir "XDG_DATA_HOME" ".local/share") "applications"))))
+
 (defn defaults []
   {:store (str (fs/path (env-dir "XDG_DATA_HOME" ".local/share") "breto" "installations"))
    :bin-dir (default-bin-dir (System/getProperty "user.home") (System/getenv "PATH"))
@@ -53,7 +62,9 @@
    :man-dir (str (fs/path (env-dir "XDG_DATA_HOME" ".local/share") "man"))
    :completion-dirs {:bash (str (fs/path (env-dir "XDG_DATA_HOME" ".local/share") "bash-completion" "completions"))
                      :zsh (str (fs/path (env-dir "XDG_DATA_HOME" ".local/share") "zsh" "site-functions"))
-                     :fish (str (fs/path (env-dir "XDG_CONFIG_HOME" ".config") "fish" "completions"))}})
+                     :fish (str (fs/path (env-dir "XDG_CONFIG_HOME" ".config") "fish" "completions"))}
+   :desktop-dir (desktop-dir (System/getProperty "os.name"))
+   :desktop-entries true})
 
 (defn- expand-home [s]
   (str/replace-first s #"^~(?=/|$)" (System/getProperty "user.home")))
@@ -77,4 +88,5 @@
         (update :python-dir expand-home)
         (update :man-dir #(some-> % expand-home))
         (update :completion-dirs #(update-vals % expand-home))
+        (update :desktop-dir #(some-> % expand-home))
         (update :registries #(mapv (fn [entry] (if (string? entry) (expand-home entry) entry)) %)))))
