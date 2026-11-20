@@ -90,6 +90,7 @@ breto reads the file given with `--config`, else the one `BRETO_CONFIG` names, e
 | `:messages` | Message templates of `:notify` per event, e.g. `{:installed "{package} is now {version}"}`. | see [Hooks](#hooks) |
 | `:hook-timeout` | Seconds a hook may run before it is stopped. | `30` |
 | `:prune` | Whether `gc` without arguments also uninstalls every package `:packages` does not list. | `false` |
+| `:projects` | Where `gc` and `sync` look for projects besides those with an environment: `:dirs`, globs such as `"~/git/*/*/*"` whose matches holding a project file are projects, and `:command`, a command printing one project directory per line, such as `["aro" "list" "--dirs"]`; see [Keeping what projects use](#keeping-what-projects-use). | none |
 | `:store` | Where versions are unpacked, as `<store>/<package>/<version>`. | `$XDG_DATA_HOME/breto/installations` |
 | `:bin-dir` | Where binaries are linked. | `~/.local/bin`, or `~/bin` when `PATH` lists it before `~/.local/bin` or alone |
 | `:profiles` | Profiles every project can select options of, such as clusters or clouds; see [Profiles](#profiles). | none |
@@ -284,7 +285,20 @@ A group file can also hold the commands every project of its kind runs, so they 
             "ci-typos" {:run ["typos"]}}}
 ```
 
-`gc` keeps every version a project links to, and `:prune true` keeps the packages, for as long as the project's `.breto.edn` or `.breto.local.edn` exists. Once the file is gone, `gc` removes the project's links and treats its versions like any other.
+### Keeping what projects use
+
+`gc` and `sync` keep what a project uses for as long as its `.breto.edn` or `.breto.local.edn` exists: every version its environment links to, every version its project files pin, and, with `:prune true`, every package its project files name. A package named without a version stays installed and `:keep` decides which of its versions remain. Once the file is gone, `gc` removes the project's links and treats its versions like any other.
+
+breto knows a project once it has an environment, which `breto env`, `breto run` or the shell hook creates. A checkout nobody entered yet has none, so `:projects` names where else to look:
+
+```clojure
+{:projects {:dirs ["~/git/*/*/*"]
+            :command ["aro" "list" "--dirs"]}}
+```
+
+A directory counts once whatever path names it: an environment belongs to the path with every symlink resolved, so `/home/me/app` and `/var/home/me/app` share one where `/home` links to `/var/home`. `gc` removes an environment a different spelling of the path created once the canonical one exists, and `update` creates that one for every known project.
+
+While a `:projects` command fails or a project file does not load, `gc` and `sync` uninstall no package and say why, since a project they cannot read may use any of them. `gc` still deletes versions beyond `:keep`.
 
 ### Published registries
 

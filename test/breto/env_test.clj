@@ -298,7 +298,9 @@
     (is (= (path "real" "app") (project/find-dir "." {"PWD" (path)} (path "real" "app"))))))
 
 (defn- envs []
-  (sort (map str (fs/list-dir (path "envs")))))
+  (if (fs/directory? (path "envs"))
+    (sort (map str (fs/list-dir (path "envs"))))
+    []))
 
 (deftest one-directory-has-one-environment-whatever-path-names-it
   (let [io (world)]
@@ -346,6 +348,69 @@
         (is (str/includes? out "[OK] removed alpha 0.9.0") out))
       (is (not (fs/exists? legacy)))
       (is (= 1 (count (envs)))))))
+
+(defn- installed-alpha-and-beta!
+  "alpha 0.9.0 and 1.0.0 and beta 1.0.0 installed, alpha 1.0.0 active."
+  [io cfg]
+  (s/breto! cfg ["install" "alpha@0.9.0" "beta"] {:io io})
+  (s/breto! cfg ["install" "alpha"] {:io io}))
+
+(deftest gc-keeps-what-the-project-files-in-configured-directories-declare
+  (let [io (world)
+        cfg (assoc config :env-dir (path "envs") :keep 1 :prune true
+                   :projects {:dirs [(str (path "checkouts") "/*")]})]
+    (installed-alpha-and-beta! io cfg)
+    (project! "checkouts/app" ["alpha@0.9.0" "beta"])
+    (fs/create-dirs (path "checkouts" "plain"))
+    (let [{:keys [out]} (s/breto! cfg ["gc"] {:io io})]
+      (is (not (str/includes? out "beta removed")) out)
+      (is (not (str/includes? out "alpha 0.9.0")) out))
+    (is (empty? (envs)) "gc enters no project")
+    (testing "a project file that drops the package releases it"
+      (project! "checkouts/app" ["alpha"])
+      (let [{:keys [out]} (s/breto! cfg ["gc"] {:io io})]
+        (is (str/includes? out "[OK] beta removed") out)
+        (is (str/includes? out "[OK] removed alpha 0.9.0") out)))))
+
+(deftest gc-keeps-what-the-project-files-a-command-lists-declare
+  (let [io (world)
+        cfg (assoc config :env-dir (path "envs") :keep 1 :prune true
+                   :projects {:command ["sh" "-c" (str "printf '%s\\n\\n' '" (path "app") "'")]})]
+    (installed-alpha-and-beta! io cfg)
+    (project! "app" ["beta"])
+    (let [{:keys [out]} (s/breto! cfg ["gc"] {:io io})]
+      (is (not (str/includes? out "beta removed")) out))))
+
+(deftest gc-uninstalls-nothing-while-a-project-source-fails
+  (let [io (world)
+        cfg (assoc config :env-dir (path "envs") :keep 1 :prune true
+                   :projects {:command ["sh" "-c" "echo broken >&2; exit 3"]})]
+    (installed-alpha-and-beta! io cfg)
+    (let [{:keys [out]} (s/breto! cfg ["gc"] {:io io})]
+      (is (str/includes? out "[WARN] sh -c echo broken >&2; exit 3 exited with 3: broken") out)
+      (is (str/includes? out "so gc uninstalls no package this run") out)
+      (is (not (str/includes? out "beta removed")) out)
+      (testing "versions beyond :keep still go"
+        (is (str/includes? out "[OK] removed alpha 0.9.0") out)))))
+
+(deftest gc-keeps-what-a-known-project-declares-but-does-not-link-yet
+  (let [io (world)
+        cfg (assoc config :env-dir (path "envs") :keep 1 :prune true)]
+    (installed-alpha-and-beta! io cfg)
+    (project! "app" ["alpha"])
+    (env! io "app")
+    (project! "app" ["alpha" "beta"])
+    (let [{:keys [out]} (s/breto! cfg ["gc"] {:io io})]
+      (is (not (str/includes? out "beta removed")) out))))
+
+(deftest discovery-names-each-project-once
+  (project! "real/app" ["alpha"])
+  (fs/create-dirs (path "real" "empty"))
+  (fs/create-sym-link (path "link") (path "real"))
+  (is (= {:dirs [(str (fs/canonicalize (path "real" "app")))] :problems []}
+         (project/discover {:dirs [(str (path "real") "/*") (str (path "link") "/*") (path "link" "app")]
+                            :command ["echo" "relative/dir"]})))
+  (is (= {:dirs [] :problems []} (project/discover {}))))
 
 (defn- user-dirs
   "The entries of `path` after the first `n` that the user can write to."

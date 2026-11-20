@@ -51,6 +51,50 @@
        (when dir
          (if (has-file? dir) (str dir) (recur (fs/parent dir))))))))
 
+(defn- glob-dirs
+  "The directories matching the glob `pattern`, an absolute path whose
+  components after the first one holding *, ?, [ or { are matched against
+  what exists."
+  [pattern]
+  (let [parts (str/split pattern #"/")
+        fixed (take-while #(not (re-find #"[*?\[{]" %)) parts)
+        rest-parts (drop (count fixed) parts)
+        root (str/join "/" fixed)
+        root (if (str/blank? root) "/" root)]
+    (cond (empty? rest-parts) (when (fs/directory? root) [root])
+          (fs/directory? root) (->> (fs/glob root (str/join "/" rest-parts) {:hidden true})
+                                    (filter fs/directory?)
+                                    (map str))
+          :else [])))
+
+(defn- expand-home [s]
+  (str/replace-first s #"^~(?=/|$)" (System/getProperty "user.home")))
+
+(defn discover
+  "The directories holding a project file among those `projects` names, each
+  once whatever path names it: every directory matching a glob in :dirs, and
+  every line the :command prints. Returns {:dirs :problems}, a problem for a
+  command that fails, so a caller that deletes what no project uses can tell
+  a failed listing from an empty one."
+  [{:keys [dirs command]}]
+  (let [listed (when (seq command)
+                 (try
+                   (let [{:keys [exit out err]} (apply process/shell {:out :string :err :string :continue true} command)]
+                     (if (zero? exit)
+                       {:dirs (remove str/blank? (map str/trim (str/split-lines out)))}
+                       {:problems [(str (str/join " " command) " exited with " exit
+                                        (when-not (str/blank? err) (str ": " (str/trim err))))]}))
+                   (catch Exception e
+                     {:problems [(str (str/join " " command) " could not run: " (ex-message e))]})))
+        candidates (concat (mapcat (comp glob-dirs expand-home) dirs) (:dirs listed))]
+    {:dirs (->> candidates
+                (filter #(and (fs/absolute? %) (fs/directory? %) (has-file? %)))
+                (map #(str (fs/canonicalize %)))
+                distinct
+                sort
+                vec)
+     :problems (vec (:problems listed))}))
+
 (defn files
   "The project files of `dir` that exist, shared before local."
   [dir]

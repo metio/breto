@@ -955,6 +955,34 @@
       (store/uninstall! config name links))
     {:package name :status (if dry-run? :would-remove :removed) :links (vec links)}))
 
+(defn- project-usage
+  "{:versions :problems}: package name -> the versions some project uses, and
+  why that may be incomplete. A project uses the versions its links point
+  into and the versions its project files pin, and counts the packages its
+  project files name with no version, which keeps them installed and leaves
+  their versions to :keep. The projects are those with an environment and
+  those in the directories :projects names. A project file that does not
+  load, or a :projects command that fails, is a problem."
+  [{:keys [config registry groups]}]
+  (let [{:keys [dirs problems]} (project/discover (:projects config))
+        known (map :project (env/projects config))
+        loaded (for [dir (distinct (map env/project-path (concat known dirs)))]
+                 (try {:dir dir :specs (:specs (project groups registry dir))}
+                      (catch Exception e {:dir dir :problem (str "the project " dir " does not load: " (ex-message e))})))
+        declared (reduce (fn [acc spec]
+                           (let [[name version] (batch/split-spec spec)]
+                             (clojure.core/update acc name (fnil into #{}) (when version [version]))))
+                         {}
+                         (mapcat :specs loaded))]
+    {:versions (merge-with into (env/used-versions config) declared)
+     :problems (into (vec problems) (keep :problem loaded))}))
+
+(defn- warn-incomplete [problems action]
+  (doseq [problem problems]
+    (println (str "[WARN] " problem)))
+  (when (seq problems)
+    (println (str "[WARN] not every project could be read, so " action " no package this run"))))
+
 (defn gc
   "Deletes leftovers and all but the --keep most recent versions of each
   package, never the active one nor one a project uses, and every revoked
@@ -963,8 +991,9 @@
   [{:keys [config registry opts io] :as ctx} args]
   (let [keep (or (:keep opts) (:keep config))
         dry-run? (:dry-run opts)
-        used (env/used-versions config)
-        prune (when (and (:prune config) (empty? args))
+        {used :versions problems :problems} (project-usage ctx)
+        _ (when (and (:prune config) (empty? args)) (warn-incomplete problems "gc uninstalls"))
+        prune (when (and (:prune config) (empty? args) (empty? problems))
                 (remove used (store/prune-candidates (store/installed-packages config) (:packages config))))
         _ (when (empty? args)
             (doseq [{:keys [dir project] :as e} (env/environments config)
@@ -1014,8 +1043,11 @@
         _ (when-not (fs/exists? path)
             (throw (ex-info (str "there is no lock file at " path) {:breto/problem :no-lockfile :path (str path)})))
         entries (into (sorted-map) (:entries (lockfile/read-lock path)))
-        extra (remove (into (set (keys entries)) (keys (env/used-versions config)))
-                      (store/installed-packages config))]
+        {used :versions problems :problems} (project-usage ctx)
+        _ (warn-incomplete problems "sync uninstalls")
+        extra (when (empty? problems)
+                (remove (into (set (keys entries)) (keys used))
+                        (store/installed-packages config)))]
     (if (:dry-run opts)
       (do (doseq [[name {:keys [version]}] entries
                   :when (not= version (store/current-version config name))]

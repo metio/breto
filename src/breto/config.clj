@@ -47,6 +47,7 @@
    :pins {}
    :keep 3
    :prune false
+   :projects {}
    :token-command nil
    :lockfile nil
    :require-locked false
