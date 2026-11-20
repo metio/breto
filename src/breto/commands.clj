@@ -744,7 +744,7 @@
   reaches every project, its open shells included. A project whose file no
   longer loads keeps its links and is reported. Returns the install results."
   [{:keys [config registry groups opts] :as ctx} command]
-  (let [projects (for [environment (remove env/stale? (env/environments config))
+  (let [projects (for [environment (env/projects config)
                        :let [dir (:project environment)]]
                    (try (project groups registry dir)
                         (catch Exception e {:dir dir :problem (ex-message e)})))
@@ -968,10 +968,13 @@
                 (remove used (store/prune-candidates (store/installed-packages config) (:packages config))))
         _ (when (empty? args)
             (doseq [{:keys [dir project] :as e} (env/environments config)
-                    :when (env/stale? e)]
+                    :let [reason (cond (env/stale? e)
+                                       (str "which has no " project/file-name " or " project/local-file-name " any more")
+                                       (env/superseded? config e)
+                                       (str "which the environment of " (env/project-path project) " replaces"))]
+                    :when reason]
               (when-not dry-run? (fs/delete-tree dir))
-              (println (str (if dry-run? "would remove " "[OK] removed ") "the links of " (or project dir)
-                            ", which has no " project/file-name " or " project/local-file-name " any more"))))
+              (println (str (if dry-run? "would remove " "[OK] removed ") "the links of " (or project dir) ", " reason))))
         pruned (batch/run-batch io prune #(uninstall-one ctx % dry-run?) (fn [_]))
         failures (for [name (if (seq args) (targets ctx args) (remove (set prune) (store/installed-packages config)))
                        :let [pkg (get registry name)

@@ -14,11 +14,18 @@
             [clojure.string :as str])
   (:import (java.security MessageDigest)))
 
+(defn project-path
+  "The path identifying the project at `project-dir`: absolute and with every
+  symlink resolved, so each spelling of one directory, such as /home/x and
+  /var/home/x where /home links to /var/home, names one project."
+  [project-dir]
+  (str (fs/canonicalize project-dir)))
+
 (defn env-dir
   "The directory holding the links of the project at `project-dir`, named by a
-  hash of its path."
+  hash of its canonical path."
   [{:keys [env-dir]} project-dir]
-  (let [digest (->> (.digest (MessageDigest/getInstance "SHA-256") (.getBytes (str (fs/absolutize project-dir)) "UTF-8"))
+  (let [digest (->> (.digest (MessageDigest/getInstance "SHA-256") (.getBytes (project-path project-dir) "UTF-8"))
                     (map #(format "%02x" (bit-and % 0xff)))
                     (apply str))]
     (fs/path env-dir (subs digest 0 16))))
@@ -112,7 +119,7 @@
    (let [dir (env-dir config project-dir)
          bin (fs/path dir "bin")]
      (fs/create-dirs dir)
-     (spit (str (fs/path dir "project")) (str (fs/absolutize project-dir)))
+     (spit (str (fs/path dir "project")) (project-path project-dir))
      (hold-exactly! (homes-dir config project-dir) homes)
      (hold-exactly! bin links)
      (fs/set-last-modified-time bin (java.nio.file.attribute.FileTime/from (java.time.Instant/now)))
@@ -265,9 +272,34 @@
   [{:keys [project]}]
   (not (and project (seq (project/files project)))))
 
+(defn superseded?
+  "Whether the environment `e` is named by a spelling of its project's path
+  other than the canonical one while the environment the canonical path names
+  exists, which then holds the project's links."
+  [config {:keys [dir project]}]
+  (boolean
+   (when project
+     (let [canonical (env-dir config project)]
+       (and (not= (str (fs/file-name dir)) (str (fs/file-name canonical)))
+            (fs/directory? canonical))))))
+
+(defn projects
+  "The environments whose project still has a project file, one for each
+  project: the one its canonical path names when several spellings of the
+  path have one."
+  [config]
+  (->> (environments config)
+       (remove stale?)
+       (remove #(superseded? config %))
+       (group-by #(project-path (:project %)))
+       vals
+       (map first)
+       (sort-by :dir)))
+
 (defn used-versions
   "Package name -> the set of versions some project's links point into, for
-  the projects that still have a project file."
+  the projects that still have a project file, each counted by its canonical
+  environment."
   [{:keys [store] :as config}]
   (let [store (str (fs/absolutize store) "/")]
     (reduce (fn [acc link]
@@ -277,7 +309,7 @@
                     (if (and name version) (update acc name (fnil conj #{}) version) acc))
                   acc)))
             {}
-            (for [env (remove stale? (environments config))
+            (for [env (projects config)
                   dir [(:bin env) (str (fs/path (:dir env) "homes")) (str (fs/path (:dir env) "targets"))]
                   :when (fs/directory? dir)
                   link (fs/list-dir dir)

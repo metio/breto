@@ -297,6 +297,56 @@
   (testing "a PWD naming another directory is ignored"
     (is (= (path "real" "app") (project/find-dir "." {"PWD" (path)} (path "real" "app"))))))
 
+(defn- envs []
+  (sort (map str (fs/list-dir (path "envs")))))
+
+(deftest one-directory-has-one-environment-whatever-path-names-it
+  (let [io (world)]
+    (project! "real/app" ["alpha"])
+    (fs/create-sym-link (path "link") (path "real"))
+    (is (= 0 (:code (env! io "real/app"))))
+    (let [{:keys [code out err]} (env! io "link/app")]
+      (is (= 0 code) err)
+      (testing "the shell keeps the name it entered the project by"
+        (is (str/includes? out (str "export BRETO_PROJECT='" (path "link" "app") "'")))))
+    (is (= 1 (count (envs))))
+    (is (= (str (fs/canonicalize (path "real" "app")))
+           (:project (first (env/environments {:env-dir (path "envs")})))))))
+
+(defn- legacy-env!
+  "An environment named the way a path spelled through a symlink once named
+  it, recording that spelling as its project and linking `target`."
+  [project target]
+  (let [dir (fs/path (path "envs") "0123456789abcdef")]
+    (fs/create-dirs (fs/path dir "bin"))
+    (spit (str (fs/path dir "project")) project)
+    (fs/create-sym-link (fs/path dir "bin" "alpha") target)
+    (str dir)))
+
+(deftest gc-removes-an-environment-once-the-canonical-one-replaces-it
+  (let [io (world)
+        cfg (assoc config :env-dir (path "envs") :keep 1)]
+    (s/breto! cfg ["install" "alpha@0.9.0"] {:io io})
+    (s/breto! cfg ["install" "alpha"] {:io io})
+    (project! "real/app" ["alpha"])
+    (fs/create-sym-link (path "link") (path "real"))
+    (let [legacy (legacy-env! (path "link" "app") (str (fs/path (store/version-dir {:store (path "store")} "alpha" "0.9.0") "alpha")))]
+      (testing "an environment with no canonical replacement keeps its versions"
+        (let [{:keys [out]} (s/breto! cfg ["gc"] {:io io})]
+          (is (not (str/includes? out "removed the links")) out)
+          (is (not (str/includes? out "alpha 0.9.0")) out))
+        (is (fs/exists? legacy)))
+      (testing "update links the project in its canonical environment"
+        (s/breto! cfg ["update"] {:io io})
+        (is (= 2 (count (envs)))))
+      (let [{:keys [out]} (s/breto! cfg ["gc"] {:io io})]
+        (is (str/includes? out (str "[OK] removed the links of " (path "link" "app") ", which the environment of "
+                                    (fs/canonicalize (path "real" "app")) " replaces"))
+            out)
+        (is (str/includes? out "[OK] removed alpha 0.9.0") out))
+      (is (not (fs/exists? legacy)))
+      (is (= 1 (count (envs)))))))
+
 (defn- user-dirs
   "The entries of `path` after the first `n` that the user can write to."
   [path n]
