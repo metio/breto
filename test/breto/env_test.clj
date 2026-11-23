@@ -100,7 +100,7 @@
                                           (str (env/exports :sh "/a" "/p" "/a" [] {"JAVA_HOME" "/it's x"}) "\nprintf '%s' \"$JAVA_HOME\"")))))))
   (let [fish (env/exports :fish "/a:/b" "/p" "/a" ["/p/.breto.edn"] {"JAVA_HOME" "/it's"})]
     (is (str/ends-with? fish "set --global --export PATH '/a' '/b';\nset --global --export BRETO_PROJECT '/p';\nset --global --export BRETO_ENV_BIN '/a';\nset --global --export BRETO_ENV_FILES '/p/.breto.edn';"))
-    (is (str/includes? fish "set --global --export JAVA_HOME '/it'\\''s';\nset --global --export BRETO_ENV_VARS 'JAVA_HOME';"))))
+    (is (str/includes? fish "set --global --export JAVA_HOME '/it\\'s';\nset --global --export BRETO_ENV_VARS 'JAVA_HOME';"))))
 
 (deftest gc-keeps-what-projects-use-and-forgets-removed-projects
   (let [io (world)
@@ -460,3 +460,18 @@
     (run! deref runs)
     (is (= #{"a" "b"}
            (set (map (comp str fs/file-name) (fs/list-dir (fs/parent (get (env/write-commands! config project scripts) "a")))))))))
+
+(defn- fish-single-quoted
+  "The word fish reads from the single-quoted `s`: \\\\ and \\' are escapes
+  there, any other backslash stands for itself."
+  [s]
+  (when-let [[_ body] (re-matches #"(?s)'((?:[^'\\]|\\.)*)'" s)]
+    (str/replace body #"\\([\\'])" "$1")))
+
+(deftest fish-output-keeps-backslashes-and-quotes
+  (doseq [v ["C:\\" "a\\\\b" "it's" "\\'" "plain"]]
+    (is (= v (fish-single-quoted (breto.shell/fish-quote v))) v))
+  (let [code (env/exports :fish "/p\\" "/d" "/b" [] {"X" "a\\"})]
+    (is (str/includes? code "set --global --export X 'a\\\\';"))
+    (is (str/includes? code "set --global --export PATH '/p\\\\';")))
+  (is (str/includes? (env/leaving :fish "/p\\") "set --global --export PATH '/p\\\\';")))

@@ -224,12 +224,12 @@
        :fish (str restore-fish
                   (apply str (for [[k v] (sort vars)]
                                (str "set --query " k "; and set --global --export __breto_saved_" k " $" k ";\n"
-                                    "set --global --export " k " " (shell/quote-arg v) ";\n")))
-                  "set --global --export BRETO_ENV_VARS " (shell/quote-arg names) ";\n"
-                  "set --global --export PATH " (str/join " " (map shell/quote-arg (str/split path #":"))) ";\n"
-                  "set --global --export BRETO_PROJECT " (shell/quote-arg project-dir) ";\n"
-                  "set --global --export BRETO_ENV_BIN " (shell/quote-arg bin) ";\n"
-                  "set --global --export BRETO_ENV_FILES " (shell/quote-arg (str/join ":" files)) ";")
+                                    "set --global --export " k " " (shell/fish-quote v) ";\n")))
+                  "set --global --export BRETO_ENV_VARS " (shell/fish-quote names) ";\n"
+                  "set --global --export PATH " (str/join " " (map shell/fish-quote (str/split path #":"))) ";\n"
+                  "set --global --export BRETO_PROJECT " (shell/fish-quote project-dir) ";\n"
+                  "set --global --export BRETO_ENV_BIN " (shell/fish-quote bin) ";\n"
+                  "set --global --export BRETO_ENV_FILES " (shell/fish-quote (str/join ":" files)) ";")
        (str restore-sh
             (apply str (for [[k v] (sort vars)]
                          (str "if [ -n \"${" k "+x}\" ]; then export __breto_saved_" k "=\"$" k "\"; fi\n"
@@ -248,7 +248,7 @@
   (case shell
     :github ""
     :fish (str restore-fish
-               "set --global --export PATH " (str/join " " (map shell/quote-arg (str/split path #":"))) ";\n"
+               "set --global --export PATH " (str/join " " (map shell/fish-quote (str/split path #":"))) ";\n"
                "set --erase BRETO_ENV_VARS BRETO_PROJECT BRETO_ENV_BIN BRETO_ENV_FILES;")
     (str restore-sh
          "export PATH=" (shell/quote-arg path) "\n"
