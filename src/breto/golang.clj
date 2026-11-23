@@ -15,9 +15,14 @@
 (defn environment
   "The variables `go` runs with: binaries go to `gobin`, the toolchain is the
   one breto installed, and nothing needs a C compiler. GOFLAGS is emptied so
-  flags of the user's own shell cannot change the build."
+  flags of the user's own shell cannot change the build, and the variables
+  that exempt modules from the checksum database are pinned, since that check
+  is the only one a module without a lock file gets. GOPROXY stays the
+  user's: it chooses where modules come from, and the database checks them
+  whichever proxy serves them."
   [gobin]
-  {"GOBIN" (str gobin) "GOTOOLCHAIN" "local" "CGO_ENABLED" "0" "GOFLAGS" ""})
+  {"GOBIN" (str gobin) "GOTOOLCHAIN" "local" "CGO_ENABLED" "0" "GOFLAGS" ""
+   "GOSUMDB" "sum.golang.org" "GONOSUMDB" "" "GONOSUMCHECK" "" "GOPRIVATE" "" "GOINSECURE" ""})
 
 (defn- run! [io go work env args context]
   (let [run (or (:run-in io) proc/run-in)
