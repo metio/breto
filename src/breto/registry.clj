@@ -239,7 +239,14 @@
                 (mapcat #(walk (conj path name) %) (:members group)))
               [name]))]
     (let [direct (into {} (for [n names :when (not (group-name? n))] [(package-of n) n]))]
-      (vec (distinct (map #(get direct (package-of %) %) (mapcat #(walk [] %) names)))))))
+      (->> (mapcat #(walk [] %) names)
+           (map #(get direct (package-of %) %))
+           (reduce (fn [[seen specs] spec]
+                     (if (contains? seen (package-of spec))
+                       [seen specs]
+                       [(conj seen (package-of spec)) (conj specs spec)]))
+                   [#{} []])
+           second))))
 
 (defn reached-groups
   "The groups `names` uses, directly or through other groups, in the order
