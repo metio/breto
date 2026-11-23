@@ -69,3 +69,14 @@
             (is (not= 0 code))
             (is (str/includes? (str err) "the command hungry ran out of memory under its :limits of 32M"))))
         (finally (fs/delete-tree dir))))))
+
+(deftest arguments-for-a-command-that-runs-nothing-are-refused
+  (let [ran (atom [])
+        exec (fn [{:keys [name command]}] (swap! ran conj [name command]) 0)
+        order [["lint" {:run "lint"}] ["check" {:depends ["lint"]}]]
+        opts {:dir "/p" :env {} :path "/bin" :vars {}}]
+    (is (= :usage (try (run/run-order! order (assoc opts :args ["--fix"]) exec) nil
+                       (catch clojure.lang.ExceptionInfo e (:breto/problem (ex-data e))))))
+    (is (empty? @ran) "nothing runs")
+    (is (= 0 (run/run-order! order (assoc opts :args []) exec)) "without arguments it runs its :depends")
+    (is (= ["lint"] (map first @ran)))))

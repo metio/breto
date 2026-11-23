@@ -143,7 +143,13 @@
   invocation carries the command's :limits as well when `limits?`."
   ([order opts] (run-order! order opts exec!))
   ([order {:keys [dir env path args vars limits?]} exec]
-   (let [last-name (first (last order))]
+   (let [[last-name last-command] (last order)]
+     ;; the arguments go to the last command, so one that runs nothing itself
+     ;; would drop them and report success
+     (when (and (seq args) (not (:run last-command)))
+       (throw (ex-info (str "the command " last-name " only runs its :depends, so it takes no arguments: "
+                            (str/join " " args))
+                       {:breto/problem :usage :command last-name :args (vec args)})))
      (reduce (fn [_ [name {:keys [run] :as command}]]
                (if-not run
                  0
