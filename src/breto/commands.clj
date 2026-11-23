@@ -529,7 +529,7 @@
             (binding [*out* *err*] (run! println (run/menu proj))))
           (println (str (env/exports shell (path-for ctx bin) dir bin (conj files (str (env/selection-path config dir))) vars)
                         (when (and on-enter (not= :github shell))
-                          (str "\n" "breto run --dir " (shell/quote-arg dir) " " (shell/quote-arg on-enter)
+                          (str "\n" "breto run --dir " (shell/quote-for shell dir) " " (shell/quote-for shell on-enter)
                                (when (= :fish shell) ";")))))
           0)))))
 
