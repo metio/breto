@@ -174,8 +174,10 @@
 
 (def ^:private restore-sh
   "Gives each variable the previous breto env set its value from before that
-  run back, or unsets it."
-  (str "for __breto_var in ${BRETO_ENV_VARS-}; do\n"
+  run back, or unsets it. The names come through a command substitution,
+  which sh, bash and zsh all split into words; zsh leaves an unquoted
+  parameter whole unless SH_WORD_SPLIT is set."
+  (str "for __breto_var in $(printf '%s' \"${BRETO_ENV_VARS-}\"); do\n"
        "  if eval \"[ -n \\\"\\${__breto_saved_$__breto_var+x}\\\" ]\"; then\n"
        "    eval \"export $__breto_var=\\\"\\$__breto_saved_$__breto_var\\\"; unset __breto_saved_$__breto_var\"\n"
        "  else\n"
