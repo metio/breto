@@ -34,3 +34,11 @@
     (is (= "https://example.org/tool-1.2.0-linux.tar.gz" (:url (package/artifact pkg release))))
     (is (thrown-with-msg? clojure.lang.ExceptionInfo #"no value for :vars :file"
                           (source/fetch-vars pkg io {:tag "2.0.0" :version "2.0.0"})))))
+
+(deftest a-selector-finds-the-only-line-of-a-json-lines-index
+  (let [url "https://index.crates.io/ab/cd/abcd"
+        one "{\"name\":\"abcd\",\"vers\":\"1.0.0\",\"cksum\":\"aa\"}\n"
+        two (str one "{\"name\":\"abcd\",\"vers\":\"1.1.0\",\"cksum\":\"bb\"}\n")]
+    (is (= "aa" (document/at (document/parse url one) [{:vers "1.0.0"} "cksum"])))
+    (is (= "bb" (document/at (document/parse url two) [{:vers "1.1.0"} "cksum"])))
+    (is (nil? (document/at (document/parse url one) [{:vers "2.0.0"} "cksum"])))))

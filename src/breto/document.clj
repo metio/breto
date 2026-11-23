@@ -33,18 +33,21 @@
 
 (defn- step [node k]
   (cond (nat-int? k) (when (sequential? node) (get (vec node) k))
-        (map? k) (when (sequential? node)
-                   (some (fn [element]
-                           (when (and (map? element)
-                                      (every? (fn [[f v]] (= v (str (get element (key-name f))))) k))
-                             element))
-                         node))
+        ;; a document of one JSON line parses to that value alone, so a lone
+        ;; map is the list of one, as a crates.io index of a crate with a
+        ;; single version is
+        (map? k) (some (fn [element]
+                         (when (and (map? element)
+                                    (every? (fn [[f v]] (= v (str (get element (key-name f))))) k))
+                           element))
+                       (cond (sequential? node) node (map? node) [node]))
         :else (when (map? node) (get node (key-name k)))))
 
 (defn at
   "The value at `path` in `doc`, or nil. Strings and keywords in `path` are
   keys, integers are indices, and a map selects the first element of a list
-  whose fields have the values it names."
+  whose fields have the values it names, a lone map counting as a list of
+  one."
   [doc path]
   (reduce step doc path))
 
