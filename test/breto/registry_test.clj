@@ -22,6 +22,7 @@
 
 (deftest validate-reports-each-problem-of-a-registry-once
   (let [dir (fs/create-temp-dir {:prefix "breto-validate"})]
+   (try
     (spit (str (fs/path dir "broken.edn")) "{:source")
     (spit (str (fs/path dir "bad.edn")) "{:source {:pypi \"../x\"}}")
     (spit (str (fs/path dir "plain.edn"))
@@ -34,7 +35,8 @@
       (is (some #(and (str/includes? % "plain: the download http://example.org/b is not fetched over https")
                       (str/ends-with? % "(on linux-x86_64)"))
                 problems))
-      (is (some #(str/includes? % "invalid group @empty") problems)))))
+      (is (some #(str/includes? % "invalid group @empty") problems)))
+    (finally (fs/delete-tree dir)))))
 
 (deftest overlays-merge-over-earlier-registries
   (let [base (fs/create-temp-dir)
