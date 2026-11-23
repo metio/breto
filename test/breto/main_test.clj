@@ -32,3 +32,16 @@
     (is (= :usage (problem {:config config})))
     (is (= "darwin-aarch64" (get-in (main/context {:config config :platform "darwin-aarch64"}) [:config :platform]))
         "--platform replaces the configured one")))
+
+(deftest a-dry-run-is-refused-where-it-would-change-the-store
+  (doseq [command ["update" "install" "lock" "use"]]
+    (is (= :usage (try (main/refuse-unsupported! command {:dry-run true}) nil
+                       (catch clojure.lang.ExceptionInfo e (:breto/problem (ex-data e)))))
+        command))
+  (doseq [command ["gc" "uninstall" "sync"]]
+    (is (nil? (main/refuse-unsupported! command {:dry-run true})) command))
+  (is (nil? (main/refuse-unsupported! "update" {}))))
+
+(deftest breto-update-dry-run-exits-before-touching-anything
+  (is (thrown-with-msg? clojure.lang.ExceptionInfo #"has no --dry-run"
+        (main/run ["update" "--dry-run"] {:io (fn [& _] (throw (ex-info "network used" {})))}))))
