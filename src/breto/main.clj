@@ -325,6 +325,19 @@ Every failure is explained with what to do; --debug adds each request and stack 
                 (catch Exception _)))
          (throw e))))
 
+(def ^:private previews
+  "The commands that implement --dry-run."
+  #{"gc" "uninstall" "sync"})
+
+(defn refuse-unsupported!
+  "Throws a usage error when `opts` asks `command` for a dry run it does not
+  implement, before anything runs: a command that ignored --dry-run would
+  change the store while the caller expects a preview."
+  [command opts]
+  (when (and (:dry-run opts) (not (previews command)))
+    (throw (ex-info (str "breto " command " has no --dry-run; " (str/join ", " (sort previews)) " have one")
+                    {:breto/problem :usage :command command :option :dry-run}))))
+
 (defn run
   "Runs the command line and returns the process exit code. `overrides` replace
   parts of the context, which is how tests swap the network and the display."
@@ -336,13 +349,15 @@ Every failure is explained with what to do; --debug adds each request and stack 
        (if (= "hook" command)
          (entry/print-hook more)
          (if-let [f (dispatch command)]
-           (recording-aborts command
+           (do
+            (refuse-unsupported! command opts)
+            (recording-aborts command
              #(let [ctx (with-registry (merge (context opts) overrides) command)
                     chosen? (and (= "install" command) (empty? more))
                     args (if chosen? (commands/install-args ctx more) more)]
                 (if (and chosen? (empty? args))
                   (do (println "Nothing chosen.") 0)
-                  (locked (assoc ctx :chosen? chosen?) command args (fn [ctx] (f ctx args))))))
+                  (locked (assoc ctx :chosen? chosen?) command args (fn [ctx] (f ctx args)))))))
            (do (println usage) (if (#{nil "help"} command) 0 2))))))))
 
 (defn exit-code
