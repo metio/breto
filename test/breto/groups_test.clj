@@ -169,3 +169,9 @@
       (is (= 0 code) out)
       (is (= "mine" (slurp (path "bin" "a"))))
       (is (str/includes? out "was not linked by breto")))))
+
+(deftest two-groups-pinning-one-package-keep-the-first-pin
+  (let [groups {"@old" {:members ["go@1.22" "gopls"]} "@new" {:members ["go@1.23" "delve"]}}]
+    (is (= ["go@1.22" "gopls" "delve"] (registry/expand groups ["@old" "@new"])))
+    (is (= ["go@1.24" "gopls" "delve"] (registry/expand groups ["@old" "@new" "go@1.24"]))
+        "a package the project lists itself still wins")))
