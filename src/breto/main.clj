@@ -326,6 +326,17 @@ Every failure is explained with what to do; --debug adds each request and stack 
                   (locked (assoc ctx :chosen? chosen?) command args (fn [ctx] (f ctx args))))))
            (do (println usage) (if (#{nil "help"} command) 0 2))))))))
 
+(defn exit-code
+  "The process exit code for the `code` `run` returned for `command`: run and
+  exec pass on the code of the program they ran, as a wrapper script relies
+  on, every other command exits 1 on failure, and 3 means an environment is
+  missing."
+  [command code]
+  (cond (= ::missing code) 3
+        (and (#{"run" "exec"} command) (integer? code) (<= 1 code 255)) code
+        (and (integer? code) (pos? code)) 1
+        :else 0))
+
 (defn -main [& args]
   (let [code (try (run args)
                   (catch Exception e
@@ -337,4 +348,4 @@ Every failure is explained with what to do; --debug adds each request and stack 
                         (doseq [a advice] (println (str "  - " a)))
                         (when (some #{"--debug" "-d"} args) (stacktrace/print-cause-trace e))))
                     (if (= :env-missing (:breto/problem (ex-data e))) ::missing 1)))]
-    (System/exit (cond (= ::missing code) 3 (pos? code) 1 :else 0))))
+    (System/exit (exit-code (try (first (:args (parse args))) (catch Exception _ nil)) code))))
