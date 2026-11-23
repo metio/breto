@@ -261,14 +261,27 @@ Every failure is explained with what to do; --debug adds each request and stack 
 
 (def parse-spec
   {:coerce {:keep :long :delay :long :debug :boolean :verify :boolean :force :boolean :dry-run :boolean :all :boolean :previous :boolean :locked :boolean :brief :boolean :wait :boolean :install :boolean :check :boolean :enter :boolean :clear :boolean :yes :boolean}
-   :alias {:d :debug}})
+   :alias {:d :debug}
+   ;; a misspelled option is refused, so --dry-rnu cannot install for real
+   :restrict #{:keep :delay :debug :verify :force :dry-run :all :previous :locked :brief :wait :install
+               :check :enter :clear :yes :dir :config :platform :platforms :query :shell :only}})
+
+(defn- parse-options
+  "The options among `tokens`, refusing one breto does not know."
+  [tokens]
+  (try (:opts (cli/parse-args tokens parse-spec))
+       (catch clojure.lang.ExceptionInfo e
+         (if (= :restrict (:cause (ex-data e)))
+           (throw (ex-info (str "unknown option " (or (:flag (ex-data e)) (ex-message e)))
+                           {:breto/problem :usage :option (:option (ex-data e))}))
+           (throw e)))))
 
 (def ^:private valued
   "The options that take a value, so that the value is not read as the
   command."
   #{"--dir" "--config" "--platform" "--platforms" "--delay" "--keep" "--query" "--shell" "--only"})
 
-(defn- parse
+(defn parse
   "The command line as {:args :opts}, options read wherever they stand. breto
   run and exec stop reading options at the name of the command they run, so that
   command gets the rest as given."
@@ -282,13 +295,13 @@ Every failure is explained with what to do; --debug adds each request and stack 
         [before [command & after]] (options args)]
     (if (#{"run" "exec"} command)
       (let [[own rest-args] (options after)]
-        {:args (into [command] rest-args) :opts (:opts (cli/parse-args (into before own) parse-spec))})
+        {:args (into [command] rest-args) :opts (parse-options (into before own))})
       (let [[own positional] (loop [own [] positional [] [a & more :as tokens] args]
                                (cond (empty? tokens) [own positional]
                                      (valued a) (recur (conj own a (first more)) positional (rest more))
                                      (str/starts-with? a "-") (recur (conj own a) positional more)
                                      :else (recur own (conj positional a) more)))]
-        {:args positional :opts (:opts (cli/parse-args own parse-spec))}))))
+        {:args positional :opts (parse-options own)}))))
 
 (def ^:private reported
   "Commands whose last run breto report shows."
