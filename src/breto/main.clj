@@ -128,6 +128,12 @@ Every failure is explained with what to do; --debug adds each request and stack 
   (let [config-path (or (:config opts) (config/default-path))
         config (cond-> (config/load-config config-path)
                  (:platform opts) (assoc :platform (:platform opts)))]
+    ;; a platform nothing defines would make every package look unsupported
+    (when-let [named (:platform config)]
+      (when-not (platform/known named)
+        (throw (ex-info (str (if (:platform opts) "--platform" (str ":platform in " config-path)) " names "
+                             named ", which is none of " (str/join ", " (sort platform/known)))
+                        {:breto/problem :usage :platform named}))))
     {:config-path config-path
      :config config
      :opts opts
