@@ -993,7 +993,14 @@
   (let [keep (or (:keep opts) (:keep config))
         dry-run? (:dry-run opts)
         {used :versions problems :problems} (project-usage ctx)
-        _ (when (and (:prune config) (empty? args)) (warn-incomplete problems "gc uninstalls"))
+        _ (if (and (:prune config) (empty? args))
+            (warn-incomplete problems "gc uninstalls")
+            ;; versions beyond :keep still go, so the user learns which
+            ;; projects could not protect what they pin
+            (when (seq problems)
+              (doseq [problem problems]
+                (println (str "[WARN] " problem)))
+              (println "[WARN] not every project could be read, so gc may remove versions only those projects pin")))
         prune (when (and (:prune config) (empty? args) (empty? problems))
                 (remove used (store/prune-candidates (store/installed-packages config) (:packages config))))
         _ (when (empty? args)

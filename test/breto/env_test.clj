@@ -487,3 +487,12 @@
                                      (env/leaving :sh "/usr/bin") "\n"
                                      "printf %s \"$A|${B-unset}|$PATH\""))))
         sh)))
+
+(deftest gc-names-the-projects-it-could-not-read-without-prune
+  (let [io (world)
+        cfg (assoc config :env-dir (path "envs") :keep 1
+                   :projects {:command ["sh" "-c" "echo broken >&2; exit 3"]})]
+    (installed-alpha-and-beta! io cfg)
+    (let [{:keys [out]} (s/breto! cfg ["gc"] {:io io})]
+      (is (str/includes? out "[WARN] sh -c echo broken >&2; exit 3 exited with 3: broken") out)
+      (is (str/includes? out "so gc may remove versions only those projects pin") out))))
