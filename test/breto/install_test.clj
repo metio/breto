@@ -452,6 +452,22 @@
       (is (= "page" (slurp (str (fs/path dir "man" "ed.1")))))
       (is (not (fs/exists? (fs/path dir "man" "leak.1")))))))
 
+(deftest a-version-without-a-recorded-hash-is-checked-against-the-lock
+  (let [cfg (config)
+        io (serve-tool "1.0.0")
+        meta (fs/path (:store cfg) "tool" ".meta-1.0.0.edn")]
+    (install/install! cfg io tool {})
+    (let [good (:sha256 (store/read-meta cfg "tool" "1.0.0"))]
+      (fs/delete meta)
+      (is (= :checksum-mismatch
+             (try (install/install! cfg io tool {:version "1.0.0" :expect-sha256 (apply str (repeat 64 "0"))})
+                  nil
+                  (catch clojure.lang.ExceptionInfo e (:breto/problem (ex-data e)))))
+          "a lock hash the store cannot confirm is not passed")
+      (when (fs/exists? meta) (fs/delete meta))
+      (install/install! cfg io tool {:version "1.0.0" :expect-sha256 good})
+      (is (= good (:sha256 (store/read-meta cfg "tool" "1.0.0"))) "the matching lock hash reinstalls and records it"))))
+
 (deftest present-versions-are-sealed-by-the-next-install
   (let [cfg (config)
         io (serve-tool "1.0.0")

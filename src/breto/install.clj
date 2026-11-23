@@ -342,9 +342,15 @@
         package-dir (store/package-dir config (:name pkg))
         bin-paths (package/bin-paths pkg artifact)
         in-place? (= :ghcup (package/source-kind pkg))
+        recorded (store/read-meta config (:name pkg) version)
+        ;; a lock expectation the metadata cannot answer, as after a crash
+        ;; between placing a version and recording it, is checked against a
+        ;; fresh download instead of passing unchecked
+        unconfirmed? (boolean (if expect-sum (nil? (:sum recorded)) (and expect-sha256 (nil? (:sha256 recorded)))))
         fresh? (or (not (store/installed? config (:name pkg) version
                                           (concat (vals bin-paths) (share/shipped-files pkg))))
-                   (and in-place? (nil? (store/read-meta config (:name pkg) version))))
+                   (and in-place? (nil? recorded))
+                   unconfirmed?)
         _ (when-not fresh?
             (let [meta (store/read-meta config (:name pkg) version)]
               (staged io :verify context
