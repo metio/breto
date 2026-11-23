@@ -321,6 +321,7 @@
   project's other tools still work there."
   [groups registry dir]
   (let [proj (project/load-project groups dir)
+        proj (assoc proj :inputs (inputs/loaded (inputs/of-project proj)))
         skipped (keep #(unsupported registry %) (:specs proj))
         specs (vec (remove (partial unsupported registry) (:specs proj)))]
     (-> proj
@@ -470,7 +471,7 @@
       (let [{:keys [links homes vars] :as setup} (project-setup ctx proj)
             _ (binding [*out* *err*] (run! #(println (str "[WARN] " %)) (:warnings setup)))
             bin (env/link! config dir links homes)]
-        (inputs/stamp! config dir (inputs/of-project proj))
+        (inputs/stamp! config dir (:inputs proj))
         (assoc proj :code 0 :vars vars :bin bin)))))
 
 (defn- declared-links
@@ -765,7 +766,7 @@
             (if (every? second targets)
               (let [{:keys [links homes]} (project-setup ctx p)]
                 (env/link! config (:dir p) links homes)
-                (inputs/stamp! config (:dir p) (inputs/of-project p)))
+                (inputs/stamp! config (:dir p) (:inputs p)))
               (println (str "[WARN] project " (:dir p) " keeps its links: "
                             (str/join ", " (map first (remove second targets))) " not installed"))))
           (catch Exception e

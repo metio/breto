@@ -44,17 +44,29 @@
   [config dir]
   (fs/path (env/env-dir config dir) "stamp"))
 
+(defn loaded
+  "`inputs` with the :digest they have now, taken as the project is loaded so
+  the stamp can record what the links are made from."
+  [inputs]
+  (assoc inputs :digest (digest inputs)))
+
 (defn stamp!
-  "Records `inputs` as what the links of the project at `dir` were made from.
-  The stamp replaces the old one atomically, so a tool running meanwhile reads
-  one or the other. It is written last, once the links are in place."
+  "Records `inputs`, taken with `loaded` when the project was read, as what
+  the links of the project at `dir` were made from. The stamp replaces the
+  old one atomically, so a tool running meanwhile reads one or the other. It
+  is written last, once the links are in place. When the files changed since
+  they were read, as an edit during a long install does, no stamp is
+  written: the old one stays stale and the next run links again. Returns the
+  stamp's path, or nil when it was left alone."
   [config dir inputs]
   (let [stamp (stamp-path config dir)
-        staged (store/staged-path (fs/parent stamp) "stamp")]
-    (fs/create-dirs (fs/parent stamp))
-    (spit (str staged) (digest inputs))
-    (fs/move staged stamp {:replace-existing true :atomic-move true})
-    (str stamp)))
+        staged (store/staged-path (fs/parent stamp) "stamp")
+        recorded (or (:digest inputs) (digest inputs))]
+    (when (= recorded (digest inputs))
+      (fs/create-dirs (fs/parent stamp))
+      (spit (str staged) recorded)
+      (fs/move staged stamp {:replace-existing true :atomic-move true})
+      (str stamp))))
 
 (defn fresh?
   "Whether the links of the project at `dir` were made from exactly `inputs`."
