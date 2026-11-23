@@ -230,3 +230,14 @@
   (let [{:keys [code]} (breto! {:packages ["ed"]} "uninstall" "old-ed")]
     (is (= 1 code))
     (is (fs/exists? (path "runtime") {:nofollow-links true}))))
+
+(deftest a-gc-that-succeeds-replaces-the-failed-one-in-the-report
+  (define! "tool" {:source {:github "acme/tool"} :asset "tool"})
+  (install! "tool" "1.0.0" ["tool"])
+  (report/save! {:command "gc" :results [{:package "tool" :status :failed :diagnosis {:message "boom"}}]})
+  (is (= 0 (:code (breto! {:packages ["tool"]} "gc" "--dry-run"))))
+  (is (= [:failed] (map :status (:results (first (report/load-runs))))) "a dry run leaves the last real gc reported")
+  (is (= 0 (:code (breto! {:packages ["tool"]} "gc"))))
+  (let [[run] (filter #(= "gc" (:command %)) (report/load-runs))]
+    (is (= [] (:results run)))
+    (is (:finished run))))

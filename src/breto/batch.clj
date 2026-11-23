@@ -111,13 +111,17 @@
                        (catch Exception _ nil)))
         nil))))
 
+(defn save!
+  "Saves `results` as the last run of `command`, warning when that fails."
+  [command results]
+  (try (report/save! {:command command :results results})
+       (catch Exception e
+         (binding [*out* *err*]
+           (println (str "[WARN] could not save the report to " (report/state-path) ": " (ex-message e)))))))
+
 (defn finish!
   "Prints and saves the report for `command`, returning the exit code."
   [command results]
-  (let [run {:command command :results results}]
-    (println (report/render run))
-    (try (report/save! run)
-         (catch Exception e
-           (binding [*out* *err*]
-             (println (str "[WARN] could not save the report to " (report/state-path) ": " (ex-message e))))))
-    (if (some #(= :failed (:status %)) results) 1 0)))
+  (println (report/render {:command command :results results}))
+  (save! command results)
+  (if (some #(= :failed (:status %)) results) 1 0))
