@@ -87,3 +87,16 @@
   (is (= :ok (:level (doctor/desktop-check {:desktop-dir "/a" :desktop-entries {:except ["lightning"]}}))))
   (is (= :fail (:level (doctor/desktop-check {:desktop-dir "/a" :desktop-entries "off"}))))
   (is (= :fail (:level (doctor/desktop-check {:desktop-dir "/a" :desktop-entries {:except "lightning"}})))))
+
+(deftest an-unfinished-run-is-no-success
+  (let [[stopped running done]
+        (doctor/last-run-checks
+         [{:command "update" :results [] :error {:message "the registry did not load"} :finished "2026-11-23T10:00:00Z"}
+          {:command "lock" :results [{:package "go" :status :installed}] :running true :total 2
+           :updated "2026-11-23T10:00:00Z"}
+          {:command "install" :results [{:package "go" :status :installed}] :finished "2026-11-23T10:00:00Z"}])]
+    (is (= :warn (:level stopped)))
+    (is (= "The last breto update stopped before it finished" (:title stopped)))
+    (is (= :warn (:level running)))
+    (is (= "The last breto lock did not finish" (:title running)))
+    (is (= :ok (:level done)))))
