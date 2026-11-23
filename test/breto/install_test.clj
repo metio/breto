@@ -432,6 +432,26 @@
       (is (= :path-missing (:breto/problem data)))
       (is (= "rw-------" (fs/posix->str (fs/posix-file-permissions secret)))))))
 
+(deftest man-pages-never-copy-a-file-from-outside-the-archive
+  (let [secret (fs/path *root* "secret")
+        src (fs/path *root* "src" "release")
+        out (fs/path *root* "assets" "editor.tar.gz")
+        cfg (config)
+        pkg (s/normalize {:name "editor" :source {:github "acme/editor"} :asset "editor.tar.gz" :strip 1
+                          :bins {"ed" "bin/ed"} :man ["man/*.1"]})]
+    (spit (str secret) "key")
+    (fs/create-dirs (fs/path src "bin"))
+    (fs/create-dirs (fs/path src "man"))
+    (spit (str (fs/path src "bin" "ed")) "ed")
+    (spit (str (fs/path src "man" "ed.1")) "page")
+    (fs/create-sym-link (fs/path src "man" "leak.1") secret)
+    (fs/create-dirs (fs/parent out))
+    (process/shell "tar" "--create" "--gzip" "--file" (str out) "--directory" (str (fs/parent src)) "release")
+    (install/install! cfg (serve-editor out) pkg {:verify? false})
+    (let [dir (store/version-dir cfg "editor" "2.0.0")]
+      (is (= "page" (slurp (str (fs/path dir "man" "ed.1")))))
+      (is (not (fs/exists? (fs/path dir "man" "leak.1")))))))
+
 (deftest present-versions-are-sealed-by-the-next-install
   (let [cfg (config)
         io (serve-tool "1.0.0")

@@ -235,20 +235,38 @@
             (sealed/delete-tree! work)
             (.close lock)))))))
 
+(defn- inside-file?
+  "Whether `file` resolves to a regular file inside `root`, following links
+  within it only."
+  [root file]
+  (let [real (when (fs/exists? file) (fs/real-path file))]
+    (boolean (and real (fs/regular-file? real) (.startsWith real (fs/real-path root))))))
+
+(defn- tree-file!
+  "`path` below `root` when it resolves to a regular file inside `root`,
+  following links within it; throws :path-missing otherwise, so a link in an
+  archive cannot make breto read or chmod a file outside of it."
+  [pkg artifact root path]
+  (let [file (fs/path root path)]
+    (when-not (inside-file? root file)
+      (throw (ex-info (str (:name pkg) ": " path " is not in " (:asset artifact))
+                      {:breto/problem :path-missing :package (:name pkg) :path path
+                       :asset (:asset artifact) :strip (:strip pkg)
+                       :listing (archive/listing root 200)})))
+    file))
+
 (defn- keep-share-files!
   "Copies the man pages, shipped completions and desktop icon of `pkg` from
   `unpacked` to the same paths under `dest`. A completion file or icon the
   definition names must exist; a man page glob may match nothing."
   [pkg artifact unpacked dest]
   (doseq [path (share/shipped-files pkg)]
-    (when-not (fs/regular-file? (fs/path unpacked path))
-      (throw (ex-info (str (:name pkg) ": " path " is not in " (:asset artifact))
-                      {:breto/problem :path-missing :package (:name pkg) :path path
-                       :asset (:asset artifact) :strip (:strip pkg)
-                       :listing (archive/listing unpacked 200)}))))
+    (tree-file! pkg artifact unpacked path))
+  ;; a link in the archive that leads out of it is skipped, so a man page
+  ;; glob never copies a file of this machine into the store
   (doseq [pattern (share/kept-files pkg)
           file (fs/glob unpacked pattern)
-          :when (fs/regular-file? file)
+          :when (inside-file? unpacked file)
           :let [target (fs/path dest (fs/relativize unpacked file))]]
     (fs/create-dirs (fs/parent target))
     (fs/copy file target {:replace-existing true})))
@@ -262,20 +280,6 @@
         generated (when (and (:run-hook io) program (fs/executable? program))
                     (share/generate! config pkg program (store/version-dir config (:name pkg) version) (:run-hook io)))]
     (concat generated (store/link-share! config pkg version))))
-
-(defn- tree-file!
-  "`path` below `root` when it resolves to a regular file inside `root`,
-  following links within it; throws :path-missing otherwise, so a link in an
-  archive cannot make breto read or chmod a file outside of it."
-  [pkg artifact root path]
-  (let [file (fs/path root path)
-        real (when (fs/exists? file) (fs/real-path file))]
-    (when-not (and real (fs/regular-file? real) (.startsWith real (fs/real-path root)))
-      (throw (ex-info (str (:name pkg) ": " path " is not in " (:asset artifact))
-                      {:breto/problem :path-missing :package (:name pkg) :path path
-                       :asset (:asset artifact) :strip (:strip pkg)
-                       :listing (archive/listing root 200)})))
-    file))
 
 (defn- place!
   "Copies what `pkg` keeps from the unpacked archive into `dest`."
