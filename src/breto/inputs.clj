@@ -50,14 +50,35 @@
   [inputs]
   (assoc inputs :digest (digest inputs)))
 
+(defn- marker
+  "The file beside `stamp` that carries the modification time `path` had when
+  the stamp was made."
+  [stamp path]
+  (let [md (MessageDigest/getInstance "SHA-256")]
+    (fs/path (str stamp ".d") (subs (hex (.digest md (.getBytes (str path) "UTF-8"))) 0 16))))
+
+(defn mark!
+  "Gives each present file of `inputs` a marker beside `stamp` with the
+  file's modification time, so the shell test sees any other time, older
+  ones included."
+  [stamp {:keys [present]}]
+  (let [dir (fs/path (str stamp ".d"))]
+    (fs/delete-tree dir)
+    (fs/create-dirs dir)
+    (doseq [path present :when (fs/regular-file? path)
+            :let [m (marker stamp path)]]
+      (spit (str m) "")
+      (fs/set-last-modified-time m (fs/last-modified-time path)))))
+
 (defn stamp!
   "Records `inputs`, taken with `loaded` when the project was read, as what
   the links of the project at `dir` were made from. The stamp replaces the
   old one atomically, so a tool running meanwhile reads one or the other. It
-  is written last, once the links are in place. When the files changed since
-  they were read, as an edit during a long install does, no stamp is
-  written: the old one stays stale and the next run links again. Returns the
-  stamp's path, or nil when it was left alone."
+  is written last, once the links are in place, and the markers of the
+  files' times after it. When the files changed since they were read, as an
+  edit during a long install does, no stamp is written: the old one stays
+  stale and the next run links again. Returns the stamp's path, or nil when
+  it was left alone."
   [config dir inputs]
   (let [stamp (stamp-path config dir)
         staged (store/staged-path (fs/parent stamp) "stamp")
@@ -66,6 +87,7 @@
       (fs/create-dirs (fs/parent stamp))
       (spit (str staged) recorded)
       (fs/move staged stamp {:replace-existing true :atomic-move true})
+      (mark! stamp inputs)
       (str stamp))))
 
 (defn fresh?
@@ -76,24 +98,28 @@
          (= (str/trim (slurp (str stamp))) (digest inputs)))))
 
 (defn touch!
-  "Marks the stamp of the project at `dir` as current, for files rewritten with
-  the content they had."
-  [config dir]
-  (fs/set-last-modified-time (stamp-path config dir)
-                             (java.nio.file.attribute.FileTime/from (java.time.Instant/now))))
+  "Marks the stamp of the project at `dir` as current for `inputs`, files
+  rewritten with the content they had."
+  [config dir inputs]
+  (let [stamp (stamp-path config dir)]
+    (fs/set-last-modified-time stamp (java.nio.file.attribute.FileTime/from (java.time.Instant/now)))
+    (mark! stamp inputs)))
 
 (defn stale-test
   "The sh condition true when the files of `inputs` may no longer match the
-  stamp at `stamp`: the stamp is missing, a present file is gone or newer than
-  it, or an absent project file appeared. It uses shell builtins alone. It can
-  be true without a real change, never the reverse, as a change of content
-  gives the file a new modification time."
+  stamp at `stamp`: the stamp is missing, a present file is gone or has
+  another modification time than its marker, newer or older, or an absent
+  project file appeared. A file replaced by an older one, as mv, cp -p or
+  rsync -a leave it, therefore counts too. It uses shell builtins alone, where
+  neither -nt nor -ot holding means the same time. It can be true without a
+  real change, never the reverse."
   [{:keys [present absent]} stamp]
   (let [s (shell/quote-arg stamp)]
     (str/join " || "
               (concat [(str "[ ! -f " s " ]")]
                       (mapcat (fn [path]
-                                (let [f (shell/quote-arg path)]
-                                  [(str "[ ! -f " f " ]") (str "[ " f " -nt " s " ]")]))
+                                (let [f (shell/quote-arg path)
+                                      m (shell/quote-arg (marker stamp path))]
+                                  [(str "[ ! -f " f " ]") (str "[ " f " -nt " m " ]") (str "[ " f " -ot " m " ]")]))
                               present)
                       (map #(str "[ -e " (shell/quote-arg %) " ]") absent)))))

@@ -7,6 +7,8 @@ extend-ignore-re = []
 [default.extend-words]
 edn = "edn"
 juxt = "juxt"
+# the test operator -ot, older than
+ot = "ot"
 
 [default.extend-identifiers]
 

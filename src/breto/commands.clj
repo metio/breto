@@ -721,7 +721,7 @@
                        (:specs proj))
         code (cond
                (nil? dir) 0
-               (and (not revoked?) (inputs/fresh? config dir current)) (do (inputs/touch! config dir) 0)
+               (and (not revoked?) (inputs/fresh? config dir current)) (do (inputs/touch! config dir current) 0)
                :else (:code (prepared-project! ctx "exec")))]
     (cond
       (nil? dir)

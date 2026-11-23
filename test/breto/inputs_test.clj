@@ -109,7 +109,7 @@
         (is (inputs/fresh? c (path "app") recorded))))
     (testing "touching renews the time and keeps the digest"
       (age! (inputs/stamp-path c (path "app")) -100)
-      (inputs/touch! c (path "app"))
+      (inputs/touch! c (path "app") recorded)
       (is (inputs/fresh? c (path "app") recorded))
       (is (< (- (System/currentTimeMillis)
                 (.toMillis (fs/last-modified-time (inputs/stamp-path c (path "app")))))
@@ -122,7 +122,8 @@
             _ (write! dir recorded-file "{}")
             recorded (current dir)
             stamp (path dir "stamp")
-            settled! (fn [] (spit stamp "x") (age! stamp 0) (age! (path dir recorded-file) -100))]
+            settled! (fn [] (spit stamp "x") (age! stamp 0) (age! (path dir recorded-file) -100)
+                       (inputs/mark! stamp (current dir)))]
         (settled!)
         (testing "nothing happened"
           (is (not (stale? recorded stamp))))
@@ -152,6 +153,7 @@
     (spit stamp "x")
     (age! (path "app" ".breto.edn") -100)
     (age! (path "shared" "@g.edn") -100)
+    (inputs/mark! stamp recorded)
     (is (not (stale? recorded stamp)))
     (age! (path "shared" "@g.edn") 100)
     (is (stale? recorded stamp))
@@ -166,6 +168,7 @@
           stamp (path dir "stamp")]
       (spit stamp "x")
       (age! (path dir ".breto.edn") -100)
+      (inputs/mark! stamp recorded)
       (is (not (stale? recorded stamp)))
       (age! (path dir ".breto.edn") 100)
       (is (stale? recorded stamp)))))
@@ -217,3 +220,15 @@
       (let [snapshot (inputs/loaded (current "app"))]
         (is (some? (inputs/stamp! c (path "app") snapshot)))
         (is (inputs/fresh? c (path "app") (current "app")))))))
+
+(deftest the-shell-test-sees-a-file-replaced-by-an-older-one
+  (write! "old" ".breto.edn" "{}")
+  (let [recorded (current "old")
+        stamp (path "old" "stamp")]
+    (spit stamp "x")
+    (age! (path "old" ".breto.edn") -100)
+    (inputs/mark! stamp recorded)
+    (is (not (stale? recorded stamp)))
+    (write! "old" ".breto.edn" "{:packages [\"go\"]}")
+    (age! (path "old" ".breto.edn") -200)
+    (is (stale? recorded stamp) "an older modification time than the stamped one counts as a change")))
