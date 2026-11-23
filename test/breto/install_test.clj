@@ -440,3 +440,18 @@
     (fs/set-posix-file-permissions dir "rwxr-xr-x")
     (install/install! cfg io tool {})
     (is (sealed/sealed? dir))))
+
+(deftest a-fetched-value-never-places-the-download-outside-the-work-directory
+  (let [cfg (config)
+        written (atom nil)
+        pkg (s/normalize {:name "tool" :source {:github "acme/tool"} :url "https://example.org/dl/{version}/x"
+                          :asset "{build}" :checksum "https://example.org/SUMS"
+                          :vars {:build {:text "https://example.org/latest.txt" :match "build=(\\S+)"}}})
+        io {:get-text (fn [url _] (case url
+                                    "https://github.com/acme/tool/releases/latest" "{\"tag_name\":\"v1.0\"}"
+                                    "https://example.org/latest.txt" "build=../../../planted"
+                                    (throw (ex-info (str "no " url) {}))))
+            :download! (fn [_ dest] (reset! written dest) (spit (str dest) "bytes"))}]
+    (is (= :asset-name (try (install/install! cfg io pkg {}) nil
+                            (catch clojure.lang.ExceptionInfo e (:breto/problem (ex-data e))))))
+    (is (nil? @written) "nothing is downloaded")))
