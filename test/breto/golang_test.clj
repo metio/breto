@@ -19,7 +19,7 @@
   environment it ran with."
   []
   (s/file! "go" (str "#!/bin/sh\n"
-                     "echo \"GOTOOLCHAIN=$GOTOOLCHAIN CGO_ENABLED=$CGO_ENABLED GOFLAGS=$GOFLAGS\" >> " (path "go.log") "\n"
+                     "echo \"GOTOOLCHAIN=$GOTOOLCHAIN CGO_ENABLED=$CGO_ENABLED GOFLAGS=$GOFLAGS GOSUMDB=$GOSUMDB GONOSUMDB=$GONOSUMDB GOPRIVATE=$GOPRIVATE GOINSECURE=$GOINSECURE\" >> " (path "go.log") "\n"
                      "case \"$1\" in\n"
                      "  mod) target=$4; printf '{\"Path\":\"%s\",\"Version\":\"%s\",\"Sum\":\"h1:%s\"}' \"${target%@*}\" \"${target#*@}\" \"${target#*@}\" ;;\n"
                      "  install) echo \"$*\" >> " (path "install.log") "; for target; do :; done; pkg=${target%@*}; mkdir -p \"$GOBIN\"; name=${pkg##*/}; case \"$name\" in v[0-9]*) rest=${pkg%/*}; name=${rest##*/} ;; esac; printf '#!/bin/sh\\necho %s %s\\n' \"$pkg\" \"${target#*@}\" > \"$GOBIN/$name\" ;;\n"
@@ -41,7 +41,7 @@
         (is (< (str/index-of out "go 1.0.0") (str/index-of out "govulncheck 1.9.0")))))
     (is (= "#!/bin/sh\necho golang.org/x/vuln/cmd/govulncheck v1.9.0\n" (slurp (path "bin" "govulncheck"))))
     (is (= "h1:v1.9.0" (:sum (store/read-meta {:store (path "store")} "govulncheck" "1.9.0"))))
-    (is (every? #(= "GOTOOLCHAIN=local CGO_ENABLED=0 GOFLAGS=" %) (str/split-lines (slurp (path "go.log")))))))
+    (is (every? #(= "GOTOOLCHAIN=local CGO_ENABLED=0 GOFLAGS= GOSUMDB=sum.golang.org GONOSUMDB= GOPRIVATE= GOINSECURE=" %) (str/split-lines (slurp (path "go.log")))))))
 
 (deftest build-tags-reach-go-install
   (let [io (world)]
