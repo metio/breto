@@ -12,3 +12,12 @@
   (is (= 0 (main/exit-code "run" 0)))
   (is (= 1 (main/exit-code "run" 300)) "a code beyond what a process can exit with stays a failure")
   (is (= 3 (main/exit-code "env" :breto.main/missing))))
+
+(deftest a-misspelled-option-is-refused
+  (let [problem (try (main/parse ["update" "--dry-rnu"]) nil
+                     (catch clojure.lang.ExceptionInfo e (ex-data e)))]
+    (is (= :usage (:breto/problem problem))))
+  (is (= {:dry-run true :verify false :debug true :dir "x"}
+         (:opts (main/parse ["update" "--dry-run" "--no-verify" "-d" "--dir" "x"]))))
+  (is (= ["run" "lint" "--fix"] (:args (main/parse ["run" "lint" "--fix"])))
+      "breto run leaves the options of the command it runs alone"))
