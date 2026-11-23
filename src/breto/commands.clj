@@ -1030,7 +1030,10 @@
                        :when r]
                    r)
         results (into pruned failures)]
-    (if (seq results) (batch/finish! "gc" results) 0)))
+    (cond (seq results) (batch/finish! "gc" results)
+          ;; a dry run changed nothing, so the last real gc stays the one reported
+          dry-run? 0
+          :else (do (batch/save! "gc" []) 0))))
 
 (defn sync-store
   "Makes the store match the lock file: installs and activates each locked
