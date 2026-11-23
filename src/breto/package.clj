@@ -572,11 +572,21 @@
                  (get fetched k (str "{" (clojure.core/name k) "}"))
                  (derived pkg k spec version))]))))
 
+(defn- file-name!
+  "`asset-name` when it is a single file name. The download is written to
+  that name in a work directory before anything verifies it, and a :vars
+  value read from an upstream document can be part of it."
+  [pkg asset-name]
+  (when (or (str/blank? asset-name) (re-find #"[/\\]" asset-name) (#{"." ".."} asset-name))
+    (throw (ex-info (str (:name pkg) ": the asset " (pr-str asset-name) " is no file name")
+                    {:breto/problem :asset-name :package (:name pkg) :asset asset-name})))
+  asset-name)
+
 (defn artifact
   "Everything needed to fetch and unpack one release of `pkg`."
   [{:keys [asset url checksum bins signature] :as pkg} release]
   (let [vars (template-vars pkg release)
-        asset-name (template/render asset vars)
+        asset-name (file-name! pkg (template/render asset vars))
         asset-url (template/render url (assoc vars
                                               :asset asset-name
                                               :tag (str/replace (:tag vars) "/" "%2F")))
