@@ -4,7 +4,11 @@
 (ns breto.main-test
   (:require [babashka.fs :as fs]
             [breto.main :as main]
-            [clojure.test :refer [deftest is]]))
+            [breto.report :as report]
+            [breto.support :as s]
+            [clojure.test :refer [deftest is use-fixtures]]))
+
+(use-fixtures :each s/with-root)
 
 (deftest run-and-exec-pass-on-the-exit-code-of-the-program
   (is (= 7 (main/exit-code "run" 7)))
@@ -45,3 +49,12 @@
 (deftest breto-update-dry-run-exits-before-touching-anything
   (is (thrown-with-msg? clojure.lang.ExceptionInfo #"has no --dry-run"
         (main/run ["update" "--dry-run"] {:io (fn [& _] (throw (ex-info "network used" {})))}))))
+
+(deftest a-command-that-returned-is-no-longer-running
+  (report/save! {:command "env" :results [{:package "registry-x" :status :installed}] :running true :total 1})
+  (report/save! {:command "update" :results [] :running true :total 3})
+  (main/settle! "env")
+  (let [runs (into {} (map (juxt :command identity)) (report/load-runs))]
+    (is (nil? (:running (runs "env"))))
+    (is (= [{:package "registry-x" :status :installed}] (:results (runs "env"))))
+    (is (:running (runs "update")) "another command's run is left alone")))

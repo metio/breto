@@ -1222,6 +1222,8 @@
                            [spec entry]))
         text (lockfile/render {:header (:header before) :entries entries})
         current? (and (fs/exists? path) (= text (slurp path)))]
+    (when-not failed?
+      (batch/save! "lock" all-results))
     (cond
       failed? (batch/finish! "lock" all-results)
       current? (do (println (str "[OK] " path " is up to date")) 0)

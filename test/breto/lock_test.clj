@@ -7,6 +7,7 @@
             [breto.lockfile :as lockfile]
             [breto.platform :as platform]
             [breto.registry :as registry]
+            [breto.report :as report]
             [breto.support :as s :refer [path]]
             [clojure.string :as str]
             [clojure.test :refer [deftest is testing use-fixtures]]))
@@ -134,3 +135,12 @@
         (is (= before (slurp (path "clone" "breto.lock"))))))
     (testing "a registry directory without groups still locks to an empty file"
       (is (= 0 (:code (breto! io "lock" (path "shared"))))))))
+
+(deftest a-finished-lock-is-no-running-run
+  (let [{:keys [io]} (world)]
+    (group! ["alpha@0.9.0"])
+    (is (= 0 (:code (breto! io "lock" (path "shared")))))
+    (let [[run] (filter #(= "lock" (:command %)) (report/load-runs))]
+      (is (nil? (:running run)) (pr-str run))
+      (is (:finished run))
+      (is (= ["alpha"] (map :package (:results run)))))))

@@ -338,6 +338,19 @@ Every failure is explained with what to do; --debug adds each request and stack 
     (throw (ex-info (str "breto " command " has no --dry-run; " (str/join ", " (sort previews)) " have one")
                     {:breto/problem :usage :command command :option :dry-run}))))
 
+(defn settle!
+  "Saves the run of `command` as finished when the command returned while its
+  report still says it is running. Progress is recorded after every package,
+  and a command that ends without a final report of its own, such as lock or
+  the registry installs of env, would otherwise stay running for good."
+  [command]
+  (try
+    (when-let [running (first (filter #(and (= command (:command %)) (:running %)) (report/load-runs)))]
+      (report/save! (dissoc running :running :total :updated)))
+    (catch Exception e
+      (binding [*out* *err*]
+        (println (str "[WARN] could not save the report to " (report/state-path) ": " (ex-message e)))))))
+
 (defn run
   "Runs the command line and returns the process exit code. `overrides` replace
   parts of the context, which is how tests swap the network and the display."
@@ -357,7 +370,9 @@ Every failure is explained with what to do; --debug adds each request and stack 
                     args (if chosen? (commands/install-args ctx more) more)]
                 (if (and chosen? (empty? args))
                   (do (println "Nothing chosen.") 0)
-                  (locked (assoc ctx :chosen? chosen?) command args (fn [ctx] (f ctx args)))))))
+                  (let [code (locked (assoc ctx :chosen? chosen?) command args (fn [ctx] (f ctx args)))]
+                    (settle! command)
+                    code)))))
            (do (println usage) (if (#{nil "help"} command) 0 2))))))))
 
 (defn exit-code
