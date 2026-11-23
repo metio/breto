@@ -475,3 +475,15 @@
     (is (str/includes? code "set --global --export X 'a\\\\';"))
     (is (str/includes? code "set --global --export PATH '/p\\\\';")))
   (is (str/includes? (env/leaving :fish "/p\\") "set --global --export PATH '/p\\\\';")))
+
+(deftest leaving-restores-several-variables-without-word-splitting-a-parameter
+  (testing "the names reach the loop through a command substitution, which zsh splits as sh does"
+    (is (str/includes? (env/leaving :sh "/usr/bin") "for __breto_var in $(printf '%s' \"${BRETO_ENV_VARS-}\"); do")))
+  (doseq [sh ["sh" "bash"]]
+    (is (= "/a x|unset|/usr/bin"
+           (:out (process/shell {:out :string} sh "-c"
+                                (str "export A='/a x'\n"
+                                     (env/exports :sh "/b:/usr/bin" "/p" "/b" [] {"A" "/pa" "B" "/pb"}) "\n"
+                                     (env/leaving :sh "/usr/bin") "\n"
+                                     "printf %s \"$A|${B-unset}|$PATH\""))))
+        sh)))
