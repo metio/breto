@@ -205,3 +205,15 @@
     (is (= 4 exit))
     (testing "and the tool does not inherit the marker"
       (is (= ["linked=[unset]" "tool:x"] (str/split-lines out))))))
+
+(deftest an-edit-after-loading-leaves-the-stamp-stale
+  (write! "app" ".breto.edn" "{}")
+  (let [c (cfg)
+        snapshot (inputs/loaded (current "app"))]
+    (write! "app" ".breto.edn" "{:packages [\"go\"]}")
+    (is (nil? (inputs/stamp! c (path "app") snapshot)) "links made from the old content get no stamp")
+    (is (not (inputs/fresh? c (path "app") (current "app"))))
+    (testing "unchanged files are stamped with what was loaded"
+      (let [snapshot (inputs/loaded (current "app"))]
+        (is (some? (inputs/stamp! c (path "app") snapshot)))
+        (is (inputs/fresh? c (path "app") (current "app")))))))
