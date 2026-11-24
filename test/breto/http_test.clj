@@ -2,9 +2,11 @@
 ;; SPDX-License-Identifier: 0BSD
 
 (ns breto.http-test
-  (:require [breto.diagnose :as diagnose]
+  (:require [babashka.fs :as fs]
+            [breto.diagnose :as diagnose]
             [breto.http :as http]
-            [clojure.test :refer [deftest is]]))
+            [clojure.test :refer [deftest is]]
+            [org.httpkit.server :as httpkit]))
 
 (deftest exhausted-limits-wait-until-the-reset
   (is (= 600 (http/rate-wait {"x-ratelimit-remaining" "0" "x-ratelimit-reset" "1600"} 1000))))
@@ -47,3 +49,39 @@
                                 #(swap! seen conj [%1 %2]) 5)))
     (is (= "hello" (str out)))
     (is (= [[5 5]] @seen))))
+
+(defn- gzipped [^bytes plain]
+  (let [out (java.io.ByteArrayOutputStream.)]
+    (with-open [gz (java.util.zip.GZIPOutputStream. out)] (.write gz plain))
+    (.toByteArray out)))
+
+(defn- serving
+  "Calls `f` with the URL of a local server answering every request with
+  `plain`, gzip-encoded whenever `gzip?` holds for the request, and stating
+  the length of the bytes it sends."
+  [plain gzip? f]
+  (let [server (httpkit/run-server
+                (fn [req]
+                  (let [body (if (gzip? req) (gzipped plain) plain)]
+                    {:status 200
+                     :headers (cond-> {"Content-Length" (str (count body))}
+                                (gzip? req) (assoc "Content-Encoding" "gzip"))
+                     :body (java.io.ByteArrayInputStream. body)}))
+                {:port 0 :legacy-return-value? false})]
+    (try
+      (f (str "http://127.0.0.1:" (httpkit/server-port server) "/file"))
+      (finally (httpkit/server-stop! server)))))
+
+(deftest downloads-are-the-bytes-the-server-holds-whatever-encoding-it-offers
+  (let [plain (.getBytes (apply str (repeat 60000 "a")))
+        dest (str (fs/create-temp-file))]
+    (try
+      (doseq [[what gzip? total] [["a server gzipping on request" #(re-find #"gzip" (str (get-in % [:headers "accept-encoding"]))) 60000]
+                                  ["a server gzipping every response" (constantly true) nil]]]
+        (serving plain gzip?
+                 (fn [url]
+                   (let [seen (atom nil)]
+                     (http/download! url dest #(reset! seen [%1 %2]))
+                     (is (= (seq plain) (seq (fs/read-all-bytes dest))) what)
+                     (is (= [60000 total] @seen) what)))))
+      (finally (fs/delete-if-exists dest)))))

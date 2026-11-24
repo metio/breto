@@ -95,11 +95,16 @@
 (defn download!
   "Saves `url` to `dest`, calling `on-bytes` with the bytes written so far and
   the expected total, when the server states one. A body shorter than the
-  stated length fails, so an unverified install never keeps a truncated file."
+  stated length fails, so an unverified install never keeps a truncated file.
+  The request asks for the file unencoded, since the client decodes a gzip
+  or deflate body while Content-Length counts the encoded bytes; a server
+  that encodes it anyway states no length the decoded body can be held to."
   ([url dest] (download! url dest nil))
   ([url dest on-bytes]
-   (let [response (ok! url (request url {:as :stream}))
-         expected (some-> (get-in response [:headers "content-length"]) str parse-long)
+   (let [response (ok! url (request url {:as :stream :headers {"accept-encoding" "identity"}}))
+         encoding (some-> (get-in response [:headers "content-encoding"]) str)
+         expected (when (or (nil? encoding) (= "identity" encoding))
+                    (some-> (get-in response [:headers "content-length"]) str parse-long))
          received (with-open [in ^java.io.InputStream (:body response)
                               out (io/output-stream (io/file (str dest)))]
                     (copy-body! url in out on-bytes expected))]
