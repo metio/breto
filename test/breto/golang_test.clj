@@ -4,6 +4,7 @@
 (ns breto.golang-test
   (:require [babashka.fs :as fs]
             [breto.package :as package]
+            [breto.proc :as proc]
             [breto.source :as source]
             [breto.store :as store]
             [breto.support :as s :refer [path]]
@@ -19,6 +20,7 @@
   environment it ran with."
   []
   (s/file! "go" (str "#!/bin/sh\n"
+                     "echo \"GOOS=$GOOS GOARCH=$GOARCH GOARM=$GOARM GOAMD64=$GOAMD64\" >> " (path "target.log") "\n"
                      "echo \"GOTOOLCHAIN=$GOTOOLCHAIN CGO_ENABLED=$CGO_ENABLED GOFLAGS=$GOFLAGS GOSUMDB=$GOSUMDB GONOSUMDB=$GONOSUMDB GOPRIVATE=$GOPRIVATE GOINSECURE=$GOINSECURE\" >> " (path "go.log") "\n"
                      "case \"$1\" in\n"
                      "  mod) target=$4; printf '{\"Path\":\"%s\",\"Version\":\"%s\",\"Sum\":\"h1:%s\"}' \"${target%@*}\" \"${target#*@}\" \"${target#*@}\" ;;\n"
@@ -42,6 +44,15 @@
     (is (= "#!/bin/sh\necho golang.org/x/vuln/cmd/govulncheck v1.9.0\n" (slurp (path "bin" "govulncheck"))))
     (is (= "h1:v1.9.0" (:sum (store/read-meta {:store (path "store")} "govulncheck" "1.9.0"))))
     (is (every? #(= "GOTOOLCHAIN=local CGO_ENABLED=0 GOFLAGS= GOSUMDB=sum.golang.org GONOSUMDB= GOPRIVATE= GOINSECURE=" %) (str/split-lines (slurp (path "go.log")))))))
+
+(deftest a-go-package-is-built-for-the-host-whatever-the-shell-targets
+  (testing "a cross-build matrix exporting a foreign target does not reach go install"
+    (let [foreign {"GOOS" "windows" "GOARCH" "arm" "GOARM" "7" "GOAMD64" "v4"}
+          io (assoc (world) :run-in (fn [command] (proc/run-in (update command :env #(merge foreign %)))))
+          {:keys [code out]} (s/breto! {} ["install" "go" "govulncheck"] {:io io})]
+      (is (= 0 code) out)
+      (is (seq (slurp (path "target.log"))))
+      (is (every? #(= "GOOS= GOARCH= GOARM= GOAMD64=" %) (str/split-lines (slurp (path "target.log"))))))))
 
 (deftest build-tags-reach-go-install
   (let [io (world)]
