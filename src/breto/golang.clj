@@ -19,10 +19,18 @@
   that exempt modules from the checksum database are pinned, since that check
   is the only one a module without a lock file gets. GOPROXY stays the
   user's: it chooses where modules come from, and the database checks them
-  whichever proxy serves them."
+  whichever proxy serves them.
+
+  The variables that choose the target platform are emptied, which go reads
+  as unset, so the binary is built for the platform the installed go runs on.
+  A shell that cross-compiles, such as a release matrix exporting GOOS and
+  GOARCH, would otherwise make go refuse to install into GOBIN, or build a
+  tool for a CPU level the host lacks."
   [gobin]
-  {"GOBIN" (str gobin) "GOTOOLCHAIN" "local" "CGO_ENABLED" "0" "GOFLAGS" ""
-   "GOSUMDB" "sum.golang.org" "GONOSUMDB" "" "GONOSUMCHECK" "" "GOPRIVATE" "" "GOINSECURE" ""})
+  (merge {"GOBIN" (str gobin) "GOTOOLCHAIN" "local" "CGO_ENABLED" "0" "GOFLAGS" ""
+          "GOSUMDB" "sum.golang.org" "GONOSUMDB" "" "GONOSUMCHECK" "" "GOPRIVATE" "" "GOINSECURE" ""}
+         (zipmap ["GOOS" "GOARCH" "GO386" "GOAMD64" "GOARM" "GOARM64" "GOMIPS" "GOMIPS64" "GOPPC64" "GORISCV64" "GOWASM"]
+                 (repeat ""))))
 
 (defn- run! [io go work env args context]
   (let [run (or (:run-in io) proc/run-in)
