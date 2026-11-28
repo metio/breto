@@ -3,10 +3,10 @@
 
 (ns breto.archive
   (:require [babashka.fs :as fs]
-            [babashka.process :as process]
             [breto.package :as package]
             [breto.proc :as proc]
             [breto.tar :as tar]
+            [briko.process :as bprocess]
             [clojure.java.io :as io]
             [clojure.string :as str]))
 
@@ -139,12 +139,17 @@
                  (throw (problem (ex-message e) (str (ex-message e))))))
       (:bz2 :zst)
       (let [tool ({:bz2 "bzip2" :zst "zstd"} archive-type)
-            {:keys [exit err]} (try (process/shell {:out (fs/file target) :err :string :continue true}
-                                                   tool "--decompress" "--stdout" (str file))
-                                    (catch java.io.IOException e
-                                      (throw (problem (ex-message e) (str tool ": Cannot exec: " (ex-message e))))))]
-        (when-not (zero? exit)
-          (throw (problem (str/trim err) err)))))))
+            ;; briko.process creates a missing output file owner-only; created
+            ;; here first, the file gets the mode of any other new file and
+            ;; briko.process truncates it in place.
+            _ (when-not (fs/exists? target {:nofollow-links true}) (fs/create-file target))
+            {:keys [exit err launched? out-error]}
+            (bprocess/run [tool "--decompress" "--stdout" (str file)]
+                          {:timeout-ms :none :out {:file (str target)}})]
+        (cond
+          (not launched?) (throw (problem err (str tool ": Cannot exec: " err)))
+          out-error (throw (problem out-error out-error))
+          (not (zero? exit)) (throw (problem (str/trim err) err)))))))
 
 (defn unpack!
   "Unpacks `file` into the empty directory `dest`. A raw download is copied in
