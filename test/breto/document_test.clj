@@ -42,3 +42,14 @@
     (is (= "aa" (document/at (document/parse url one) [{:vers "1.0.0"} "cksum"])))
     (is (= "bb" (document/at (document/parse url two) [{:vers "1.1.0"} "cksum"])))
     (is (nil? (document/at (document/parse url one) [{:vers "2.0.0"} "cksum"])))))
+
+(deftest json-documents-keep-string-keys-and-their-numbers
+  (is (= {"a" 1 "b" 1.5 "c" [true nil "x"]} (document/parse "x.json" "{\"a\":1,\"b\":1.5,\"c\":[true,null,\"x\"]}")))
+  (is (= 123456789012345678901234567890N (document/parse "x" "123456789012345678901234567890")))
+  (is (= [] (document/parse "x" "")))
+  (is (= [] (document/parse "x" " \n")))
+  (is (= [{"v" 1} {"v" 2}] (document/parse "x" "{\"v\":1} {\"v\":2}"))))
+
+(deftest a-malformed-json-document-fails
+  (is (thrown? Exception (document/parse "x" "{\"a\":")))
+  (is (thrown? Exception (document/parse "x" "{\"a\":1}]"))))

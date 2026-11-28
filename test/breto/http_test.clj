@@ -85,3 +85,120 @@
                      (is (= (seq plain) (seq (fs/read-all-bytes dest))) what)
                      (is (= [60000 total] @seen) what)))))
       (finally (fs/delete-if-exists dest)))))
+
+(defn- with-servers
+  "Calls `f` with the base URLs of local servers, one for each handler, so a
+  redirect from one to another leaves the origin it started at."
+  [handlers f]
+  (let [servers (mapv #(httpkit/run-server % {:port 0 :legacy-return-value? false}) handlers)]
+    (try
+      (apply f (map #(str "http://127.0.0.1:" (httpkit/server-port %)) servers))
+      (finally (run! httpkit/server-stop! servers)))))
+
+(defn- recording
+  "A handler that records each request's uri and headers in `seen` and
+  answers with what `respond` returns for the request."
+  [seen respond]
+  (fn [req]
+    (swap! seen conj (select-keys req [:uri :request-method :headers]))
+    (respond req)))
+
+(defn- problem-of [f]
+  (try (f) nil (catch clojure.lang.ExceptionInfo e (ex-data e))))
+
+(def ^:private bearer
+  ;; built at run time, so the source holds no token-shaped literal
+  (str "Bearer " (apply str (repeat 8 "t"))))
+
+(deftest text-is-the-body-of-a-successful-answer-to-the-headers-sent
+  (let [seen (atom [])]
+    (with-servers [(recording seen (fn [_] {:status 200 :body "größe 1.2.3"}))]
+      (fn [a]
+        (is (= "größe 1.2.3" (http/get-text (str a "/v") {"Accept" "application/json"})))
+        (is (= "application/json" (get-in (first @seen) [:headers "accept"])))))))
+
+(deftest a-status-outside-2xx-is-an-http-status-problem-with-its-rate-headers
+  (with-servers [(fn [_] {:status 429 :headers {"Retry-After" "7" "X-Other" "x"} :body "slow down"})]
+    (fn [a]
+      (let [data (problem-of #(http/get-text (str a "/v") {}))]
+        (is (= :http-status (:breto/problem data)))
+        (is (= 429 (:status data)))
+        (is (= {"retry-after" "7"} (:headers data)))
+        (is (http/rate-limited? data))
+        (is (<= 6 (http/upstream-wait) 7))))))
+
+(deftest redirects-are-followed-and-keep-the-token-only-on-their-origin
+  (let [seen (atom [])]
+    (with-servers [(recording seen (fn [_] {:status 200 :body "far"}))]
+      (fn [far]
+        (with-servers [(recording seen (fn [{:keys [uri]}]
+                                         (case uri
+                                           "/same" {:status 302 :headers {"Location" "/final"}}
+                                           "/final" {:status 200 :body "here"}
+                                           "/cross" {:status 302 :headers {"Location" (str far "/asset")}}
+                                           {:status 404})))]
+          (fn [a]
+            (is (= "here" (http/get-text (str a "/same") {"Authorization" bearer})))
+            (is (= "far" (http/get-text (str a "/cross") {"Authorization" bearer})))
+            (let [by-uri (group-by :uri @seen)]
+              (is (= bearer (get-in (first (by-uri "/final")) [:headers "authorization"]))
+                  "the origin the request started at keeps the token")
+              (is (nil? (get-in (first (by-uri "/asset")) [:headers "authorization"]))
+                  "another origin never receives it"))))))))
+
+(deftest endless-redirects-fail
+  (with-servers [(fn [_] {:status 302 :headers {"Location" "/loop"}})]
+    (fn [a]
+      (is (thrown? clojure.lang.ExceptionInfo (http/get-text (str a "/loop") {}))))))
+
+(deftest existence-follows-redirects-to-another-host
+  (with-servers [(fn [{:keys [uri]}] (if (= "/asset" uri) {:status 200 :body "x"} {:status 404}))]
+    (fn [far]
+      (with-servers [(fn [{:keys [uri]}]
+                       (case uri
+                         "/download" {:status 302 :headers {"Location" (str far "/asset")}}
+                         "/gone" {:status 302 :headers {"Location" (str far "/missing")}}
+                         {:status 404}))]
+        (fn [a]
+          (is (true? (http/exists? (str a "/download"))))
+          (is (false? (http/exists? (str a "/gone"))))
+          (is (false? (http/exists? (str a "/nothing")))))))))
+
+(deftest gzipped-text-arrives-decoded
+  (let [plain (.getBytes "{\"tag_name\":\"v1\"}" "UTF-8")]
+    (serving plain #(re-find #"gzip" (str (get-in % [:headers "accept-encoding"])))
+             (fn [url] (is (= "{\"tag_name\":\"v1\"}" (http/get-text url {})))))))
+
+(deftest a-closed-port-is-a-network-problem
+  (let [port (with-open [s (java.net.ServerSocket. 0)] (.getLocalPort s))
+        url (str "http://127.0.0.1:" port "/v")]
+    (is (= :network (:breto/problem (problem-of #(http/get-text url {})))))
+    (is (= :network (:breto/problem (problem-of #(http/exists? url)))))))
+
+(defn- with-raw-server
+  "Calls `f` with the base URL of a local server that answers every request
+  by calling `respond` with the request's first line and the output stream
+  of its connection, for answers no HTTP server library would send."
+  [respond f]
+  (let [server (java.net.ServerSocket. 0 50 (java.net.InetAddress/getByName "127.0.0.1"))
+        worker (future
+                 (loop []
+                   (when-let [socket (try (.accept server) (catch java.io.IOException _ nil))]
+                     (future
+                       (with-open [socket socket]
+                         (let [in (java.io.BufferedReader. (java.io.InputStreamReader. (.getInputStream socket) "ISO-8859-1"))
+                               line (.readLine in)]
+                           (loop [] (when (seq (.readLine in)) (recur)))
+                           (try (respond line (.getOutputStream socket)) (catch java.io.IOException _ nil)))))
+                     (recur))))]
+    (try
+      (f (str "http://127.0.0.1:" (.getLocalPort server)))
+      (finally (.close server) (future-cancel worker)))))
+
+(defn- write-ascii [^java.io.OutputStream out ^String s]
+  (.write out (.getBytes s "ISO-8859-1"))
+  (.flush out))
+
+(deftest existence-ignores-the-length-a-head-answer-states
+  (with-raw-server (fn [_ out] (write-ascii out "HTTP/1.1 200 OK\r\nContent-Length: 734003200\r\nConnection: close\r\n\r\n"))
+    (fn [a] (is (true? (http/exists? (str a "/big.tar.gz")))))))
