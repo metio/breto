@@ -8,6 +8,8 @@
             [breto.share :as share]
             [clojure.edn :as edn]
             [breto.version :as version]
+            [briko.fs :as bfs]
+            [briko.paths :as paths]
             [clojure.string :as str]))
 
 (def ^:private current-link "current")
@@ -67,9 +69,6 @@
   (let [current (fs/path (package-dir config name) current-link)]
     (when (fs/sym-link? current)
       (str (fs/file-name (fs/read-link current))))))
-
-(defn expand-home [s]
-  (str/replace-first (str s) #"^~(?=/|$)" (System/getProperty "user.home")))
 
 (defn staged-path
   "A name in `dir` to prepare `file-name` under before renaming it into place,
@@ -136,7 +135,7 @@
   [config {:keys [name links] :as pkg} bin-paths version]
   (let [dir (package-dir config name)
         current (fs/path dir current-link)
-        extra (set (map #(str (expand-home %)) (keys links)))
+        extra (set (map #(paths/expand-home (str %)) (keys links)))
         claim! (fn [link target]
                  (if (and (fs/exists? link {:nofollow-links true}) (not (points-into? (fs/parent dir) link)))
                    (str link " exists and was not linked by breto, so " name " leaves it alone")
@@ -153,7 +152,7 @@
     (-> (vec (keep identity (concat (for [[link path] bin-paths]
                                       (claim! (fs/path (:bin-dir config) link) (fs/path current path)))
                                     (for [[link path] links]
-                                      (claim! (fs/path (expand-home link)) (fs/path current path))))))
+                                      (claim! (fs/path (paths/expand-home (str link))) (fs/path current path))))))
         (into (link-share! config pkg version)))))
 
 (defn previous-version
@@ -180,7 +179,7 @@
   "Records what is known about an installed version, such as the hash of the
   download it came from, beside its directory."
   [config name version m]
-  (spit (str (meta-file config name version)) (pr-str m)))
+  (bfs/atomic-write! (fs/absolutize (meta-file config name version)) (pr-str m)))
 
 (defn read-meta [config name version]
   (let [file (meta-file config name version)]
@@ -203,7 +202,7 @@
   (let [dir (fs/canonicalize (package-dir config name))
         bin-dir (:bin-dir config)]
     (->> (concat (->> (concat (when (fs/directory? bin-dir) (fs/list-dir bin-dir))
-                              (map (comp fs/path expand-home) extra-links))
+                              (map #(fs/path (paths/expand-home (str %))) extra-links))
                       (filter #(resolves-into? dir %))
                       (map str))
                  (share-links-into config name))

@@ -11,7 +11,7 @@
   selection belongs to one project and stays out of version control."
   (:require [babashka.fs :as fs]
             [breto.command :as command]
-            [breto.store :as store]
+            [briko.fs :as bfs]
             [clojure.edn :as edn]
             [clojure.string :as str]))
 
@@ -83,10 +83,8 @@
   selection is written too, since the shell hook notices a file that
   changed, never one that went missing."
   [path selection]
-  (let [staged (store/staged-path (fs/parent path) (str (fs/file-name path)))]
-    (fs/create-dirs (fs/parent path))
-    (spit (str staged) (str (pr-str (into (sorted-map) selection)) "\n"))
-    (fs/move staged path {:replace-existing true :atomic-move true}))
+  (fs/create-dirs (fs/parent path))
+  (bfs/atomic-write! (fs/absolutize path) (str (pr-str (into (sorted-map) selection)) "\n"))
   (str path))
 
 (defn active

@@ -3,21 +3,16 @@
 
 (ns breto.config
   (:require [babashka.fs :as fs]
-            [clojure.edn :as edn]
+            [breto.edn-text :as edn-text]
+            [briko.paths :as paths]
             [clojure.string :as str]))
-
-(defn- env-dir [variable fallback]
-  (let [value (System/getenv variable)]
-    (if (str/blank? value)
-      (str (fs/path (System/getProperty "user.home") fallback))
-      value)))
 
 (defn default-path
   "BRETO_CONFIG, else config.edn in breto's directory below XDG_CONFIG_HOME."
   []
   (let [explicit (System/getenv "BRETO_CONFIG")]
     (if (str/blank? explicit)
-      (str (fs/path (env-dir "XDG_CONFIG_HOME" ".config") "breto" "config.edn"))
+      (str (fs/path (paths/config-home) "breto" "config.edn"))
       explicit)))
 
 (defn default-bin-dir
@@ -36,11 +31,11 @@
   entries."
   [os]
   (when (re-find #"(?i)linux|bsd" (str os))
-    (str (fs/path (env-dir "XDG_DATA_HOME" ".local/share") "applications"))))
+    (str (fs/path (paths/data-home) "applications"))))
 
 (defn defaults []
-  {:store (str (fs/path (env-dir "XDG_DATA_HOME" ".local/share") "breto" "installations"))
-   :bin-dir (default-bin-dir (System/getProperty "user.home") (System/getenv "PATH"))
+  {:store (str (fs/path (paths/data-home) "breto" "installations"))
+   :bin-dir (default-bin-dir (paths/home) (System/getenv "PATH"))
    :registries [{:github "metio/packages"}]
    :extra-registries []
    :packages []
@@ -57,18 +52,15 @@
    :messages {}
    :hook-timeout 30
    :finder :auto
-   :env-dir (str (fs/path (env-dir "XDG_DATA_HOME" ".local/share") "breto" "envs"))
+   :env-dir (str (fs/path (paths/data-home) "breto" "envs"))
    :python "3.13"
-   :python-dir (str (fs/path (env-dir "XDG_DATA_HOME" ".local/share") "breto" "python"))
-   :man-dir (str (fs/path (env-dir "XDG_DATA_HOME" ".local/share") "man"))
-   :completion-dirs {:bash (str (fs/path (env-dir "XDG_DATA_HOME" ".local/share") "bash-completion" "completions"))
-                     :zsh (str (fs/path (env-dir "XDG_DATA_HOME" ".local/share") "zsh" "site-functions"))
-                     :fish (str (fs/path (env-dir "XDG_CONFIG_HOME" ".config") "fish" "completions"))}
+   :python-dir (str (fs/path (paths/data-home) "breto" "python"))
+   :man-dir (str (fs/path (paths/data-home) "man"))
+   :completion-dirs {:bash (str (fs/path (paths/data-home) "bash-completion" "completions"))
+                     :zsh (str (fs/path (paths/data-home) "zsh" "site-functions"))
+                     :fish (str (fs/path (paths/config-home) "fish" "completions"))}
    :desktop-dir (desktop-dir (System/getProperty "os.name"))
    :desktop-entries true})
-
-(defn- expand-home [s]
-  (str/replace-first s #"^~(?=/|$)" (System/getProperty "user.home")))
 
 (defn load-config
   "Reads the EDN config at `path` over the defaults. A missing file means all
@@ -76,18 +68,18 @@
   to the default registries with them and replaces the defaults with
   :registries."
   [path]
-  (let [user (when (fs/exists? path) (edn/read-string (slurp (str path))))]
+  (let [user (when (fs/exists? path) (edn-text/read-file path))]
     (-> (merge (defaults) user)
         (as-> config (-> config
                          (update :registries #(vec (concat % (:extra-registries config))))
                          (dissoc :extra-registries)))
-        (update :store expand-home)
-        (update :bin-dir expand-home)
-        (update :lockfile #(some-> % expand-home))
-        (update :cosign #(some-> % expand-home))
-        (update :env-dir expand-home)
-        (update :python-dir expand-home)
-        (update :man-dir #(some-> % expand-home))
-        (update :completion-dirs #(update-vals % expand-home))
-        (update :desktop-dir #(some-> % expand-home))
-        (update :registries #(mapv (fn [entry] (if (string? entry) (expand-home entry) entry)) %)))))
+        (update :store paths/expand-home)
+        (update :bin-dir paths/expand-home)
+        (update :lockfile #(some-> % paths/expand-home))
+        (update :cosign #(some-> % paths/expand-home))
+        (update :env-dir paths/expand-home)
+        (update :python-dir paths/expand-home)
+        (update :man-dir #(some-> % paths/expand-home))
+        (update :completion-dirs #(update-vals % paths/expand-home))
+        (update :desktop-dir #(some-> % paths/expand-home))
+        (update :registries #(mapv (fn [entry] (if (string? entry) (paths/expand-home entry) entry)) %)))))

@@ -3,7 +3,10 @@
 
 (ns breto.config-test
   (:require [babashka.fs :as fs]
+            [babashka.process :as process]
             [breto.config :as config]
+            [breto.support :as s]
+            [briko.paths :as paths]
             [clojure.string :as str]
             [clojure.test :refer [deftest is]]))
 
@@ -22,7 +25,7 @@
         (is (= ["/a" {:github "o/r"} "/b"] (:registries config)))
         (is (not (contains? config :extra-registries))))
       (spit file (pr-str {:extra-registries ["~/defs"]}))
-      (is (= [{:github "metio/packages"} (str (System/getProperty "user.home") "/defs")] (:registries (config/load-config file))))
+      (is (= [{:github "metio/packages"} (str (paths/home) "/defs")] (:registries (config/load-config file))))
       (finally (fs/delete file)))))
 
 (deftest metio-packages-is-the-default-registry-and-registries-replaces-it
@@ -39,3 +42,26 @@
   (is (str/ends-with? (config/desktop-dir "FreeBSD") "/applications"))
   (is (nil? (config/desktop-dir "Mac OS X")))
   (is (nil? (config/desktop-dir "Windows 11"))))
+
+(defn- store-under
+  "The :store of the defaults in a babashka of its own with `env` as its whole
+  environment and user.home set to `user-home`."
+  [env user-home]
+  (let [{:keys [exit out err]}
+        (process/shell {:out :string :err :string :continue true :dir (str (fs/temp-dir))
+                        :env (merge {"PATH" (System/getenv "PATH")} env)}
+                       (-> (java.lang.ProcessHandle/current) .info .command .get)
+                       "--classpath" (s/absolute-classpath) (str "-Duser.home=" user-home)
+                       "-e" "(require 'breto.config) (print (:store (breto.config/load-config \"/nonexistent/config.edn\")))")]
+    (is (zero? exit) err)
+    out))
+
+(deftest the-home-is-home-and-relative-xdg-values-are-ignored
+  (is (= "/env/home/.local/share/breto/installations" (store-under {"HOME" "/env/home"} "/passwd/home"))
+      "HOME wins over user.home")
+  (is (= "/passwd/home/.local/share/breto/installations" (store-under {"HOME" "relative"} "/passwd/home"))
+      "a HOME that is not absolute falls back to user.home")
+  (is (= "/env/home/.local/share/breto/installations"
+         (store-under {"HOME" "/env/home" "XDG_DATA_HOME" "relative/data"} "/passwd/home"))
+      "a relative XDG_DATA_HOME is ignored, as the XDG specification asks")
+  (is (= "/data/breto/installations" (store-under {"HOME" "/env/home" "XDG_DATA_HOME" "/data"} "/passwd/home"))))

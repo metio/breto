@@ -12,7 +12,8 @@
             [breto.env :as env]
             [breto.project :as project]
             [breto.shell :as shell]
-            [breto.store :as store]
+            [briko.digest :as bdigest]
+            [briko.fs :as bfs]
             [clojure.string :as str])
   (:import (java.security MessageDigest)))
 
@@ -24,9 +25,6 @@
     {:present (vec (distinct (concat (filter fs/regular-file? candidates) files)))
      :absent (vec (remove fs/regular-file? candidates))}))
 
-(defn- hex [^bytes bytes]
-  (apply str (map #(format "%02x" (bit-and % 0xff)) bytes)))
-
 (defn digest
   "A hash of the paths of `inputs` and the contents of those present. A present
   file that went missing counts as absent, so the digest then differs."
@@ -37,7 +35,7 @@
       (if (fs/regular-file? path)
         (do (add! "present") (add! path) (.update md ^bytes (fs/read-all-bytes path)) (.update md (byte 0)))
         (do (add! "absent") (add! path))))
-    (hex (.digest md))))
+    (bdigest/hex (.digest md))))
 
 (defn stamp-path
   "The stamp of the project at `dir`."
@@ -54,8 +52,7 @@
   "The file beside `stamp` that carries the modification time `path` had when
   the stamp was made."
   [stamp path]
-  (let [md (MessageDigest/getInstance "SHA-256")]
-    (fs/path (str stamp ".d") (subs (hex (.digest md (.getBytes (str path) "UTF-8"))) 0 16))))
+  (fs/path (str stamp ".d") (subs (bdigest/sha256-hex (str path)) 0 16)))
 
 (defn mark!
   "Gives each present file of `inputs` a marker beside `stamp` with the
@@ -81,12 +78,11 @@
   it was left alone."
   [config dir inputs]
   (let [stamp (stamp-path config dir)
-        staged (store/staged-path (fs/parent stamp) "stamp")
         recorded (or (:digest inputs) (digest inputs))]
     (when (= recorded (digest inputs))
       (fs/create-dirs (fs/parent stamp))
-      (spit (str staged) recorded)
-      (fs/move staged stamp {:replace-existing true :atomic-move true})
+      ;; A stamp lost in a crash only makes the next run link again.
+      (bfs/atomic-write! (fs/absolutize stamp) recorded {:fsync? false})
       (mark! stamp inputs)
       (str stamp))))
 
