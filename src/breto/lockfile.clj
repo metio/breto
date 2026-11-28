@@ -9,9 +9,10 @@
   platform are under :platforms, one entry per platform; a package built or
   resolved on the machine has one set at the top level for all."
   (:require [babashka.fs :as fs]
+            [breto.edn-text :as edn-text]
             [breto.package :as package]
             [breto.store :as store]
-            [clojure.edn :as edn]
+            [briko.fs :as bfs]
             [clojure.string :as str]))
 
 (defn- split-header
@@ -25,7 +26,7 @@
   "{:header text :entries {name entry}} from the text of a lock file."
   [text]
   (let [[header body] (split-header text)
-        entries (if (str/blank? body) {} (edn/read-string body))]
+        entries (if (str/blank? body) {} (edn-text/read-text body))]
     (when-not (map? entries)
       (throw (ex-info "the lock file does not hold a map" {:breto/problem :lockfile-format})))
     {:header header :entries entries}))
@@ -34,11 +35,15 @@
   "The lock file at `path`; a missing file is an empty one."
   [path]
   (if (fs/exists? path)
-    (try (parse (slurp (str path)))
-         (catch clojure.lang.ExceptionInfo e (throw (ex-info (ex-message e) (assoc (ex-data e) :path (str path)))))
-         (catch RuntimeException e
-           (throw (ex-info (str "the lock file " path " is not valid EDN: " (ex-message e))
-                           {:breto/problem :lockfile-format :path (str path) :error (ex-message e)}))))
+    (let [invalid (fn [e]
+                    (ex-info (str "the lock file " path " is not valid EDN: " (ex-message e))
+                             {:breto/problem :lockfile-format :path (str path) :error (ex-message e)}))]
+      (try (parse (slurp (str path)))
+           (catch clojure.lang.ExceptionInfo e
+             (throw (if (edn-text/refusal? e)
+                      (invalid e)
+                      (ex-info (ex-message e) (assoc (ex-data e) :path (str path))))))
+           (catch RuntimeException e (throw (invalid e)))))
     {:header "" :entries {}}))
 
 (defn- shared? [pkg]
@@ -131,12 +136,10 @@
   ([path config] (write! path config nil))
   ([path config registry]
    (let [{:keys [header entries]} (read-lock path)
-         text (render {:header header :entries (snapshot config registry (:packages config) entries)})
-         staged (str path ".tmp")]
+         text (render {:header header :entries (snapshot config registry (:packages config) entries)})]
      (when-not (and (fs/exists? path) (= text (slurp (str path))))
        (fs/create-dirs (fs/parent (fs/absolutize path)))
-       (spit staged text)
-       (fs/move staged path {:replace-existing true :atomic-move true})
+       (bfs/atomic-write! (fs/absolutize path) text)
        true))))
 
 (defn locked-entry

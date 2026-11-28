@@ -9,11 +9,13 @@
   is read over the shared one. The groups a project names contribute their own :env and
   :commands beneath the project's."
   (:require [babashka.fs :as fs]
-            [babashka.process :as process]
             [breto.command :as command]
+            [breto.edn-text :as edn-text]
+            [breto.proc :as proc]
             [breto.profile :as profile]
             [breto.registry :as registry]
-            [clojure.edn :as edn]
+            [briko.paths :as paths]
+            [briko.process :as bprocess]
             [clojure.string :as str]))
 
 (def file-name ".breto.edn")
@@ -67,9 +69,6 @@
                                     (map str))
           :else [])))
 
-(defn- expand-home [s]
-  (str/replace-first s #"^~(?=/|$)" (System/getProperty "user.home")))
-
 (defn discover
   "The directories holding a project file among those `projects` names, each
   once whatever path names it: every directory matching a glob in :dirs, and
@@ -79,14 +78,14 @@
   [{:keys [dirs command]}]
   (let [listed (when (seq command)
                  (try
-                   (let [{:keys [exit out err]} (apply process/shell {:out :string :err :string :continue true} command)]
+                   (let [{:keys [exit out err]} (proc/run-command command)]
                      (if (zero? exit)
                        {:dirs (remove str/blank? (map str/trim (str/split-lines out)))}
                        {:problems [(str (str/join " " command) " exited with " exit
                                         (when-not (str/blank? err) (str ": " (str/trim err))))]}))
                    (catch Exception e
                      {:problems [(str (str/join " " command) " could not run: " (ex-message e))]})))
-        candidates (concat (mapcat (comp glob-dirs expand-home) dirs) (:dirs listed))]
+        candidates (concat (mapcat (comp glob-dirs paths/expand-home) dirs) (:dirs listed))]
     {:dirs (->> candidates
                 (filter #(and (fs/absolute? %) (fs/directory? %) (has-file? %)))
                 (map #(str (fs/canonicalize %)))
@@ -126,7 +125,7 @@
 (defn read-file
   "The project data in the file `path`, validated."
   [path]
-  (let [data (try (edn/read-string (slurp (str path)))
+  (let [data (try (edn-text/read-file path)
                   (catch RuntimeException e
                     (throw (ex-info (str path " is not valid EDN: " (ex-message e))
                                     {:breto/problem :invalid-project :file (str path)
@@ -188,9 +187,8 @@
   one or without git."
   [file]
   (try
-    (let [{:keys [exit]} (process/shell {:out :string :err :string :continue true
-                                         :dir (str (fs/parent file))}
-                                        "git" "check-ignore" "--quiet" (str (fs/file-name file)))]
+    (let [{:keys [exit]} (bprocess/run ["git" "check-ignore" "--quiet" (str (fs/file-name file))]
+                                       {:dir (str (fs/parent file))})]
       (case (long exit) 0 true 1 false nil))
     (catch Exception _ nil)))
 

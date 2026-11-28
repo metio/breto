@@ -8,6 +8,7 @@
   every directory."
   (:require [babashka.fs :as fs]
             [breto.cargo :as cargo]
+            [breto.edn-text :as edn-text]
             [breto.package :as package]
             [breto.platform :as platform]
             [clojure.edn :as edn]
@@ -25,6 +26,8 @@
   "The files built into a breto binary, file name -> text, or nil when breto
   runs from a checkout."
   []
+  ;; The index is written by the build into breto's own jar, so it is read
+  ;; as clojure.edn reads trusted text.
   (when-let [index (io/resource (str builtin-dir "index.edn"))]
     (into (sorted-map)
           (for [file (edn/read-string (slurp index))]
@@ -44,7 +47,7 @@
 
 (defn- read-file [[label file-name text]]
   (let [name (str (fs/strip-ext file-name))]
-    (try (assoc (edn/read-string text) :name name ::files [label])
+    (try (assoc (edn-text/read-text text) :name name ::files [label])
          (catch RuntimeException e
            (throw (ex-info (str "invalid package " (pr-str name) ": " label " is not valid EDN: " (ex-message e))
                            {:breto/problem :invalid-package :package name :files [label]
@@ -200,7 +203,7 @@
    (->> (entries builtin dirs group-name?)
          (reduce (fn [acc [label file-name text]]
                    (let [name (str (fs/strip-ext file-name))
-                         group (try (edn/read-string text)
+                         group (try (edn-text/read-text text)
                                     (catch RuntimeException e
                                       (throw (ex-info (str "invalid group " name ": " label " is not valid EDN: " (ex-message e))
                                                       {:breto/problem :invalid-package :package name :files [label]
