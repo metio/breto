@@ -4,7 +4,7 @@
 {:paths ["src" "shell"]
  ;; babashka resolves git deps through tools.deps on first use and caches the
  ;; classpath; it carries babashka.fs and babashka.process itself.
- :deps {io.github.metio/briko {:git/sha "94bb776062a8fb35676600752b1d28d525dedc1c"}}
+ :deps {io.github.metio/briko {:git/sha "f23bbdb699f616b0e4263a737b53821ad33eea79"}}
  :tasks
  {breto {:doc "Runs the breto command line"
          :requires ([breto.main :as main])

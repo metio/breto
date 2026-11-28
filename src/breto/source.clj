@@ -12,9 +12,15 @@
             [breto.platform :as platform]
             [breto.template :as template]
             [breto.version :as version]
-            [cheshire.core :as json]
             [clojure.string :as str])
   (:import (java.net URLEncoder)))
+
+(defn- fetch-json
+  "The JSON value at `url`, fetched with `headers`; see breto.document/read-json
+  for `opts`."
+  ([get-text url headers] (fetch-json get-text url headers nil))
+  ([get-text url headers opts]
+   (document/read-json url (get-text url headers) opts)))
 
 (defn- tagged [pkg tag]
   {:tag tag :version (package/version-of-tag pkg tag)})
@@ -126,13 +132,13 @@
     :github (if (package/rolling? pkg)
               (latest-rolling pkg io)
               (let [url (str "https://github.com/" (:github source) "/releases/latest")]
-                (listed-latest pkg io (or (get (json/parse-string (get-text url {"Accept" "application/json"})) "tag_name")
+                (listed-latest pkg io (or (get (fetch-json get-text url {"Accept" "application/json"}) "tag_name")
                                           (throw (ex-info (str "no tag_name in " url) {:breto/problem :no-release :url url}))))))
     :gitlab (let [url (gitlab-latest-url (:gitlab source))]
-              (listed-latest pkg io (or (get (json/parse-string (get-text url {})) "tag_name")
+              (listed-latest pkg io (or (get (fetch-json get-text url {}) "tag_name")
                                         (throw (ex-info (str "no tag_name in " url) {:breto/problem :no-release :url url})))))
     (:forgejo :gitea) (let [url (forgejo-api (get source (package/source-kind pkg)) "/releases/latest")]
-                        (listed-latest pkg io (or (get (json/parse-string (get-text url {"Accept" "application/json"})) "tag_name")
+                        (listed-latest pkg io (or (get (fetch-json get-text url {"Accept" "application/json"}) "tag_name")
                                                   (throw (ex-info (str "no tag_name in " url) {:breto/problem :no-release :url url})))))
     :text (if (:newest source)
             (or (newest-listed pkg io #{})
@@ -150,13 +156,13 @@
                           (str/trim body)))))
     :json (tagged pkg (json-version pkg (document/parse (:json source) (get-text (:json source) {"Accept" "application/json"}))))
     :go (let [url (go-proxy-url source "/@latest")]
-          (tagged pkg (or (get (json/parse-string (get-text url {})) "Version")
+          (tagged pkg (or (get (fetch-json get-text url {}) "Version")
                           (throw (ex-info (str "no Version in " url) {:breto/problem :no-release :url url})))))
     :pypi (let [url (pypi-url source "/json")]
-            (tagged pkg (or (get-in (json/parse-string (get-text url {"Accept" "application/json"})) ["info" "version"])
+            (tagged pkg (or (get-in (fetch-json get-text url {"Accept" "application/json"}) ["info" "version"])
                             (throw (ex-info (str "no info.version in " url) {:breto/problem :no-release :url url})))))
     :cargo (if-let [repo (:git source)]
-             (let [head (json/parse-string (get-text (cargo/head-url repo) (github/api-headers io)))
+             (let [head (fetch-json get-text (cargo/head-url repo) (github/api-headers io))
                    version (cargo/git-version (get head "sha") (get-in head ["commit" "committer" "date"]))]
                {:tag version :version version})
              (or (newest-listed pkg io #{})
@@ -169,7 +175,7 @@
                (throw (ex-info (str "no release of " (:ghcup source) " for this platform in " ghcup/metadata-url)
                                {:breto/problem :no-release :url ghcup/metadata-url})))
     :npm (let [url (npm/registry-url (:npm source) "/latest")]
-           (tagged pkg (or (get (json/parse-string (get-text url {"Accept" "application/json"})) "version")
+           (tagged pkg (or (get (fetch-json get-text url {"Accept" "application/json"}) "version")
                            (throw (ex-info (str "no version in " url) {:breto/problem :no-release :url url})))))))
 
 (defn- release-tags
@@ -177,24 +183,21 @@
   source without a release listing."
   [{:keys [source] :as pkg} {:keys [get-text] :as io}]
   (case (package/source-kind pkg)
-    :github (->> (json/parse-string (get-text (str "https://api.github.com/repos/" (:github source)
-                                                    "/releases?per_page=100")
-                                               (github/api-headers io))
-                                    true)
+    :github (->> (fetch-json get-text (str "https://api.github.com/repos/" (:github source) "/releases?per_page=100")
+                             (github/api-headers io) {:keys :keyword})
                  (remove #(or (:draft %) (:prerelease %)))
                  (map :tag_name))
-    :gitlab (->> (json/parse-string (get-text (gitlab-api (:gitlab source) "/releases?per_page=100") {}) true)
+    :gitlab (->> (fetch-json get-text (gitlab-api (:gitlab source) "/releases?per_page=100") {} {:keys :keyword})
                  (remove :upcoming_release)
                  (map :tag_name))
-    (:forgejo :gitea) (->> (json/parse-string (get-text (forgejo-api (get source (package/source-kind pkg)) "/releases?limit=50")
-                                                         {"Accept" "application/json"})
-                                               true)
+    (:forgejo :gitea) (->> (fetch-json get-text (forgejo-api (get source (package/source-kind pkg)) "/releases?limit=50")
+                                       {"Accept" "application/json"} {:keys :keyword})
                            (remove #(or (:draft %) (:prerelease %)))
                            (map :tag_name))
     :go (->> (str/split-lines (get-text (go-proxy-url source "/@v/list") {}))
              (remove str/blank?)
              (remove #(re-find #"^v\d+\.\d+\.\d+-" %)))
-    :pypi (->> (get (json/parse-string (get-text (pypi-url source "/json") {"Accept" "application/json"})) "releases")
+    :pypi (->> (get (fetch-json get-text (pypi-url source "/json") {"Accept" "application/json"}) "releases")
                (keep (fn [[version files]] (when (and (seq files) (not-every? #(get % "yanked") files)) version)))
                (remove #(re-find #"\d(a|b|rc|\.dev)\d*" %)))
     :text (when (:newest source)
@@ -202,12 +205,12 @@
                  (keep #(if (string? %) % (some identity (rest %))))
                  distinct))
     :cargo (when-not (:git source)
-             (->> (json/parsed-seq (java.io.StringReader. (get-text (cargo/index-url (:cargo source)) {})))
+             (->> (fetch-json get-text (cargo/index-url (:cargo source)) {} {:one-value? false})
                   (remove #(get % "yanked"))
                   (map #(get % "vers"))
                   (remove #(str/includes? % "-"))))
-    :npm (->> (get (json/parse-string (get-text (npm/registry-url (:npm source) "")
-                                                {"Accept" "application/vnd.npm.install-v1+json"}))
+    :npm (->> (get (fetch-json get-text (npm/registry-url (:npm source) "")
+                               {"Accept" "application/vnd.npm.install-v1+json"})
                    "versions")
               (keep (fn [[version meta]] (when-not (get meta "deprecated") version)))
               (remove #(str/includes? % "-")))

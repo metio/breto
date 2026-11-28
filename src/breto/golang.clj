@@ -7,9 +7,9 @@
   by default, and its h1: hash is what a lock file records, since the binary
   depends on the Go version that built it."
   (:require [babashka.fs :as fs]
+            [breto.document :as document]
             [breto.package :as package]
             [breto.proc :as proc]
-            [cheshire.core :as json]
             [clojure.string :as str]))
 
 (defn environment
@@ -59,7 +59,9 @@
         gobin (fs/path work "gobin")
         env (environment gobin)
         target (str module "@" (:tag release))
-        sum (get (json/parse-string (run! io go work env ["mod" "download" "-json" target] context)) "Sum")]
+        sum (get (document/read-json (str "go mod download -json " target)
+                                     (run! io go work env ["mod" "download" "-json" target] context))
+                 "Sum")]
     (when (and expect-sum (not= expect-sum sum))
       (throw (ex-info (str (:name pkg) " " (:version release) ": the module hash " sum " differs from " expect-sum " in the lock file")
                       (assoc context :breto/problem :checksum-mismatch :expected expect-sum :actual sum :against :lockfile))))

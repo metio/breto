@@ -3,7 +3,7 @@
 
 (ns breto.document
   "Values read out of a JSON or YAML document by a path."
-  (:require [cheshire.core :as json]
+  (:require [briko.json :as json]
             [clj-yaml.core :as yaml]
             [clojure.string :as str]))
 
@@ -18,6 +18,29 @@
   nested aliases from expanding without end."
   10000)
 
+(def max-json-bytes
+  "The longest JSON text breto reads, the same as the largest body
+  breto.http reads, so that every document a lookup returns can be read."
+  (* 128 1024 1024))
+
+(defn read-json
+  "The JSON value `text`, fetched from `url`, holds, read by briko.json:
+  strictly by RFC 8259, an object naming a key twice refused, keys as
+  strings. `opts` adds options of briko.json such as {:keys :keyword} or
+  {:one-value? false}, which returns the vector of every value. A refusal
+  becomes an :invalid-json problem naming `url`."
+  ([url text] (read-json url text nil))
+  ([url text opts]
+   (try
+     (json/parse-string text (merge {:max-bytes max-json-bytes} opts))
+     (catch clojure.lang.ExceptionInfo e
+       (if (json/refusal? e)
+         (throw (ex-info (str url ": " (ex-message e))
+                         (merge {:breto/problem :invalid-json :url url :exception (name (:type (ex-data e)))}
+                                (select-keys (ex-data e) [:line :column :limit]))
+                         e))
+         (throw e))))))
+
 (defn parse
   "The document `text` fetched from `url`: YAML when its name says so, else
   JSON, where a document of several values, one per line as in JSON Lines,
@@ -25,7 +48,7 @@
   [url text]
   (if (yaml-url? url)
     (yaml/parse-string text :keywords false :max-aliases-for-collections max-aliases)
-    (let [values (vec (json/parsed-seq (java.io.StringReader. text)))]
+    (let [values (read-json url text {:one-value? false})]
       (if (= 1 (count values)) (first values) values))))
 
 (defn- key-name [k]

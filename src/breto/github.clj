@@ -2,7 +2,7 @@
 ;; SPDX-License-Identifier: 0BSD
 
 (ns breto.github
-  (:require [cheshire.core :as json]
+  (:require [breto.document :as document]
             [clojure.string :as str]))
 
 (defn api-headers
@@ -16,10 +16,8 @@
 (defn release
   "The API representation of the release tagged `tag` in `repo`."
   [{:keys [get-text] :as io} repo tag]
-  (json/parse-string
-   (get-text (str "https://api.github.com/repos/" repo "/releases/tags/" (str/replace tag "/" "%2F"))
-             (api-headers io))
-   true))
+  (let [url (str "https://api.github.com/repos/" repo "/releases/tags/" (str/replace tag "/" "%2F"))]
+    (document/read-json url (get-text url (api-headers io)) {:keys :keyword})))
 
 (defn asset-digest
   "The sha256 GitHub recorded for an asset, or nil. Assets uploaded before
@@ -34,4 +32,5 @@
   "The API representation of `repo`. GitHub answers for a renamed repository
   under its new name, so `:full_name` reveals a move."
   [{:keys [get-text] :as io} repo]
-  (json/parse-string (get-text (str "https://api.github.com/repos/" repo) (api-headers io)) true))
+  (let [url (str "https://api.github.com/repos/" repo)]
+    (document/read-json url (get-text url (api-headers io)) {:keys :keyword})))
