@@ -12,6 +12,7 @@
             [breto.shell :as shell]
             [breto.store :as store]
             [briko.digest :as bdigest]
+            [briko.fs :as bfs]
             [clojure.string :as str]))
 
 (defn project-path
@@ -51,11 +52,8 @@
   (doseq [existing (fs/list-dir dir)
           :when (not (or (contains? links (str (fs/file-name existing))) (store/staged? existing)))]
     (fs/delete-if-exists existing))
-  (doseq [[link target] links
-          :let [path (fs/path dir link)
-                staged (store/staged-path dir link)]]
-    (fs/create-sym-link staged (str target))
-    (fs/move staged path {:replace-existing true :atomic-move true})))
+  (doseq [[link target] links]
+    (store/link! (fs/path dir link) target)))
 
 (defn homes-dir
   "The directory of the project's links to its packages' version directories."
@@ -87,12 +85,9 @@
             :when (not (or (contains? scripts (str (fs/file-name existing))) (store/staged? existing)))]
       (fs/delete-if-exists existing))
     (into {} (for [[name text] scripts
-                   :let [path (fs/path dir name)
-                         staged (store/staged-path dir name)]]
-               (do (spit (str staged) text)
-                   (fs/set-posix-file-permissions staged "rwxr-xr-x")
-                   (fs/move staged path {:replace-existing true :atomic-move true})
-                   [name (str path)])))))
+                   :let [path (str (fs/path dir name))]]
+               (do (bfs/atomic-write! path text {:mode "rwxr-xr-x" :fsync? false})
+                   [name path])))))
 
 (defn write-commands!
   "The scripts running the project's own commands; see write-scripts!."

@@ -62,24 +62,21 @@
    :desktop-dir (desktop-dir (System/getProperty "os.name"))
    :desktop-entries true})
 
+(def ^:private home-paths
+  "The values of the configuration that name files, each with `~` expanded."
+  [[:store] [:bin-dir] [:lockfile] [:cosign] [:env-dir] [:python-dir] [:man-dir]
+   [:completion-dirs] [:desktop-dir] [:registries] [:extra-registries]])
+
 (defn load-config
-  "Reads the EDN config at `path` over the defaults. A missing file means all
-  defaults. :extra-registries are read after :registries, so a config adds
-  to the default registries with them and replaces the defaults with
-  :registries."
+  "Reads the EDN config at `path`, which must hold a map, over the defaults. A
+  missing file, a link whose target is missing, and a file without a form,
+  empty or only comments, all mean the defaults; a refusal names the file.
+  :extra-registries are read after :registries, so a config adds to the
+  default registries with them and replaces the defaults with :registries."
   [path]
-  (let [user (when (fs/exists? path) (edn-text/read-file path))]
-    (-> (merge (defaults) user)
-        (as-> config (-> config
-                         (update :registries #(vec (concat % (:extra-registries config))))
-                         (dissoc :extra-registries)))
-        (update :store paths/expand-home)
-        (update :bin-dir paths/expand-home)
-        (update :lockfile #(some-> % paths/expand-home))
-        (update :cosign #(some-> % paths/expand-home))
-        (update :env-dir paths/expand-home)
-        (update :python-dir paths/expand-home)
-        (update :man-dir #(some-> % paths/expand-home))
-        (update :completion-dirs #(update-vals % paths/expand-home))
-        (update :desktop-dir #(some-> % paths/expand-home))
-        (update :registries #(mapv (fn [entry] (if (string? entry) (paths/expand-home entry) entry)) %)))))
+  (let [config (paths/load-edn-config (str path) (defaults)
+                                      {:edn edn-text/options :home-paths home-paths
+                                       :empty :defaults :dangling :missing})]
+    (-> config
+        (update :registries #(vec (concat % (:extra-registries config))))
+        (dissoc :extra-registries))))

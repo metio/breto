@@ -45,6 +45,16 @@
       (is (= (config/load-config (str (fs/path dir "absent.edn"))) (config/load-config (str link))))
       (finally (fs/delete-tree dir)))))
 
+(deftest a-configuration-that-is-no-map-or-no-edn-is-refused-naming-the-file
+  (let [file (str (fs/create-temp-file {:suffix ".edn"}))]
+    (try
+      (doseq [text ["nil" "[:store \"/x\"]" "{:store"]]
+        (spit file text)
+        (is (str/starts-with? (try (config/load-config file) nil (catch clojure.lang.ExceptionInfo e (ex-message e)))
+                              (str file ": "))
+            text))
+      (finally (fs/delete file)))))
+
 (deftest desktop-entries-are-linked-where-the-desktop-reads-them
   (is (str/ends-with? (config/desktop-dir "Linux") "/applications"))
   (is (str/ends-with? (config/desktop-dir "FreeBSD") "/applications"))

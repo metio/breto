@@ -4,20 +4,22 @@
 (ns breto.progress
   "Live progress of a batch of packages: a redrawn status line on a terminal,
   one line per package and wait otherwise."
-  (:require [babashka.process :as process]
-            [clojure.java.io :as io]
+  (:require [briko.process :as bprocess]
             [clojure.string :as str]))
 
 (defn terminal?
   "Whether standard error is a terminal."
   []
-  (try (zero? (:exit (process/shell {:continue true} "test" "-t" "2")))
+  (try (zero? (:exit (bprocess/run ["test" "-t" "2"] {:inherit-err? true})))
        (catch Exception _ false)))
 
-(defn- columns []
-  (or (try (some-> (process/shell {:continue true :in (io/file "/dev/tty") :out :string :err :string}
-                                  "stty" "size")
-                   :out str/trim (str/split #"\s+") second parse-long)
+(defn- columns
+  "The width of the controlling terminal, as stty reads it from /dev/tty, else
+  COLUMNS, else 80."
+  []
+  (or (try (let [{:keys [exit out]} (bprocess/run ["stty" "size"] {:in :tty})]
+             (when (zero? exit)
+               (some-> out str/trim (str/split #"\s+") second parse-long)))
            (catch Exception _ nil))
       (some-> (System/getenv "COLUMNS") parse-long)
       80))

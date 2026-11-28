@@ -478,12 +478,14 @@
   (let [config {:store (path "store") :env-dir (path "envs")}
         project (path "project")
         dir (env/targets-dir config project)
-        staged (str ".c." (random-uuid) ".breto")]
+        staged (str ".c." (random-uuid) ".breto")
+        briko-staged (str ".d.briko-" (apply str (repeat 32 "0")) ".tmp")]
     (env/link-targets! config project {"a" (path "one") "b" (path "one")})
     (spit (str (fs/path dir staged)) "")
+    (spit (str (fs/path dir briko-staged)) "")
     (env/link-targets! config project {"a" (path "two")})
     (is (= (path "two") (str (fs/read-link (fs/path dir "a")))))
-    (is (= #{"a" staged} (set (map (comp str fs/file-name) (fs/list-dir dir)))))))
+    (is (= #{"a" staged briko-staged} (set (map (comp str fs/file-name) (fs/list-dir dir)))))))
 
 (defn- fish-single-quoted
   "The word fish reads from the single-quoted `s`: \\\\ and \\' are escapes

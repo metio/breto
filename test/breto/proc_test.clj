@@ -6,6 +6,7 @@
             [breto.proc :as proc]
             [breto.signature :as signature]
             [breto.support :as s]
+            [briko.process]
             [clojure.string :as str]
             [clojure.test :refer [deftest is use-fixtures]]))
 
@@ -71,6 +72,23 @@
   (let [{:keys [out]} (proc/run-in {:command ["sh" "-c" "echo \"${BRETO_BOTH-none}\""] :env {"BRETO_BOTH" "x"}
                                     :unset ["BRETO_BOTH"] :dir (s/path)})]
     (is (= "none\n" out))))
+
+(deftest builds-read-a-closed-stdin
+  (is (= "eof\n" (:out (proc/run-in {:command ["sh" "-c" "cat >/dev/null; echo eof"] :env {} :dir (s/path)})))))
+
+(deftest builds-run-without-a-deadline-and-keep-the-end-of-stderr
+  (let [seen (atom nil)]
+    (with-redefs [briko.process/run (fn [_ opts] (reset! seen opts) {:exit 0 :out "" :err "" :launched? true})]
+      (proc/run-in {:command ["true"] :env {} :dir (s/path)}))
+    (is (= :none (:timeout-ms @seen)))
+    (is (= :tail (:err-keep @seen)))))
+
+(deftest build-output-past-the-bound-is-refused
+  (let [e (try (proc/run-in {:command ["sh" "-c" (str "head -c " (inc proc/max-out-bytes) " /dev/zero")]
+                             :env {} :dir (s/path)})
+               nil
+               (catch clojure.lang.ExceptionInfo e e))]
+    (is (= :output-too-large (:breto/problem (ex-data e))))))
 
 (defn- fake-cosign
   "A script standing in for cosign that records its arguments and exits with

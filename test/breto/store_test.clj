@@ -32,5 +32,11 @@
 
 (deftest files-other-processes-prepare-are-staged
   (is (store/staged? (path (str ".tool." (random-uuid) ".breto"))))
+  (is (store/staged? (path (str ".tool.briko-" (apply str (repeat 32 "a")) ".tmp"))))
   (is (not (store/staged? (path "tool"))))
   (is (not (store/staged? (path ".profile")))))
+
+(deftest links-refuse-a-directory-in-their-place
+  (fs/create-dirs (path "links" "tool"))
+  (is (thrown? clojure.lang.ExceptionInfo (store/link! (path "links" "tool") "target")))
+  (is (fs/directory? (path "links" "tool"))))
