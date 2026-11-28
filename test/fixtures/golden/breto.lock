@@ -1,0 +1,7 @@
+;; SPDX-FileCopyrightText: The breto Authors
+;; SPDX-License-Identifier: 0BSD
+
+{"alpha" {:version "1.0.0" :platforms {"darwin-aarch64" {:sha256 "bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb" :asset "alpha-mac"} "linux-x86_64" {:sha256 "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa" :asset "alpha"}}}
+ "beta" {:version "2.0" :sha256 "cccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccc"}
+ "delta" {:version "3.1" :sha256 "dddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddd" :exclude-newer "2026-11-01T00:00:00Z"}
+ "gamma" {:version "v0.1.0" :sum "h1:abc="}}
