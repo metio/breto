@@ -29,16 +29,22 @@
   minutes carry the largest body measured, 37.7 MB, at 1 Mbit/s even where
   the host does not compress it (gzipped it is 2.5 MB). Five redirects are as
   many as the client followed before, enough for a release download that
-  redirects to another host."
+  redirects to another host. A host that sends nothing for 30 s, neither
+  its headers nor the next bytes of the body, has stalled: a link at
+  1 Mbit/s still moves several megabytes in that time, and the bound
+  covers the wait for the headers, where a forge assembles a release
+  listing, with room to spare over the seconds that takes."
   {:connect-timeout-ms 10000
    :timeout-ms 300000
+   :idle-timeout-ms 30000
    :max-bytes max-body-bytes
    :max-redirects 5})
 
 (def ^:private unreachable
-  "The refusals of briko.http that say the host was not reached in time."
+  "The refusals of briko.http that say the host was not reached in time, or
+  stopped sending before the answer was complete."
   #{::http/connect-failed ::http/connect-timeout ::http/tls-failed ::http/timeout
-    ::http/failed ::http/interrupted})
+    ::http/idle-timeout ::http/failed ::http/interrupted})
 
 (def ^:private kept-headers
   ["x-ratelimit-remaining" "x-ratelimit-reset" "retry-after"])
@@ -168,12 +174,18 @@
   "The bounds of every download. Four hours carry the largest asset
   measured, 1.66 GB, at about 1 Mbit/s, the slowest link the lookups are
   sized for as well; a download had no deadline before, and a shorter one
-  would cut off a slow but working link. The body goes to a staged file
+  would cut off a slow but working link. A stalled connection is cut off
+  much sooner, once neither headers nor body bytes arrive for 60 s. That
+  is twice the bound of a lookup, because a CDN may pause a large file
+  while it fetches the object from its origin, and a lossy link can back off
+  its retransmissions for tens of seconds before it recovers; a moving
+  transfer, however slow, never comes near it. The body goes to a staged file
   beside the target and replaces it only once complete. It is not forced
   to disk, because the file is verified and unpacked right after and a
   crash before that leaves nothing installed."
   {:connect-timeout-ms 10000
    :timeout-ms (* 4 60 60 1000)
+   :idle-timeout-ms 60000
    :max-bytes max-download-bytes
    :max-redirects 5})
 
@@ -215,11 +227,11 @@
 
 (defn- download-refused!
   "Rethrows the briko.http refusal `e` of a download as a breto problem, as
-  `refused!` does for lookups. A connection that broke off after some bytes
-  arrived carries what was `received` and `expected`, and a file that could
-  not be written is a :filesystem problem."
+  `refused!` does for lookups. A connection that broke off or stalled after
+  some bytes arrived carries what was `received` and `expected`, and a file
+  that could not be written is a :filesystem problem."
   [url dest e [received expected]]
-  (let [{:keys [type reason]} (ex-data e)]
+  (let [{:keys [type reason limit]} (ex-data e)]
     (cond
       (= ::http/file-failed type)
       (throw (ex-info (str "GET " url " could not be written to " dest)
@@ -230,7 +242,8 @@
       (and (unreachable type) (pos? (long received)))
       (throw (ex-info (str "GET " url " broke off after " received " bytes: " (ex-message e))
                       (cond-> {:breto/problem :network :url url :exception (name type) :received received}
-                        expected (assoc :expected expected))
+                        expected (assoc :expected expected)
+                        limit (assoc :limit limit))
                       e))
 
       :else (refused! "GET" url e))))
@@ -239,10 +252,10 @@
   "Saves `url` to `dest`, calling `on-bytes` with the bytes written so far and
   the expected total, when the server states one. `dest` is replaced only by
   a complete body of a 2xx answer: a body shorter than its stated length,
-  over `max-download-bytes` or past the deadline leaves `dest` as it was, so
-  an unverified install never keeps a truncated file. The request asks for
-  the file unencoded; a server that encodes it anyway has it decoded, with
-  the decoded size reported last."
+  over `max-download-bytes`, stalled or past the deadline leaves `dest` as
+  it was, so an unverified install never keeps a truncated file. The
+  request asks for the file unencoded; a server that encodes it anyway has
+  it decoded, with the decoded size reported last."
   ([url dest] (download! url dest nil))
   ([url dest on-bytes]
    (let [progress (volatile! [0 nil])

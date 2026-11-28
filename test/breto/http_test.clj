@@ -419,6 +419,86 @@
   (is (= {:connect-timeout-ms 10000 :timeout-ms 300000 :max-bytes http/max-body-bytes :max-redirects 5}
          (select-keys @#'http/lookup-options [:connect-timeout-ms :timeout-ms :max-bytes :max-redirects]))))
 
+(deftest stalled-transfers-are-cut-off-within-a-minute
+  (is (= 60000 (:idle-timeout-ms @#'http/download-options)))
+  (is (= 30000 (:idle-timeout-ms @#'http/lookup-options))))
+
+(defn- idle-bound
+  "The options `opts` with an idle bound of `ms` and a deadline long enough
+  that a test reaching it fails instead of passing late."
+  [opts ms]
+  (assoc opts :idle-timeout-ms ms :timeout-ms 10000))
+
+(deftest a-download-stalled-mid-body-is-refused-as-stalled-and-leaves-the-target-as-it-was
+  (let [dest (target-holding "earlier")]
+    (with-stalling-server "ab"
+      (fn [a]
+        (with-redefs [http/download-options (idle-bound @#'http/download-options 300)]
+          (let [started (System/nanoTime)
+                data (problem-of #(http/download! (str a "/asset") dest))]
+            (is (= :network (:breto/problem data)))
+            (is (= "idle-timeout" (:exception data)))
+            (is (= 300 (:limit data)))
+            (is (= 2 (:received data)))
+            (is (= 10 (:expected data)))
+            (is (< (/ (- (System/nanoTime) started) 1e6) 5000) "refused long before the deadline")
+            (is (= "earlier" (slurp dest)))
+            (is (empty? (staged-files dest)) "no staged file is left beside the target")
+            (is (re-find #"sent nothing for 300 ms after 2 of 10 bytes"
+                         (:summary (diagnose/diagnose (ex-info "x" data) {}))))))))))
+
+(deftest a-download-whose-server-sends-no-headers-is-refused-as-stalled
+  (let [dest (target-holding "earlier")
+        release (promise)]
+    (try
+      (with-raw-server (fn [_ _] (deref release 30000 nil))
+        (fn [a]
+          (with-redefs [http/download-options (idle-bound @#'http/download-options 300)]
+            (let [data (problem-of #(http/download! (str a "/asset") dest))]
+              (is (= :network (:breto/problem data)))
+              (is (= "idle-timeout" (:exception data)))
+              (is (nil? (:received data)))
+              (is (= "earlier" (slurp dest)))
+              (is (re-find #"^The server sent nothing for 300 ms, so"
+                           (:summary (diagnose/diagnose (ex-info "x" data) {}))))))))
+      (finally (deliver release true)))))
+
+(deftest a-download-trickling-under-the-idle-bound-arrives-whole
+  (let [dest (target-holding "earlier")]
+    (with-trickling-server 8 100
+      (fn [a]
+        (with-redefs [http/download-options (idle-bound @#'http/download-options 400)]
+          (http/download! (str a "/asset") dest)
+          (is (= "aaaaaaaa" (slurp dest)) "800 ms in all, more than the idle bound, in gaps below it"))))))
+
+(deftest a-lookup-stalled-mid-body-is-refused-as-stalled
+  (with-stalling-server "ab"
+    (fn [a]
+      (with-redefs [http/lookup-options (idle-bound @#'http/lookup-options 300)]
+        (let [data (problem-of #(http/get-text (str a "/v") {}))]
+          (is (= :network (:breto/problem data)))
+          (is (= "idle-timeout" (:exception data)))
+          (is (= 300 (:limit data))))))))
+
+(deftest a-lookup-trickling-under-the-idle-bound-arrives-whole
+  (with-trickling-server 8 100
+    (fn [a]
+      (with-redefs [http/lookup-options (idle-bound @#'http/lookup-options 400)]
+        (is (= "aaaaaaaa" (http/get-text (str a "/v") {})))))))
+
+(deftest a-deadline-shorter-than-the-idle-bound-still-names-the-deadline
+  (let [dest (target-holding "earlier")]
+    (with-stalling-server "ab"
+      (fn [a]
+        (with-redefs [http/download-options (assoc @#'http/download-options :timeout-ms 500 :idle-timeout-ms 5000)]
+          (is (= "timeout" (:exception (problem-of #(http/download! (str a "/asset") dest))))))))))
+
+(deftest stalls-are-explained
+  (is (= "The server sent nothing for 60 s after 5 bytes, so breto gave up on the stalled connection."
+         (:summary (diagnose/diagnose (ex-info "x" {:breto/problem :network :url "https://x/y"
+                                                    :exception "idle-timeout" :limit 60000 :received 5})
+                                      {})))))
+
 (deftest downloads-name-breto
   (let [seen (atom [])
         dest (str (fs/path (fs/create-temp-dir) "asset.tar.gz"))]
