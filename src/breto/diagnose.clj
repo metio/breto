@@ -225,7 +225,7 @@
       "too-large"
       {:summary (str "The answer is larger than breto reads" (when limit (str " (" limit " bytes)")) ".")
        :facts [fact]
-       :advice ["Open the URL to see what the server returns; a document this large is likely not the one the definition means."]}
+       :advice ["Open the URL to see what the server returns; an answer this large is likely not the document or file the definition means."]}
       ("too-many-redirects" "redirect-refused")
       {:summary "The server redirected in a way breto does not follow."
        :facts [fact "breto follows at most 5 redirects, and none from https to http."]

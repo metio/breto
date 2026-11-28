@@ -30,26 +30,6 @@
   (is (not (http/rate-limited? {:breto/problem :http-status :status 403 :headers {}})))
   (is (not (http/rate-limited? {:breto/problem :http-status :status 404 :headers {"retry-after" "5"}}))))
 
-(deftest broken-connections-during-a-download-are-network-problems
-  (let [in (proxy [java.io.InputStream] []
-             (read
-               ([] (throw (java.io.IOException. "connection reset")))
-               ([_] (throw (java.io.IOException. "connection reset")))
-               ([_ _ _] (throw (java.io.IOException. "connection reset")))))
-        data (try (#'http/copy-body! "https://x/y" in (java.io.ByteArrayOutputStream.) nil 10) nil
-                  (catch clojure.lang.ExceptionInfo e (ex-data e)))]
-    (is (= :network (:breto/problem data)))
-    (is (= 0 (:received data)))
-    (is (re-find #"broke off" (:summary (diagnose/diagnose (ex-info "x" data) {}))))))
-
-(deftest complete-bodies-report-their-length
-  (let [out (java.io.ByteArrayOutputStream.)
-        seen (atom [])]
-    (is (= 5 (#'http/copy-body! "u" (java.io.ByteArrayInputStream. (.getBytes "hello")) out
-                                #(swap! seen conj [%1 %2]) 5)))
-    (is (= "hello" (str out)))
-    (is (= [[5 5]] @seen))))
-
 (defn- gzipped [^bytes plain]
   (let [out (java.io.ByteArrayOutputStream.)]
     (with-open [gz (java.util.zip.GZIPOutputStream. out)] (.write gz plain))
@@ -327,3 +307,110 @@
         data (problem-of #(http/download! (str "http://127.0.0.1:" port "/asset") dest))]
     (is (= :network (:breto/problem data)))
     (is (nil? (:received data)) "nothing arrived, so the host was not reached")))
+
+(defn- target-holding
+  "A file in a new directory holding `content`, standing for an earlier
+  download a failed one must leave alone."
+  [content]
+  (let [dest (str (fs/path (fs/create-temp-dir) "asset.tar.gz"))]
+    (spit dest content)
+    dest))
+
+(deftest a-download-over-the-limit-is-refused-and-leaves-the-target-as-it-was
+  (let [dest (target-holding "earlier")]
+    (with-servers [(fn [{:keys [uri]}]
+                     (if (= "/chunked" uri)
+                       {:status 200 :body (java.io.ByteArrayInputStream. (.getBytes (apply str (repeat 5000 "a"))))}
+                       {:status 200 :body (apply str (repeat 5000 "a"))}))]
+      (fn [a]
+        (with-redefs [http/download-options (assoc @#'http/download-options :max-bytes 4096)]
+          (doseq [path ["/stated" "/chunked"]]
+            (let [data (problem-of #(http/download! (str a path) dest))]
+              (is (= :http-refused (:breto/problem data)) path)
+              (is (= "too-large" (:exception data)) path)
+              (is (= 4096 (:limit data)) path)
+              (is (= "earlier" (slurp dest)) path))))
+        (with-redefs [http/download-options (assoc @#'http/download-options :max-bytes 5000)]
+          (http/download! (str a "/stated") dest)
+          (is (= 5000 (fs/size dest)) "a body at the limit is written whole"))))))
+
+(deftest a-download-cut-short-leaves-the-target-as-it-was
+  (let [dest (target-holding "earlier")]
+    (with-raw-server (fn [_ out]
+                       (write-ascii out "HTTP/1.1 200 OK\r\nContent-Length: 10\r\nConnection: close\r\n\r\nabcd"))
+      (fn [a]
+        (is (= :network (:breto/problem (problem-of #(http/download! (str a "/asset") dest)))))
+        (is (= "earlier" (slurp dest)))
+        (is (= ["asset.tar.gz"] (map (comp str fs/file-name) (fs/list-dir (fs/parent dest))))
+            "no staged file is left beside the target")))))
+
+(deftest a-trickling-download-is-cut-off-at-the-deadline
+  (let [dest (target-holding "earlier")]
+    (with-raw-server (fn [_ out]
+                       (write-ascii out "HTTP/1.1 200 OK\r\nContent-Length: 4\r\nConnection: close\r\n\r\n")
+                       (dotimes [_ 4] (Thread/sleep 400) (write-ascii out "a")))
+      (fn [a]
+        (with-redefs [http/download-options (assoc @#'http/download-options :timeout-ms 600)]
+          (let [data (problem-of #(http/download! (str a "/slow") dest))]
+            (is (= :network (:breto/problem data)))
+            (is (= "timeout" (:exception data)))
+            (is (= "earlier" (slurp dest)))))))))
+
+(deftest downloads-name-breto
+  (let [seen (atom [])
+        dest (str (fs/path (fs/create-temp-dir) "asset.tar.gz"))]
+    (with-servers [(recording seen (fn [_] {:status 200 :body "x"}))]
+      (fn [a]
+        (http/download! (str a "/asset") dest)
+        (is (= "breto" (get-in (first @seen) [:headers "user-agent"])))))))
+
+(deftest downloads-stop-after-five-redirects
+  (let [seen (atom [])
+        dest (str (fs/path (fs/create-temp-dir) "asset.tar.gz"))]
+    (with-servers [(recording seen (fn [_] {:status 302 :headers {"Location" "/loop"}}))]
+      (fn [a]
+        (let [data (problem-of #(http/download! (str a "/loop") dest))]
+          (is (= "too-many-redirects" (:exception data)))
+          (is (= 6 (count @seen)))
+          (is (not (fs/exists? dest))))))))
+
+(deftest a-plain-http-download-from-another-host-is-refused-before-connecting
+  (let [data (problem-of #(http/download! "http://breto.invalid/asset" (str (fs/path (fs/create-temp-dir) "a"))))]
+    (is (= :http-refused (:breto/problem data)))
+    (is (= "insecure-url" (:exception data)))))
+
+(deftest a-download-into-a-missing-directory-is-a-filesystem-problem
+  (with-servers [(fn [_] {:status 200 :body "x"})]
+    (fn [a]
+      (let [dest (str (fs/path (fs/create-temp-dir) "missing" "asset.tar.gz"))
+            data (problem-of #(http/download! (str a "/asset") dest))]
+        (is (= :filesystem (:breto/problem data)))
+        (is (= dest (:path data)))
+        (is (= "A file operation failed." (:summary (diagnose/diagnose (ex-info "x" data) {}))))))))
+
+(deftest encoded-downloads-breto-cannot-decode-are-refused
+  (with-servers [(fn [{:keys [uri]}]
+                   {:status 200
+                    :headers {"Content-Encoding" (if (= "/br" uri) "br" "gzip")}
+                    :body "not compressed"})]
+    (fn [a]
+      (let [dest (target-holding "earlier")]
+        (doseq [path ["/br" "/gz"]]
+          (is (= "content-encoding" (:exception (problem-of #(http/download! (str a path) dest)))) path))))))
+
+(deftest deflated-downloads-arrive-decoded
+  (let [plain (.getBytes (apply str (repeat 3000 "b")))
+        deflated (let [out (java.io.ByteArrayOutputStream.)]
+                   (with-open [d (java.util.zip.DeflaterOutputStream. out)] (.write d plain))
+                   (.toByteArray out))
+        dest (str (fs/path (fs/create-temp-dir) "asset"))]
+    (with-servers [(fn [_] {:status 200 :headers {"Content-Encoding" "deflate"}
+                            :body (java.io.ByteArrayInputStream. deflated)})]
+      (fn [a]
+        (http/download! (str a "/asset") dest)
+        (is (= (seq plain) (seq (fs/read-all-bytes dest))))))))
+
+(deftest the-download-limit-leaves-room-above-the-largest-asset-measured
+  (is (< (* 4 1664140391) http/max-download-bytes))
+  (is (< (long Integer/MAX_VALUE) http/max-download-bytes)
+      "an asset may be larger than a byte array can hold"))
