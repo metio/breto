@@ -380,7 +380,7 @@
   (let [cfg (config)
         ready (fs/path *root* "ready")
         holder (process/process {:err :inherit}
-                                "bb" "-cp" (str (fs/absolutize "src")) "-e"
+                                "bb" "-cp" (s/absolute-classpath) "-e"
                                 (str "(require '[breto.store :as s] '[babashka.fs :as fs])"
                                      "(s/with-store-lock " (pr-str cfg) " (fn [_]) "
                                      "  #(do (spit " (pr-str (str ready)) " \"\") (Thread/sleep 1500)))"))

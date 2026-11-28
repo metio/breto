@@ -4,16 +4,27 @@
 (ns breto.support
   "A temporary home for a test and a fake network, so whole commands run
   without touching the user's files or the internet."
-  (:require [babashka.fs :as fs]
+  (:require [babashka.classpath :as classpath]
+            [babashka.fs :as fs]
             [breto.checksum :as checksum]
             [breto.main :as main]
             [breto.package :as package]
             [breto.platform :as platform]
             [breto.registry :as registry]
             [breto.report :as report]
-            [breto.sealed :as sealed]))
+            [breto.sealed :as sealed]
+            [clojure.string :as str]))
 
 (def ^:dynamic *root* nil)
+
+(defn absolute-classpath
+  "This process's classpath, briko's sources included, with every entry
+  absolute, for a babashka the test starts in another directory."
+  []
+  (->> (str/split (classpath/get-classpath) #":")
+       (remove str/blank?)
+       (map #(str (fs/absolutize %)))
+       (str/join ":")))
 
 (defn with-root
   "A fixture binding *root* to a fresh directory, and the saved reports into it."
