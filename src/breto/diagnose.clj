@@ -204,12 +204,27 @@
 (defmethod explain :http-status [data probes]
   (http-explanation data probes))
 
-(defmethod explain :network [{:keys [url exception received expected]} _]
-  (if received
+(defn- duration [ms]
+  (if (zero? (mod ms 1000)) (str (quot ms 1000) " s") (str ms " ms")))
+
+(defmethod explain :network [{:keys [url exception received expected limit]} _]
+  (cond
+    (= "idle-timeout" exception)
+    {:summary (str "The server sent nothing for " (if limit (duration limit) "too long")
+                   (when (and received (pos? received))
+                     (str " after " received (when expected (str " of " expected)) " bytes"))
+                   ", so breto gave up on the stalled connection.")
+     :facts [(str "GET " url " failed with " exception)]
+     :advice ["Run the command again; nothing was installed from the stalled transfer."
+              "If it keeps stalling, the server or a proxy on the way holds connections open without sending; try again later or from another network."]}
+
+    received
     {:summary (str "The download broke off after " received (when expected (str " of " expected)) " bytes.")
      :facts [(str "GET " url " failed with " exception)]
      :advice ["Run the command again; nothing was installed from the partial download."
               "If it keeps breaking off, check for a proxy or a flaky link, or raise :delay to spread the traffic."]}
+
+    :else
     {:summary "The server could not be reached."
      :facts [(str "GET " url " failed with " exception)]
      :advice ["Check the network connection, DNS and any VPN that is required."
