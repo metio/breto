@@ -215,6 +215,31 @@
      :advice ["Check the network connection, DNS and any VPN that is required."
               "A scheduled run needs Wants=network-online.target and After=network-online.target in its unit."]}))
 
+(defmethod explain :http-refused [{:keys [url exception limit]} _]
+  (let [fact (str "GET " url " was refused: " exception)]
+    (case exception
+      "insecure-url"
+      {:summary "breto fetches over https only, except from this machine."
+       :facts [fact]
+       :advice ["Change the URL in the package definition to https; plain http is accepted for localhost and 127.0.0.1 only."]}
+      "too-large"
+      {:summary (str "The answer is larger than breto reads" (when limit (str " (" limit " bytes)")) ".")
+       :facts [fact]
+       :advice ["Open the URL to see what the server returns; a document this large is likely not the one the definition means."]}
+      ("too-many-redirects" "redirect-refused")
+      {:summary "The server redirected in a way breto does not follow."
+       :facts [fact "breto follows at most 5 redirects, and none from https to http."]
+       :advice ["Open the URL to see where it leads, and point the definition at the final address."]}
+      {:summary "The server's answer broke a rule breto holds every answer to."
+       :facts [fact]
+       :advice ["Rerun with --debug to see every request breto makes."]})))
+
+(defmethod explain :invalid-json [{:keys [url exception line column]} _]
+  {:summary "The document is not JSON breto accepts."
+   :facts [(str (or url "The document") " was refused: " exception
+                (when line (str " at line " line ", column " column)))]
+   :advice ["Open the URL to see what the server returns; it may answer with an error page or a format the definition does not expect."]})
+
 (defmethod explain :tag-prefix [{:keys [tag tag-prefix]} _]
   (let [suggested (suggest-tag-prefix tag)]
     {:summary (str "The release tag " tag " does not start with the :tag-prefix " (pr-str tag-prefix) ".")

@@ -5,6 +5,7 @@
   "Checks of the environment, configuration and store, each with what to do
   when it fails."
   (:require [babashka.fs :as fs]
+            [breto.document :as document]
             [breto.github :as github]
             [breto.hooks :as hooks]
             [breto.install :as install]
@@ -15,7 +16,6 @@
             [breto.share :as share]
             [breto.signature :as signature]
             [breto.store :as store]
-            [cheshire.core :as json]
             [clojure.string :as str]))
 
 (defn- check [level title detail & advice]
@@ -234,9 +234,8 @@
 
 (defn github-check [io]
   (try
-    (let [{:keys [rate]} (json/parse-string ((:get-text io) "https://api.github.com/rate_limit"
-                                                            (github/api-headers io))
-                                            true)
+    (let [url "https://api.github.com/rate_limit"
+          {:keys [rate]} (document/read-json url ((:get-text io) url (github/api-headers io)) {:keys :keyword})
           {:keys [limit remaining]} rate]
       (cond
         (and (number? remaining) (zero? remaining))

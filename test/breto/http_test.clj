@@ -202,3 +202,84 @@
 (deftest existence-ignores-the-length-a-head-answer-states
   (with-raw-server (fn [_ out] (write-ascii out "HTTP/1.1 200 OK\r\nContent-Length: 734003200\r\nConnection: close\r\n\r\n"))
     (fn [a] (is (true? (http/exists? (str a "/big.tar.gz")))))))
+
+(deftest lookups-name-breto-and-ask-for-gzip
+  (let [seen (atom [])]
+    (with-servers [(recording seen (fn [_] {:status 200 :body "ok"}))]
+      (fn [a]
+        (http/get-text (str a "/v") {})
+        (is (= "breto" (get-in (first @seen) [:headers "user-agent"])))
+        (is (= "gzip" (get-in (first @seen) [:headers "accept-encoding"])))))))
+
+(deftest endless-redirects-stop-after-five
+  (let [seen (atom [])]
+    (with-servers [(recording seen (fn [_] {:status 302 :headers {"Location" "/loop"}}))]
+      (fn [a]
+        (let [data (problem-of #(http/get-text (str a "/loop") {}))]
+          (is (= :http-refused (:breto/problem data)))
+          (is (= "too-many-redirects" (:exception data)))
+          (is (= 6 (count @seen))))))))
+
+(deftest plain-http-to-another-host-is-refused-before-connecting
+  (doseq [f [#(http/get-text "http://breto.invalid/v" {}) #(http/exists? "http://breto.invalid/v")]]
+    (let [data (problem-of f)]
+      (is (= :http-refused (:breto/problem data)))
+      (is (= "insecure-url" (:exception data))))))
+
+(deftest a-closed-port-names-the-failed-connection
+  (let [port (with-open [s (java.net.ServerSocket. 0)] (.getLocalPort s))]
+    (is (= "connect-failed" (:exception (problem-of #(http/get-text (str "http://127.0.0.1:" port "/v") {})))))))
+
+(deftest bodies-beyond-the-limit-are-refused
+  (with-servers [(fn [_] {:status 200 :body (apply str (repeat 5000 "a"))})]
+    (fn [a]
+      (with-redefs [http/lookup-options (assoc @#'http/lookup-options :max-bytes 4096)]
+        (let [data (problem-of #(http/get-text (str a "/v") {}))]
+          (is (= :http-refused (:breto/problem data)))
+          (is (= "too-large" (:exception data)))
+          (is (= 4096 (:limit data)))))
+      (with-redefs [http/lookup-options (assoc @#'http/lookup-options :max-bytes 5000)]
+        (is (= 5000 (count (http/get-text (str a "/v") {})))
+            "a body at the limit is read whole")))))
+
+(deftest gzip-bodies-are-held-to-the-limit-once-decoded
+  (let [plain (.getBytes (apply str (repeat 5000 "a")))]
+    (serving plain (constantly true)
+             (fn [url]
+               (with-redefs [http/max-body-bytes 4096]
+                 (let [data (problem-of #(http/get-text url {}))]
+                   (is (= :http-refused (:breto/problem data)))
+                   (is (= "too-large" (:exception data)))))
+               (with-redefs [http/max-body-bytes 5000]
+                 (is (= 5000 (count (http/get-text url {})))))))))
+
+(deftest encodings-breto-did-not-ask-for-are-refused
+  (with-servers [(fn [{:keys [uri]}]
+                   {:status 200
+                    :headers {"Content-Encoding" (if (= "/br" uri) "br" "gzip")}
+                    :body "not compressed"})]
+    (fn [a]
+      (is (= "content-encoding" (:exception (problem-of #(http/get-text (str a "/br") {})))))
+      (is (= "content-encoding" (:exception (problem-of #(http/get-text (str a "/gz") {}))))))))
+
+(deftest a-trickling-body-is-cut-off-at-the-deadline
+  (with-raw-server (fn [line out]
+                     (write-ascii out "HTTP/1.1 200 OK\r\nContent-Length: 4\r\nConnection: close\r\n\r\n")
+                     (if (re-find #"/slow" line)
+                       (dotimes [_ 4] (Thread/sleep 400) (write-ascii out "a"))
+                       (write-ascii out "aaaa")))
+    (fn [a]
+      (with-redefs [http/lookup-options (assoc @#'http/lookup-options :timeout-ms 600)]
+        (let [data (problem-of #(http/get-text (str a "/slow") {}))]
+          (is (= :network (:breto/problem data)))
+          (is (= "timeout" (:exception data))))
+        (is (= "aaaa" (http/get-text (str a "/fast") {})) "a prompt body arrives within the same deadline")))))
+
+(deftest refusals-are-explained
+  (doseq [reason ["insecure-url" "too-large" "too-many-redirects" "redirect-refused" "content-encoding"]]
+    (let [{:keys [summary advice]} (diagnose/diagnose (ex-info "x" {:breto/problem :http-refused :url "https://x/y"
+                                                                    :exception reason :limit 1})
+                                                      {})]
+      (is (string? summary) reason)
+      (is (seq advice) reason)
+      (is (not (re-find #"no explanation" summary)) reason))))

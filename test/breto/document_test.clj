@@ -2,7 +2,10 @@
 ;; SPDX-License-Identifier: 0BSD
 
 (ns breto.document-test
-  (:require [breto.document :as document]
+  (:require [breto.diagnose :as diagnose]
+            [breto.document :as document]
+            [breto.github :as github]
+            [breto.http :as http]
             [breto.package :as package]
             [breto.source :as source]
             [breto.support :as s]
@@ -53,3 +56,36 @@
 (deftest a-malformed-json-document-fails
   (is (thrown? Exception (document/parse "x" "{\"a\":")))
   (is (thrown? Exception (document/parse "x" "{\"a\":1}]"))))
+
+(defn- problem-of [f]
+  (try (f) nil (catch clojure.lang.ExceptionInfo e (ex-data e))))
+
+(deftest json-documents-are-read-strictly-and-name-their-url
+  (is (= {"a" 1} (document/read-json "u" "{\"a\":1}")) "a valid document reads")
+  (doseq [[text reason] [["{\"a\":1,\"a\":2}" "duplicate-key"]
+                         ["{\"a\":1} {\"b\":2}" "trailing-value"]
+                         ["{'a':1}" "malformed"]
+                         ["" "no-value"]
+                         ["1e400" "number-out-of-range"]]]
+    (let [data (problem-of #(document/read-json "https://example.org/x.json" text))]
+      (is (= :invalid-json (:breto/problem data)) text)
+      (is (= reason (:exception data)) text)
+      (is (= "https://example.org/x.json" (:url data)) text)))
+  (testing "JSON Lines still refuse an object naming a key twice"
+    (is (= "duplicate-key" (:exception (problem-of #(document/parse "x" "{\"v\":1}\n{\"v\":1,\"v\":2}")))))))
+
+(deftest every-body-a-lookup-returns-can-be-read-as-json
+  (is (= http/max-body-bytes document/max-json-bytes)))
+
+(deftest a-malformed-api-answer-is-an-invalid-json-problem
+  (let [url "https://api.github.com/repos/o/r/releases/tags/v1"
+        io (s/fake-io {} {url "<html>rate limited</html>"} (atom []))
+        data (problem-of #(github/release io "o/r" "v1"))]
+    (is (= :invalid-json (:breto/problem data)))
+    (is (= url (:url data)))
+    (is (re-find #"not JSON" (:summary (diagnose/diagnose (ex-info "x" data) {}))))))
+
+(deftest api-answers-keep-keyword-keys
+  (let [url "https://api.github.com/repos/o/r/releases/tags/v1"
+        io (s/fake-io {} {url "{\"assets\":[{\"name\":\"a\",\"digest\":\"sha256:ab\"}]}"} (atom []))]
+    (is (= "ab" (github/asset-digest (github/release io "o/r" "v1") "a")))))
