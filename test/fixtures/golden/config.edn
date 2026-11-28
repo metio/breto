@@ -1,0 +1,17 @@
+;; SPDX-FileCopyrightText: The breto Authors
+;; SPDX-License-Identifier: 0BSD
+
+;; A configuration using what users configure: home-relative paths, extra
+;; registries, completion directories and pins.
+{:store "~/tools/installations"
+ :lockfile "~/breto.lock"
+ :cosign "~"
+ :extra-registries ["~/registries/extra" {:github "acme/registry"} "/srv/registry"]
+ :completion-dirs {:bash "~/completions/bash" :zsh "/opt/zsh" :fish "~/fish"}
+ :man-dir nil
+ :keep 2
+ :prune true
+ :packages ["alpha" "beta@1.0" "@toolchain"]
+ :pins {"beta" "1.0"}
+ :token-command ["pasejo" "secret" "show" "github"]
+ :hooks {:installed ["notify-send" "{package}"]}}

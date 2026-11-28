@@ -8,3 +8,9 @@ path = "renovate.json"
 precedence = "override"
 SPDX-FileCopyrightText = "The breto Authors"
 SPDX-License-Identifier = "0BSD"
+
+[[annotations]]
+path = "test/fixtures/golden/*.txt"
+precedence = "override"
+SPDX-FileCopyrightText = "The breto Authors"
+SPDX-License-Identifier = "0BSD"
