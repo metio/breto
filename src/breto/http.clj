@@ -2,18 +2,18 @@
 ;; SPDX-License-Identifier: 0BSD
 
 (ns breto.http
-  "Requests to registries, forges and download hosts. Lookups go through
-  briko.http, which bounds each one by deadlines and a body limit. Downloads
-  stream to a file through babashka.http-client, because briko.http holds a
-  body in memory and a release asset can be far larger than that should be."
-  (:require [babashka.http-client :as http-client]
-            [breto.log :as log]
+  "Requests to registries, forges and download hosts, all through briko.http,
+  which bounds each one by deadlines and a body limit. Lookups read their
+  body into memory; downloads stream it to a file."
+  (:require [breto.log :as log]
+            [briko.fs :as bfs]
             [briko.http :as http]
             [clojure.java.io :as io]
             [clojure.string :as str])
-  (:import (java.io ByteArrayInputStream)
+  (:import (java.io ByteArrayInputStream InputStream)
+           (java.nio ByteBuffer)
            (java.nio.charset StandardCharsets)
-           (java.util.zip GZIPInputStream)))
+           (java.util.zip GZIPInputStream InflaterInputStream)))
 
 (def max-body-bytes
   "The largest body a lookup reads, after decoding. The largest document breto
@@ -34,13 +34,6 @@
    :timeout-ms 300000
    :max-bytes max-body-bytes
    :max-redirects 5})
-
-(def ^:private head-options
-  "A HEAD answer states the length of the body a GET would send, which for a
-  release asset is far beyond `max-body-bytes`, while it sends no body at
-  all. briko.http refuses a stated length above :max-bytes before reading,
-  so existence checks allow the largest it accepts."
-  (assoc lookup-options :max-bytes (- Integer/MAX_VALUE 9)))
 
 (def ^:private unreachable
   "The refusals of briko.http that say the host was not reached in time."
@@ -153,7 +146,7 @@
 (defn exists?
   "Whether `url` answers a HEAD request with success, after redirects."
   [url]
-  (let [{:keys [status headers]} (lookup :head url {} head-options)]
+  (let [{:keys [status headers]} (lookup :head url {} lookup-options)]
     (log/debug "HEAD" url "->" status)
     (note-wait! url headers)
     (<= 200 status 299)))
@@ -163,54 +156,113 @@
   [url headers]
   (String. (decoded url (ok! url (lookup :get url headers lookup-options))) StandardCharsets/UTF_8))
 
-(defn- stream-request [url opts]
-  (try
-    (http-client/get url (assoc opts :throw false))
-    (catch java.io.IOException e
-      (log/debug "GET" url "failed:" (.getName (class e)) (ex-message e))
-      (throw (ex-info (str "GET " url " failed: " (or (ex-message e) (.getName (class e))))
-                      {:breto/problem :network :url url :exception (.getName (class e))}
-                      e)))))
+(def max-download-bytes
+  "The largest release asset a download writes. The largest asset of a
+  sample of 25 definitions of the package registry on 2026-11-28 was the
+  IntelliJ IDEA archive, 1664140391 bytes, followed by ollama's at
+  1649689331; the limit leaves five times that, so it only stops a server
+  that sends without end."
+  (* 8 1024 1024 1024))
 
-(defn- copy-body!
-  "Copies `in` to `out`, returning the byte count. A read that fails is the
-  connection failing, so it is reported as a network problem."
-  [url ^java.io.InputStream in out on-bytes expected]
-  (let [buffer (byte-array 65536)]
-    (loop [done 0]
-      (let [n (try (.read in buffer)
-                   (catch java.io.IOException e
-                     (throw (ex-info (str "GET " url " broke off after " done " bytes: "
-                                          (or (ex-message e) (.getName (class e))))
-                                     {:breto/problem :network :url url :exception (.getName (class e))
-                                      :received done :expected expected}
-                                     e))))]
-        (if (pos? n)
-          (do (.write out buffer 0 n)
-              (when on-bytes (on-bytes (+ done n) expected))
-              (recur (+ done n)))
-          done)))))
+(def ^:private download-options
+  "The bounds of every download. Four hours carry the largest asset
+  measured, 1.66 GB, at about 1 Mbit/s, the slowest link the lookups are
+  sized for as well; a download had no deadline before, and a shorter one
+  would cut off a slow but working link. The body goes to a staged file
+  beside the target and replaces it only once complete. It is not forced
+  to disk, because the file is verified and unpacked right after and a
+  crash before that leaves nothing installed."
+  {:connect-timeout-ms 10000
+   :timeout-ms (* 4 60 60 1000)
+   :max-bytes max-download-bytes
+   :max-redirects 5})
+
+(defn- decode-file!
+  "Replaces `dest`, a body a server sent with `encoding` although breto asked
+  for none, by its decoded bytes, within `max-download-bytes`, and returns
+  their count. The client sent `Accept-Encoding: identity`, yet a server that
+  compresses every answer still does so, and the checksum covers the
+  decoded file."
+  [url dest encoding]
+  (let [decoder (case encoding
+                  "gzip" #(GZIPInputStream. %)
+                  "deflate" #(InflaterInputStream. %)
+                  (refuse-body! url (str "the body is encoded as " encoding ", which breto did not ask for")
+                                {:exception "content-encoding"}))
+        written (volatile! 0)]
+    (bfs/atomic-write!
+     dest
+     (fn [^java.nio.channels.FileChannel channel]
+       ;; A read failure is rethrown as an ex-info, which briko.fs passes on
+       ;; unchanged, where an IOException would become a failed write.
+       (let [corrupt #(refuse-body! url (str "the " encoding " body is corrupt") {:exception "content-encoding"})
+             in ^InputStream (try (decoder (io/input-stream (str dest)))
+                                  (catch java.io.IOException _ (corrupt)))
+             buffer (byte-array 65536)]
+         (with-open [in in]
+           (loop []
+             (let [n (try (.read in buffer) (catch java.io.IOException _ (corrupt)))]
+               (when (pos? n)
+                 (when (< (long max-download-bytes) (+ (long @written) n))
+                   (refuse-body! url (str "the decoded body is larger than " max-download-bytes " bytes")
+                                 {:exception "too-large" :limit max-download-bytes}))
+                 (let [bb (ByteBuffer/wrap buffer 0 n)]
+                   (while (.hasRemaining bb) (.write channel bb)))
+                 (vswap! written + n)
+                 (recur)))))))
+     {:fsync? false})
+    @written))
+
+(defn- download-refused!
+  "Rethrows the briko.http refusal `e` of a download as a breto problem, as
+  `refused!` does for lookups. A connection that broke off after some bytes
+  arrived carries what was `received` and `expected`, and a file that could
+  not be written is a :filesystem problem."
+  [url dest e [received expected]]
+  (let [{:keys [type reason]} (ex-data e)]
+    (cond
+      (= ::http/file-failed type)
+      (throw (ex-info (str "GET " url " could not be written to " dest)
+                      {:breto/problem :filesystem :url url :path (str dest)
+                       :exception (if reason (name reason) "file-failed")}
+                      e))
+
+      (and (unreachable type) (pos? (long received)))
+      (throw (ex-info (str "GET " url " broke off after " received " bytes: " (ex-message e))
+                      (cond-> {:breto/problem :network :url url :exception (name type) :received received}
+                        expected (assoc :expected expected))
+                      e))
+
+      :else (refused! "GET" url e))))
 
 (defn download!
   "Saves `url` to `dest`, calling `on-bytes` with the bytes written so far and
-  the expected total, when the server states one. A body shorter than the
-  stated length fails, so an unverified install never keeps a truncated file.
-  The request asks for the file unencoded, since the client decodes a gzip
-  or deflate body while Content-Length counts the encoded bytes; a server
-  that encodes it anyway states no length the decoded body can be held to."
+  the expected total, when the server states one. `dest` is replaced only by
+  a complete body of a 2xx answer: a body shorter than its stated length,
+  over `max-download-bytes` or past the deadline leaves `dest` as it was, so
+  an unverified install never keeps a truncated file. The request asks for
+  the file unencoded; a server that encodes it anyway has it decoded, with
+  the decoded size reported last."
   ([url dest] (download! url dest nil))
   ([url dest on-bytes]
-   (let [response (ok! url (stream-request url {:as :stream :headers {"accept-encoding" "identity"}}))
-         encoding (some-> (get-in response [:headers "content-encoding"]) str)
-         expected (when (or (nil? encoding) (= "identity" encoding))
-                    (some-> (get-in response [:headers "content-length"]) str parse-long))
-         received (with-open [in ^java.io.InputStream (:body response)
-                              out (io/output-stream (io/file (str dest)))]
-                    (copy-body! url in out on-bytes expected))]
-     (when (and expected (not= expected received))
-       (throw (ex-info (str "GET " url " ended after " received " of " expected " bytes")
-                       {:breto/problem :network :url url :exception "truncated body"
-                        :received received :expected expected}))))))
+   (let [progress (volatile! [0 nil])
+         track (fn [done size]
+                 (vreset! progress [done size])
+                 (when on-bytes (on-bytes done size)))
+         response (try
+                    (http/request :get url (assoc download-options
+                                                  :headers {"User-Agent" "breto" "Accept-Encoding" "identity"}
+                                                  :as {:file (str dest) :fsync? false :on-progress track}))
+                    (catch clojure.lang.ExceptionInfo e
+                      (if (http/refusal? e)
+                        (download-refused! url dest e @progress)
+                        (throw e))))
+         response (update response :headers update-vals first)
+         _ (ok! url response)
+         encoding (some-> (get-in response [:headers "content-encoding"]) str/trim str/lower-case)]
+     (when-not (contains? #{nil "" "identity"} encoding)
+       (let [decoded (decode-file! url dest encoding)]
+         (when on-bytes (on-bytes decoded nil)))))))
 
 (def io
   "The network operations the installer needs, as a map so tests can swap them."
