@@ -283,3 +283,47 @@
       (is (string? summary) reason)
       (is (seq advice) reason)
       (is (not (re-find #"no explanation" summary)) reason))))
+
+(deftest downloads-follow-a-redirect-to-another-host-without-sending-a-token
+  (let [seen (atom [])
+        dest (str (fs/create-temp-file))]
+    (try
+      (with-servers [(recording seen (fn [_] {:status 200 :body "asset bytes"}))]
+        (fn [far]
+          (with-servers [(recording seen (fn [_] {:status 302 :headers {"Location" (str far "/asset")}}))]
+            (fn [a]
+              (http/download! (str a "/releases/download/v1/tool.tar.gz") dest)
+              (is (= "asset bytes" (slurp dest)))
+              (is (= ["/releases/download/v1/tool.tar.gz" "/asset"] (map :uri @seen)))
+              (is (every? #(nil? (get-in % [:headers "authorization"])) @seen)
+                  "neither the forge nor the asset host receives a token")
+              (is (every? #(= "identity" (get-in % [:headers "accept-encoding"])) @seen))))))
+      (finally (fs/delete-if-exists dest)))))
+
+(deftest a-download-answered-outside-2xx-is-an-http-status-problem-and-writes-nothing
+  (let [dest (str (fs/path (fs/create-temp-dir) "asset.tar.gz"))]
+    (with-servers [(fn [_] {:status 404 :body "not here"})]
+      (fn [a]
+        (let [data (problem-of #(http/download! (str a "/asset") dest))]
+          (is (= :http-status (:breto/problem data)))
+          (is (= 404 (:status data)))
+          (is (not (fs/exists? dest))))))))
+
+(deftest a-download-cut-short-of-its-stated-length-is-a-broken-off-network-problem
+  (let [dest (str (fs/path (fs/create-temp-dir) "asset.tar.gz"))]
+    (with-raw-server (fn [_ out]
+                       (write-ascii out "HTTP/1.1 200 OK\r\nContent-Length: 10\r\nConnection: close\r\n\r\nabcd"))
+      (fn [a]
+        (let [data (problem-of #(http/download! (str a "/asset") dest))]
+          (is (= :network (:breto/problem data)))
+          (is (= 4 (:received data)))
+          (is (= 10 (:expected data)))
+          (is (re-find #"broke off after 4 of 10 bytes"
+                       (:summary (diagnose/diagnose (ex-info "x" data) {})))))))))
+
+(deftest a-download-from-a-closed-port-is-a-network-problem
+  (let [port (with-open [s (java.net.ServerSocket. 0)] (.getLocalPort s))
+        dest (str (fs/path (fs/create-temp-dir) "asset.tar.gz"))
+        data (problem-of #(http/download! (str "http://127.0.0.1:" port "/asset") dest))]
+    (is (= :network (:breto/problem data)))
+    (is (nil? (:received data)) "nothing arrived, so the host was not reached")))
