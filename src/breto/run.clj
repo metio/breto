@@ -13,6 +13,8 @@
             [babashka.process :as process]
             [breto.platform :as platform]
             [breto.shell :as shell]
+            [briko.paths :as paths]
+            [briko.process :as bprocess]
             [clojure.string :as str]))
 
 (defn template-vars
@@ -57,7 +59,7 @@
 (defn systemd-version
   "The release of the systemd-run on PATH, or nil."
   []
-  (try (some->> (:out (process/shell {:out :string :err :string :continue true} "systemd-run" "--version"))
+  (try (some->> (:out (bprocess/run ["systemd-run" "--version"]))
                 (re-find #"^systemd (\d+)") second parse-long)
        (catch Exception _ nil)))
 
@@ -68,9 +70,9 @@
   variable, `which` finds a program and `version` gives systemd's release."
   ([getenv which] (limits-mode getenv which systemd-version))
   ([getenv which version]
-   (let [runtime (getenv "XDG_RUNTIME_DIR")]
+   (let [runtime (paths/runtime-dir {:getenv getenv})]
      (cond (not (str/blank? (getenv "CI"))) :ci
-           (not (and (which "systemd-run") (which "systemctl") (not (str/blank? runtime))
+           (not (and (which "systemd-run") (which "systemctl") runtime
                      (or (fs/exists? (fs/path runtime "systemd" "private"))
                          (fs/exists? (fs/path runtime "bus")))
                      (<= scope-version (or (version) 0))))
@@ -106,12 +108,10 @@
   clears a failed one so that it does not linger in the user manager."
   [unit]
   (let [scope (str unit ".scope")
-        result (try (str/trim (:out (process/shell {:out :string :err :string :continue true}
-                                                   "systemctl" "--user" "show" "--property=Result" "--value" scope)))
-                    (catch Exception _ nil))]
+        {:keys [launched? timed-out? out]} (bprocess/run ["systemctl" "--user" "show" "--property=Result" "--value" scope])
+        result (when (and launched? (not timed-out?)) (str/trim out))]
     (when (and result (not= "success" result))
-      (try (process/shell {:out :string :err :string :continue true} "systemctl" "--user" "reset-failed" scope)
-           (catch Exception _ nil)))
+      (bprocess/run ["systemctl" "--user" "reset-failed" scope]))
     result))
 
 (defn oom-message

@@ -4,6 +4,8 @@
 (ns breto.report
   (:require [babashka.fs :as fs]
             [breto.filelock :as filelock]
+            [briko.fs :as bfs]
+            [briko.paths :as paths]
             [clojure.edn :as edn]
             [clojure.string :as str])
   (:import (java.time Instant ZoneId)
@@ -16,11 +18,7 @@
 (defn state-dir
   "The directory of breto's state under the XDG state directory."
   []
-  (let [state (or *state-home* (System/getenv "XDG_STATE_HOME"))]
-    (str (fs/path (if (str/blank? state)
-                    (fs/path (System/getProperty "user.home") ".local" "state")
-                    state)
-                  "breto"))))
+  (str (fs/path (or *state-home* (paths/state-home)) "breto")))
 
 (defn state-path []
   (str (fs/path (state-dir) "last-run.edn")))
@@ -161,11 +159,11 @@
         runs (into {} (map (juxt :command identity)) (load-runs))
         stamped (if (:running report)
                   (assoc report :updated (str (Instant/now)))
-                  (assoc (dissoc report :running :total :updated) :finished (str (Instant/now))))
-        staged (str path ".tmp")]
+                  (assoc (dissoc report :running :total :updated) :finished (str (Instant/now))))]
     (fs/create-dirs (fs/parent path))
-    (spit staged (pr-str (assoc runs (:command report) stamped)))
-    (fs/move staged path {:replace-existing true :atomic-move true})))
+    ;; A progress report is rewritten many times a run and only describes it,
+    ;; so it is not forced to disk.
+    (bfs/atomic-write! (fs/absolutize path) (pr-str (assoc runs (:command report) stamped)) {:fsync? false})))
 
 (defn save!
   "Records `report` as the last run of its command, keeping the other commands'.

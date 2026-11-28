@@ -4,6 +4,7 @@
 (ns breto.checksum
   (:require [babashka.fs :as fs]
             [breto.document :as document]
+            [briko.digest :as bdigest]
             [clojure.java.io :as io]
             [clojure.string :as str])
   (:import (java.security MessageDigest)))
@@ -12,17 +13,21 @@
   {32 "MD5" 40 "SHA-1" 64 "SHA-256" 128 "SHA-512"})
 
 (defn digest
-  "Hex digest of `file` using a java.security algorithm name such as \"SHA-256\"."
+  "Hex digest of `file` using a java.security algorithm name such as
+  \"SHA-256\". SHA-256 comes from briko.digest; the older algorithms some
+  releases still publish checksums in are computed here."
   [algorithm file]
-  (let [md (MessageDigest/getInstance algorithm)
-        buffer (byte-array 65536)]
-    (with-open [in (io/input-stream (fs/file file))]
-      (loop []
-        (let [n (.read in buffer)]
-          (when (pos? n)
-            (.update md buffer 0 n)
-            (recur)))))
-    (apply str (map #(format "%02x" (bit-and % 0xff)) (.digest md)))))
+  (if (= "SHA-256" algorithm)
+    (bdigest/sha256-hex-file (str file))
+    (let [md (MessageDigest/getInstance algorithm)
+          buffer (byte-array 65536)]
+      (with-open [in (io/input-stream (fs/file file))]
+        (loop []
+          (let [n (.read in buffer)]
+            (when (pos? n)
+              (.update md buffer 0 n)
+              (recur)))))
+      (bdigest/hex (.digest md)))))
 
 (defn- hex? [s]
   (and (contains? algorithm-by-hex-length (count s))

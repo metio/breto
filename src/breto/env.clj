@@ -11,8 +11,8 @@
             [breto.project :as project]
             [breto.shell :as shell]
             [breto.store :as store]
-            [clojure.string :as str])
-  (:import (java.security MessageDigest)))
+            [briko.digest :as bdigest]
+            [clojure.string :as str]))
 
 (defn project-path
   "The path identifying the project at `project-dir`: absolute and with every
@@ -25,10 +25,7 @@
   "The directory holding the links of the project at `project-dir`, named by a
   hash of its canonical path."
   [{:keys [env-dir]} project-dir]
-  (let [digest (->> (.digest (MessageDigest/getInstance "SHA-256") (.getBytes (project-path project-dir) "UTF-8"))
-                    (map #(format "%02x" (bit-and % 0xff)))
-                    (apply str))]
-    (fs/path env-dir (subs digest 0 16))))
+  (fs/path env-dir (subs (bdigest/sha256-hex (project-path project-dir)) 0 16)))
 
 (defn bin-dir [config project-dir]
   (fs/path (env-dir config project-dir) "bin"))

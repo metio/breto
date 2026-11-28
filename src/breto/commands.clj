@@ -33,6 +33,7 @@
             [breto.store :as store]
             [breto.template :as template]
             [breto.version :as version]
+            [briko.paths :as paths]
             [clojure.pprint :as pprint]
             [clojure.string :as str]))
 
@@ -931,7 +932,7 @@
                        commands (concat (keys (:bins pkg))
                                         (when (and pkg version) (keys (install/bin-targets config pkg version))))]
                  link (concat (map #(str (fs/path (:bin-dir config) %)) commands)
-                              (map #(str (fs/path (store/expand-home %))) (keys (:links pkg))))]
+                              (map #(str (fs/path (paths/expand-home (str %)))) (keys (:links pkg))))]
              [link name])))
 
 (defn- uninstall-one
