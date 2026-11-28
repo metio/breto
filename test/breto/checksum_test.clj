@@ -75,3 +75,17 @@
     (is (= sha256-of-hello (checksum/json-expected text [{:vers "1.1.0"} :cksum])))
     (is (= sha256-of-hello (checksum/json-expected text [1 "cksum"])))
     (is (nil? (checksum/json-expected text [{"vers" "2.0.0"} "cksum"])))))
+
+(deftest published-checksums-verify-in-every-algorithm-and-case
+  (let [file (fs/create-temp-file)]
+    (try
+      (spit (str file) "hello")
+      (doseq [want ["5d41402abc4b2a76b9719d911017c592"
+                    "aaf4c61ddcc5e8a2dabede0f3b482cd9aea9434d"
+                    sha256-of-hello
+                    (str "9b71d224bd62f3785d96d46ad3ea3d73319bfbc2890caadae2dff72519673ca7"
+                         "2323c3d99ba5c11d7c7acc6e14b8c5da0c4663475c2e5c3adef46f73bcdec043")]]
+        (is (nil? (checksum/verify! file "tool" want)))
+        (is (nil? (checksum/verify! file "tool" (str/upper-case want))))
+        (is (= want (checksum/digest ({32 "MD5" 40 "SHA-1" 64 "SHA-256" 128 "SHA-512"} (count want)) file))))
+      (finally (fs/delete file)))))

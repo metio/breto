@@ -461,6 +461,30 @@
     (is (= #{"a" "b"}
            (set (map (comp str fs/file-name) (fs/list-dir (fs/parent (get (env/write-commands! config project scripts) "a")))))))))
 
+(deftest commands-are-executable-scripts-that-replace-a-link-in-their-place
+  (let [config {:store (path "store") :env-dir (path "envs")}
+        project (path "project")
+        a (get (env/write-commands! config project {"a" "#!/bin/sh\n"}) "a")]
+    (spit (path "elsewhere") "untouched")
+    (fs/delete a)
+    (fs/create-sym-link a (path "elsewhere"))
+    (env/write-commands! config project {"a" "#!/bin/sh\necho a\n"})
+    (is (not (fs/sym-link? a)))
+    (is (= "#!/bin/sh\necho a\n" (slurp a)))
+    (is (= "rwxr-xr-x" (fs/posix->str (fs/posix-file-permissions a))))
+    (is (= "untouched" (slurp (path "elsewhere"))))))
+
+(deftest targets-are-relinked-and-files-other-processes-prepare-stay
+  (let [config {:store (path "store") :env-dir (path "envs")}
+        project (path "project")
+        dir (env/targets-dir config project)
+        staged (str ".c." (random-uuid) ".breto")]
+    (env/link-targets! config project {"a" (path "one") "b" (path "one")})
+    (spit (str (fs/path dir staged)) "")
+    (env/link-targets! config project {"a" (path "two")})
+    (is (= (path "two") (str (fs/read-link (fs/path dir "a")))))
+    (is (= #{"a" staged} (set (map (comp str fs/file-name) (fs/list-dir dir)))))))
+
 (defn- fish-single-quoted
   "The word fish reads from the single-quoted `s`: \\\\ and \\' are escapes
   there, any other backslash stands for itself."

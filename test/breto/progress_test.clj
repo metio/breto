@@ -70,3 +70,9 @@
 (deftest checked-packages-count-as-successes
   (is (str/includes? (progress/status-line {:index 2 :total 3 :package "p" :counts {:checked 1 :failed 1}} false)
                      "✓1 ✗1")))
+
+(deftest the-terminal-width-is-a-positive-number-of-columns
+  (is (pos-int? (#'progress/columns))))
+
+(deftest whether-stderr-is-a-terminal-is-a-boolean
+  (is (boolean? (progress/terminal?))))

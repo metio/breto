@@ -50,6 +50,28 @@
     (is (= 0 exit))
     (is (= "none x\n" out))))
 
+;; Builds (run-in)
+
+(deftest builds-keep-the-end-of-a-long-error-output
+  (let [{:keys [exit err]} (proc/run-in {:command ["sh" "-c" "head -c 300000 /dev/zero | tr '\\0' x >&2; echo >&2; echo the build failed >&2; exit 1"]
+                                          :env {} :dir (s/path)})]
+    (is (= 1 exit))
+    (is (str/ends-with? err "the build failed\n"))))
+
+(deftest builds-keep-all-of-a-large-output
+  (let [{:keys [exit out]} (proc/run-in {:command ["sh" "-c" "head -c 2097152 /dev/zero | tr '\\0' x"]
+                                          :env {} :dir (s/path)})]
+    (is (= 0 exit))
+    (is (= 2097152 (count out)))))
+
+(deftest a-build-that-cannot-start-throws-an-io-exception
+  (is (thrown? java.io.IOException (proc/run-in {:command ["/nonexistent/breto-build"] :env {} :dir (s/path)}))))
+
+(deftest a-variable-both-added-and-unset-is-unset
+  (let [{:keys [out]} (proc/run-in {:command ["sh" "-c" "echo \"${BRETO_BOTH-none}\""] :env {"BRETO_BOTH" "x"}
+                                    :unset ["BRETO_BOTH"] :dir (s/path)})]
+    (is (= "none\n" out))))
+
 (defn- fake-cosign
   "A script standing in for cosign that records its arguments and exits with
   `exit`."
