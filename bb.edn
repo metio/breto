@@ -2,20 +2,31 @@
 ;; SPDX-License-Identifier: 0BSD
 
 {:paths ["src" "shell"]
+ ;; babashka resolves git deps through tools.deps on first use and caches the
+ ;; classpath; it carries babashka.fs and babashka.process itself.
+ :deps {io.github.metio/briko {:git/sha "cabc7993d20fd3e58292e11314f3e015b79c1e20"}}
  :tasks
  {breto {:doc "Runs the breto command line"
          :requires ([breto.main :as main])
          :task (apply main/-main *command-line-args*)}
   build {:doc "Builds target/breto.jar, an uberjar of breto with the definitions of cosign and breto and the shell hook built in"
-         :requires ([babashka.fs :as fs] [babashka.process :as process])
+         :requires ([babashka.classpath :as classpath] [babashka.fs :as fs] [babashka.process :as process]
+                    [clojure.string :as str])
          :task (let [registry (fs/path "target" "resources" "breto" "registry")
-                     files (sort (map (comp str fs/file-name) (fs/glob "builtin" "*.edn")))]
+                     files (sort (map (comp str fs/file-name) (fs/glob "builtin" "*.edn")))
+                     ;; The source directories of the git deps go into the jar; the
+                     ;; jars on the classpath are libraries babashka carries itself.
+                     sources (->> (concat ["src" "shell" "target/resources"]
+                                          (str/split (classpath/get-classpath) (re-pattern ":")))
+                                  (remove (fn [entry] (or (str/blank? entry) (str/ends-with? entry ".jar"))))
+                                  (map (fn [entry] (str (fs/absolutize entry))))
+                                  distinct)]
                  (fs/delete-tree "target")
                  (fs/create-dirs registry)
                  (doseq [file files]
                    (fs/copy (fs/path "builtin" file) (fs/path registry file)))
                  (spit (str (fs/path registry "index.edn")) (pr-str (vec files)))
-                 (process/shell "bb" "--classpath" "src:shell:target/resources" "uberjar" "target/breto.jar" "-m" "breto.cli"))}
+                 (process/shell "bb" "--classpath" (str/join ":" sources) "uberjar" "target/breto.jar" "-m" "breto.cli"))}
   test {:doc "Runs all unit tests"
         :extra-paths ["test"]
         :requires ([breto.test-runner :as runner])
