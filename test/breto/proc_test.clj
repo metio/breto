@@ -19,6 +19,31 @@
   (is (= {:exit 0 :out "a b\n" :err ""}
          (proc/run-bounded {:command ["sh" "-c" "echo \"$1\"" "sh" "a b"] :env {} :timeout 10}))))
 
+(deftest bounded-commands-stop-every-process-they-started
+  (let [pid-file (s/path "child.pid")
+        started (System/nanoTime)
+        result (proc/run-bounded {:command ["sh" "-c" (str "sleep 30 & echo $! > " pid-file "; wait")]
+                                  :env {} :timeout 1})
+        child (parse-long (str/trim (slurp pid-file)))]
+    (is (:timed-out result))
+    (is (< (/ (- (System/nanoTime) started) 1e9) 10))
+    (is (not (some-> (java.lang.ProcessHandle/of child) (.orElse nil) .isAlive)) "the child is killed too")))
+
+(deftest bounded-commands-close-stdin
+  (is (= {:exit 0 :out "eof\n" :err ""}
+         (proc/run-bounded {:command ["sh" "-c" "cat >/dev/null; echo eof"] :env {} :timeout 10}))))
+
+(deftest a-program-that-cannot-start-throws-an-io-exception
+  (is (thrown? java.io.IOException (proc/run-bounded {:command ["/nonexistent/breto-hook"] :env {} :timeout 10})))
+  (is (thrown? java.io.IOException (proc/run-command ["/nonexistent/breto-tool"]))))
+
+(deftest output-past-the-bound-is-refused
+  (let [e (try (proc/run-bounded {:command ["sh" "-c" (str "head -c " (inc proc/max-out-bytes) " /dev/zero")]
+                                  :env {} :timeout 30})
+               nil
+               (catch clojure.lang.ExceptionInfo e e))]
+    (is (= :output-too-large (:breto/problem (ex-data e))))))
+
 (deftest commands-in-a-directory-run-without-the-unset-variables
   (let [{:keys [exit out]} (proc/run-in {:command ["sh" "-c" "echo \"${HOME-none} $EXTRA\""] :env {"EXTRA" "x"}
                                          :unset ["HOME"] :dir (s/path)})]
