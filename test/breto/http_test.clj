@@ -356,6 +356,69 @@
             (is (= "timeout" (:exception data)))
             (is (= "earlier" (slurp dest)))))))))
 
+(defn- with-stalling-server
+  "Calls `f` with the base URL of a local server that answers with the
+  headers of a 10-byte body and `sent` bytes of it, then holds the
+  connection open without sending more until `f` returns."
+  [sent f]
+  (let [release (promise)]
+    (try
+      (with-raw-server (fn [_ out]
+                         (write-ascii out (str "HTTP/1.1 200 OK\r\nContent-Length: 10\r\nConnection: close\r\n\r\n" sent))
+                         (deref release 30000 nil))
+        f)
+      (finally (deliver release true)))))
+
+(defn- with-trickling-server
+  "Calls `f` with the base URL of a local server that sends a body of `n`
+  bytes one at a time, `gap-ms` apart."
+  [n gap-ms f]
+  (with-raw-server (fn [_ out]
+                     (write-ascii out (str "HTTP/1.1 200 OK\r\nContent-Length: " n "\r\nConnection: close\r\n\r\n"))
+                     (dotimes [_ n] (Thread/sleep (long gap-ms)) (write-ascii out "a")))
+    f))
+
+(defn- staged-files [dest]
+  (remove #{(str (fs/file-name dest))} (map (comp str fs/file-name) (fs/list-dir (fs/parent dest)))))
+
+(deftest a-download-stalled-mid-body-past-its-deadline-is-a-broken-off-network-problem
+  (let [dest (target-holding "earlier")]
+    (with-stalling-server "ab"
+      (fn [a]
+        (with-redefs [http/download-options (assoc @#'http/download-options :timeout-ms 800)]
+          (let [data (problem-of #(http/download! (str a "/asset") dest))]
+            (is (= :network (:breto/problem data)))
+            (is (= "timeout" (:exception data)))
+            (is (= 2 (:received data)))
+            (is (= "earlier" (slurp dest)))
+            (is (empty? (staged-files dest)) "no staged file is left beside the target")))))))
+
+(deftest a-lookup-stalled-mid-body-past-its-deadline-is-a-network-problem
+  (with-stalling-server "ab"
+    (fn [a]
+      (with-redefs [http/lookup-options (assoc @#'http/lookup-options :timeout-ms 800)]
+        (let [data (problem-of #(http/get-text (str a "/v") {}))]
+          (is (= :network (:breto/problem data)))
+          (is (= "timeout" (:exception data))))))))
+
+(deftest a-download-trickling-within-its-bounds-arrives-whole
+  (let [dest (target-holding "earlier")]
+    (with-trickling-server 6 100
+      (fn [a]
+        (http/download! (str a "/asset") dest)
+        (is (= "aaaaaa" (slurp dest)))))))
+
+(deftest a-lookup-trickling-within-its-bounds-arrives-whole
+  (with-trickling-server 6 100
+    (fn [a] (is (= "aaaaaa" (http/get-text (str a "/v") {}))))))
+
+(deftest downloads-keep-a-four-hour-deadline-and-their-other-bounds
+  (is (= {:connect-timeout-ms 10000 :timeout-ms (* 4 60 60 1000)
+          :max-bytes http/max-download-bytes :max-redirects 5}
+         (select-keys @#'http/download-options [:connect-timeout-ms :timeout-ms :max-bytes :max-redirects])))
+  (is (= {:connect-timeout-ms 10000 :timeout-ms 300000 :max-bytes http/max-body-bytes :max-redirects 5}
+         (select-keys @#'http/lookup-options [:connect-timeout-ms :timeout-ms :max-bytes :max-redirects]))))
+
 (deftest downloads-name-breto
   (let [seen (atom [])
         dest (str (fs/path (fs/create-temp-dir) "asset.tar.gz"))]
