@@ -5,6 +5,7 @@
   (:require [babashka.fs :as fs]
             [babashka.process :as process]
             [breto.package :as package]
+            [breto.proc :as proc]
             [breto.tar :as tar]
             [clojure.java.io :as io]
             [clojure.string :as str]))
@@ -160,10 +161,9 @@
         (case archive-type
           :tar (do (if (tar/readable? file)
                      (tar/unpack! file scratch strip)
-                     (let [{:keys [exit err]} (process/shell {:out :string :err :string :continue true}
-                                                             "tar" "--extract" "--file" (str file)
-                                                             "--directory" (str scratch)
-                                                             (str "--strip-components=" strip))]
+                     (let [{:keys [exit err]} (proc/run-command ["tar" "--extract" "--file" (str file)
+                                                                 "--directory" (str scratch)
+                                                                 (str "--strip-components=" strip)])]
                        (when-not (zero? exit)
                          (throw (ex-info (str "tar could not unpack " (fs/file-name file) ": " (str/trim err))
                                          {:breto/problem :unpack-failed :file (str (fs/file-name file)) :stderr err})))))
