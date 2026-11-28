@@ -37,6 +37,14 @@
       (is (= ["/internal"] (:registries (config/load-config file))))
       (finally (fs/delete file)))))
 
+(deftest a-dangling-configuration-link-means-the-defaults
+  (let [dir (fs/create-temp-dir)
+        link (fs/path dir "config.edn")]
+    (try
+      (fs/create-sym-link link (fs/path dir "gone.edn"))
+      (is (= (config/load-config (str (fs/path dir "absent.edn"))) (config/load-config (str link))))
+      (finally (fs/delete-tree dir)))))
+
 (deftest desktop-entries-are-linked-where-the-desktop-reads-them
   (is (str/ends-with? (config/desktop-dir "Linux") "/applications"))
   (is (str/ends-with? (config/desktop-dir "FreeBSD") "/applications"))

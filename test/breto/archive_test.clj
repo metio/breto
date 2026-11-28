@@ -62,6 +62,22 @@
     (is (= ["tool"] (map (comp str fs/file-name) (fs/list-dir (path "out")))))
     (is (= "binary" (slurp (path "out" "tool"))))))
 
+(deftest decompressed-files-get-the-mode-of-a-new-file
+  (let [file (path "tool")
+        reference (path "reference")]
+    (spit (str file) "binary")
+    (spit (str reference) "")
+    (babashka.process/shell "zstd" "--quiet" "--rm" (str file))
+    (archive/unpack! (path "tool.zst") :zst "tool.zst" (path "out") 0)
+    (is (= (fs/posix-file-permissions reference) (fs/posix-file-permissions (path "out" "tool"))))))
+
+(deftest a-failing-decompressor-reports-what-it-printed
+  (spit (str (path "bad.bz2")) "not bzip2")
+  (let [data (try (archive/unpack! (path "bad.bz2") :bz2 "bad.bz2" (path "bz2") 0) nil
+                  (catch clojure.lang.ExceptionInfo e (ex-data e)))]
+    (is (= :unpack-failed (:breto/problem data)))
+    (is (str/includes? (:stderr data) "bzip2"))))
+
 (deftest zstd-compressed-tar-archives-unpack-with-strip
   (fs/create-dirs (path "src" "tool-1.0" "bin"))
   (spit (str (path "src" "tool-1.0" "bin" "tool")) "t")
